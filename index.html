@@ -38,7 +38,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 AI Job Market UK. Data provided by Reed.</p>
+        <p>&copy; <span id="year"></span> AI Job Market UK. Data provided by Reed.</p>
     </footer>
 
     <script>
@@ -123,6 +123,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        document.getElementById('year').textContent = new Date().getFullYear();
         init();
     </script>
 </body>
