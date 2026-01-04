@@ -124,10 +124,10 @@ main {
 
 #searchInput {
     width: 100%;
-    padding: 12px 16px;
+    padding: 14px 16px;
     border-radius: 8px;
     border: 2px solid #e2e8f0;
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-family: 'Inter', sans-serif;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     transition: all 0.3s ease;
