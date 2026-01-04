@@ -62,6 +62,27 @@
         let currentPage = 1;
         const jobsPerPage = 10;
 
+        function truncateDescription(text, maxLength = 150) {
+            if (text.length <= maxLength) return text;
+            
+            // Truncate to max length
+            let truncated = text.substring(0, maxLength);
+            
+            // Try to find the end of a sentence (period followed by space)
+            let lastPeriod = truncated.lastIndexOf('. ');
+            if (lastPeriod > maxLength * 0.6) {
+                return truncated.substring(0, lastPeriod + 1);
+            }
+            
+            // Otherwise, find the last word boundary
+            let lastSpace = truncated.lastIndexOf(' ');
+            if (lastSpace > 0) {
+                return truncated.substring(0, lastSpace);
+            }
+            
+            return truncated;
+        }
+
         async function init() {
             try {
                 const response = await fetch(WORKER_URL);
@@ -119,7 +140,7 @@
                             <span class="salary-text">💰 ${salary}</span>
                         </div>
                         <div class="snippet">
-                            ${job.jobDescription.substring(0, 150)}...
+                            ${truncateDescription(job.jobDescription)}...
                         </div>
                         <a href="${job.jobUrl}" target="_blank" class="apply-btn">View & Apply</a>
                     </div>
