@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Job Market UK</title>
+    <title>AI Job Market UK | Live Opportunities</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,11 +13,10 @@
     </header>
 
     <main id="job-container">
-        <div class="loader">Scanning the market...</div>
+        <div class="loader">Scanning the market for the latest AI roles...</div>
     </main>
 
     <script>
-        // REPLACE THIS with your Worker URL (e.g., https://ai-job-proxy.yourname.workers.dev)
         const WORKER_URL = "https://holy-sky-9d35.yama.workers.dev";
 
         async function loadJobs() {
@@ -27,18 +26,50 @@
                 const container = document.getElementById('job-container');
                 container.innerHTML = '';
 
+                if (!data.results || data.results.length === 0) {
+                    container.innerHTML = "<p>No jobs found at the moment. Check back soon!</p>";
+                    return;
+                }
+
                 data.results.forEach(job => {
+                    // 1. Format the Date
+                    const dateDisplay = job.date ? job.date : "Recently posted";
+
+                    // 2. Format the Salary (Handling cases where salary isn't provided)
+                    let salaryDisplay = "Salary not disclosed";
+                    if (job.minimumSalary && job.maximumSalary) {
+                        salaryDisplay = `£${job.minimumSalary.toLocaleString()} - £${job.maximumSalary.toLocaleString()}`;
+                    } else if (job.minimumSalary) {
+                        salaryDisplay = `From £${job.minimumSalary.toLocaleString()}`;
+                    }
+
+                    // 3. Create the Job Card
                     const card = `
                         <div class="job-card">
-                            <h3>${job.jobTitle}</h3>
-                            <p class="company">🏢 ${job.employerName}</p>
-                            <p class="location">📍 ${job.locationName}</p>
-                            <a href="${job.jobUrl}" target="_blank" class="apply-btn">View Details</a>
+                            <div class="card-header">
+                                <span class="date-tag">📅 ${dateDisplay}</span>
+                                <h3>${job.jobTitle}</h3>
+                            </div>
+                            
+                            <div class="job-meta">
+                                <p class="company">🏢 ${job.employerName}</p>
+                                <p class="location">📍 ${job.locationName}</p>
+                                <p class="salary">💰 ${salaryDisplay}</p>
+                            </div>
+
+                            <div class="description-snippet">
+                                ${job.jobDescription.substring(0, 160)}...
+                            </div>
+
+                            <div class="card-footer">
+                                <a href="${job.jobUrl}" target="_blank" class="apply-btn">View Full Job & Apply</a>
+                            </div>
                         </div>
                     `;
                     container.innerHTML += card;
                 });
             } catch (e) {
+                console.error(e);
                 document.getElementById('job-container').innerHTML = "Failed to load jobs. Please try again later.";
             }
         }
