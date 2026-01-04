@@ -28,6 +28,40 @@
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Search by title, company, or tech..." onkeyup="handleSearch()">
         </div>
+        
+        <div class="filters-container">
+            <div class="filter-group">
+                <label for="skillLevelFilter">Skill Level:</label>
+                <select id="skillLevelFilter" onchange="handleFilterChange()">
+                    <option value="">All Levels</option>
+                    <option value="junior">Junior</option>
+                    <option value="mid">Mid-Level</option>
+                    <option value="senior">Senior</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="remoteFilter">Remote:</label>
+                <select id="remoteFilter" onchange="handleFilterChange()">
+                    <option value="">All Types</option>
+                    <option value="remote">Remote</option>
+                    <option value="hybrid">Hybrid</option>
+                    <option value="office">Office</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="salaryFilter">Salary Range:</label>
+                <select id="salaryFilter" onchange="handleFilterChange()">
+                    <option value="">All Ranges</option>
+                    <option value="0-50000">£0 - £50k</option>
+                    <option value="50000-75000">£50k - £75k</option>
+                    <option value="75000-100000">£75k - £100k</option>
+                    <option value="100000+">£100k+</option>
+                </select>
+            </div>
+        </div>
+        
         <div id="status-bar">
             <span id="job-count">Loading jobs...</span>
         </div>
@@ -83,6 +117,83 @@
             return truncated;
         }
 
+        function detectSkillLevel(jobTitle, description) {
+            const text = `${jobTitle} ${description}`.toLowerCase();
+            
+            if (text.includes('senior') || text.includes('lead') || text.includes('principal') || text.includes('staff')) {
+                return 'senior';
+            }
+            if (text.includes('junior') || text.includes('graduate') || text.includes('entry')) {
+                return 'junior';
+            }
+            if (text.includes('mid') || text.includes('intermediate') || text.includes('mid-level')) {
+                return 'mid';
+            }
+            
+            return 'mid'; // default to mid-level
+        }
+
+        function detectRemoteType(locationName, description) {
+            const text = `${locationName} ${description}`.toLowerCase();
+            
+            if (text.includes('remote')) {
+                return 'remote';
+            }
+            if (text.includes('hybrid')) {
+                return 'hybrid';
+            }
+            
+            return 'office';
+        }
+
+        function applyFilters() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const skillLevel = document.getElementById('skillLevelFilter').value;
+            const remoteType = document.getElementById('remoteFilter').value;
+            const salaryRange = document.getElementById('salaryFilter').value;
+            
+            filteredJobs = allJobs.filter(job => {
+                // Search filter
+                const matchesSearch = !searchQuery || (
+                    job.jobTitle.toLowerCase().includes(searchQuery) || 
+                    job.employerName.toLowerCase().includes(searchQuery) ||
+                    job.locationName.toLowerCase().includes(searchQuery)
+                );
+                
+                // Skill level filter
+                const jobSkillLevel = detectSkillLevel(job.jobTitle, job.jobDescription);
+                const matchesSkillLevel = !skillLevel || jobSkillLevel === skillLevel;
+                
+                // Remote filter
+                const jobRemoteType = detectRemoteType(job.locationName, job.jobDescription);
+                const matchesRemote = !remoteType || jobRemoteType === remoteType;
+                
+                // Salary filter
+                let matchesSalary = true;
+                if (salaryRange) {
+                    const minSalary = job.minimumSalary || 0;
+                    if (salaryRange === '0-50000') {
+                        matchesSalary = minSalary <= 50000;
+                    } else if (salaryRange === '50000-75000') {
+                        matchesSalary = minSalary >= 50000 && minSalary <= 75000;
+                    } else if (salaryRange === '75000-100000') {
+                        matchesSalary = minSalary >= 75000 && minSalary <= 100000;
+                    } else if (salaryRange === '100000+') {
+                        matchesSalary = minSalary >= 100000;
+                    }
+                }
+                
+                return matchesSearch && matchesSkillLevel && matchesRemote && matchesSalary;
+            });
+            
+            currentPage = 1;
+            updateUI();
+        }
+
+        function handleFilterChange() {
+            applyFilters();
+        }
+
         async function init() {
             try {
                 const response = await fetch(WORKER_URL);
@@ -97,14 +208,7 @@
         }
 
         function handleSearch() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            filteredJobs = allJobs.filter(job => 
-                job.jobTitle.toLowerCase().includes(query) || 
-                job.employerName.toLowerCase().includes(query) ||
-                job.locationName.toLowerCase().includes(query)
-            );
-            currentPage = 1;
-            updateUI();
+            applyFilters();
         }
 
         function updateUI() {
@@ -127,11 +231,14 @@
             pageItems.forEach(job => {
                 const salary = job.minimumSalary ? `£${job.minimumSalary.toLocaleString()} - £${job.maximumSalary.toLocaleString()}` : "Salary Competitive";
                 const date = job.date ? job.date : "Recent";
+                const skillLevel = detectSkillLevel(job.jobTitle, job.jobDescription);
+                const skillLevelDisplay = skillLevel.charAt(0).toUpperCase() + skillLevel.slice(1);
 
                 container.innerHTML += `
                     <div class="job-card">
                         <div class="card-top">
                             <span class="date-badge">${date}</span>
+                            <span class="skill-badge skill-${skillLevel}">${skillLevelDisplay}</span>
                             <h3>${job.jobTitle}</h3>
                         </div>
                         <div class="job-info">
