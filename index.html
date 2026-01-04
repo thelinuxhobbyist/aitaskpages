@@ -3,77 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Job Market UK | Live Opportunities</title>
+    <title>AI Job Market UK | Discover Your Next Role</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
-        <h1>AI Job Market <span>UK</span></h1>
-        <p>Live AI Career Opportunities</p>
+        <div class="header-content">
+            <h1>AI Job Market <span>UK</span></h1>
+            <p>Curated AI, Machine Learning & Data Science roles</p>
+        </div>
     </header>
 
+    <section class="controls">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by title, company, or tech..." onkeyup="handleSearch()">
+        </div>
+        <div id="status-bar">
+            <span id="job-count">Loading jobs...</span>
+        </div>
+    </section>
+
     <main id="job-container">
-        <div class="loader">Scanning the market for the latest AI roles...</div>
+        <div class="loader">
+            <div class="spinner"></div>
+            <p>Fetching the latest AI opportunities...</p>
+        </div>
     </main>
+
+    <div class="pagination" id="pagination-controls">
+        <button id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
+        <span id="pageInfo">Page 1</span>
+        <button id="nextBtn" onclick="changePage(1)">Next →</button>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 AI Job Market UK. Data provided by Reed.</p>
+    </footer>
 
     <script>
         const WORKER_URL = "https://holy-sky-9d35.yama.workers.dev";
+        let allJobs = [];
+        let filteredJobs = [];
+        let currentPage = 1;
+        const jobsPerPage = 10;
 
-        async function loadJobs() {
+        async function init() {
             try {
                 const response = await fetch(WORKER_URL);
                 const data = await response.json();
-                const container = document.getElementById('job-container');
-                container.innerHTML = '';
-
-                if (!data.results || data.results.length === 0) {
-                    container.innerHTML = "<p>No jobs found at the moment. Check back soon!</p>";
-                    return;
-                }
-
-                data.results.forEach(job => {
-                    // 1. Format the Date
-                    const dateDisplay = job.date ? job.date : "Recently posted";
-
-                    // 2. Format the Salary (Handling cases where salary isn't provided)
-                    let salaryDisplay = "Salary not disclosed";
-                    if (job.minimumSalary && job.maximumSalary) {
-                        salaryDisplay = `£${job.minimumSalary.toLocaleString()} - £${job.maximumSalary.toLocaleString()}`;
-                    } else if (job.minimumSalary) {
-                        salaryDisplay = `From £${job.minimumSalary.toLocaleString()}`;
-                    }
-
-                    // 3. Create the Job Card
-                    const card = `
-                        <div class="job-card">
-                            <div class="card-header">
-                                <span class="date-tag">📅 ${dateDisplay}</span>
-                                <h3>${job.jobTitle}</h3>
-                            </div>
-                            
-                            <div class="job-meta">
-                                <p class="company">🏢 ${job.employerName}</p>
-                                <p class="location">📍 ${job.locationName}</p>
-                                <p class="salary">💰 ${salaryDisplay}</p>
-                            </div>
-
-                            <div class="description-snippet">
-                                ${job.jobDescription.substring(0, 160)}...
-                            </div>
-
-                            <div class="card-footer">
-                                <a href="${job.jobUrl}" target="_blank" class="apply-btn">View Full Job & Apply</a>
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += card;
-                });
+                allJobs = data.results || [];
+                filteredJobs = [...allJobs];
+                updateUI();
             } catch (e) {
-                console.error(e);
-                document.getElementById('job-container').innerHTML = "Failed to load jobs. Please try again later.";
+                document.getElementById('job-container').innerHTML = 
+                    `<div class="error-msg">Failed to connect to the market. Please refresh the page.</div>`;
             }
         }
-        loadJobs();
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            filteredJobs = allJobs.filter(job => 
+                job.jobTitle.toLowerCase().includes(query) || 
+                job.employerName.toLowerCase().includes(query) ||
+                job.locationName.toLowerCase().includes(query)
+            );
+            currentPage = 1;
+            updateUI();
+        }
+
+        function updateUI() {
+            const container = document.getElementById('job-container');
+            const start = (currentPage - 1) * jobsPerPage;
+            const end = start + jobsPerPage;
+            const pageItems = filteredJobs.slice(start, end);
+
+            document.getElementById('job-count').innerText = `${filteredJobs.length} roles found`;
+            
+            if (pageItems.length === 0) {
+                container.innerHTML = `<div class="no-results">No matching jobs found. Try a different search!</div>`;
+                document.getElementById('pagination-controls').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('pagination-controls').style.display = 'flex';
+            container.innerHTML = '';
+            
+            pageItems.forEach(job => {
+                const salary = job.minimumSalary ? `£${job.minimumSalary.toLocaleString()} - £${job.maximumSalary.toLocaleString()}` : "Salary Competitive";
+                const date = job.date ? job.date : "Recent";
+
+                container.innerHTML += `
+                    <div class="job-card">
+                        <div class="card-top">
+                            <span class="date-badge">${date}</span>
+                            <h3>${job.jobTitle}</h3>
+                        </div>
+                        <div class="job-info">
+                            <span>🏢 ${job.employerName}</span>
+                            <span>📍 ${job.locationName}</span>
+                            <span class="salary-text">💰 ${salary}</span>
+                        </div>
+                        <div class="snippet">
+                            ${job.jobDescription.substring(0, 150)}...
+                        </div>
+                        <a href="${job.jobUrl}" target="_blank" class="apply-btn">View & Apply</a>
+                    </div>
+                `;
+            });
+
+            document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(filteredJobs.length / jobsPerPage)}`;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = end >= filteredJobs.length;
+        }
+
+        function changePage(step) {
+            currentPage += step;
+            updateUI();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        init();
     </script>
 </body>
 </html>
