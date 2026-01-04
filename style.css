@@ -112,9 +112,10 @@ main {
 }
 
 .controls {
-    max-width: 800px;
-    margin: 2rem auto;
+    width: 100%;
+    margin: 2rem 0;
     padding: 0 1rem;
+    box-sizing: border-box;
 }
 
 .search-container {
@@ -210,7 +211,26 @@ footer {
 }
 
 footer p {
-    margin: 0;
+    margin: 0 0 1rem 0;
     color: #64748b;
     font-size: 0.95rem;
+}
+
+footer .footer-links {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+footer .footer-links a {
+    color: var(--primary);
+    text-decoration: none;
+    margin: 0 1rem;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+footer .footer-links a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
 }
