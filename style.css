@@ -62,3 +62,34 @@ main {
     font-weight: 600;
     font-size: 0.9rem;
 }
+
+.date-tag {
+    font-size: 0.8rem;
+    color: #64748b;
+    float: right;
+}
+
+.job-meta {
+    margin: 10px 0;
+}
+
+.salary {
+    color: #059669; /* A professional green */
+    font-weight: 600;
+}
+
+.description-snippet {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.6;
+    margin: 15px 0;
+    padding-top: 10px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.apply-btn {
+    display: block;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
