@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Market UK</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>AI Job Market <span>UK</span></h1>
+        <p>Live AI Career Opportunities</p>
+    </header>
+
+    <main id="job-container">
+        <div class="loader">Scanning the market...</div>
+    </main>
+
+    <script>
+        // REPLACE THIS with your Worker URL (e.g., https://ai-job-proxy.yourname.workers.dev)
+        const WORKER_URL = "https://holy-sky-9d35.yama.workers.dev";
+
+        async function loadJobs() {
+            try {
+                const response = await fetch(WORKER_URL);
+                const data = await response.json();
+                const container = document.getElementById('job-container');
+                container.innerHTML = '';
+
+                data.results.forEach(job => {
+                    const card = `
+                        <div class="job-card">
+                            <h3>${job.jobTitle}</h3>
+                            <p class="company">🏢 ${job.employerName}</p>
+                            <p class="location">📍 ${job.locationName}</p>
+                            <a href="${job.jobUrl}" target="_blank" class="apply-btn">View Details</a>
+                        </div>
+                    `;
+                    container.innerHTML += card;
+                });
+            } catch (e) {
+                document.getElementById('job-container').innerHTML = "Failed to load jobs. Please try again later.";
+            }
+        }
+        loadJobs();
+    </script>
+</body>
+</html>
