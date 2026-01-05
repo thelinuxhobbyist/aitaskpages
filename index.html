@@ -147,7 +147,7 @@
         }
 
         function applyFilters() {
-            applyClientSideFilters();
+            fetchJobsWithFilters();
         }
 
         function handleFilterChange() {
@@ -156,10 +156,25 @@
 
         async function fetchJobsWithFilters() {
             try {
-                const response = await fetch(WORKER_URL);
+                const searchQuery = document.getElementById('searchInput').value || '';
+                const skillLevel = document.getElementById('skillLevelFilter').value || '';
+                const remoteType = document.getElementById('remoteFilter').value || '';
+                const salaryRange = document.getElementById('salaryFilter').value || '';
+                
+                // Build query string with filter parameters
+                const params = new URLSearchParams();
+                if (searchQuery) params.append('search', searchQuery);
+                if (skillLevel) params.append('skillLevel', skillLevel);
+                if (remoteType) params.append('remote', remoteType);
+                if (salaryRange) params.append('salaryRange', salaryRange);
+                
+                const url = params.toString() ? `${WORKER_URL}?${params.toString()}` : WORKER_URL;
+                const response = await fetch(url);
                 const data = await response.json();
                 allJobs = data.results || [];
-                applyClientSideFilters();
+                filteredJobs = [...allJobs];
+                currentPage = 1;
+                updateUI();
             } catch (e) {
                 document.getElementById('job-container').innerHTML = 
                     `<div class="error-msg">Failed to connect to the market. Please refresh the page.</div>`;
