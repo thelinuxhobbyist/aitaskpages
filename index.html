@@ -147,64 +147,42 @@
         }
 
         function applyFilters() {
-            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-            const skillLevel = document.getElementById('skillLevelFilter').value;
-            const remoteType = document.getElementById('remoteFilter').value;
-            const salaryRange = document.getElementById('salaryFilter').value;
-            
-            filteredJobs = allJobs.filter(job => {
-                // Search filter
-                const matchesSearch = !searchQuery || (
-                    job.jobTitle.toLowerCase().includes(searchQuery) || 
-                    job.employerName.toLowerCase().includes(searchQuery) ||
-                    job.locationName.toLowerCase().includes(searchQuery)
-                );
-                
-                // Skill level filter
-                const jobSkillLevel = detectSkillLevel(job.jobTitle, job.jobDescription);
-                const matchesSkillLevel = !skillLevel || jobSkillLevel === skillLevel;
-                
-                // Remote filter
-                const jobRemoteType = detectRemoteType(job.locationName, job.jobDescription);
-                const matchesRemote = !remoteType || jobRemoteType === remoteType;
-                
-                // Salary filter
-                let matchesSalary = true;
-                if (salaryRange) {
-                    const minSalary = job.minimumSalary || 0;
-                    if (salaryRange === '0-50000') {
-                        matchesSalary = minSalary <= 50000;
-                    } else if (salaryRange === '50000-75000') {
-                        matchesSalary = minSalary >= 50000 && minSalary <= 75000;
-                    } else if (salaryRange === '75000-100000') {
-                        matchesSalary = minSalary >= 75000 && minSalary <= 100000;
-                    } else if (salaryRange === '100000+') {
-                        matchesSalary = minSalary >= 100000;
-                    }
-                }
-                
-                return matchesSearch && matchesSkillLevel && matchesRemote && matchesSalary;
-            });
-            
-            currentPage = 1;
-            updateUI();
+            fetchJobsWithFilters();
         }
 
         function handleFilterChange() {
             applyFilters();
         }
 
-        async function init() {
+        async function fetchJobsWithFilters() {
             try {
-                const response = await fetch(WORKER_URL);
+                const searchQuery = document.getElementById('searchInput').value || '';
+                const skillLevel = document.getElementById('skillLevelFilter').value || '';
+                const remoteType = document.getElementById('remoteFilter').value || '';
+                const salaryRange = document.getElementById('salaryFilter').value || '';
+                
+                // Build query string with filter parameters
+                const params = new URLSearchParams();
+                if (searchQuery) params.append('search', searchQuery);
+                if (skillLevel) params.append('skillLevel', skillLevel);
+                if (remoteType) params.append('remote', remoteType);
+                if (salaryRange) params.append('salaryRange', salaryRange);
+                
+                const url = params.toString() ? `${WORKER_URL}?${params.toString()}` : WORKER_URL;
+                const response = await fetch(url);
                 const data = await response.json();
                 allJobs = data.results || [];
                 filteredJobs = [...allJobs];
+                currentPage = 1;
                 updateUI();
             } catch (e) {
                 document.getElementById('job-container').innerHTML = 
                     `<div class="error-msg">Failed to connect to the market. Please refresh the page.</div>`;
             }
+        }
+
+        async function init() {
+            await fetchJobsWithFilters();
         }
 
         function handleSearch() {
