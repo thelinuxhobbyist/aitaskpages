@@ -41,12 +41,12 @@ export default {
       // Format salary with UK pound sign
       if (data.results) {
         data.results = data.results.map(job => {
-          if (job.minimumSalary || job.maximumSalary) {
-            const minSalary = job.minimumSalary ? new Intl.NumberFormat('en-GB').format(job.minimumSalary) : '0';
-            const maxSalary = job.maximumSalary ? new Intl.NumberFormat('en-GB').format(job.maximumSalary) : '0';
-            job.salary = `£${minSalary} - £${maxSalary}`;
-          } else {
-            job.salary = "Salary Competitive";
+          // Convert salary fields to use GBP
+          if (job.minimumSalary) {
+            job.minimumSalary = Math.round(job.minimumSalary);
+          }
+          if (job.maximumSalary) {
+            job.maximumSalary = Math.round(job.maximumSalary);
           }
           return job;
         });

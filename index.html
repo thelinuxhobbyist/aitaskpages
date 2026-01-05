@@ -252,7 +252,7 @@
             container.innerHTML = '';
             
             pageItems.forEach(job => {
-                const salary = job.salary || "Salary Competitive";
+                const salary = job.minimumSalary ? `£${job.minimumSalary.toLocaleString()} - £${job.maximumSalary.toLocaleString()}` : "Salary Competitive";
                 const date = job.date ? job.date : "Recent";
                 const skillLevel = detectSkillLevel(job.jobTitle, job.jobDescription);
                 const skillLevelDisplay = skillLevel.charAt(0).toUpperCase() + skillLevel.slice(1);
