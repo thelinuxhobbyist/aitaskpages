@@ -103,6 +103,26 @@ main {
     color: #7f1d1d;
 }
 
+.job-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.job-info span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #475569;
+}
+
+.job-info i {
+    color: var(--primary);
+    font-size: 1.25rem;
+}
+
 .job-meta {
     margin: 10px 0;
 }

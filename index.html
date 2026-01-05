@@ -6,6 +6,7 @@
     <title>AI Job Market UK | Discover Your Next Role</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N3EBLR665X"></script>
     <script>
@@ -264,9 +265,9 @@
                             <h3>${job.jobTitle}</h3>
                         </div>
                         <div class="job-info">
-                            <span>🏢 ${job.employerName}</span>
-                            <span>📍 ${job.locationName}</span>
-                            <span class="salary-text">💰 ${salary}</span>
+                            <span><i class="material-icons-outlined">business</i> ${job.employerName}</span>
+                            <span><i class="material-icons-outlined">location_on</i> ${job.locationName}</span>
+                            <span class="salary-text"><i class="material-icons-outlined">paid</i> ${salary}</span>
                         </div>
                         <div class="snippet">
                             ${truncateDescription(job.jobDescription)}
