@@ -42,7 +42,9 @@ export default {
       if (data.results) {
         data.results = data.results.map(job => {
           if (job.minimumSalary || job.maximumSalary) {
-            job.salary = `£${job.minimumSalary?.toLocaleString() || 0} - £${job.maximumSalary?.toLocaleString() || 0}`;
+            const minSalary = job.minimumSalary ? new Intl.NumberFormat('en-GB').format(job.minimumSalary) : '0';
+            const maxSalary = job.maximumSalary ? new Intl.NumberFormat('en-GB').format(job.maximumSalary) : '0';
+            job.salary = `£${minSalary} - £${maxSalary}`;
           } else {
             job.salary = "Salary Competitive";
           }
