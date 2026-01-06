@@ -104,10 +104,18 @@
     // Mobile menu toggle
     const menuToggle = document.getElementById('menuToggle');
     const mobileNav = document.getElementById('mobileNav');
+    const menuIcon = menuToggle.querySelector('.material-icons-outlined');
     
     menuToggle.addEventListener('click', function() {
         mobileNav.classList.toggle('active');
         menuToggle.classList.toggle('active');
+        
+        // Toggle between menu and close icons
+        if (menuToggle.classList.contains('active')) {
+            menuIcon.textContent = 'close';
+        } else {
+            menuIcon.textContent = 'menu';
+        }
     });
     
     // Close menu when a link is clicked
@@ -115,6 +123,7 @@
         link.addEventListener('click', function() {
             mobileNav.classList.remove('active');
             menuToggle.classList.remove('active');
+            menuIcon.textContent = 'menu';
         });
     });
     
@@ -123,6 +132,7 @@
         if (!event.target.closest('header')) {
             mobileNav.classList.remove('active');
             menuToggle.classList.remove('active');
+            menuIcon.textContent = 'menu';
         }
     });
 </script>
