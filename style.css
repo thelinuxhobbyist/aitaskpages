@@ -28,13 +28,53 @@ header {
 h1 { margin: 0; font-size: 1.8rem; letter-spacing: -0.025em; }
 h1 span { color: var(--primary); }
 
-main { 
-    max-width: 800px; 
-    margin: 2rem auto; 
-    padding: 0 1rem;
-    flex: 1;
+/* Layout for sidebar and content */
+.main-layout {
+    display: flex;
+    max-width: 1200px;
+    margin: 2rem auto;
     width: 100%;
     box-sizing: border-box;
+    gap: 2rem;
+    min-height: 60vh;
+}
+
+.sidebar {
+    width: 220px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07);
+    padding: 1.5rem 1rem;
+    border: 1px solid #e2e8f0;
+    height: fit-content;
+}
+
+.content {
+    flex: 1;
+    min-width: 0;
+}
+
+main {
+    width: 100%;
+    box-sizing: border-box;
+}
+.city-filter h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.city-filter label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.city-filter input[type="checkbox"] {
+    margin-right: 0.5em;
+    accent-color: var(--primary);
 }
 
 .job-card { 

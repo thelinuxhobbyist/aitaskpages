@@ -33,60 +33,73 @@
         </div>
     </header>
 
-    <section class="controls">
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search by title, company, or tech..." onkeyup="handleSearch()">
-        </div>
-        
-        <div class="filters-container">
-            <div class="filter-group">
-                <label for="skillLevelFilter">Skill Level:</label>
-                <select id="skillLevelFilter" onchange="handleFilterChange()">
-                    <option value="">All Levels</option>
-                    <option value="junior">Junior</option>
-                    <option value="mid">Mid-Level</option>
-                    <option value="senior">Senior</option>
-                </select>
+    <div class="main-layout">
+        <aside class="sidebar">
+            <div class="city-filter">
+                <h3>Filter by City</h3>
+                <form id="cityFilterForm">
+                    <label><input type="checkbox" name="city" value="London"> London</label><br>
+                    <label><input type="checkbox" name="city" value="Leeds"> Leeds</label><br>
+                    <label><input type="checkbox" name="city" value="Cambridge"> Cambridge</label><br>
+                    <label><input type="checkbox" name="city" value="Bath"> Bath</label><br>
+                    <label><input type="checkbox" name="city" value="Bristol"> Bristol</label><br>
+                    <label><input type="checkbox" name="city" value="Edinburgh"> Edinburgh</label><br>
+                    <label><input type="checkbox" name="city" value="Glasgow"> Glasgow</label><br>
+                    <label><input type="checkbox" name="city" value="Manchester"> Manchester</label><br>
+                </form>
             </div>
-            
-            <div class="filter-group">
-                <label for="remoteFilter">Remote:</label>
-                <select id="remoteFilter" onchange="handleFilterChange()">
-                    <option value="">All Types</option>
-                    <option value="remote">Remote</option>
-                    <option value="hybrid">Hybrid</option>
-                    <option value="office">Office</option>
-                </select>
+        </aside>
+        <section class="content">
+            <section class="controls">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search by title, company, or tech..." onkeyup="handleSearch()">
+                </div>
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <label for="skillLevelFilter">Skill Level:</label>
+                        <select id="skillLevelFilter" onchange="handleFilterChange()">
+                            <option value="">All Levels</option>
+                            <option value="junior">Junior</option>
+                            <option value="mid">Mid-Level</option>
+                            <option value="senior">Senior</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="remoteFilter">Remote:</label>
+                        <select id="remoteFilter" onchange="handleFilterChange()">
+                            <option value="">All Types</option>
+                            <option value="remote">Remote</option>
+                            <option value="hybrid">Hybrid</option>
+                            <option value="office">Office</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="salaryFilter">Salary Range:</label>
+                        <select id="salaryFilter" onchange="handleFilterChange()">
+                            <option value="">All Ranges</option>
+                            <option value="0-50000">£0 - £50k</option>
+                            <option value="50000-75000">£50k - £75k</option>
+                            <option value="75000-100000">£75k - £100k</option>
+                            <option value="100000+">£100k+</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="status-bar">
+                    <span id="job-count">Loading jobs...</span>
+                </div>
+            </section>
+            <main id="job-container">
+                <div class="loader">
+                    <div class="spinner"></div>
+                    <p>Fetching the latest AI opportunities...</p>
+                </div>
+            </main>
+            <div class="pagination" id="pagination-controls">
+                <button id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
+                <span id="pageInfo">Page 1</span>
+                <button id="nextBtn" onclick="changePage(1)">Next →</button>
             </div>
-            
-            <div class="filter-group">
-                <label for="salaryFilter">Salary Range:</label>
-                <select id="salaryFilter" onchange="handleFilterChange()">
-                    <option value="">All Ranges</option>
-                    <option value="0-50000">£0 - £50k</option>
-                    <option value="50000-75000">£50k - £75k</option>
-                    <option value="75000-100000">£75k - £100k</option>
-                    <option value="100000+">£100k+</option>
-                </select>
-            </div>
-        </div>
-        
-        <div id="status-bar">
-            <span id="job-count">Loading jobs...</span>
-        </div>
-    </section>
-
-    <main id="job-container">
-        <div class="loader">
-            <div class="spinner"></div>
-            <p>Fetching the latest AI opportunities...</p>
-        </div>
-    </main>
-
-    <div class="pagination" id="pagination-controls">
-        <button id="prevBtn" onclick="changePage(-1)" disabled>← Previous</button>
-        <span id="pageInfo">Page 1</span>
-        <button id="nextBtn" onclick="changePage(1)">Next →</button>
+        </section>
     </div>
 
     <footer>
@@ -195,7 +208,9 @@
             const skillLevel = document.getElementById('skillLevelFilter').value;
             const remoteType = document.getElementById('remoteFilter').value;
             const salaryRange = document.getElementById('salaryFilter').value;
-            
+            // City filter
+            const checkedCities = Array.from(document.querySelectorAll('input[name="city"]:checked')).map(cb => cb.value.toLowerCase());
+
             filteredJobs = allJobs.filter(job => {
                 // Search filter
                 const matchesSearch = !searchQuery || (
@@ -203,15 +218,15 @@
                     job.employerName.toLowerCase().includes(searchQuery) ||
                     job.locationName.toLowerCase().includes(searchQuery)
                 );
-                
+
                 // Skill level filter
                 const jobSkillLevel = detectSkillLevel(job.jobTitle, job.jobDescription);
                 const matchesSkillLevel = !skillLevel || jobSkillLevel === skillLevel;
-                
+
                 // Remote filter
                 const jobRemoteType = detectRemoteType(job.locationName, job.jobDescription);
                 const matchesRemote = !remoteType || jobRemoteType === remoteType;
-                
+
                 // Salary filter
                 let matchesSalary = true;
                 if (salaryRange) {
@@ -226,10 +241,16 @@
                         matchesSalary = minSalary >= 100000;
                     }
                 }
-                
-                return matchesSearch && matchesSkillLevel && matchesRemote && matchesSalary;
+
+                // City filter
+                let matchesCity = true;
+                if (checkedCities.length > 0) {
+                    matchesCity = checkedCities.some(city => job.locationName.toLowerCase().includes(city));
+                }
+
+                return matchesSearch && matchesSkillLevel && matchesRemote && matchesSalary && matchesCity;
             });
-            
+
             currentPage = 1;
             updateUI();
         }
@@ -295,6 +316,11 @@
             updateUI();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // City filter event
+        document.getElementById('cityFilterForm').addEventListener('change', function() {
+            applyClientSideFilters();
+        });
 
         document.getElementById('year').textContent = new Date().getFullYear();
         init();
