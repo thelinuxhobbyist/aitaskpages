@@ -121,6 +121,44 @@
                     <span id="job-count">Loading jobs...</span>
                 </div>
             </section>
+
+            <section class="market-overview">
+                <h3>AI Hiring Market Overview</h3>
+                <div class="overview-cards">
+                    <div class="overview-card">
+                        <div class="card-icon">
+                            <span class="material-icons-outlined">trending_up</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>Hiring Demand</h4>
+                            <p class="metric" id="hiringDemand">—</p>
+                            <p class="subtitle">Updated daily from live job postings</p>
+                        </div>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="card-icon">
+                            <span class="material-icons-outlined">currency_pound</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>Typical Salary Range</h4>
+                            <p class="metric" id="salaryRange">—</p>
+                            <p class="subtitle">Based on roles with disclosed salary</p>
+                        </div>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="card-icon">
+                            <span class="material-icons-outlined">category</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>Top Role Types</h4>
+                            <div id="roleBreakdown" class="role-breakdown">—</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <main id="job-container">
                 <div class="loader">
                     <div class="spinner"></div>
@@ -296,6 +334,76 @@
             applyFilters();
         }
 
+        function calculateMarketInsights() {
+            if (allJobs.length === 0) return;
+
+            // 1. Hiring Demand - total active roles
+            const demandElement = document.getElementById('hiringDemand');
+            const totalRoles = allJobs.length;
+            demandElement.textContent = `${totalRoles.toLocaleString()} active AI roles`;
+
+            // 2. Salary Range - calculate 20th to 80th percentile
+            const salariesWithData = allJobs
+                .filter(job => job.minimumSalary && job.maximumSalary)
+                .map(job => ({ min: job.minimumSalary, max: job.maximumSalary }));
+
+            if (salariesWithData.length > 0) {
+                const minSalaries = salariesWithData.map(s => s.min).sort((a, b) => a - b);
+                const maxSalaries = salariesWithData.map(s => s.max).sort((a, b) => a - b);
+
+                const p20Min = minSalaries[Math.floor(minSalaries.length * 0.2)];
+                const p80Max = maxSalaries[Math.floor(maxSalaries.length * 0.8)];
+
+                const salaryElement = document.getElementById('salaryRange');
+                salaryElement.textContent = `£${(p20Min / 1000).toFixed(0)}k – £${(p80Max / 1000).toFixed(0)}k`;
+            }
+
+            // 3. Role Type Breakdown - categorize by keywords
+            const roleCategories = {
+                'Machine Learning': ['machine learning', 'ml engineer', 'ml specialist'],
+                'Data Science': ['data scientist', 'data science', 'analytics'],
+                'AI Engineer': ['ai engineer', 'llm', 'large language model', 'nlp engineer'],
+                'Research': ['research scientist', 'applied research', 'phd', 'researcher'],
+                'AI Product': ['ai product', 'product manager', 'strategy', 'ai lead']
+            };
+
+            const roleCounts = {};
+            for (const category in roleCategories) {
+                roleCounts[category] = 0;
+            }
+
+            allJobs.forEach(job => {
+                const title = job.jobTitle.toLowerCase();
+                for (const [category, keywords] of Object.entries(roleCategories)) {
+                    if (keywords.some(keyword => title.includes(keyword))) {
+                        roleCounts[category]++;
+                        break;
+                    }
+                }
+            });
+
+            // Calculate percentages and sort
+            const sortedRoles = Object.entries(roleCounts)
+                .filter(([_, count]) => count > 0)
+                .map(([name, count]) => ({
+                    name,
+                    count,
+                    percent: ((count / allJobs.length) * 100).toFixed(1)
+                }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 5);
+
+            const roleBreakdown = document.getElementById('roleBreakdown');
+            if (sortedRoles.length > 0) {
+                roleBreakdown.innerHTML = sortedRoles.map(role => `
+                    <div class="role-item">
+                        <span class="role-name">${role.name}</span>
+                        <span class="role-percent">${role.percent}%</span>
+                    </div>
+                `).join('');
+            }
+        }
+
         function updateUI() {
             const container = document.getElementById('job-container');
             const start = (currentPage - 1) * jobsPerPage;
@@ -342,6 +450,9 @@
             document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${Math.ceil(filteredJobs.length / jobsPerPage)}`;
             document.getElementById('prevBtn').disabled = currentPage === 1;
             document.getElementById('nextBtn').disabled = end >= filteredJobs.length;
+            
+            // Update market insights
+            calculateMarketInsights();
         }
 
         function changePage(step) {
