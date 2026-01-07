@@ -327,6 +327,92 @@ main {
     text-align: right;
 }
 
+/* Footer Styles */
+.site-footer {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-top: 1px solid #e8eef7;
+    padding: 3rem 2rem 2rem;
+    margin-top: 4rem;
+}
+
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+}
+
+.footer-col {
+    flex: 1;
+}
+
+.footer-col h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--dark);
+}
+
+.footer-logo {
+    background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.footer-logo span {
+    font-weight: 500;
+}
+
+.footer-col p {
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.footer-col h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-col a {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.footer-col a:hover {
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.footer-bottom {
+    border-top: 1px solid #e8eef7;
+    padding-top: 2rem;
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
 @media (max-width: 1024px) {
     .overview-cards {
         grid-template-columns: 1fr;
@@ -921,5 +1007,23 @@ footer .footer-links a:hover {
     .main-layout {
         margin: 0.5rem;
         gap: 0.5rem;
+    }
+
+    /* Footer responsive */
+    .site-footer {
+        padding: 2rem 1rem;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .footer-col h5 {
+        font-size: 0.95rem;
+    }
+
+    .footer-col ul {
+        font-size: 0.9rem;
     }
 }
