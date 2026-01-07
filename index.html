@@ -266,7 +266,9 @@
                 allJobs = data.results || [];
                 filteredJobs = [...allJobs];
                 currentPage = 1;
-                updateUI();
+                
+                // Apply client-side filters (includes city filter)
+                applyClientSideFilters();
             } catch (e) {
                 document.getElementById('job-container').innerHTML = 
                     `<div class="error-msg">Failed to connect to the market. Please refresh the page.</div>`;
