@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post an AI Job | AI Job Market UK</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N3EBLR665X"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-N3EBLR665X');
+    </script>
+    <style>
+        .post-job-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(37,99,235,0.1);
+        }
+
+        .post-job-container h2 {
+            margin-top: 0;
+            color: var(--dark);
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-job-container .subtitle {
+            color: #475569;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.6;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 0;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            display: none;
+            background: #dcfce7;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #bbf7d0;
+        }
+
+        .error-message {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #fecaca;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        @media (max-width: 767px) {
+            .post-job-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+
+            .post-job-container h2 {
+                font-size: 1.4rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span class="material-icons-outlined">menu</span>
+            </button>
+            <h1>AI Job Market <span>UK</span></h1>
+            <p>Real-time insights into UK AI hiring demand</p>
+        </div>
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="index.html" class="nav-link">
+                <span class="material-icons-outlined">home</span>
+                <span>Home</span>
+            </a>
+            <a href="about.html" class="nav-link">
+                <span class="material-icons-outlined">info</span>
+                <span>About</span>
+            </a>
+            <a href="privacy-policy.html" class="nav-link">
+                <span class="material-icons-outlined">privacy_tip</span>
+                <span>Privacy</span>
+            </a>
+            <a href="terms-of-use.html" class="nav-link">
+                <span class="material-icons-outlined">description</span>
+                <span>Terms</span>
+            </a>
+        </nav>
+    </header>
+
+    <div class="post-job-container">
+        <h2>Post an AI Job</h2>
+        <p class="subtitle">List your AI role on AIJobMarket and reach qualified candidates in the UK's thriving AI sector.</p>
+
+        <div class="success-message" id="successMessage">
+            <strong>Success!</strong> Your job posting has been received. We'll review it shortly and get back to you.
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            <strong>Error:</strong> <span id="errorText"></span>
+        </div>
+
+        <form id="jobPostingForm">
+            <div class="form-group">
+                <label for="jobTitle">Job Title *</label>
+                <input type="text" id="jobTitle" name="jobTitle" placeholder="e.g., Senior AI Engineer" required>
+                <p class="help-text">Be specific about the role and experience level</p>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="companyName">Company Name *</label>
+                    <input type="text" id="companyName" name="companyName" placeholder="Your company" required>
+                </div>
+                <div class="form-group">
+                    <label for="companyEmail">Company Email *</label>
+                    <input type="email" id="companyEmail" name="companyEmail" placeholder="hiring@company.com" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="location">Location *</label>
+                    <input type="text" id="location" name="location" placeholder="e.g., London, Remote" required>
+                </div>
+                <div class="form-group">
+                    <label for="salary">Salary Range (Optional)</label>
+                    <input type="text" id="salary" name="salary" placeholder="e.g., £80k - £120k">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="jobDescription">Job Description *</label>
+                <textarea id="jobDescription" name="jobDescription" placeholder="Describe the role, responsibilities, and requirements..." required></textarea>
+                <p class="help-text">Include key responsibilities, required skills, and what makes this role special</p>
+            </div>
+
+            <div class="form-group">
+                <label for="applicantEmail">Where should applications go? *</label>
+                <input type="email" id="applicantEmail" name="applicantEmail" placeholder="applications@company.com" required>
+                <p class="help-text">Candidates will send applications to this email</p>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Job Posting</button>
+        </form>
+
+        <p style="text-align: center; color: #64748b; margin-top: 2rem; font-size: 0.95rem;">
+            Questions? <a href="about.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">Contact us</a>
+        </p>
+    </div>
+
+    <footer>
+        <p>&copy; <span id="year"></span> AI Job Market UK. Data aggregated from multiple job providers.</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms-of-use.html">Terms of Use</a>
+        </div>
+    </footer>
+
+    <script>
+        const WORKER_URL = "https://holy-sky-9d35.yama.workers.dev";
+
+        document.getElementById('jobPostingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            const formData = {
+                jobTitle: document.getElementById('jobTitle').value,
+                companyName: document.getElementById('companyName').value,
+                companyEmail: document.getElementById('companyEmail').value,
+                location: document.getElementById('location').value,
+                salary: document.getElementById('salary').value,
+                jobDescription: document.getElementById('jobDescription').value,
+                applicantEmail: document.getElementById('applicantEmail').value,
+                submittedAt: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(`${WORKER_URL}/submit-job`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('jobPostingForm').reset();
+                    document.getElementById('successMessage').style.display = 'block';
+                    document.getElementById('errorMessage').style.display = 'none';
+                    submitBtn.textContent = 'Submit Job Posting';
+                    submitBtn.disabled = false;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    throw new Error(data.error || 'Failed to submit job posting');
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('errorText').textContent = error.message;
+                submitBtn.textContent = 'Submit Job Posting';
+                submitBtn.disabled = false;
+            }
+        });
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const menuIcon = menuToggle.querySelector('.material-icons-outlined');
+
+        menuToggle.addEventListener('click', function() {
+            mobileNav.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+
+            if (menuToggle.classList.contains('active')) {
+                menuIcon.textContent = 'close';
+            } else {
+                menuIcon.textContent = 'menu';
+            }
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                mobileNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+                menuIcon.textContent = 'menu';
+            });
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('header')) {
+                mobileNav.classList.remove('active');
+                menuToggle.classList.remove('active');
+                menuIcon.textContent = 'menu';
+            }
+        });
+    </script>
+</body>
+</html>

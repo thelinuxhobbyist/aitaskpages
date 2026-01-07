@@ -9,6 +9,42 @@ export default {
     if (request.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
     try {
+      // Handle job submission
+      if (request.method === "POST" && new URL(request.url).pathname === "/submit-job") {
+        const jobData = await request.json();
+
+        // Validate required fields
+        const requiredFields = ['jobTitle', 'companyName', 'companyEmail', 'location', 'jobDescription', 'applicantEmail'];
+        for (const field of requiredFields) {
+          if (!jobData[field]) {
+            return new Response(JSON.stringify({ error: `Missing required field: ${field}` }), {
+              status: 400,
+              headers: { ...corsHeaders, "Content-Type": "application/json" }
+            });
+          }
+        }
+
+        // Store the job posting in KV (Cloudflare's key-value store)
+        if (env.JOB_SUBMISSIONS) {
+          const jobId = `job_${Date.now()}`;
+          await env.JOB_SUBMISSIONS.put(jobId, JSON.stringify(jobData), {
+            expirationTtl: 7776000 // 90 days
+          });
+        }
+
+        // Log to console for debugging
+        console.log("Job submission received:", jobData);
+
+        return new Response(JSON.stringify({
+          success: true,
+          message: "Job posting received and stored for review"
+        }), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+      }
+
+      // Handle Reed API job search (existing logic)
       // 1. Check if the variable is actually there
       if (!env.REED_API_KEY) {
         throw new Error("SECRET_KEY_MISSING_IN_CLOUDFLARE_SETTINGS");
