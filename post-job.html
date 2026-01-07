@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post an AI Job | AI Job Market UK</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N3EBLR665X"></script>
@@ -24,6 +24,7 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 16px rgba(37,99,235,0.1);
+            box-sizing: border-box;
         }
 
         .post-job-container h2 {
@@ -31,6 +32,8 @@
             color: var(--dark);
             font-size: 1.75rem;
             margin-bottom: 0.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
         }
 
         .post-job-container .subtitle {
@@ -44,11 +47,18 @@
         }
 
         .form-group label {
-            display: block;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: var(--dark);
             font-size: 0.95rem;
+        }
+
+        .form-group label .material-icons-outlined {
+            font-size: 1.25rem;
+            color: var(--primary);
         }
 
         .form-group input,
@@ -58,7 +68,7 @@
             padding: 0.75rem;
             border: 2px solid #e2e8f0;
             border-radius: 6px;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             font-size: 1rem;
             box-sizing: border-box;
             transition: border-color 0.2s ease;
@@ -99,7 +109,11 @@
             cursor: pointer;
             transition: all 0.2s ease;
             width: 100%;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .submit-btn:hover {
@@ -114,6 +128,10 @@
             transform: none;
         }
 
+        .submit-btn .material-icons-outlined {
+            font-size: 1.25rem;
+        }
+
         .success-message {
             display: none;
             background: #dcfce7;
@@ -122,6 +140,13 @@
             border-radius: 6px;
             margin-bottom: 1.5rem;
             border: 1px solid #bbf7d0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .success-message .material-icons-outlined {
+            color: #166534;
         }
 
         .error-message {
@@ -132,6 +157,13 @@
             border-radius: 6px;
             margin-bottom: 1.5rem;
             border: 1px solid #fecaca;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .error-message .material-icons-outlined {
+            color: #991b1b;
         }
 
         .help-text {
@@ -190,55 +222,64 @@
         <p class="subtitle">List your AI role on AIJobMarket and reach qualified candidates in the UK's thriving AI sector.</p>
 
         <div class="success-message" id="successMessage">
-            <strong>Success!</strong> Your job posting has been received. We'll review it shortly and get back to you.
+            <span class="material-icons-outlined">check_circle</span>
+            <div>
+                <strong>Success!</strong> Your job posting has been received. We'll review it shortly and get back to you.
+            </div>
         </div>
 
         <div class="error-message" id="errorMessage">
-            <strong>Error:</strong> <span id="errorText"></span>
+            <span class="material-icons-outlined">error</span>
+            <div>
+                <strong>Error:</strong> <span id="errorText"></span>
+            </div>
         </div>
 
         <form id="jobPostingForm">
             <div class="form-group">
-                <label for="jobTitle">Job Title *</label>
+                <label for="jobTitle"><span class="material-icons-outlined">work</span>Job Title *</label>
                 <input type="text" id="jobTitle" name="jobTitle" placeholder="e.g., Senior AI Engineer" required>
                 <p class="help-text">Be specific about the role and experience level</p>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="companyName">Company Name *</label>
+                    <label for="companyName"><span class="material-icons-outlined">business</span>Company Name *</label>
                     <input type="text" id="companyName" name="companyName" placeholder="Your company" required>
                 </div>
                 <div class="form-group">
-                    <label for="companyEmail">Company Email *</label>
+                    <label for="companyEmail"><span class="material-icons-outlined">mail</span>Company Email *</label>
                     <input type="email" id="companyEmail" name="companyEmail" placeholder="hiring@company.com" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="location">Location *</label>
+                    <label for="location"><span class="material-icons-outlined">location_on</span>Location *</label>
                     <input type="text" id="location" name="location" placeholder="e.g., London, Remote" required>
                 </div>
                 <div class="form-group">
-                    <label for="salary">Salary Range (Optional)</label>
+                    <label for="salary"><span class="material-icons-outlined">currency_pound</span>Salary Range (Optional)</label>
                     <input type="text" id="salary" name="salary" placeholder="e.g., £80k - £120k">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="jobDescription">Job Description *</label>
+                <label for="jobDescription"><span class="material-icons-outlined">description</span>Job Description *</label>
                 <textarea id="jobDescription" name="jobDescription" placeholder="Describe the role, responsibilities, and requirements..." required></textarea>
                 <p class="help-text">Include key responsibilities, required skills, and what makes this role special</p>
             </div>
 
             <div class="form-group">
-                <label for="applicantEmail">Where should applications go? *</label>
+                <label for="applicantEmail"><span class="material-icons-outlined">email</span>Where should applications go? *</label>
                 <input type="email" id="applicantEmail" name="applicantEmail" placeholder="applications@company.com" required>
                 <p class="help-text">Candidates will send applications to this email</p>
             </div>
 
-            <button type="submit" class="submit-btn">Submit Job Posting</button>
+            <button type="submit" class="submit-btn">
+                <span class="material-icons-outlined">send</span>
+                Submit Job Posting
+            </button>
         </form>
 
         <p style="text-align: center; color: #64748b; margin-top: 2rem; font-size: 0.95rem;">
