@@ -55,21 +55,6 @@
     </header>
 
     <div class="main-layout">
-        <aside class="sidebar">
-            <div class="city-filter">
-                <h3>Filter by City</h3>
-                <form id="cityFilterForm">
-                    <label><input type="checkbox" name="city" value="London"> London</label><br>
-                    <label><input type="checkbox" name="city" value="Leeds"> Leeds</label><br>
-                    <label><input type="checkbox" name="city" value="Cambridge"> Cambridge</label><br>
-                    <label><input type="checkbox" name="city" value="Bath"> Bath</label><br>
-                    <label><input type="checkbox" name="city" value="Bristol"> Bristol</label><br>
-                    <label><input type="checkbox" name="city" value="Edinburgh"> Edinburgh</label><br>
-                    <label><input type="checkbox" name="city" value="Glasgow"> Glasgow</label><br>
-                    <label><input type="checkbox" name="city" value="Manchester"> Manchester</label><br>
-                </form>
-            </div>
-        </aside>
         <section class="content">
             <section class="market-intro">
                 <div class="intro-content">
@@ -114,6 +99,20 @@
                             <option value="50000-75000">£50k - £75k</option>
                             <option value="75000-100000">£75k - £100k</option>
                             <option value="100000+">£100k+</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="cityFilter">Location:</label>
+                        <select id="cityFilter" onchange="handleFilterChange()">
+                            <option value="">All Locations</option>
+                            <option value="London">London</option>
+                            <option value="Leeds">Leeds</option>
+                            <option value="Cambridge">Cambridge</option>
+                            <option value="Bath">Bath</option>
+                            <option value="Bristol">Bristol</option>
+                            <option value="Edinburgh">Edinburgh</option>
+                            <option value="Glasgow">Glasgow</option>
+                            <option value="Manchester">Manchester</option>
                         </select>
                     </div>
                 </div>
@@ -279,8 +278,7 @@
             const skillLevel = document.getElementById('skillLevelFilter').value;
             const remoteType = document.getElementById('remoteFilter').value;
             const salaryRange = document.getElementById('salaryFilter').value;
-            // City filter
-            const checkedCities = Array.from(document.querySelectorAll('input[name="city"]:checked')).map(cb => cb.value.toLowerCase());
+            const city = document.getElementById('cityFilter').value.toLowerCase();
 
             filteredJobs = allJobs.filter(job => {
                 // Search filter
@@ -313,10 +311,10 @@
                     }
                 }
 
-                // City filter
+                // City filter - now from dropdown
                 let matchesCity = true;
-                if (checkedCities.length > 0) {
-                    matchesCity = checkedCities.some(city => job.locationName.toLowerCase().includes(city));
+                if (city) {
+                    matchesCity = job.locationName.toLowerCase().includes(city);
                 }
 
                 return matchesSearch && matchesSkillLevel && matchesRemote && matchesSalary && matchesCity;
@@ -461,14 +459,9 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // City filter event
-        document.getElementById('cityFilterForm').addEventListener('change', function() {
-            applyClientSideFilters();
-        });
-
-        document.getElementById('year').textContent = new Date().getFullYear();
+        // City filter is now handled by handleFilterChange() dropdown
         
-        // Mobile menu toggle
+        init();
         const menuToggle = document.getElementById('menuToggle');
         const mobileNav = document.getElementById('mobileNav');
         const menuIcon = menuToggle.querySelector('.material-icons-outlined');
