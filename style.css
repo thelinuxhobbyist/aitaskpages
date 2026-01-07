@@ -159,6 +159,67 @@ header > p {
     min-width: 0;
 }
 
+.market-intro {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e2e8f0;
+}
+
+.intro-content h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    color: var(--dark);
+    font-weight: 700;
+}
+
+.intro-content p {
+    margin: 0 0 1rem 0;
+    color: #475569;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.intro-content p:last-of-type {
+    margin-bottom: 1.5rem;
+}
+
+.cta-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.cta-label {
+    margin: 0;
+    color: var(--dark);
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.employer-cta {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.employer-cta:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+}
+
 main {
     width: 100%;
     box-sizing: border-box;
@@ -581,6 +642,30 @@ footer .footer-links a:hover {
     .content {
         flex: 1;
         width: 100%;
+    }
+
+    .market-intro {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .intro-content h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .intro-content p {
+        font-size: 0.95rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .employer-cta {
+        width: 100%;
+        text-align: center;
     }
     
     .controls {
