@@ -16,9 +16,87 @@ navMenu.querySelectorAll("a").forEach(link => {
 // Search functionality
 let allJobs = [];
 
+// UK postcode to city mapping
+const postcodeToCity = {
+  'M': 'Manchester',
+  'L': 'Liverpool',
+  'B': 'Birmingham',
+  'LS': 'Leeds',
+  'S': 'Sheffield',
+  'E': 'London',
+  'W': 'London',
+  'SW': 'London',
+  'SE': 'London',
+  'N': 'London',
+  'NW': 'London',
+  'EC': 'London',
+  'WC': 'London',
+  'CB': 'Cambridge',
+  'OX': 'Oxford',
+  'BA': 'Bath',
+  'BS': 'Bristol',
+  'EH': 'Edinburgh',
+  'G': 'Glasgow',
+  'CF': 'Cardiff',
+  'B': 'Belfast',
+  'BT': 'Belfast',
+  'CV': 'Coventry',
+  'DY': 'Wolverhampton',
+  'ST': 'Stoke-on-Trent',
+  'NG': 'Nottingham',
+  'DE': 'Derby',
+  'LE': 'Leicester',
+  'PE': 'Peterborough',
+  'NR': 'Norwich',
+  'IP': 'Ipswich',
+  'CO': 'Colchester',
+  'CM': 'Chelmsford',
+  'CT': 'Canterbury',
+  'SO': 'Southampton',
+  'RG': 'Reading',
+  'GU': 'Guildford',
+  'RH': 'Reigate',
+  'BN': 'Brighton',
+  'PO': 'Portsmouth',
+  'SP': 'Salisbury',
+  'SN': 'Swindon',
+  'GL': 'Gloucester',
+  'HR': 'Hereford',
+  'LD': 'Llandrindod',
+  'SA': 'Swansea',
+  'NP': 'Newport'
+};
+
+function extractCity(locationName) {
+  if (!locationName) return null;
+  
+  // If it's already a city name, return it
+  const cityNames = ['Manchester', 'Leeds', 'London', 'Cambridge', 'Bath', 'Bristol', 'Liverpool', 'Birmingham', 'Sheffield', 'Edinburgh', 'Glasgow', 'Cardiff', 'Oxford', 'Coventry', 'Wolverhampton', 'Stoke-on-Trent', 'Nottingham', 'Derby', 'Leicester', 'Peterborough', 'Norwich', 'Ipswich', 'Colchester', 'Chelmsford', 'Canterbury', 'Southampton', 'Reading', 'Guildford', 'Reigate', 'Brighton', 'Portsmouth', 'Salisbury', 'Swindon', 'Gloucester', 'Hereford', 'Swansea', 'Newport', 'Belfast'];
+  if (cityNames.includes(locationName)) {
+    return locationName;
+  }
+  
+  // Try to extract city from postcode
+  const upperLocation = locationName.toUpperCase();
+  for (const [prefix, city] of Object.entries(postcodeToCity)) {
+    if (upperLocation.startsWith(prefix)) {
+      return city;
+    }
+  }
+  
+  // If no match, return the original (might be a city name we don't have in mapping)
+  return locationName;
+}
+
 function populateFilters() {
-  // Extract unique cities
-  const cities = [...new Set(allJobs.map(job => job.locationName))].sort();
+  // Extract unique cities and map postcodes to city names
+  const citiesSet = new Set();
+  allJobs.forEach(job => {
+    const city = extractCity(job.locationName);
+    if (city) citiesSet.add(city);
+  });
+  
+  const cities = [...citiesSet].sort();
   const citySelect = document.getElementById('city-filter');
   cities.forEach(city => {
     const option = document.createElement('option');
@@ -84,7 +162,8 @@ function applyFilters() {
       job.jobTitle.toLowerCase().includes(searchQuery) ||
       job.employerName.toLowerCase().includes(searchQuery);
     
-    const matchesCity = !cityFilter || job.locationName === cityFilter;
+    const jobCity = extractCity(job.locationName);
+    const matchesCity = !cityFilter || jobCity === cityFilter;
     
     const matchesRole = !roleFilter || job.jobTitle === roleFilter;
     
