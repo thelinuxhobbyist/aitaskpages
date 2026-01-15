@@ -47,7 +47,7 @@ async function loadJob() {
             </div>
           </div>
           <div class="meta-item">
-            <i class="material-icons">paid</i>
+            <i class="material-icons">currency_pound</i>
             <div>
               <strong>Salary</strong>
               <span>${salaryMin} - ${salaryMax}</span>

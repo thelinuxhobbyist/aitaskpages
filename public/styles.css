@@ -98,22 +98,26 @@ main {
 .hero-section {
   background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
   color: white;
-  padding: 3rem 2rem;
-  border-radius: 12px;
-  margin: 2rem 0;
+  padding: 4.5rem 2rem;
+  margin: 0 -1rem 2rem -1rem;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  width: calc(100% + 2rem);
 }
 
 .hero-section h1 {
   color: white;
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  font-weight: 800;
 }
 
 .hero-section p {
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   opacity: 0.95;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.5;
 }
 
 /* Search & Filters */
