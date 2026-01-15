@@ -31,7 +31,7 @@ export default {
     // 1️⃣ List AI jobs (UK)
     if (url.pathname === "/api/jobs") {
       const reedResponse = await fetch(
-        "https://www.reed.co.uk/api/1.0/search?keywords=ai&locationName=UK",
+        "https://www.reed.co.uk/api/1.0/search?keywords=ai&locationName=UK&resultsToReturn=100",
         {
           headers: {
             "Authorization": "Basic " + btoa(env.MARKET_AI_JOBS_REED_API_KEY + ":")
