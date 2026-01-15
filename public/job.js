@@ -31,7 +31,7 @@ async function loadJob() {
       <div class="job-details">
         <h1>${job.jobTitle}</h1>
         
-        <div class="job-meta">
+        <div class="job-details-meta">
           <div class="meta-item">
             <i class="material-icons">business</i>
             <div>

@@ -35,8 +35,19 @@
   </header>
 
   <main>
-    <h1>AI Jobs in the United Kingdom</h1>
-    <p style="color: #6b7280; margin-bottom: 2rem; font-size: 1.05rem;">Discover the latest AI and machine learning opportunities</p>
+    <div class="hero-section">
+      <h1>AI Jobs in the United Kingdom</h1>
+      <p>Discover the latest AI and machine learning opportunities</p>
+    </div>
+    <div class="search-filters">
+      <div class="search-box">
+        <i class="material-icons">search</i>
+        <input type="text" placeholder="Search by job title, company..." id="search-input">
+      </div>
+    </div>
+    <div class="jobs-stats">
+      <span id="job-count">Loading...</span> opportunities available
+    </div>
     <div class="jobs-container" id="jobs"></div>
   </main>
 
