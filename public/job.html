@@ -1,18 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VL4YWNHMT5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-VL4YWNHMT5');
+  </script>
   <meta charset="UTF-8">
-  <title>Job Details</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 2rem auto; }
-    h1 { margin-bottom: 0.5rem; }
-    p { margin: 0.5rem 0; }
-    button { padding: 0.5rem 1rem; margin-top: 1rem; background: #0070f3; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #005fcc; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Details - AI Jobs UK</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="job"></div>
+  <header>
+    <div class="header-container">
+      <div class="logo">
+        <i class="material-icons">work</i>
+        AI Jobs UK
+      </div>
+      <nav id="nav-menu">
+        <a href="index.html">Home</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <button class="mobile-nav-toggle" id="nav-toggle">
+        <i class="material-icons">menu</i>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <a href="index.html" class="back-button">
+      <i class="material-icons">arrow_back</i>
+      Back to Jobs
+    </a>
+    <div id="job"></div>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>About AI Jobs UK</h3>
+        <p style="color: #d1d5db; margin-bottom: 1rem;">Your go-to platform for finding the best AI and machine learning job opportunities across the United Kingdom.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <a href="index.html">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <p style="color: #d1d5db; margin-bottom: 0.5rem;"><strong>Email:</strong> info@aijobsuk.com</p>
+        <p style="color: #d1d5db;"><strong>Phone:</strong> +44 (0)20 XXXX XXXX</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AI Jobs UK. All rights reserved. | <a href="#" style="color: #d1d5db;">Privacy Policy</a></p>
+    </div>
+  </footer>
 
   <script src="job.js"></script>
 </body>
