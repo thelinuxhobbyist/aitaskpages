@@ -98,11 +98,16 @@ main {
 .hero-section {
   background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
   color: white;
-  padding: 4.5rem 2rem;
-  margin: 0 -1rem 2rem -1rem;
+  padding: 6rem 2rem;
+  margin: -2rem -1rem 2rem -1rem;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  width: calc(100% + 2rem);
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: calc(-50vw + 1rem);
+  margin-right: calc(-50vw + 1rem);
 }
 
 .hero-section h1 {
