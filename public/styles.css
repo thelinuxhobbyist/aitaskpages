@@ -99,15 +99,10 @@ main {
   background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
   color: white;
   padding: 6rem 2rem;
-  margin: -2rem -1rem 2rem -1rem;
+  margin: 0 -1rem 2rem -1rem;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: calc(-50vw + 1rem);
-  margin-right: calc(-50vw + 1rem);
+  width: calc(100% + 2rem);
 }
 
 .hero-section h1 {
@@ -162,6 +157,28 @@ main {
 
 .search-box input::placeholder {
   color: #9ca3af;
+}
+
+.filter-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  color: var(--text-color);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: border-color 0.3s;
+}
+
+.filter-select:hover {
+  border-color: var(--primary-color);
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 12px rgba(0, 112, 243, 0.15);
 }
 
 /* Job Stats */
