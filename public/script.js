@@ -104,58 +104,11 @@ function populateFilters() {
     option.textContent = city;
     citySelect.appendChild(option);
   });
-
-  // Extract unique roles (job titles)
-  const roles = [...new Set(allJobs.map(job => job.jobTitle))].sort();
-  const roleSelect = document.getElementById('role-filter');
-  roles.forEach(role => {
-    const option = document.createElement('option');
-    option.value = role;
-    option.textContent = role;
-    roleSelect.appendChild(option);
-  });
-
-  // Extract unique programming languages from job descriptions
-  const languages = new Set();
-  allJobs.forEach(job => {
-    const description = (job.jobDescription || '').toLowerCase();
-    const commonLanguages = ['python', 'javascript', 'typescript', 'java', 'c++', 'c#', 'go', 'rust', 'sql', 'r', 'scala', 'kotlin'];
-    commonLanguages.forEach(lang => {
-      if (description.includes(lang)) {
-        languages.add(lang.charAt(0).toUpperCase() + lang.slice(1));
-      }
-    });
-  });
-  
-  const languageSelect = document.getElementById('language-filter');
-  [...languages].sort().forEach(lang => {
-    const option = document.createElement('option');
-    option.value = lang;
-    option.textContent = lang;
-    languageSelect.appendChild(option);
-  });
-}
-
-function detectLevel(job) {
-  const description = (job.jobDescription || '').toLowerCase();
-  const title = (job.jobTitle || '').toLowerCase();
-  const combined = description + ' ' + title;
-  
-  if (combined.includes('senior') || combined.includes('lead') || combined.includes('principal') || combined.includes('architect')) {
-    return 'senior';
-  } else if (combined.includes('junior') || combined.includes('graduate') || combined.includes('entry')) {
-    return 'junior';
-  } else {
-    return 'mid';
-  }
 }
 
 function applyFilters() {
   const searchQuery = document.getElementById('search-input').value.toLowerCase();
   const cityFilter = document.getElementById('city-filter').value;
-  const roleFilter = document.getElementById('role-filter').value;
-  const languageFilter = document.getElementById('language-filter').value;
-  const levelFilter = document.getElementById('level-filter').value;
 
   let filtered = allJobs.filter(job => {
     const matchesSearch = !searchQuery || 
@@ -165,14 +118,7 @@ function applyFilters() {
     const jobCity = extractCity(job.locationName);
     const matchesCity = !cityFilter || jobCity === cityFilter;
     
-    const matchesRole = !roleFilter || job.jobTitle === roleFilter;
-    
-    const matchesLanguage = !languageFilter || 
-      (job.jobDescription || '').toLowerCase().includes(languageFilter.toLowerCase());
-    
-    const matchesLevel = !levelFilter || detectLevel(job) === levelFilter;
-    
-    return matchesSearch && matchesCity && matchesRole && matchesLanguage && matchesLevel;
+    return matchesSearch && matchesCity;
   });
 
   renderJobs(filtered);
@@ -184,15 +130,6 @@ searchInput.addEventListener('input', applyFilters);
 
 const cityFilter = document.getElementById('city-filter');
 cityFilter.addEventListener('change', applyFilters);
-
-const roleFilter = document.getElementById('role-filter');
-roleFilter.addEventListener('change', applyFilters);
-
-const languageFilter = document.getElementById('language-filter');
-languageFilter.addEventListener('change', applyFilters);
-
-const levelFilter = document.getElementById('level-filter');
-levelFilter.addEventListener('change', applyFilters);
 
 function renderJobs(jobs) {
   const container = document.getElementById('jobs');
