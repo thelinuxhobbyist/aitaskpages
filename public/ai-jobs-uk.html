@@ -12,43 +12,22 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Find the best AI, ML, and Data Science jobs across the United Kingdom. Explore opportunities in London, Manchester, Edinburgh, and remote roles.">
-  <title>AI Jobs UK | Artificial Intelligence & Machine Learning Jobs in the UK</title>
+  <meta name="description" content="Discover AI, machine learning, and data science jobs across the United Kingdom. Find opportunities in London, Manchester, Edinburgh, Birmingham, and other major UK cities.">
+  <title>AI Jobs UK | Find AI, ML & Data Science Positions Across All UK Cities</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "AI Jobs Market",
-    "url": "https://aijobsmarket.co.uk",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://aijobsmarket.co.uk?search={search_term_string}"
-      },
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "AI Jobs Market",
-    "url": "https://aijobsmarket.co.uk",
-    "logo": "https://aijobsmarket.co.uk/logo.png",
-    "description": "AI Jobs Market is the UK's premier platform for discovering AI, machine learning, and data science job opportunities",
-    "sameAs": [
-      "https://www.linkedin.com/company/ai-jobs-market",
-      "https://twitter.com/aijobsmarket"
-    ],
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "contactType": "Customer Service",
-      "email": "contact@aijobsmarket.co.uk"
+    "@type": "CollectionPage",
+    "name": "AI Jobs UK",
+    "url": "https://aijobsmarket.co.uk/ai-jobs-uk.html",
+    "description": "Comprehensive directory of AI, machine learning, and data science job opportunities across all regions of the United Kingdom",
+    "mainEntity": {
+      "@type": "WebSite",
+      "name": "AI Jobs Market UK",
+      "url": "https://aijobsmarket.co.uk"
     }
   }
   </script>
@@ -62,9 +41,9 @@
       </div>
       <nav id="nav-menu">
         <a href="index.html">Home</a>
-        <a href="ai-jobs-uk.html">All UK Jobs</a>
-        <a href="ai-jobs-london.html">London</a>
-        <a href="remote-ai-jobs-uk.html">Remote</a>
+        <a href="ai-jobs-uk.html">AI Jobs UK</a>
+        <a href="ai-jobs-london.html">London Jobs</a>
+        <a href="remote-ai-jobs-uk.html">Remote Jobs</a>
       </nav>
       <button class="mobile-nav-toggle" id="nav-toggle">
         <i class="material-icons">menu</i>
@@ -74,16 +53,17 @@
 
   <main>
     <div class="hero-section">
-      <h1>AI Jobs in the United Kingdom</h1>
-      <p>Discover the latest AI and machine learning opportunities across the UK — with freelance AI services coming soon.</p>
+      <h1>AI Jobs Across the United Kingdom</h1>
+      <p>Comprehensive opportunities for AI professionals in every major UK city and region.</p>
     </div>
+    
     <div class="search-filters">
       <div class="search-box">
         <i class="material-icons">search</i>
         <input type="text" placeholder="Search by job title, company..." id="search-input">
       </div>
       <select id="city-filter" class="filter-select">
-        <option value="">All Cities</option>
+        <option value="">All UK Cities</option>
       </select>
       <select id="role-filter" class="filter-select">
         <option value="">All Roles</option>
@@ -98,9 +78,11 @@
         <option value="senior">Senior</option>
       </select>
     </div>
+
     <div class="jobs-stats">
-      <span id="job-count">Loading...</span> opportunities available
+      <span id="job-count">Loading...</span> opportunities available across the UK
     </div>
+    
     <div class="jobs-container" id="jobs"></div>
   </main>
 
@@ -112,14 +94,14 @@
       </div>
       <div class="footer-section">
         <h3>Quick Links</h3>
+        <a href="index.html">Home</a>
         <a href="ai-jobs-uk.html">All UK Jobs</a>
         <a href="ai-jobs-london.html">London Jobs</a>
-        <a href="remote-ai-jobs-uk.html">Remote Jobs/a>
-        <a href="#contact">Contact</a>
+        <a href="remote-ai-jobs-uk.html">Remote Jobs</a>
       </div>
       <div class="footer-section">
         <h3>Contact</h3>
-        <p style="color: #d1d5db; margin-bottom: 0.5rem;"><strong>Email:</strong> contact@aijobmarket.co.uk</p>
+        <p style="color: #d1d5db; margin-bottom: 0.5rem;"><strong>Email:</strong> contact@aijobsmarket.co.uk</p>
       </div>
       <div class="footer-section">
         <h3>Legal</h3>
@@ -136,4 +118,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-

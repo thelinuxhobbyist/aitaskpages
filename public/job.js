@@ -24,6 +24,20 @@ async function loadJob() {
     const res = await fetch(`https://market-ai-jobs-worker.yama.workers.dev/api/jobs/${jobId}`);
     const job = await res.json();
 
+    // Update JSON-LD structured data
+    const jobSchema = document.getElementById('job-schema');
+    if (jobSchema) {
+      const schema = JSON.parse(jobSchema.textContent);
+      schema.title = job.jobTitle;
+      schema.description = job.jobDescription;
+      schema.hiringOrganization.name = job.employerName;
+      schema.jobLocation.address.addressRegion = job.locationName;
+      if (job.minimumSalary) schema.baseSalary.minPrice = job.minimumSalary;
+      if (job.maximumSalary) schema.baseSalary.maxPrice = job.maximumSalary;
+      schema.url = job.jobUrl;
+      jobSchema.textContent = JSON.stringify(schema);
+    }
+
     const salaryMin = job.minimumSalary ? `£${job.minimumSalary.toLocaleString()}` : "Not specified";
     const salaryMax = job.maximumSalary ? `£${job.maximumSalary.toLocaleString()}` : "Not specified";
 
