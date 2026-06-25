@@ -1,0 +1,2 @@
+# Cloudflare D1 migrations directory
+# Applied via: npm run db:migrate:local | npm run db:migrate:remote

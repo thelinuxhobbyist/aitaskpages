@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+.next/
+.open-next/
+
+# Environment
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# OS / editor
+.DS_Store
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# Drizzle
+drizzle/meta/

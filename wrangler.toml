@@ -1,0 +1,21 @@
+name = "aijobsmarket"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Cloudflare Pages (Next.js via OpenNext)
+pages_build_output_dir = ".open-next/assets"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "aijobsmarket_db"
+database_id = "3f306411-f30c-4593-8cc4-37f798e752e5"
+
+[vars]
+# Non-secret defaults; override in Cloudflare dashboard or .dev.vars
+
+# Local development secrets go in .dev.vars:
+# CLERK_SECRET_KEY=
+# CLERK_PUBLISHABLE_KEY=
+# RESEND_API_KEY=
+# TURNSTILE_SECRET_KEY=
+# NEXT_PUBLIC_TURNSTILE_SITE_KEY=  (set in .env.local for next dev)

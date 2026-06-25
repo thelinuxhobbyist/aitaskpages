@@ -1,0 +1,40 @@
+import { z } from "zod";
+
+const optionalUrl = z.preprocess(
+  (val) => (val === "" || val === null || val === undefined ? undefined : val),
+  z.string().url("Invalid URL").optional()
+);
+
+const optionalNumber = z.preprocess(
+  (val) => (val === "" || val === null || val === undefined ? undefined : val),
+  z.coerce.number().int().min(0).max(10000).optional()
+);
+
+export const profileSchema = z.object({
+  fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
+  headline: z.string().max(120).optional(),
+  bio: z.string().max(2000).optional(),
+  location: z.string().max(100).optional(),
+  hourlyRate: optionalNumber,
+  availability: z
+    .union([
+      z.enum(["available", "limited", "unavailable"]),
+      z.literal(""),
+    ])
+    .optional()
+    .transform((v) => (v === "" ? undefined : v)),
+  linkedinUrl: optionalUrl,
+  githubUrl: optionalUrl,
+  websiteUrl: optionalUrl,
+  profileImageUrl: optionalUrl,
+  skillIds: z.array(z.coerce.number()).default([]),
+  serviceIds: z.array(z.coerce.number()).default([]),
+});
+
+export type ProfileFormData = z.infer<typeof profileSchema>;
+
+export type ProfileFormState = {
+  error?: string;
+  fieldErrors?: Record<string, string[]>;
+  success?: boolean;
+};
