@@ -1,15 +1,25 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 
-/** Clerk keys for OpenNext on Cloudflare — read per request, not at module load. */
-function clerkKeys() {
-  return {
-    secretKey: process.env.CLERK_SECRET_KEY,
-    publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-  };
+async function clerkKeys() {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    return {
+      secretKey: env.CLERK_SECRET_KEY ?? process.env.CLERK_SECRET_KEY,
+      publishableKey:
+        env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ??
+        process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    };
+  } catch {
+    return {
+      secretKey: process.env.CLERK_SECRET_KEY,
+      publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    };
+  }
 }
 
 const clerkHandler = clerkMiddleware(
@@ -28,7 +38,8 @@ export default process.env.PREVIEW_SKIP_AUTH === "1"
 
 export const config = {
   matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Sign-in/up render client-side; skip middleware to avoid edge env issues on Cloudflare
+    "/((?!_next|sign-in|sign-up|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     "/__clerk/:path*",
     "/(api|trpc)(.*)",
   ],

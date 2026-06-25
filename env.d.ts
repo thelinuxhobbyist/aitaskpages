@@ -5,7 +5,6 @@ declare global {
     DB: D1Database;
     CLERK_SECRET_KEY?: string;
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?: string;
-    CLERK_PUBLISHABLE_KEY?: string;
     RESEND_API_KEY?: string;
     TURNSTILE_SECRET_KEY?: string;
   }
