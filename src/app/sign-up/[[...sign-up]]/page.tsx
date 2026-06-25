@@ -1,6 +1,6 @@
-import { SignUp } from "@clerk/nextjs";
+"use client";
 
-export const dynamic = "force-dynamic";
+import { SignUp } from "@clerk/nextjs";
 
 export default function SignUpPage() {
   return (
