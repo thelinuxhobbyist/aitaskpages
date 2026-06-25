@@ -17,6 +17,8 @@ database_name = "aijobsmarket_db"
 database_id = "3f306411-f30c-4593-8cc4-37f798e752e5"
 
 [vars]
+# Public Clerk key (safe to commit — it is exposed in the browser anyway)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test_aG9uZXN0LW1hY2tlcmVsLTgzLmNsZXJrLmFjY291bnRzLmRldiQ"
 NEXT_PUBLIC_CLERK_SIGN_IN_URL = "/sign-in"
 NEXT_PUBLIC_CLERK_SIGN_UP_URL = "/sign-up"
 NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL = "/dashboard"
