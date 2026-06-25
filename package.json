@@ -14,8 +14,9 @@
     "db:seed:remote": "tsx src/db/seed.ts --remote",
     "db:studio": "drizzle-kit studio",
     "pages:build": "opennextjs-cloudflare build",
-    "pages:deploy": "opennextjs-cloudflare deploy",
-    "pages:preview": "opennextjs-cloudflare preview"
+    "pages:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "pages:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.5.8",
