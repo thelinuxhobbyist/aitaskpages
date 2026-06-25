@@ -5,6 +5,8 @@ import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import "./globals.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "AI Jobs Market",
   description: "UK AI jobs board and AI expert directory",
@@ -31,7 +33,7 @@ export default async function RootLayout({
 
   return (
     <ClerkProvider
-      publishableKey={publishableKey}
+      {...(publishableKey ? { publishableKey } : {})}
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
       signInFallbackRedirectUrl="/dashboard"
