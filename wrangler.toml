@@ -1,4 +1,4 @@
-name = "aijobsmarket"
+name = "aijobsmarket2"
 main = ".open-next/worker.js"
 compatibility_date = "2025-01-01"
 compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
@@ -9,7 +9,7 @@ binding = "ASSETS"
 
 [[services]]
 binding = "WORKER_SELF_REFERENCE"
-service = "aijobsmarket"
+service = "aijobsmarket2"
 
 [[d1_databases]]
 binding = "DB"
