@@ -22,7 +22,7 @@
     "pages:build": "opennextjs-cloudflare build",
     "pages:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "pages:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy -- --keep-vars"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.5.8",
