@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/nextjs";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import type { Metadata } from "next";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
@@ -9,13 +10,28 @@ export const metadata: Metadata = {
   description: "UK AI jobs board and AI expert directory",
 };
 
-export default function RootLayout({
+async function getClerkPublishableKey(): Promise<string | undefined> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    return (
+      env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ??
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+    );
+  } catch {
+    return process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  }
+}
+
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const publishableKey = await getClerkPublishableKey();
+
   return (
     <ClerkProvider
+      publishableKey={publishableKey}
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
       signInFallbackRedirectUrl="/dashboard"
