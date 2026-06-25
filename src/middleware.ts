@@ -4,11 +4,22 @@ import type { NextRequest } from "next/server";
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 
-const clerkHandler = clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect();
-  }
-});
+/** Clerk keys for OpenNext on Cloudflare — read per request, not at module load. */
+function clerkKeys() {
+  return {
+    secretKey: process.env.CLERK_SECRET_KEY,
+    publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+  };
+}
+
+const clerkHandler = clerkMiddleware(
+  async (auth, req) => {
+    if (isProtectedRoute(req)) {
+      await auth.protect();
+    }
+  },
+  () => clerkKeys()
+);
 
 /** Set PREVIEW_SKIP_AUTH=1 for local UI preview without real Clerk keys. */
 export default process.env.PREVIEW_SKIP_AUTH === "1"

@@ -1,6 +1,6 @@
 name = "aijobsmarket2"
 main = ".open-next/worker.js"
-compatibility_date = "2025-01-01"
+compatibility_date = "2025-04-01"
 compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 
 [assets]
