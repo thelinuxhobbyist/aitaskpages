@@ -40,7 +40,11 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL = "/dashboard"
 
 # Local development secrets go in .dev.vars:
 # CLERK_SECRET_KEY=
-# CLERK_PUBLISHABLE_KEY=
 # RESEND_API_KEY=
 # TURNSTILE_SECRET_KEY=
 # NEXT_PUBLIC_TURNSTILE_SITE_KEY=  (set in .env.local for next dev)
+#
+# Production secrets (Cloudflare Worker Versions API):
+#   1. npm run deploy
+#   2. npm run secret:put   (NOT wrangler secret put — that fails while a version is pending)
+#   3. npm run deploy       (promote the version that includes the secret)

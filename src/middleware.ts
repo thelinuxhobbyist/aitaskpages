@@ -34,8 +34,8 @@ export default process.env.PREVIEW_SKIP_AUTH === "1"
 
 export const config = {
   matcher: [
-    "/((?!_next|sign-in|sign-up|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Only routes that need Clerk — public directory pages skip middleware entirely
+    "/dashboard/:path*",
     "/__clerk/:path*",
-    "/(api|trpc)(.*)",
   ],
 };

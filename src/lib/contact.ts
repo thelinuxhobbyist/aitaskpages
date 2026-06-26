@@ -4,6 +4,7 @@ import { contactRequests, freelancerProfiles } from "@/db/schema";
 import {
   sendFreelancerEnquiryEmail,
   sendSenderConfirmationEmail,
+  isEmailConfigured,
 } from "@/lib/email";
 import { verifyTurnstileToken, isTurnstileConfigured } from "@/lib/turnstile";
 import type { ContactFormData } from "@/lib/validations/contact";
@@ -42,20 +43,22 @@ export async function submitContactRequest(
     message: data.message,
   });
 
-  await Promise.all([
-    sendFreelancerEnquiryEmail({
-      to: profile.user.email,
-      freelancerName: profile.fullName,
-      senderName: data.senderName,
-      senderEmail: data.senderEmail,
-      companyName: data.companyName,
-      budget: data.budget,
-      message: data.message,
-    }),
-    sendSenderConfirmationEmail({
-      to: data.senderEmail,
-      senderName: data.senderName,
-      freelancerName: profile.fullName,
-    }),
-  ]);
+  if (isEmailConfigured()) {
+    await Promise.all([
+      sendFreelancerEnquiryEmail({
+        to: profile.user.email,
+        freelancerName: profile.fullName,
+        senderName: data.senderName,
+        senderEmail: data.senderEmail,
+        companyName: data.companyName,
+        budget: data.budget,
+        message: data.message,
+      }),
+      sendSenderConfirmationEmail({
+        to: data.senderEmail,
+        senderName: data.senderName,
+        freelancerName: profile.fullName,
+      }),
+    ]);
+  }
 }

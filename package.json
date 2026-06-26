@@ -21,7 +21,9 @@
     "pages:build": "npm run build",
     "pages:deploy": "npm run build && opennextjs-cloudflare deploy",
     "pages:preview": "npm run build && opennextjs-cloudflare preview",
-    "deploy": "npm run build && opennextjs-cloudflare deploy -- --keep-vars"
+    "deploy": "npm run build && opennextjs-cloudflare deploy -- --keep-vars",
+    "secret:put": "wrangler versions secret put CLERK_SECRET_KEY",
+    "secret:list": "wrangler versions secret list"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.5.8",

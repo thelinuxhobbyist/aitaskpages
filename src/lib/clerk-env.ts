@@ -6,59 +6,65 @@ export type ClerkEnvKeys = {
   publishableKey: string;
 };
 
-function readPublishableKey(env: {
-  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?: string;
-}): string {
-  if (
-    typeof env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY === "string" &&
-    env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-  ) {
-    return env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+const SECRET_BINDING_KEYS = [
+  "CLERK_SECRET_KEY",
+  "RESEND_API_KEY",
+  "TURNSTILE_SECRET_KEY",
+] as const;
+
+/** Read env from ALS — same store OpenNext sets in runWithCloudflareRequestContext. */
+function getRequestEnv(): Record<string, unknown> {
+  const store = (
+    globalThis as Record<symbol, { env: Record<string, unknown> } | undefined>
+  )[Symbol.for("__cloudflare-context__")];
+  if (store?.env) return store.env;
+  try {
+    return getCloudflareContext().env as unknown as Record<string, unknown>;
+  } catch {
+    return {};
+  }
+}
+
+function readPublishableKey(env: Record<string, unknown>): string {
+  const fromBinding = env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  if (typeof fromBinding === "string" && fromBinding) {
+    return fromBinding;
   }
   return CLERK_PUBLISHABLE_KEY;
 }
 
-function readSecretKey(env: { CLERK_SECRET_KEY?: string }): string | undefined {
-  if (typeof env.CLERK_SECRET_KEY === "string") {
-    return env.CLERK_SECRET_KEY;
+function readSecretKey(env: Record<string, unknown>): string | undefined {
+  const fromBinding = env.CLERK_SECRET_KEY;
+  if (typeof fromBinding === "string" && fromBinding) {
+    return fromBinding;
   }
   return process.env.CLERK_SECRET_KEY;
 }
 
 /**
- * Copy Clerk secret from Cloudflare bindings onto process.env.
- * Secrets are not always included in Object.entries(env), so OpenNext's init
- * may skip them — read the binding directly by name.
+ * Copy Cloudflare secret bindings onto process.env.
+ * OpenNext init uses Object.entries(env) which skips secrets — read each by name.
  *
- * Do not assign NEXT_PUBLIC_* keys here: Next inlines them at build time and
- * breaks `process.env["NEXT_PUBLIC_..."] = ...` (Assigning to rvalue).
+ * Do not assign NEXT_PUBLIC_* keys here: Next inlines them at build time.
  */
 export function syncClerkEnvFromBindings(): void {
-  try {
-    const { env } = getCloudflareContext();
-    if (typeof env.CLERK_SECRET_KEY === "string") {
-      process.env.CLERK_SECRET_KEY = env.CLERK_SECRET_KEY;
+  const env = getRequestEnv();
+  for (const key of SECRET_BINDING_KEYS) {
+    const value = env[key];
+    if (typeof value === "string" && value) {
+      process.env[key] = value;
     }
-  } catch {
-    // Local dev / outside worker runtime
   }
 }
 
 /** Read Clerk keys — sync first for middleware/edge, async fallback for server components. */
 export function getClerkEnvSync(): ClerkEnvKeys {
   syncClerkEnvFromBindings();
-  try {
-    const { env } = getCloudflareContext();
-    return {
-      secretKey: readSecretKey(env),
-      publishableKey: readPublishableKey(env),
-    };
-  } catch {
-    return {
-      secretKey: process.env.CLERK_SECRET_KEY,
-      publishableKey: CLERK_PUBLISHABLE_KEY,
-    };
-  }
+  const env = getRequestEnv();
+  return {
+    secretKey: readSecretKey(env),
+    publishableKey: readPublishableKey(env),
+  };
 }
 
 /** Read Clerk keys from Cloudflare bindings (with local/process fallbacks). */
@@ -70,8 +76,8 @@ export async function getClerkEnv(): Promise<ClerkEnvKeys> {
   try {
     const { env } = await getCloudflareContext({ async: true });
     return {
-      secretKey: readSecretKey(env),
-      publishableKey: readPublishableKey(env),
+      secretKey: readSecretKey(env as unknown as Record<string, unknown>),
+      publishableKey: readPublishableKey(env as unknown as Record<string, unknown>),
     };
   } catch {
     return {
