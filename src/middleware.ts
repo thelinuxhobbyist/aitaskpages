@@ -1,36 +1,25 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
-import { getClerkEnvSync } from "@/lib/clerk-env";
+import type { NextFetchEvent, NextRequest } from "next/server";
+import { syncClerkEnvFromBindings } from "@/lib/clerk-env";
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 
-/** Keys for clerkMiddleware — process.env is populated from Cloudflare env in worker init. */
-function clerkMiddlewareKeys() {
-  const fromContext = getClerkEnvSync();
-  return {
-    secretKey: fromContext.secretKey ?? process.env.CLERK_SECRET_KEY,
-    publishableKey:
-      fromContext.publishableKey ??
-      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ??
-      CLERK_PUBLISHABLE_KEY,
-  };
-}
+const clerkHandler = clerkMiddleware(async (auth, req) => {
+  if (isProtectedRoute(req)) {
+    await auth.protect();
+  }
+});
 
-const clerkHandler = clerkMiddleware(
-  async (auth, req) => {
-    if (isProtectedRoute(req)) {
-      await auth.protect();
-    }
-  },
-  () => clerkMiddlewareKeys()
-);
+function middleware(req: NextRequest, event: NextFetchEvent) {
+  syncClerkEnvFromBindings();
+  return clerkHandler(req, event);
+}
 
 /** Set PREVIEW_SKIP_AUTH=1 for local UI preview without real Clerk keys. */
 export default process.env.PREVIEW_SKIP_AUTH === "1"
   ? (_req: NextRequest) => NextResponse.next()
-  : clerkHandler;
+  : middleware;
 
 export const config = {
   matcher: [

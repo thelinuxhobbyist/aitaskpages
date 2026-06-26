@@ -19,8 +19,30 @@ function readKeys(env: {
   };
 }
 
+/**
+ * Copy Clerk bindings onto process.env.
+ * Cloudflare secrets are not always included in Object.entries(env), so OpenNext's
+ * init may skip them — read bindings directly by name.
+ */
+export function syncClerkEnvFromBindings(): void {
+  try {
+    const { env } = getCloudflareContext();
+    if (typeof env.CLERK_SECRET_KEY === "string") {
+      process.env.CLERK_SECRET_KEY = env.CLERK_SECRET_KEY;
+    }
+    if (typeof env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY === "string") {
+      process.env["NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"] =
+        env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+    }
+  } catch {
+    // Local dev / outside worker runtime
+  }
+  process.env["NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"] ??= CLERK_PUBLISHABLE_KEY;
+}
+
 /** Read Clerk keys — sync first for middleware/edge, async fallback for server components. */
 export function getClerkEnvSync(): ClerkEnvKeys {
+  syncClerkEnvFromBindings();
   try {
     return readKeys(getCloudflareContext().env);
   } catch {
@@ -34,6 +56,7 @@ export function getClerkEnvSync(): ClerkEnvKeys {
 
 /** Read Clerk keys from Cloudflare bindings (with local/process fallbacks). */
 export async function getClerkEnv(): Promise<ClerkEnvKeys> {
+  syncClerkEnvFromBindings();
   const sync = getClerkEnvSync();
   if (sync.secretKey) return sync;
 
@@ -51,9 +74,9 @@ export async function getClerkEnv(): Promise<ClerkEnvKeys> {
 
 /**
  * Patch process.env so @clerk/nextjs/server helpers work in the Worker runtime.
- * Cloudflare secrets are bindings — they are not always visible on process.env.
  */
 export async function syncClerkEnvToProcess(): Promise<void> {
+  syncClerkEnvFromBindings();
   const { secretKey, publishableKey } = await getClerkEnv();
   if (secretKey) process.env.CLERK_SECRET_KEY = secretKey;
   process.env["NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"] = publishableKey;
