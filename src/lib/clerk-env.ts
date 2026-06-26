@@ -33,5 +33,6 @@ export async function getClerkEnv(): Promise<ClerkEnvKeys> {
 export async function syncClerkEnvToProcess(): Promise<void> {
   const { secretKey, publishableKey } = await getClerkEnv();
   if (secretKey) process.env.CLERK_SECRET_KEY = secretKey;
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = publishableKey;
+  // Avoid direct process.env.NEXT_PUBLIC_* assignment — Next may inline it at build time.
+  process.env["NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"] = publishableKey;
 }
