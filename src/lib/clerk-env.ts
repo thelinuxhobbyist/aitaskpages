@@ -6,23 +6,46 @@ export type ClerkEnvKeys = {
   publishableKey: string;
 };
 
+function readKeys(env: {
+  CLERK_SECRET_KEY?: string;
+  NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?: string;
+}): ClerkEnvKeys {
+  return {
+    secretKey: env.CLERK_SECRET_KEY ?? process.env.CLERK_SECRET_KEY,
+    publishableKey:
+      env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ??
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ??
+      CLERK_PUBLISHABLE_KEY,
+  };
+}
+
+/** Read Clerk keys — sync first for middleware/edge, async fallback for server components. */
+export function getClerkEnvSync(): ClerkEnvKeys {
+  try {
+    return readKeys(getCloudflareContext().env);
+  } catch {
+    return readKeys({
+      CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
+        process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    });
+  }
+}
+
 /** Read Clerk keys from Cloudflare bindings (with local/process fallbacks). */
 export async function getClerkEnv(): Promise<ClerkEnvKeys> {
+  const sync = getClerkEnvSync();
+  if (sync.secretKey) return sync;
+
   try {
     const { env } = await getCloudflareContext({ async: true });
-    return {
-      secretKey: env.CLERK_SECRET_KEY ?? process.env.CLERK_SECRET_KEY,
-      publishableKey:
-        env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ??
-        process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ??
-        CLERK_PUBLISHABLE_KEY,
-    };
+    return readKeys(env);
   } catch {
-    return {
-      secretKey: process.env.CLERK_SECRET_KEY,
-      publishableKey:
-        process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? CLERK_PUBLISHABLE_KEY,
-    };
+    return readKeys({
+      CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
+        process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    });
   }
 }
 
@@ -33,6 +56,5 @@ export async function getClerkEnv(): Promise<ClerkEnvKeys> {
 export async function syncClerkEnvToProcess(): Promise<void> {
   const { secretKey, publishableKey } = await getClerkEnv();
   if (secretKey) process.env.CLERK_SECRET_KEY = secretKey;
-  // Avoid direct process.env.NEXT_PUBLIC_* assignment — Next may inline it at build time.
   process.env["NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"] = publishableKey;
 }

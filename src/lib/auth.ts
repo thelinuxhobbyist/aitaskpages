@@ -1,16 +1,10 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { redirect } from "next/navigation";
-import { createDb } from "@/db/index";
+import { getDb } from "@/db/client";
 import { users } from "@/db/schema";
 import { syncClerkEnvToProcess } from "@/lib/clerk-env";
 import { sendWelcomeEmail, isEmailConfigured } from "@/lib/email";
-
-async function getDb() {
-  const { env } = await getCloudflareContext({ async: true });
-  return createDb(env.DB);
-}
 
 async function getUserWithProfile(clerkUserId: string) {
   const db = await getDb();

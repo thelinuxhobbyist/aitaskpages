@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getClerkEnv } from "@/lib/clerk-env";
+import { getClerkEnvSync } from "@/lib/clerk-env";
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 
@@ -11,7 +11,7 @@ const clerkHandler = clerkMiddleware(
       await auth.protect();
     }
   },
-  () => getClerkEnv()
+  () => getClerkEnvSync()
 );
 
 /** Set PREVIEW_SKIP_AUTH=1 for local UI preview without real Clerk keys. */

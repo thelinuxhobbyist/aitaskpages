@@ -12,7 +12,7 @@ import { slugify } from "@/lib/utils";
 import type { ProfileFormData } from "@/lib/validations/profile";
 
 async function uniqueSlug(base: string, excludeId?: number): Promise<string> {
-  const db = getDb();
+  const db = await getDb();
   let slug = slugify(base);
   if (!slug) slug = "expert";
 
@@ -38,7 +38,7 @@ async function syncSkillsAndServices(
   skillIds: number[],
   serviceIds: number[]
 ) {
-  const db = getDb();
+  const db = await getDb();
 
   await db
     .delete(freelancerSkills)
@@ -61,7 +61,7 @@ async function syncSkillsAndServices(
 }
 
 export async function createProfile(userId: number, data: ProfileFormData) {
-  const db = getDb();
+  const db = await getDb();
   const slug = await uniqueSlug(data.fullName);
   const now = new Date().toISOString();
 
@@ -92,7 +92,7 @@ export async function updateProfile(
   profile: FreelancerProfile,
   data: ProfileFormData
 ) {
-  const db = getDb();
+  const db = await getDb();
   const slug =
     data.fullName !== profile.fullName
       ? await uniqueSlug(data.fullName, profile.id)
@@ -124,11 +124,11 @@ export async function updateProfile(
 }
 
 export async function getAllSkills() {
-  const db = getDb();
+  const db = await getDb();
   return db.select().from(skills).orderBy(asc(skills.name));
 }
 
 export async function getAllServices() {
-  const db = getDb();
+  const db = await getDb();
   return db.select().from(services).orderBy(asc(services.name));
 }

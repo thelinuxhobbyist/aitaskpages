@@ -10,7 +10,7 @@ import type { DirectoryFilters } from "@/lib/validations/directory";
 export async function searchFreelancers(
   filters: DirectoryFilters
 ): Promise<ProfileWithRelations[]> {
-  const db = getDb();
+  const db = await getDb();
   const conditions = [];
 
   if (filters.q) {
@@ -62,7 +62,7 @@ export async function searchFreelancers(
 }
 
 export async function incrementProfileViews(profileId: number): Promise<void> {
-  const db = getDb();
+  const db = await getDb();
   await db
     .update(freelancerProfiles)
     .set({ profileViews: sql`${freelancerProfiles.profileViews} + 1` })
@@ -72,7 +72,7 @@ export async function incrementProfileViews(profileId: number): Promise<void> {
 export async function getFeaturedFreelancers(
   limit = 3
 ): Promise<ProfileWithRelations[]> {
-  const db = getDb();
+  const db = await getDb();
   const profiles = await db.query.freelancerProfiles.findMany({
     where: eq(freelancerProfiles.featured, true),
     with: {
@@ -87,7 +87,7 @@ export async function getFeaturedFreelancers(
 }
 
 export async function getDirectoryStats() {
-  const db = getDb();
+  const db = await getDb();
   const [row] = await db
     .select({ count: sql<number>`count(*)` })
     .from(freelancerProfiles);
@@ -98,7 +98,7 @@ export async function getDirectoryStats() {
 export async function getProfileBySlug(
   slug: string
 ): Promise<ProfileWithRelations | null> {
-  const db = getDb();
+  const db = await getDb();
   const profile = await db.query.freelancerProfiles.findFirst({
     where: eq(freelancerProfiles.slug, slug),
     with: {
@@ -111,7 +111,7 @@ export async function getProfileBySlug(
 }
 
 export async function getDistinctLocations(): Promise<string[]> {
-  const db = getDb();
+  const db = await getDb();
   const rows = await db
     .selectDistinct({ location: freelancerProfiles.location })
     .from(freelancerProfiles)

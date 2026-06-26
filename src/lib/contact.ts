@@ -22,7 +22,7 @@ export async function submitContactRequest(
     }
   }
 
-  const db = getDb();
+  const db = await getDb();
 
   const profile = await db.query.freelancerProfiles.findFirst({
     where: eq(freelancerProfiles.id, data.freelancerId),
