@@ -21,7 +21,7 @@ export function DirectoryFilters({
   return (
     <form
       method="GET"
-      action="/freelancers"
+      action="/"
       className="rounded-xl border border-border bg-surface p-5"
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -113,7 +113,7 @@ export function DirectoryFilters({
       <div className="mt-4 flex flex-wrap gap-3">
         <Button type="submit">Search experts</Button>
         <Button type="button" variant="outline" asChild>
-          <Link href="/freelancers">Clear filters</Link>
+          <Link href="/">Clear filters</Link>
         </Button>
       </div>
     </form>

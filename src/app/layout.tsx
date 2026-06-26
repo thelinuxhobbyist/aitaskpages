@@ -8,7 +8,7 @@ import "./globals.css";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "AI Jobs Market — UK AI Expert Directory & Jobs",
+  title: "AI Jobs Market — UK AI Expert Directory",
   description:
     "Find UK AI freelancers and consultants. Browse the expert directory or explore AI job listings.",
 };

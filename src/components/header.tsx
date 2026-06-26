@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/freelancers", label: "Experts" },
+  { href: "/", label: "Experts" },
   { href: "/join-as-expert", label: "Join as Expert" },
-  { href: "/index.html", label: "Jobs" },
+  { href: "/jobs.html", label: "Jobs" },
   { href: "/ai-jobs-london.html", label: "London" },
   { href: "/remote-ai-jobs-uk.html", label: "Remote" },
 ];

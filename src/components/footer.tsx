@@ -18,7 +18,7 @@ export function Footer() {
           </p>
           <ul className="space-y-2 text-sm text-on-surface-variant">
             <li>
-              <Link href="/freelancers" className="hover:text-primary">
+              <Link href="/" className="hover:text-primary">
                 Browse experts
               </Link>
             </li>
@@ -41,7 +41,7 @@ export function Footer() {
           </p>
           <ul className="space-y-2 text-sm text-on-surface-variant">
             <li>
-              <Link href="/index.html" className="hover:text-primary">
+              <Link href="/jobs.html" className="hover:text-primary">
                 All jobs
               </Link>
             </li>

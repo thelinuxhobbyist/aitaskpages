@@ -76,7 +76,7 @@ export default async function FreelancerProfilePage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Link
-        href="/freelancers"
+        href="/"
         className="mb-6 inline-flex items-center gap-1 text-sm text-muted hover:text-primary"
       >
         <ArrowLeft className="h-4 w-4" />
@@ -206,7 +206,7 @@ export default async function FreelancerProfilePage({ params }: PageProps) {
                 {profile.skills.map(({ skill }) => (
                   <Link
                     key={skill.id}
-                    href={`/freelancers?skill=${skill.slug}`}
+                    href={`/?skill=${skill.slug}`}
                   >
                     <Badge variant="secondary" className="hover:bg-primary/10">
                       {skill.name}
@@ -228,7 +228,7 @@ export default async function FreelancerProfilePage({ params }: PageProps) {
                 {profile.services.map(({ service }) => (
                   <Link
                     key={service.id}
-                    href={`/freelancers?service=${service.slug}`}
+                    href={`/?service=${service.slug}`}
                   >
                     <Badge variant="secondary" className="hover:bg-primary/10">
                       {service.name}

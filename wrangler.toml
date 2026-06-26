@@ -6,6 +6,20 @@ compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"
+# Run the worker first for app routes so static public/*.html does not shadow Next.js pages.
+run_worker_first = [
+  "/",
+  "/freelancers",
+  "/freelancers/*",
+  "/join-as-expert",
+  "/dashboard",
+  "/dashboard/*",
+  "/sign-in",
+  "/sign-in/*",
+  "/sign-up",
+  "/sign-up/*",
+  "/__clerk/*",
+]
 
 [[services]]
 binding = "WORKER_SELF_REFERENCE"
