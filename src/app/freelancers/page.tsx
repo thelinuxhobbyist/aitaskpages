@@ -46,19 +46,24 @@ export default async function FreelancersPage({ searchParams }: PageProps) {
       : profiles.filter((p) => !featuredIds.has(p.id));
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-secondary">AI Experts</h1>
-          <p className="mt-1 text-muted">
+    <>
+      <section className="bg-primary-container text-on-primary-container">
+        <div className="mx-auto max-w-6xl px-4 py-10">
+          <h1 className="text-3xl font-medium tracking-tight md:text-4xl">
+            AI Experts
+          </h1>
+          <p className="mt-2 max-w-2xl opacity-90">
             Discover UK AI freelancers and consultants for your next project.
           </p>
+          <div className="mt-4">
+            <Button asChild variant="outline" className="border-primary/30 bg-surface/80">
+              <Link href="/join-as-expert">Join as an expert</Link>
+            </Button>
+          </div>
         </div>
-        <Button asChild variant="outline">
-          <Link href="/join-as-expert">Join as an expert</Link>
-        </Button>
-      </div>
+      </section>
 
+      <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="mb-8">
         <DirectoryFilters
           skills={skills}
@@ -110,6 +115,7 @@ export default async function FreelancersPage({ searchParams }: PageProps) {
           </p>
         </div>
       ) : null}
-    </div>
+      </div>
+    </>
   );
 }

@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/index.html", label: "Jobs" },
   { href: "/freelancers", label: "Experts" },
   { href: "/join-as-expert", label: "Join as Expert" },
+  { href: "/index.html", label: "Jobs" },
+  { href: "/ai-jobs-london.html", label: "London" },
+  { href: "/remote-ai-jobs-uk.html", label: "Remote" },
 ];
 
 export function Header() {
@@ -18,20 +20,22 @@ export function Header() {
   const { isSignedIn } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 border-b-4 border-primary bg-secondary text-white shadow-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <Link href="/" className="text-xl font-bold">
-          <span className="bg-gradient-to-r from-primary-light to-accent bg-clip-text text-transparent">
-            AI Jobs Market
-          </span>
+    <header className="sticky top-0 z-50 border-b border-border bg-surface md-elevation-1">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-lg font-medium tracking-tight text-primary"
+        >
+          <span className="material-symbols-outlined text-2xl">groups</span>
+          AI Jobs Market
         </Link>
 
-        <nav className="hidden items-center gap-4 text-sm font-medium md:flex">
+        <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-slate-300 transition-colors hover:text-white"
+              className="rounded-full px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
             >
               {link.label}
             </Link>
@@ -39,7 +43,7 @@ export function Header() {
           {isSignedIn && (
             <Link
               href="/dashboard"
-              className="text-slate-300 transition-colors hover:text-white"
+              className="rounded-full px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
             >
               Dashboard
             </Link>
@@ -48,20 +52,14 @@ export function Header() {
             <UserButton />
           ) : (
             <SignInButton mode="modal">
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-slate-600 bg-transparent text-white hover:bg-slate-800"
-              >
-                Sign in
-              </Button>
+              <Button size="sm">Sign in</Button>
             </SignInButton>
           )}
         </nav>
 
         <button
           type="button"
-          className="rounded-lg p-2 text-white md:hidden"
+          className="rounded-full p-2 text-on-surface md:hidden"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -71,7 +69,7 @@ export function Header() {
 
       <div
         className={cn(
-          "border-t border-slate-700 bg-secondary md:hidden",
+          "border-t border-border bg-surface md:hidden",
           open ? "block" : "hidden"
         )}
       >
@@ -80,7 +78,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white"
+              className="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -89,7 +87,7 @@ export function Header() {
           {isSignedIn && (
             <Link
               href="/dashboard"
-              className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white"
+              className="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
               onClick={() => setOpen(false)}
             >
               Dashboard
@@ -97,11 +95,7 @@ export function Header() {
           )}
           {!isSignedIn && (
             <SignInButton mode="modal">
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-2 w-full border-slate-600 bg-transparent text-white"
-              >
+              <Button size="sm" className="mt-2 w-full">
                 Sign in
               </Button>
             </SignInButton>

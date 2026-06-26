@@ -26,18 +26,21 @@ const proFeatures = [
 
 export default function JoinAsExpertPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <div className="mb-10 text-center">
-        <h1 className="text-4xl font-bold text-secondary">
-          Join as an AI Expert
-        </h1>
-        <p className="mx-auto mt-3 max-w-2xl text-lg text-muted">
-          Get discovered by UK businesses looking for AI freelancers and
-          consultants. This is a directory — not a marketplace. You keep 100% of
-          what you earn.
-        </p>
-      </div>
+    <>
+      <section className="bg-primary-container text-on-primary-container">
+        <div className="mx-auto max-w-4xl px-4 py-12 text-center">
+          <h1 className="text-4xl font-medium tracking-tight md:text-5xl">
+            Join as an AI Expert
+          </h1>
+          <p className="mx-auto mt-3 max-w-2xl text-lg opacity-90">
+            Get discovered by UK businesses looking for AI freelancers and
+            consultants. This is a directory — not a marketplace. You keep 100%
+            of what you earn.
+          </p>
+        </div>
+      </section>
 
+      <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="grid gap-6 md:grid-cols-2">
         <Card className="border-2 border-primary">
           <CardHeader>
@@ -96,6 +99,7 @@ export default function JoinAsExpertPage() {
           Sign in
         </Link>
       </p>
-    </div>
+      </div>
+    </>
   );
 }

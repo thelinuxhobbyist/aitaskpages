@@ -8,8 +8,9 @@ import "./globals.css";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "AI Jobs Market",
-  description: "UK AI jobs board and AI expert directory",
+  title: "AI Jobs Market — UK AI Expert Directory & Jobs",
+  description:
+    "Find UK AI freelancers and consultants. Browse the expert directory or explore AI job listings.",
 };
 
 export default function RootLayout({
@@ -32,11 +33,15 @@ export default function RootLayout({
       <html lang="en">
         <head>
           <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
             rel="stylesheet"
           />
         </head>
-        <body className="min-h-screen flex flex-col">
+        <body className="min-h-screen flex flex-col bg-surface">
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

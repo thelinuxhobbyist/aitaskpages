@@ -1,0 +1,53 @@
+/**
+ * Material Design 3 tokens — shared by static HTML (styles.css) and mirrored in Next.js globals.css
+ */
+:root {
+  /* Primary — Google Material blue */
+  --md-primary: #1a73e8;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #d3e3fd;
+  --md-on-primary-container: #041e49;
+
+  /* Surfaces */
+  --md-surface: #fdfbff;
+  --md-surface-container: #f0f4f8;
+  --md-surface-container-high: #e8eef3;
+  --md-on-surface: #1a1c1e;
+  --md-on-surface-variant: #444746;
+
+  /* Outline & status */
+  --md-outline: #c4c7c5;
+  --md-outline-variant: #e1e3e1;
+  --md-error: #b3261e;
+
+  /* Legacy aliases (static pages + JS — do not rename) */
+  --primary-color: var(--md-primary);
+  --primary-dark: #1557b0;
+  --primary-light: #4285f4;
+  --secondary-color: var(--md-on-surface);
+  --accent-1: #1a73e8;
+  --accent-2: #f9ab00;
+  --accent-3: #1e8e3e;
+  --text-color: var(--md-on-surface);
+  --text-light: var(--md-on-surface-variant);
+  --light-gray: var(--md-surface-container);
+  --border-color: var(--md-outline-variant);
+  --success-color: #1e8e3e;
+
+  /* Typography */
+  --font-body: "Roboto", system-ui, -apple-system, sans-serif;
+  --font-display: "Roboto", system-ui, sans-serif;
+
+  /* Shape */
+  --md-shape-xs: 4px;
+  --md-shape-sm: 8px;
+  --md-shape-md: 12px;
+  --md-shape-lg: 16px;
+  --md-shape-xl: 28px;
+  --md-shape-full: 9999px;
+
+  /* Elevation */
+  --md-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-elevation-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
