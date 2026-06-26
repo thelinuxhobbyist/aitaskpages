@@ -1,26 +1,9 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getClerkEnv } from "@/lib/clerk-env";
 
 const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
-
-async function clerkKeys() {
-  try {
-    const { env } = await getCloudflareContext({ async: true });
-    return {
-      secretKey: env.CLERK_SECRET_KEY ?? process.env.CLERK_SECRET_KEY,
-      publishableKey:
-        env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ??
-        process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-    };
-  } catch {
-    return {
-      secretKey: process.env.CLERK_SECRET_KEY,
-      publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-    };
-  }
-}
 
 const clerkHandler = clerkMiddleware(
   async (auth, req) => {
@@ -28,7 +11,7 @@ const clerkHandler = clerkMiddleware(
       await auth.protect();
     }
   },
-  () => clerkKeys()
+  () => getClerkEnv()
 );
 
 /** Set PREVIEW_SKIP_AUTH=1 for local UI preview without real Clerk keys. */

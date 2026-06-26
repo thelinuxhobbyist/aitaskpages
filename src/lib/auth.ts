@@ -1,12 +1,19 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { redirect } from "next/navigation";
-import { getDb } from "@/db/client";
+import { createDb } from "@/db/index";
 import { users } from "@/db/schema";
+import { syncClerkEnvToProcess } from "@/lib/clerk-env";
 import { sendWelcomeEmail, isEmailConfigured } from "@/lib/email";
 
+async function getDb() {
+  const { env } = await getCloudflareContext({ async: true });
+  return createDb(env.DB);
+}
+
 async function getUserWithProfile(clerkUserId: string) {
-  const db = getDb();
+  const db = await getDb();
   return db.query.users.findFirst({
     where: eq(users.clerkUserId, clerkUserId),
     with: {
@@ -22,6 +29,7 @@ async function getUserWithProfile(clerkUserId: string) {
 
 /** Returns the D1 user row, creating it on first Clerk sign-in. */
 export async function getOrCreateUser() {
+  await syncClerkEnvToProcess();
   const { userId } = await auth();
   if (!userId) return null;
 
@@ -32,7 +40,7 @@ export async function getOrCreateUser() {
   const email = clerkUser?.emailAddresses[0]?.emailAddress;
   if (!email) return null;
 
-  const db = getDb();
+  const db = await getDb();
   await db.insert(users).values({
     clerkUserId: userId,
     email,
@@ -51,6 +59,7 @@ export async function getOrCreateUser() {
 
 /** Requires an authenticated user; redirects to sign-in if missing. */
 export async function requireUser() {
+  await syncClerkEnvToProcess();
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
