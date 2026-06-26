@@ -7,9 +7,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:worker": "opennextjs-cloudflare build",
-    "postbuild": "opennextjs-cloudflare build --skipNextBuild",
+    "build": "next build && opennextjs-cloudflare build --skipNextBuild",
+    "build:worker": "opennextjs-cloudflare build --skipNextBuild",
     "build:next": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -19,10 +18,10 @@
     "db:seed:local": "tsx src/db/seed.ts --local",
     "db:seed:remote": "tsx src/db/seed.ts --remote",
     "db:studio": "drizzle-kit studio",
-    "pages:build": "opennextjs-cloudflare build",
-    "pages:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "pages:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy -- --keep-vars"
+    "pages:build": "npm run build",
+    "pages:deploy": "npm run build && opennextjs-cloudflare deploy",
+    "pages:preview": "npm run build && opennextjs-cloudflare preview",
+    "deploy": "npm run build && opennextjs-cloudflare deploy -- --keep-vars"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.5.8",
