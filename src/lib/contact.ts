@@ -1,18 +1,24 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "@/db/client";
-import { contactRequests, freelancerProfiles } from "@/db/schema";
+import { expertProfiles } from "@/db/schema";
+import { addMessage, getOrCreateConversation } from "@/lib/conversations";
 import {
-  sendFreelancerEnquiryEmail,
-  sendSenderConfirmationEmail,
   isEmailConfigured,
+  sendNewMessageEmail,
+  sendSenderConfirmationEmail,
 } from "@/lib/email";
-import { verifyTurnstileToken, isTurnstileConfigured } from "@/lib/turnstile";
-import type { ContactFormData } from "@/lib/validations/contact";
+import { conversationUrl } from "@/lib/site";
+import { isTurnstileConfigured, verifyTurnstileToken } from "@/lib/turnstile";
+import type { ContactSubmission } from "@/lib/validations/contact";
 
-export async function submitContactRequest(
-  data: ContactFormData,
+/**
+ * Starts (or continues) a signed-in conversation with an expert.
+ * Returns the conversation id. Messaging happens on-platform — emails are notifications only.
+ */
+export async function startConversationEnquiry(
+  data: ContactSubmission,
   remoteIp?: string
-) {
+): Promise<number> {
   if (isTurnstileConfigured()) {
     const valid = await verifyTurnstileToken(
       data.turnstileToken ?? "",
@@ -25,8 +31,8 @@ export async function submitContactRequest(
 
   const db = await getDb();
 
-  const profile = await db.query.freelancerProfiles.findFirst({
-    where: eq(freelancerProfiles.id, data.freelancerId),
+  const profile = await db.query.expertProfiles.findFirst({
+    where: eq(expertProfiles.id, data.expertId),
     with: { user: true },
   });
 
@@ -34,31 +40,57 @@ export async function submitContactRequest(
     throw new Error("Expert not found.");
   }
 
-  await db.insert(contactRequests).values({
-    freelancerId: data.freelancerId,
-    senderName: data.senderName,
-    senderEmail: data.senderEmail,
+  if (profile.user.deletedAt) {
+    throw new Error("This expert is no longer available.");
+  }
+
+  if (profile.status !== "approved") {
+    throw new Error("This expert profile is not available for contact.");
+  }
+
+  if (profile.userId === data.clientUserId) {
+    throw new Error("You cannot send a message to your own profile.");
+  }
+
+  const conversationId = await getOrCreateConversation({
+    expertId: data.expertId,
+    clientUserId: data.clientUserId,
     companyName: data.companyName || null,
     budget: data.budget || null,
-    message: data.message,
   });
 
+  await addMessage({
+    conversationId,
+    senderRole: "client",
+    body: data.message,
+  });
+
+  // Email is best-effort: the message is already saved and visible in the
+  // expert's dashboard, so a delivery failure must not fail the request.
   if (isEmailConfigured()) {
-    await Promise.all([
-      sendFreelancerEnquiryEmail({
-        to: profile.user.email,
-        freelancerName: profile.fullName,
-        senderName: data.senderName,
-        senderEmail: data.senderEmail,
-        companyName: data.companyName,
-        budget: data.budget,
-        message: data.message,
-      }),
-      sendSenderConfirmationEmail({
-        to: data.senderEmail,
-        senderName: data.senderName,
-        freelancerName: profile.fullName,
-      }),
-    ]);
+    const url = conversationUrl(conversationId);
+    try {
+      await Promise.all([
+        sendNewMessageEmail({
+          to: profile.user.email,
+          recipientName: profile.fullName,
+          otherPartyName: data.senderName,
+          conversationUrl: url,
+        }),
+        sendSenderConfirmationEmail({
+          to: data.senderEmail,
+          senderName: data.senderName,
+          expertName: profile.fullName,
+          conversationUrl: url,
+        }),
+      ]);
+    } catch (err) {
+      console.error("Enquiry email delivery failed:", err);
+    }
   }
+
+  return conversationId;
 }
+
+/** @deprecated Use startConversationEnquiry */
+export const submitContactRequest = startConversationEnquiry;

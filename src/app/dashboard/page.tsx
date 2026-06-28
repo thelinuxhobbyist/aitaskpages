@@ -8,7 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth";
-import { computeCompleteness, type ProfileWithRelations } from "@/lib/profile-utils";
+import {
+  getClientConversations,
+  getExpertConversations,
+} from "@/lib/conversations";
+import { getClientRequirements } from "@/lib/requirements";
+import { computeCompleteness, getProfileCompletenessSuggestions, type ProfileWithRelations } from "@/lib/profile-utils";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 
 export default async function DashboardPage() {
@@ -20,17 +25,45 @@ export default async function DashboardPage() {
 
   const profile = (user.profile as ProfileWithRelations | null) ?? null;
   const completeness = profile ? computeCompleteness(profile) : 0;
+  const suggestions = profile ? getProfileCompletenessSuggestions(profile) : [];
+
+  const [clientConvos, expertConvos, clientRequirements] = await Promise.all([
+    getClientConversations(user.id),
+    profile ? getExpertConversations(profile.id) : Promise.resolve([]),
+    getClientRequirements(user.id),
+  ]);
+  const conversations = {
+    total: clientConvos.length + expertConvos.length,
+    unread:
+      clientConvos.filter((c) => c.unread).length +
+      expertConvos.filter((c) => c.unread).length,
+  };
+  const openRequirements = clientRequirements.filter(
+    (r) => r.status === "open"
+  ).length;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-secondary">Dashboard</h1>
-        <p className="mt-1 text-muted">
-          Manage your expert profile and track basic stats.
-        </p>
-      </div>
+    <>
+      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Link href="/dashboard/requirements" className="group">
+          <Card className="h-full transition-shadow group-hover:shadow-md group-hover:border-primary/30">
+            <CardHeader>
+              <CardTitle className="text-base">Requirements</CardTitle>
+              <CardDescription>AI needs you&apos;ve posted</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold text-primary">
+                {clientRequirements.length}
+                {openRequirements > 0 && (
+                  <span className="ml-2 align-middle text-sm font-semibold text-emerald-700">
+                    {openRequirements} open
+                  </span>
+                )}
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
 
-      <div className="mb-8 grid gap-4 sm:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Profile views</CardTitle>
@@ -43,13 +76,56 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
+        <Link href="/dashboard/conversations" className="group">
+          <Card className="h-full transition-shadow group-hover:shadow-md group-hover:border-primary/30">
+            <CardHeader>
+              <CardTitle className="text-base">Conversations</CardTitle>
+              <CardDescription>Messages on AI Jobs Market</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold text-primary">
+                {conversations.total}
+                {conversations.unread > 0 && (
+                  <span className="ml-2 align-middle text-sm font-semibold text-amber-700">
+                    {conversations.unread} new
+                  </span>
+                )}
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
+
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Completeness</CardTitle>
-            <CardDescription>How complete your profile is</CardDescription>
+            <CardTitle className="text-base">Profile completeness</CardTitle>
+            <CardDescription>
+              {profile
+                ? completeness === 100
+                  ? "Your profile is fully complete"
+                  : "Complete these to improve your listing"
+                : "Create your profile to get started"}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-primary">{completeness}%</p>
+            {profile && completeness < 100 && (
+              <>
+                <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface">
+                  <div
+                    className="h-full rounded-full bg-primary/70"
+                    style={{ width: `${completeness}%` }}
+                  />
+                </div>
+                <ul className="mt-4 space-y-1.5 text-sm text-muted">
+                  {suggestions.map((item) => (
+                    <li key={item} className="flex items-start gap-2">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -61,10 +137,10 @@ export default async function DashboardPage() {
           <CardContent>
             {profile ? (
               <Link
-                href={`/freelancers/${profile.slug}`}
+                href={`/experts/${profile.slug}`}
                 className="text-sm font-medium text-primary hover:underline"
               >
-                /freelancers/{profile.slug}
+                /experts/{profile.slug}
               </Link>
             ) : (
               <p className="text-sm text-muted">Create your profile below</p>
@@ -84,6 +160,6 @@ export default async function DashboardPage() {
           <ProfileForm profile={profile} skills={skills} services={services} />
         </CardContent>
       </Card>
-    </div>
+    </>
   );
 }

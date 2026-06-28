@@ -5,10 +5,12 @@ import {
   Heading,
   Hr,
   Html,
+  Img,
   Preview,
   Section,
   Text,
 } from "@react-email/components";
+import { SITE_LOGO_URL } from "@/lib/site";
 
 type LayoutProps = {
   preview: string;
@@ -22,12 +24,30 @@ export function EmailLayout({ preview, children }: LayoutProps) {
       <Preview>{preview}</Preview>
       <Body style={body}>
         <Container style={container}>
-          <Text style={logo}>AI Jobs Market</Text>
+          <Img
+            src={SITE_LOGO_URL}
+            alt="AI Jobs Market"
+            height={36}
+            style={logoImg}
+          />
           <Hr style={hr} />
           {children}
           <Hr style={hr} />
           <Text style={footer}>
-            AI Jobs Market — UK AI jobs board &amp; expert directory
+            AI Jobs Market is an AI jobs board and expert directory. We provide a
+            platform that connects businesses with independent AI professionals
+            and allows them to communicate through AI Jobs Market.
+          </Text>
+          <Text style={footer}>
+            AI Jobs Market is not a party to agreements between users and does
+            not participate in contracts, project delivery, professional
+            services, or payments between clients and experts. Any agreement is
+            made directly between the client and the expert.
+          </Text>
+          <Text style={brand}>
+            <strong>AI Jobs Market</strong>
+            <br />
+            The UK&apos;s home for AI experts and AI jobs.
           </Text>
         </Container>
       </Body>
@@ -48,10 +68,8 @@ const container = {
   maxWidth: "560px",
 };
 
-const logo = {
-  color: "#6366f1",
-  fontSize: "20px",
-  fontWeight: "700" as const,
+const logoImg = {
+  display: "block" as const,
   margin: "0 0 8px",
 };
 
@@ -61,9 +79,17 @@ const hr = {
 };
 
 const footer = {
-  color: "#64748b",
+  color: "#94a3b8",
   fontSize: "12px",
+  lineHeight: "18px",
+  margin: "0 0 12px",
+};
+
+const brand = {
+  color: "#64748b",
+  fontSize: "13px",
   lineHeight: "20px",
+  margin: "16px 0 0",
 };
 
 export { Heading, Section, Text };
@@ -102,4 +128,23 @@ export const messageBox = {
   borderRadius: "6px",
   padding: "16px",
   border: "1px solid #e2e8f0",
+};
+
+export const button = {
+  backgroundColor: "#6366f1",
+  borderRadius: "9999px",
+  color: "#ffffff",
+  display: "inline-block",
+  fontSize: "15px",
+  fontWeight: "600" as const,
+  padding: "12px 24px",
+  textDecoration: "none",
+  margin: "8px 0 20px",
+};
+
+export const disclaimer = {
+  color: "#64748b",
+  fontSize: "12px",
+  lineHeight: "18px",
+  margin: "16px 0 0",
 };

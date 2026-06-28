@@ -1,33 +1,40 @@
+import { Button } from "@react-email/components";
 import {
   EmailLayout,
   Heading,
   Text,
+  button,
   heading,
   paragraph,
 } from "./layout";
 
 type Props = {
   senderName: string;
-  freelancerName: string;
+  expertName: string;
+  conversationUrl: string;
 };
 
 export default function SenderConfirmationEmail({
   senderName,
-  freelancerName,
+  expertName,
+  conversationUrl,
 }: Props) {
   return (
-    <EmailLayout preview={`Your message to ${freelancerName} was sent`}>
-      <Heading style={heading}>Message delivered</Heading>
+    <EmailLayout preview={`Your message to ${expertName} was sent`}>
+      <Heading style={heading}>Message sent</Heading>
       <Text style={paragraph}>Hi {senderName},</Text>
       <Text style={paragraph}>
-        Your enquiry to <strong>{freelancerName}</strong> has been sent
-        successfully. They will receive your message by email and can reply to
-        you directly.
+        Your message to <strong>{expertName}</strong> has been sent. They
+        have been notified and can reply to you here on AI Jobs Market.
       </Text>
       <Text style={paragraph}>
-        AI Jobs Market is a discovery platform — we do not process payments or
-        manage contracts between you and the expert.
+        We&apos;ll email you when they respond. You can read and continue the
+        conversation from your dashboard at any time.
       </Text>
+
+      <Button style={button} href={conversationUrl}>
+        View Conversation
+      </Button>
     </EmailLayout>
   );
 }

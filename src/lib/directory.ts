@@ -1,86 +1,102 @@
-import { and, desc, eq, gte, isNotNull, like, lte, or, sql } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, isNotNull, like, lte, sql } from "drizzle-orm";
 import { getDb } from "@/db/client";
-import { freelancerProfiles } from "@/db/schema";
+import { expertProfiles, users } from "@/db/schema";
+import {
+  PUBLIC_PROFILE_STATUS,
+  publicExpertProfileConditions,
+} from "@/lib/directory-filters";
 import {
   rankProfiles,
   type ProfileWithRelations,
 } from "@/lib/profile-utils";
+import { filterProfiles } from "@/lib/search-utils";
 import type { DirectoryFilters } from "@/lib/validations/directory";
 
-export async function searchFreelancers(
-  filters: DirectoryFilters
+async function fetchPublicProfiles(
+  extraConditions: ReturnType<typeof and>[] = []
 ): Promise<ProfileWithRelations[]> {
   const db = await getDb();
-  const conditions = [];
+  const where = publicExpertProfileConditions(
+    extraConditions.length > 0 ? and(...extraConditions) : undefined
+  );
 
-  if (filters.q) {
-    const term = `%${filters.q}%`;
-    conditions.push(
-      or(
-        like(freelancerProfiles.fullName, term),
-        like(freelancerProfiles.headline, term),
-        like(freelancerProfiles.bio, term)
-      )
-    );
-  }
+  const rows = await db
+    .select({ profile: expertProfiles })
+    .from(expertProfiles)
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(where);
 
-  if (filters.location) {
-    conditions.push(
-      like(freelancerProfiles.location, `%${filters.location}%`)
-    );
-  }
+  const ids = rows.map((r) => r.profile.id);
+  if (ids.length === 0) return [];
 
-  if (filters.minRate != null) {
-    conditions.push(gte(freelancerProfiles.hourlyRate, filters.minRate));
-  }
-
-  if (filters.maxRate != null) {
-    conditions.push(lte(freelancerProfiles.hourlyRate, filters.maxRate));
-  }
-
-  let profiles = await db.query.freelancerProfiles.findMany({
-    where: conditions.length > 0 ? and(...conditions) : undefined,
+  const profiles = await db.query.expertProfiles.findMany({
+    where: inArray(expertProfiles.id, ids),
     with: {
       skills: { with: { skill: true } },
       services: { with: { service: true } },
     },
   });
 
-  if (filters.skill) {
-    profiles = profiles.filter((p) =>
-      p.skills.some((s) => s.skill.slug === filters.skill)
-    );
+  return profiles as ProfileWithRelations[];
+}
+
+export async function searchExperts(
+  filters: DirectoryFilters
+): Promise<ProfileWithRelations[]> {
+  const conditions = [];
+
+  if (filters.location) {
+    conditions.push(like(expertProfiles.location, `%${filters.location}%`));
   }
 
-  if (filters.service) {
-    profiles = profiles.filter((p) =>
-      p.services.some((s) => s.service.slug === filters.service)
-    );
+  if (filters.minRate != null) {
+    conditions.push(gte(expertProfiles.hourlyRate, filters.minRate));
   }
 
-  return rankProfiles(profiles as ProfileWithRelations[]);
+  if (filters.maxRate != null) {
+    conditions.push(lte(expertProfiles.hourlyRate, filters.maxRate));
+  }
+
+  const profiles = await fetchPublicProfiles(conditions);
+  const filtered = filterProfiles(profiles, filters);
+  return rankProfiles(filtered);
 }
 
 export async function incrementProfileViews(profileId: number): Promise<void> {
   const db = await getDb();
   await db
-    .update(freelancerProfiles)
-    .set({ profileViews: sql`${freelancerProfiles.profileViews} + 1` })
-    .where(eq(freelancerProfiles.id, profileId));
+    .update(expertProfiles)
+    .set({ profileViews: sql`${expertProfiles.profileViews} + 1` })
+    .where(eq(expertProfiles.id, profileId));
 }
 
-export async function getFeaturedFreelancers(
+export async function getFeaturedExperts(
   limit = 3
 ): Promise<ProfileWithRelations[]> {
   const db = await getDb();
-  const profiles = await db.query.freelancerProfiles.findMany({
-    where: eq(freelancerProfiles.featured, true),
+  const where = publicExpertProfileConditions(
+    eq(expertProfiles.featured, true)
+  );
+
+  const rows = await db
+    .select({ id: expertProfiles.id })
+    .from(expertProfiles)
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(where)
+    .orderBy(desc(expertProfiles.createdAt))
+    .limit(limit);
+
+  if (rows.length === 0) return [];
+
+  const profiles = await db.query.expertProfiles.findMany({
+    where: inArray(
+      expertProfiles.id,
+      rows.map((r) => r.id)
+    ),
     with: {
       skills: { with: { skill: true } },
       services: { with: { service: true } },
     },
-    orderBy: [desc(freelancerProfiles.createdAt)],
-    limit,
   });
 
   return rankProfiles(profiles as ProfileWithRelations[]);
@@ -90,7 +106,9 @@ export async function getDirectoryStats() {
   const db = await getDb();
   const [row] = await db
     .select({ count: sql<number>`count(*)` })
-    .from(freelancerProfiles);
+    .from(expertProfiles)
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(publicExpertProfileConditions());
 
   return { expertCount: row?.count ?? 0 };
 }
@@ -99,8 +117,20 @@ export async function getProfileBySlug(
   slug: string
 ): Promise<ProfileWithRelations | null> {
   const db = await getDb();
-  const profile = await db.query.freelancerProfiles.findFirst({
-    where: eq(freelancerProfiles.slug, slug),
+  const row = await db
+    .select({ profile: expertProfiles })
+    .from(expertProfiles)
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(
+      publicExpertProfileConditions(eq(expertProfiles.slug, slug))
+    )
+    .limit(1);
+
+  const profileId = row[0]?.profile.id;
+  if (!profileId) return null;
+
+  const profile = await db.query.expertProfiles.findFirst({
+    where: eq(expertProfiles.id, profileId),
     with: {
       skills: { with: { skill: true } },
       services: { with: { service: true } },
@@ -110,15 +140,55 @@ export async function getProfileBySlug(
   return (profile as ProfileWithRelations | null) ?? null;
 }
 
+/** Owner dashboard — includes hidden/pending profiles for the signed-in user. */
+export async function getProfileBySlugForOwner(
+  slug: string,
+  userId: number
+): Promise<ProfileWithRelations | null> {
+  const db = await getDb();
+  const profile = await db.query.expertProfiles.findFirst({
+    where: and(eq(expertProfiles.slug, slug), eq(expertProfiles.userId, userId)),
+    with: {
+      skills: { with: { skill: true } },
+      services: { with: { service: true } },
+    },
+  });
+
+  return (profile as ProfileWithRelations | null) ?? null;
+}
+
+/** Lightweight slug list for sitemap generation. */
+export async function getPublicExpertSlugs(): Promise<
+  { slug: string; updatedAt: string }[]
+> {
+  const db = await getDb();
+  return db
+    .select({
+      slug: expertProfiles.slug,
+      updatedAt: expertProfiles.updatedAt,
+    })
+    .from(expertProfiles)
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(publicExpertProfileConditions());
+}
+
 export async function getDistinctLocations(): Promise<string[]> {
   const db = await getDb();
   const rows = await db
-    .selectDistinct({ location: freelancerProfiles.location })
-    .from(freelancerProfiles)
-    .where(isNotNull(freelancerProfiles.location));
+    .selectDistinct({ location: expertProfiles.location })
+    .from(expertProfiles)
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(
+      and(
+        publicExpertProfileConditions(),
+        isNotNull(expertProfiles.location)
+      )
+    );
 
   return rows
     .map((r) => r.location)
     .filter((loc): loc is string => !!loc && loc.trim().length > 0)
     .sort((a, b) => a.localeCompare(b));
 }
+
+export { PUBLIC_PROFILE_STATUS };

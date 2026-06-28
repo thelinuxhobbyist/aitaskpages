@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 export const contactSchema = z.object({
-  freelancerId: z.coerce.number().int().positive(),
-  senderName: z.string().min(2, "Name is required").max(100),
-  senderEmail: z.string().email("Valid email required"),
+  expertId: z.coerce.number().int().positive(),
   companyName: z.string().max(100).optional(),
   budget: z.string().max(100).optional(),
   message: z
@@ -14,6 +12,13 @@ export const contactSchema = z.object({
 });
 
 export type ContactFormData = z.infer<typeof contactSchema>;
+
+/** Full enquiry payload: form fields + sender identity derived from the account. */
+export type ContactSubmission = ContactFormData & {
+  clientUserId: number;
+  senderName: string;
+  senderEmail: string;
+};
 
 export type ContactFormState = {
   error?: string;

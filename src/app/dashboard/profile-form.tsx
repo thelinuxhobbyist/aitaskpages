@@ -2,14 +2,15 @@
 
 import { useActionState } from "react";
 import { saveProfile } from "@/app/dashboard/actions";
+import { AvatarUpload } from "@/app/dashboard/avatar-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProfileFormState } from "@/lib/validations/profile";
-import type { FreelancerProfile, Service, Skill } from "@/db/schema";
+import type { ExpertProfile, Service, Skill } from "@/db/schema";
 
-type ProfileWithRelations = FreelancerProfile & {
+type ProfileWithRelations = ExpertProfile & {
   skills: { skill: Skill }[];
   services: { service: Service }[];
 };
@@ -47,6 +48,14 @@ export function ProfileForm({ profile, skills, services }: Props) {
           Profile saved successfully.
         </p>
       )}
+
+      <div className="space-y-2">
+        <Label>Profile photo</Label>
+        <AvatarUpload
+          name={profile?.fullName ?? ""}
+          defaultUrl={profile?.profileImageUrl}
+        />
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2 sm:col-span-2">
@@ -121,23 +130,13 @@ export function ProfileForm({ profile, skills, services }: Props) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="profileImageUrl">Profile image URL</Label>
-          <Input
-            id="profileImageUrl"
-            name="profileImageUrl"
-            type="url"
-            placeholder="https://…"
-            defaultValue={profile?.profileImageUrl ?? ""}
-          />
-        </div>
-
-        <div className="space-y-2">
           <Label htmlFor="linkedinUrl">LinkedIn</Label>
           <Input
             id="linkedinUrl"
             name="linkedinUrl"
-            type="url"
-            placeholder="https://linkedin.com/in/…"
+            type="text"
+            inputMode="url"
+            placeholder="linkedin.com/in/…"
             defaultValue={profile?.linkedinUrl ?? ""}
           />
         </div>
@@ -147,8 +146,9 @@ export function ProfileForm({ profile, skills, services }: Props) {
           <Input
             id="githubUrl"
             name="githubUrl"
-            type="url"
-            placeholder="https://github.com/…"
+            type="text"
+            inputMode="url"
+            placeholder="github.com/…"
             defaultValue={profile?.githubUrl ?? ""}
           />
         </div>
@@ -158,8 +158,9 @@ export function ProfileForm({ profile, skills, services }: Props) {
           <Input
             id="websiteUrl"
             name="websiteUrl"
-            type="url"
-            placeholder="https://…"
+            type="text"
+            inputMode="url"
+            placeholder="mywebsite.com"
             defaultValue={profile?.websiteUrl ?? ""}
           />
         </div>

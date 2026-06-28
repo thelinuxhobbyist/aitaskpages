@@ -9,16 +9,30 @@ binding = "ASSETS"
 # Run the worker first for app routes so static public/*.html does not shadow Next.js pages.
 run_worker_first = [
   "/",
+  "/experts",
+  "/experts/*",
   "/freelancers",
   "/freelancers/*",
+  "/search",
   "/join-as-expert",
   "/dashboard",
   "/dashboard/*",
+  "/requirements",
+  "/requirements/*",
   "/sign-in",
   "/sign-in/*",
   "/sign-up",
   "/sign-up/*",
   "/__clerk/*",
+  "/api/*",
+  "/about",
+  "/privacy",
+  "/terms",
+  "/cookies",
+  "/disclaimer",
+  "/unsubscribe",
+  "/sitemap.xml",
+  "/robots.txt",
 ]
 
 [[services]]
@@ -30,7 +44,13 @@ binding = "DB"
 database_name = "aijobsmarket_db"
 database_id = "3f306411-f30c-4593-8cc4-37f798e752e5"
 
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "aijobsmarket-images"
+
 [vars]
+# Public base URL for images served from the R2 bucket's custom domain.
+IMAGES_BASE_URL = "https://cdn.aijobsmarket.co.uk"
 # Public Clerk key (safe to commit — it is exposed in the browser anyway)
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test_aG9uZXN0LW1hY2tlcmVsLTgzLmNsZXJrLmFjY291bnRzLmRldiQ"
 NEXT_PUBLIC_CLERK_SIGN_IN_URL = "/sign-in"
@@ -40,7 +60,10 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL = "/dashboard"
 
 # Local development secrets go in .dev.vars:
 # CLERK_SECRET_KEY=
+# CLERK_WEBHOOK_SIGNING_SECRET=
 # RESEND_API_KEY=
+# ADMIN_API_KEY=
+# MARKETING_UNSUBSCRIBE_SECRET=
 # TURNSTILE_SECRET_KEY=
 # NEXT_PUBLIC_TURNSTILE_SITE_KEY=  (set in .env.local for next dev)
 #

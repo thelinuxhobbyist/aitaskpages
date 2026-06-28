@@ -1,16 +1,22 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Footer } from "@/components/footer";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import { Header } from "@/components/header";
+import { SiteStructuredData } from "@/components/site-structured-data";
 import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
+import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "AI Jobs Market — UK AI Expert Directory",
-  description:
-    "Find UK AI freelancers and consultants. Browse the expert directory or explore AI job listings.",
+  ...rootMetadata(),
+  ...(process.env.GOOGLE_SITE_VERIFICATION && {
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION,
+    },
+  }),
 };
 
 export default function RootLayout({
@@ -30,7 +36,7 @@ export default function RootLayout({
         "http://localhost:3000",
       ]}
     >
-      <html lang="en">
+      <html lang="en-GB">
         <head>
           <link
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
@@ -40,8 +46,10 @@ export default function RootLayout({
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
             rel="stylesheet"
           />
+          <SiteStructuredData />
         </head>
         <body className="min-h-screen flex flex-col bg-surface">
+          <GoogleAnalytics />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

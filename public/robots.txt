@@ -1,24 +1,11 @@
-# AI Jobs Market - robots.txt
-# Allow search engines to crawl the site
+# AI Jobs Market — robots.txt
+# Dynamic version served by the Next.js app in production (see src/app/robots.ts).
 
 User-agent: *
 Allow: /
-Allow: /jobs.html
-Allow: /job.html
-Allow: /ai-jobs-uk.html
-Allow: /ai-jobs-london.html
-Allow: /remote-ai-jobs-uk.html
-Allow: /styles.css
-Allow: /script.js
-Allow: /job.js
+Disallow: /dashboard/
+Disallow: /sign-in/
+Disallow: /sign-up/
+Disallow: /api/
 
-# Disallow private areas
-Disallow: /admin/
-Disallow: /private/
-
-# Sitemap location
 Sitemap: https://aijobsmarket.co.uk/sitemap.xml
-
-# Crawl delay to prevent server overload
-Crawl-delay: 1
-Request-rate: 1/1s

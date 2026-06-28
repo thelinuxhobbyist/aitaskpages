@@ -4,15 +4,15 @@ import Link from "next/link";
 import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { BrandMark } from "@/components/brand-mark";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/", label: "Experts" },
-  { href: "/join-as-expert", label: "Join as Expert" },
+  { href: "/requirements", label: "Requirements" },
   { href: "/jobs.html", label: "Jobs" },
-  { href: "/ai-jobs-london.html", label: "London" },
-  { href: "/remote-ai-jobs-uk.html", label: "Remote" },
+  { href: "/join-as-expert", label: "Join as Expert" },
 ];
 
 export function Header() {
@@ -21,14 +21,8 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-surface md-elevation-1">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-lg font-medium tracking-tight text-primary"
-        >
-          <span className="material-symbols-outlined text-2xl">groups</span>
-          AI Jobs Market
-        </Link>
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-1.5 md:py-2">
+        <BrandMark />
 
         <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
           {links.map((link) => (

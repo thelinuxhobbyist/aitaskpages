@@ -9,7 +9,11 @@ const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
 const clerkHandler = clerkMiddleware(
   async (auth, req) => {
     if (isProtectedRoute(req)) {
-      await auth.protect();
+      // Send signed-out users to sign-in (and back) rather than a 404 — this
+      // keeps the "log in to continue the conversation" email flow working.
+      const signInUrl = new URL("/sign-in", req.url);
+      signInUrl.searchParams.set("redirect_url", req.url);
+      await auth.protect({ unauthenticatedUrl: signInUrl.toString() });
     }
   },
   () => {
@@ -34,8 +38,18 @@ export default process.env.PREVIEW_SKIP_AUTH === "1"
 
 export const config = {
   matcher: [
-    // Only routes that need Clerk — public directory pages skip middleware entirely
+    // Routes that need Clerk auth context. Other public pages skip middleware.
     "/dashboard/:path*",
     "/__clerk/:path*",
+    // Requirement pages call auth() for optional expert interest — not protected.
+    "/requirements",
+    "/requirements/:path*",
+    // Profile pages need to know who is signed in (contact form is gated) and
+    // their server actions POST back to these paths, so they need Clerk too.
+    "/experts/:path*",
+    // Legacy path — kept so the 301 redirect to /experts still resolves.
+    "/freelancers/:path*",
+    // Image upload endpoint authenticates the caller via Clerk.
+    "/api/upload",
   ],
 };

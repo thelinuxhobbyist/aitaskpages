@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -7,34 +8,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AVAILABILITY_LABELS, computeCompleteness, type ProfileWithRelations } from "@/lib/profile-utils";
+import { AVAILABILITY_LABELS, type ProfileWithRelations } from "@/lib/profile-utils";
 import { MapPin, Star } from "lucide-react";
 
-export function FreelancerCard({ profile }: { profile: ProfileWithRelations }) {
-  const completeness = computeCompleteness(profile);
-  const initials = profile.fullName
-    .split(" ")
-    .map((n) => n[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
-
+export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
   return (
-    <Link href={`/freelancers/${profile.slug}`} className="group block">
+    <Link href={`/experts/${profile.slug}`} className="group block">
       <Card className="h-full transition-shadow hover:shadow-md group-hover:border-primary/30">
         <CardHeader className="flex flex-row items-start gap-4">
-          {profile.profileImageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={profile.profileImageUrl}
-              alt={profile.fullName}
-              className="h-14 w-14 shrink-0 rounded-full object-cover ring-2 ring-border"
-            />
-          ) : (
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary/10 text-lg font-semibold text-primary ring-2 ring-border">
-              {initials}
-            </div>
-          )}
+          <Avatar
+            src={profile.profileImageUrl}
+            alt={profile.fullName}
+            className="h-14 w-14"
+            textClassName="text-lg"
+          />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <CardTitle className="truncate text-base group-hover:text-primary">
@@ -94,15 +81,6 @@ export function FreelancerCard({ profile }: { profile: ProfileWithRelations }) {
             </div>
           )}
 
-          <div className="flex items-center gap-2 pt-1">
-            <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface">
-              <div
-                className="h-full rounded-full bg-primary/60"
-                style={{ width: `${completeness}%` }}
-              />
-            </div>
-            <span className="text-xs text-muted">{completeness}%</span>
-          </div>
         </CardContent>
       </Card>
     </Link>

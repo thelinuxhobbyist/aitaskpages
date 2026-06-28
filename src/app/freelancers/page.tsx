@@ -1,11 +1,13 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
 type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-/** Legacy /freelancers URL — filters preserved via redirect query string. */
-export default async function FreelancersRedirectPage({ searchParams }: PageProps) {
+/** Legacy /freelancers URL → directory homepage (filters preserved). */
+export default async function LegacyFreelancersRedirect({
+  searchParams,
+}: PageProps) {
   const params = await searchParams;
   const query = new URLSearchParams();
 
@@ -18,5 +20,5 @@ export default async function FreelancersRedirectPage({ searchParams }: PageProp
   }
 
   const qs = query.toString();
-  redirect(qs ? `/?${qs}` : "/");
+  permanentRedirect(qs ? `/?${qs}` : "/");
 }

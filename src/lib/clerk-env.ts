@@ -8,8 +8,11 @@ export type ClerkEnvKeys = {
 
 const SECRET_BINDING_KEYS = [
   "CLERK_SECRET_KEY",
+  "CLERK_WEBHOOK_SIGNING_SECRET",
   "RESEND_API_KEY",
   "TURNSTILE_SECRET_KEY",
+  "ADMIN_API_KEY",
+  "MARKETING_UNSUBSCRIBE_SECRET",
 ] as const;
 
 /** Read env from ALS — same store OpenNext sets in runWithCloudflareRequestContext. */

@@ -1,26 +1,44 @@
-import type { FreelancerProfile, Service, Skill } from "@/db/schema";
+import type { ExpertProfile, Service, Skill } from "@/db/schema";
 
-export type ProfileWithRelations = FreelancerProfile & {
+export type ProfileWithRelations = ExpertProfile & {
   skills: { skill: Skill }[];
   services: { service: Service }[];
 };
 
-const COMPLETENESS_FIELDS = [
-  (p: ProfileWithRelations) => !!p.fullName,
-  (p: ProfileWithRelations) => !!p.headline,
-  (p: ProfileWithRelations) => !!p.bio,
-  (p: ProfileWithRelations) => !!p.location,
-  (p: ProfileWithRelations) => p.hourlyRate != null,
-  (p: ProfileWithRelations) => !!p.availability,
-  (p: ProfileWithRelations) => p.skills.length > 0,
-  (p: ProfileWithRelations) => p.services.length > 0,
-  (p: ProfileWithRelations) =>
-    !!(p.linkedinUrl || p.githubUrl || p.websiteUrl),
-] as const;
+type ProfileCheck = {
+  label: string;
+  check: (profile: ProfileWithRelations) => boolean;
+};
+
+/** Fields that make a profile useful to clients — used for dashboard guidance and ranking. */
+const PROFILE_CHECKS: ProfileCheck[] = [
+  { label: "Add a profile photo", check: (p) => !!p.profileImageUrl?.trim() },
+  { label: "Add a headline", check: (p) => !!p.headline?.trim() },
+  { label: "Write your bio", check: (p) => !!p.bio?.trim() },
+  { label: "Add your location", check: (p) => !!p.location?.trim() },
+  { label: "Set your hourly rate", check: (p) => p.hourlyRate != null },
+  { label: "Set your availability", check: (p) => !!p.availability },
+  { label: "Add at least one skill", check: (p) => p.skills.length > 0 },
+  { label: "Add at least one service", check: (p) => p.services.length > 0 },
+  {
+    label: "Add a LinkedIn, GitHub, or website link",
+    check: (p) =>
+      !!(p.linkedinUrl?.trim() || p.githubUrl?.trim() || p.websiteUrl?.trim()),
+  },
+];
 
 export function computeCompleteness(profile: ProfileWithRelations): number {
-  const filled = COMPLETENESS_FIELDS.filter((check) => check(profile)).length;
-  return Math.round((filled / COMPLETENESS_FIELDS.length) * 100);
+  const filled = PROFILE_CHECKS.filter(({ check }) => check(profile)).length;
+  return Math.round((filled / PROFILE_CHECKS.length) * 100);
+}
+
+/** Actionable items the expert can complete to improve their profile. */
+export function getProfileCompletenessSuggestions(
+  profile: ProfileWithRelations
+): string[] {
+  return PROFILE_CHECKS.filter(({ check }) => !check(profile)).map(
+    ({ label }) => label
+  );
 }
 
 /**

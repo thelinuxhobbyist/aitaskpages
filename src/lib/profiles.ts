@@ -1,12 +1,12 @@
 import { asc, eq } from "drizzle-orm";
 import { getDb } from "@/db/client";
 import {
-  freelancerProfiles,
-  freelancerServices,
-  freelancerSkills,
+  expertProfiles,
+  expertServices,
+  expertSkills,
   services,
   skills,
-  type FreelancerProfile,
+  type ExpertProfile,
 } from "@/db/schema";
 import { slugify } from "@/lib/utils";
 import type { ProfileFormData } from "@/lib/validations/profile";
@@ -20,8 +20,8 @@ async function uniqueSlug(base: string, excludeId?: number): Promise<string> {
   let n = 2;
 
   while (true) {
-    const existing = await db.query.freelancerProfiles.findFirst({
-      where: eq(freelancerProfiles.slug, candidate),
+    const existing = await db.query.expertProfiles.findFirst({
+      where: eq(expertProfiles.slug, candidate),
     });
     if (!existing || existing.id === excludeId) return candidate;
     candidate = `${slug}-${n++}`;
@@ -34,28 +34,28 @@ function emptyToNull(value: string | number | undefined): string | number | null
 }
 
 async function syncSkillsAndServices(
-  freelancerId: number,
+  expertId: number,
   skillIds: number[],
   serviceIds: number[]
 ) {
   const db = await getDb();
 
   await db
-    .delete(freelancerSkills)
-    .where(eq(freelancerSkills.freelancerId, freelancerId));
+    .delete(expertSkills)
+    .where(eq(expertSkills.expertId, expertId));
   await db
-    .delete(freelancerServices)
-    .where(eq(freelancerServices.freelancerId, freelancerId));
+    .delete(expertServices)
+    .where(eq(expertServices.expertId, expertId));
 
   if (skillIds.length > 0) {
-    await db.insert(freelancerSkills).values(
-      skillIds.map((skillId) => ({ freelancerId, skillId }))
+    await db.insert(expertSkills).values(
+      skillIds.map((skillId) => ({ expertId, skillId }))
     );
   }
 
   if (serviceIds.length > 0) {
-    await db.insert(freelancerServices).values(
-      serviceIds.map((serviceId) => ({ freelancerId, serviceId }))
+    await db.insert(expertServices).values(
+      serviceIds.map((serviceId) => ({ expertId, serviceId }))
     );
   }
 }
@@ -66,7 +66,7 @@ export async function createProfile(userId: number, data: ProfileFormData) {
   const now = new Date().toISOString();
 
   const [profile] = await db
-    .insert(freelancerProfiles)
+    .insert(expertProfiles)
     .values({
       userId,
       slug,
@@ -80,6 +80,7 @@ export async function createProfile(userId: number, data: ProfileFormData) {
       githubUrl: emptyToNull(data.githubUrl) as string | null,
       websiteUrl: emptyToNull(data.websiteUrl) as string | null,
       profileImageUrl: emptyToNull(data.profileImageUrl) as string | null,
+      status: "approved",
       updatedAt: now,
     })
     .returning();
@@ -89,7 +90,7 @@ export async function createProfile(userId: number, data: ProfileFormData) {
 }
 
 export async function updateProfile(
-  profile: FreelancerProfile,
+  profile: ExpertProfile,
   data: ProfileFormData
 ) {
   const db = await getDb();
@@ -101,7 +102,7 @@ export async function updateProfile(
   const now = new Date().toISOString();
 
   const [updated] = await db
-    .update(freelancerProfiles)
+    .update(expertProfiles)
     .set({
       slug,
       fullName: data.fullName,
@@ -116,7 +117,7 @@ export async function updateProfile(
       profileImageUrl: emptyToNull(data.profileImageUrl) as string | null,
       updatedAt: now,
     })
-    .where(eq(freelancerProfiles.id, profile.id))
+    .where(eq(expertProfiles.id, profile.id))
     .returning();
 
   await syncSkillsAndServices(updated.id, data.skillIds, data.serviceIds);

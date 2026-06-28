@@ -1,8 +1,9 @@
 "use client";
 
 import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
+import Link from "next/link";
 import { useActionState, useRef, useState } from "react";
-import { sendContactEnquiry } from "@/app/freelancers/[slug]/actions";
+import { sendContactEnquiry } from "@/app/experts/[slug]/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,16 +11,16 @@ import { Textarea } from "@/components/ui/textarea";
 import type { ContactFormState } from "@/lib/validations/contact";
 
 type Props = {
-  freelancerId: number;
-  freelancerName: string;
+  expertId: number;
+  expertName: string;
   turnstileSiteKey?: string;
 };
 
 const initialState: ContactFormState = {};
 
 export function ContactForm({
-  freelancerId,
-  freelancerName,
+  expertId,
+  expertName,
   turnstileSiteKey,
 }: Props) {
   const [state, formAction, pending] = useActionState(
@@ -36,8 +37,13 @@ export function ContactForm({
           Message sent!
         </p>
         <p className="mt-2 text-sm text-emerald-700">
-          Your enquiry to {freelancerName} has been delivered. Check your inbox
-          for a confirmation email — they can reply to you directly.
+          Your message to {expertName} has been sent. They&apos;ll be
+          notified and can reply to you here on AI Jobs Market. You can read and
+          continue the conversation from your{" "}
+          <Link href="/dashboard/conversations" className="font-medium underline">
+            dashboard
+          </Link>
+          .
         </p>
       </div>
     );
@@ -45,7 +51,7 @@ export function ContactForm({
 
   return (
     <form action={formAction} className="space-y-4">
-      <input type="hidden" name="freelancerId" value={freelancerId} />
+      <input type="hidden" name="expertId" value={expertId} />
       <input type="hidden" name="turnstileToken" value={turnstileToken} />
 
       {state.error && (
@@ -54,38 +60,26 @@ export function ContactForm({
         </p>
       )}
 
+      <p className="rounded-lg bg-surface px-4 py-3 text-sm text-muted">
+        This starts a conversation with {expertName} on AI Jobs Market.
+        You&apos;ll both be able to reply and continue the discussion from your
+        dashboard.
+      </p>
+
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="senderName">Your name *</Label>
-          <Input id="senderName" name="senderName" required />
-          {state.fieldErrors?.senderName && (
-            <p className="text-sm text-red-600">
-              {state.fieldErrors.senderName[0]}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="senderEmail">Your email *</Label>
-          <Input id="senderEmail" name="senderEmail" type="email" required />
-          {state.fieldErrors?.senderEmail && (
-            <p className="text-sm text-red-600">
-              {state.fieldErrors.senderEmail[0]}
-            </p>
-          )}
-        </div>
-
         <div className="space-y-2">
           <Label htmlFor="companyName">Company</Label>
           <Input id="companyName" name="companyName" />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="budget">Budget (optional)</Label>
+          <Label htmlFor="budget">Estimated budget (£)</Label>
           <Input
             id="budget"
             name="budget"
-            placeholder="e.g. £5,000–£10,000"
+            type="text"
+            inputMode="numeric"
+            placeholder="e.g. 15000"
           />
         </div>
       </div>
@@ -97,7 +91,7 @@ export function ContactForm({
           name="message"
           rows={5}
           required
-          placeholder={`Describe your project and what you're looking for from ${freelancerName}…`}
+          placeholder={`Describe your project and what you're looking for from ${expertName}…`}
         />
         {state.fieldErrors?.message && (
           <p className="text-sm text-red-600">{state.fieldErrors.message[0]}</p>
@@ -115,8 +109,9 @@ export function ContactForm({
       )}
 
       <p className="text-xs text-muted">
-        Your message is sent by email. AI Jobs Market does not process payments
-        or contracts — the expert replies directly to you.
+        Messages are kept on AI Jobs Market. We provide the communication
+        platform only — we don&apos;t handle contracts, project delivery or
+        payments between users.
       </p>
 
       <Button

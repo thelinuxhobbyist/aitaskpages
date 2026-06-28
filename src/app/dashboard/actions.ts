@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireUser } from "@/lib/auth";
+import { getAuthIdentity, requireUser } from "@/lib/auth";
 import { createProfile, updateProfile } from "@/lib/profiles";
 import {
   profileSchema,
@@ -13,6 +13,14 @@ export async function saveProfile(
   formData: FormData
 ): Promise<ProfileFormState> {
   const user = await requireUser();
+
+  const identity = await getAuthIdentity();
+  if (!identity?.emailVerified) {
+    return {
+      error:
+        "Please verify your email address before creating or editing your profile.",
+    };
+  }
 
   const raw = {
     fullName: formData.get("fullName"),

@@ -1,8 +1,32 @@
 import { z } from "zod";
 
 const optionalUrl = z.preprocess(
-  (val) => (val === "" || val === null || val === undefined ? undefined : val),
+  (val) => {
+    if (val === "" || val === null || val === undefined) return undefined;
+    const s = String(val).trim();
+    if (s === "") return undefined;
+    // Allow entering "mywebsite.com" without a scheme — default to https.
+    return /^https?:\/\//i.test(s) ? s : `https://${s}`;
+  },
   z.string().url("Invalid URL").optional()
+);
+
+// Profile image may be an app-served upload ("/api/images/…") or an external URL.
+const optionalImageUrl = z.preprocess(
+  (val) => {
+    if (val === "" || val === null || val === undefined) return undefined;
+    const s = String(val).trim();
+    if (s === "") return undefined;
+    if (s.startsWith("/")) return s; // uploaded image served by the worker
+    return /^https?:\/\//i.test(s) ? s : `https://${s}`;
+  },
+  z
+    .string()
+    .refine(
+      (s) => s.startsWith("/") || /^https?:\/\/.+/i.test(s),
+      "Invalid image URL"
+    )
+    .optional()
 );
 
 const optionalNumber = z.preprocess(
@@ -26,7 +50,7 @@ export const profileSchema = z.object({
   linkedinUrl: optionalUrl,
   githubUrl: optionalUrl,
   websiteUrl: optionalUrl,
-  profileImageUrl: optionalUrl,
+  profileImageUrl: optionalImageUrl,
   skillIds: z.array(z.coerce.number()).default([]),
   serviceIds: z.array(z.coerce.number()).default([]),
 });

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SignUpButton } from "@clerk/nextjs";
+import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,97 +9,75 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { createPageMetadata } from "@/lib/seo";
 import { Check } from "lucide-react";
 
-const freeFeatures = [
-  "Public expert profile in the directory",
-  "Listed in search results",
-  "Receive contact enquiries via email",
-  "Skills and services showcase",
-];
+export const metadata: Metadata = createPageMetadata({
+  title: "Join as an AI expert",
+  description:
+    "Join AI Jobs Market and list your profile in the UK's AI expert directory.",
+  path: "/join-as-expert",
+});
 
-const proFeatures = [
-  "Featured placement in search results",
-  "Priority ranking",
-  "Enhanced profile badge",
-  "Analytics dashboard",
+const features = [
+  "A public expert profile in the UK directory",
+  "Visibility in search results",
+  "Enquiries from businesses via your dashboard",
+  "Skills, services, and availability on your profile",
+  "Direct contact with clients — no platform fees on your work",
 ];
 
 export default function JoinAsExpertPage() {
   return (
     <>
       <section className="bg-primary-container text-on-primary-container">
-        <div className="mx-auto max-w-4xl px-4 py-12 text-center">
-          <h1 className="text-4xl font-medium tracking-tight md:text-5xl">
+        <div className="mx-auto max-w-3xl px-4 py-12 text-center md:py-16">
+          <h1 className="text-2xl font-medium tracking-tight md:text-3xl">
             Join as an AI Expert
           </h1>
-          <p className="mx-auto mt-3 max-w-2xl text-lg opacity-90">
-            Get discovered by UK businesses looking for AI freelancers and
-            consultants. This is a directory — not a marketplace. You keep 100%
-            of what you earn.
+          <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed opacity-90 md:text-lg">
+            List your profile on AI Jobs Market and connect with UK businesses
+            looking for AI expertise.
           </p>
         </div>
       </section>
 
-      <div className="mx-auto max-w-4xl px-4 py-12">
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="border-2 border-primary">
-          <CardHeader>
-            <CardTitle>Free</CardTitle>
-            <CardDescription>Everything you need to get started</CardDescription>
+      <div className="mx-auto max-w-lg px-4 py-12 md:py-14">
+        <Card className="md-elevation-1">
+          <CardHeader className="space-y-2 pb-2 text-center">
+            <CardTitle className="text-2xl">Get started</CardTitle>
+            <CardDescription className="text-base">
+              Sign up to create your expert profile. Here&apos;s what you&apos;ll
+              have access to:
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-3xl font-bold text-secondary">
-              £0
-              <span className="text-base font-normal text-muted">/month</span>
-            </p>
-            <ul className="space-y-2">
-              {freeFeatures.map((feature) => (
-                <li key={feature} className="flex items-start gap-2 text-sm">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-                  {feature}
+
+          <CardContent className="space-y-8 px-6 pb-8 pt-2 md:px-8">
+            <ul className="space-y-3">
+              {features.map((feature) => (
+                <li key={feature} className="flex items-start gap-3 text-sm md:text-base">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                    <Check className="h-3.5 w-3.5 text-primary" />
+                  </span>
+                  <span className="text-on-surface">{feature}</span>
                 </li>
               ))}
             </ul>
+
             <SignUpButton mode="redirect" forceRedirectUrl="/dashboard">
               <Button className="w-full" size="lg">
-                Sign up free
+                Sign up and create your profile
               </Button>
             </SignUpButton>
           </CardContent>
         </Card>
 
-        <Card className="opacity-75">
-          <CardHeader>
-            <CardTitle>Pro</CardTitle>
-            <CardDescription>Coming soon — no payment required today</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-3xl font-bold text-secondary">
-              TBC
-              <span className="text-base font-normal text-muted">/month</span>
-            </p>
-            <ul className="space-y-2">
-              {proFeatures.map((feature) => (
-                <li key={feature} className="flex items-start gap-2 text-sm text-muted">
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            <Button className="w-full" size="lg" variant="outline" disabled>
-              Coming soon
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <p className="mt-8 text-center text-sm text-muted">
-        Already have an account?{" "}
-        <Link href="/sign-in" className="font-medium text-primary hover:underline">
-          Sign in
-        </Link>
-      </p>
+        <p className="mt-8 text-center text-sm text-muted">
+          Already have an account?{" "}
+          <Link href="/sign-in" className="font-medium text-primary hover:underline">
+            Sign in
+          </Link>
+        </p>
       </div>
     </>
   );

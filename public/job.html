@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="site-footer.css">
   <script type="application/ld+json" id="job-schema">
   {
     "@context": "https://schema.org",
@@ -48,9 +49,8 @@
 <body>
   <header>
     <div class="header-container">
-      <a href="/" class="logo">
-        <i class="material-icons">groups</i>
-        AI Jobs Market
+      <a href="/" class="logo" aria-label="AI Jobs Market — home">
+        <img src="https://cdn.aijobsmarket.co.uk/images/colored-logo.png" alt="AI Jobs Market" class="logo-img">
       </a>
       <nav id="nav-menu">
         <a href="/">Experts</a>
@@ -73,34 +73,65 @@
     <div id="job"></div>
   </main>
 
-  <footer>
-    <div class="footer-container">
-      <div class="footer-section">
-        <h3>About AI Jobs Market</h3>
-        <p style="color: #d1d5db; margin-bottom: 1rem;">Your go-to platform for finding the best AI and machine learning job opportunities across the United Kingdom.</p>
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-brand-col">
+      <h2 class="footer-logo"><img src="https://cdn.aijobsmarket.co.uk/images/colored-logo.png" alt="AI Jobs Market" class="footer-logo-img"></h2>
+      <p class="footer-tagline">The UK's home for AI experts and AI jobs.</p>
+      <div class="footer-contact-info">
+        <span class="contact-label">Get in touch</span>
+        <a href="mailto:contact@aijobsmarket.co.uk" class="contact-email">contact@aijobsmarket.co.uk</a>
       </div>
-      <div class="footer-section">
-        <h3>Quick Links</h3>
-        <a href="ai-jobs-uk.html">All UK Jobs</a>
-        <a href="ai-jobs-london.html">London Jobs</a>
-        <a href="remote-ai-jobs-uk.html">Remote Jobs/a>
-        <a href="#contact">Contact</a>
+    </div>
+
+    <div class="footer-links-grid">
+      <div class="footer-col">
+        <h3>AI Experts</h3>
+        <ul>
+          <li><a href="/">Browse Experts</a></li>
+          <li><a href="/join-as-expert">Join as an Expert</a></li>
+          <li><a href="/dashboard">Dashboard</a></li>
+        </ul>
       </div>
-      <div class="footer-section">
-        <h3>Contact</h3>
-        <p style="color: #d1d5db; margin-bottom: 0.5rem;"><strong>Email:</strong> contact@aijobmarket.co.uk</p>
+
+      <div class="footer-col">
+        <h3>AI Jobs</h3>
+        <ul>
+          <li><a href="/jobs.html">Browse Jobs</a></li>
+          <li><a href="/ai-jobs-london.html">London Jobs</a></li>
+          <li><a href="/remote-ai-jobs-uk.html">Remote Jobs</a></li>
+        </ul>
       </div>
-      <div class="footer-section">
+
+      <div class="footer-col">
+        <h3>Company</h3>
+        <ul>
+          <li><a href="/about">About</a></li>
+          <li><a href="mailto:contact@aijobsmarket.co.uk">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
         <h3>Legal</h3>
-        <a href="#privacy">Privacy Policy</a>
-        <a href="#terms">Terms of Service</a>
-        <a href="#cookies">Cookie Policy</a>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="/cookies">Cookie Policy</a></li>
+          <li><a href="/disclaimer">Disclaimer</a></li>
+        </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 AI Jobs Market. All rights reserved. | <a href="#" style="color: #d1d5db;">Privacy Policy</a></p>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-container">
+      <p class="footer-disclaimer">
+        <strong>AI Jobs Market</strong> is an AI jobs board and expert directory. We provide a platform for businesses and independent AI professionals to connect and communicate. AI Jobs Market is not responsible for contracts, project delivery or payments between users. Any agreement is made directly between the client and the expert.
+      </p>
+      <div class="footer-copyright">&copy; 2026 AI Jobs Market. All rights reserved.</div>
     </div>
-  </footer>
+  </div>
+</footer>
 
   <script src="job.js"></script>
 </body>
