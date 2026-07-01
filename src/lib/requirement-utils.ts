@@ -17,9 +17,19 @@ export type BusinessType = (typeof BUSINESS_TYPES)[number]["value"];
 
 const LABELS = new Map(BUSINESS_TYPES.map((t) => [t.value, t.label]));
 
+/** Legacy fallback when older tasks have no company name stored. */
 export function getBusinessTypeLabel(value: string | null | undefined): string {
-  if (!value) return "Business";
-  return LABELS.get(value as BusinessType) ?? "Business";
+  if (!value) return "Company";
+  return LABELS.get(value as BusinessType) ?? "Company";
+}
+
+export function getRequirementCompanyLabel(
+  companyName: string | null | undefined,
+  businessType: string | null | undefined
+): string {
+  const trimmed = companyName?.trim();
+  if (trimmed) return trimmed;
+  return getBusinessTypeLabel(businessType);
 }
 
 export function truncateDescription(text: string, maxLength = 160): string {
@@ -42,8 +52,8 @@ export type PublicRequirementSummary = {
   id: number;
   title: string;
   descriptionExcerpt: string;
-  businessType: string;
-  businessTypeLabel: string;
+  /** Company name shown on public task listings. */
+  companyName: string;
   budget: string | null;
   location: string | null;
   remoteOk: boolean;
@@ -59,13 +69,11 @@ export function toPublicSummary(
     services: { service: { name: string } }[];
   }
 ): PublicRequirementSummary {
-  const businessType = req.businessType ?? "sme";
   return {
     id: req.id,
     title: req.title,
     descriptionExcerpt: truncateDescription(req.description),
-    businessType,
-    businessTypeLabel: getBusinessTypeLabel(businessType),
+    companyName: getRequirementCompanyLabel(req.companyName, req.businessType),
     budget: req.budget,
     location: req.location,
     remoteOk: req.remoteOk ?? false,

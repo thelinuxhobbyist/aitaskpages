@@ -57,6 +57,10 @@ export async function searchExperts(
     conditions.push(lte(expertProfiles.hourlyRate, filters.maxRate));
   }
 
+  if (filters.availability) {
+    conditions.push(eq(expertProfiles.availability, filters.availability));
+  }
+
   const profiles = await fetchPublicProfiles(conditions);
   const filtered = filterProfiles(profiles, filters);
   return rankProfiles(filtered);

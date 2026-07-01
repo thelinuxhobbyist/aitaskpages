@@ -25,7 +25,7 @@ export function ExpertSearchForm({
   variant = "full",
 }: Props) {
   const selectClass =
-    "flex h-10 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
+    "flex h-10 w-full rounded-md border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30";
 
   if (variant === "inline") {
     return (
@@ -68,15 +68,16 @@ export function ExpertSearchForm({
           <Button
             type="submit"
             size="lg"
+            variant="default"
             className="h-14 shrink-0 px-8 sm:w-auto"
           >
             Search experts
           </Button>
         </div>
-        <p className="mt-3 text-sm opacity-75">
+        <p className="mt-3 text-sm">
           <Link
             href="/search"
-            className="font-medium underline-offset-2 hover:underline"
+            className="font-medium text-on-primary-container underline decoration-on-primary-container/50 underline-offset-2 hover:decoration-on-primary-container"
           >
             Advanced search with filters
           </Link>
@@ -89,7 +90,7 @@ export function ExpertSearchForm({
     <form
       method="GET"
       action={action}
-      className="rounded-xl border border-border bg-surface p-5"
+      className="rounded-[6px] border border-border bg-surface p-5"
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-2 sm:col-span-2 lg:col-span-3">

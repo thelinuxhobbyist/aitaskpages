@@ -63,14 +63,14 @@ export async function saveRequirementAction(
       }
       revalidatePath("/dashboard/requirements");
       revalidatePath(`/dashboard/requirements/${existingId}`);
-      revalidatePath(`/requirements/${existingId}`);
-      revalidatePath("/requirements");
+      revalidatePath(`/tasks/${existingId}`);
+      revalidatePath("/tasks");
       redirectTo = `/dashboard/requirements/${existingId}`;
     } else {
       const id = await createRequirement(user.id, parsed.data, publish);
       revalidatePath("/dashboard/requirements");
-      revalidatePath(`/requirements/${id}`);
-      revalidatePath("/requirements");
+      revalidatePath(`/tasks/${id}`);
+      revalidatePath("/tasks");
       redirectTo = `/dashboard/requirements/${id}`;
     }
   } catch (err) {
@@ -91,8 +91,8 @@ export async function publishRequirementAction(
     await publishRequirement(requirementId, user.id);
     revalidatePath("/dashboard/requirements");
     revalidatePath(`/dashboard/requirements/${requirementId}`);
-    revalidatePath(`/requirements/${requirementId}`);
-    revalidatePath("/requirements");
+    revalidatePath(`/tasks/${requirementId}`);
+    revalidatePath("/tasks");
     return {};
   } catch (err) {
     return {
@@ -110,8 +110,8 @@ export async function closeRequirementAction(
     await closeRequirement(requirementId, user.id, status);
     revalidatePath("/dashboard/requirements");
     revalidatePath(`/dashboard/requirements/${requirementId}`);
-    revalidatePath(`/requirements/${requirementId}`);
-    revalidatePath("/requirements");
+    revalidatePath(`/tasks/${requirementId}`);
+    revalidatePath("/tasks");
     return {};
   } catch (err) {
     return {

@@ -21,7 +21,7 @@ import {
 import { publicExpertProfileConditions } from "@/lib/directory-filters";
 import { interestedExpertsUrl, requirementUrl } from "@/lib/site";
 import {
-  getBusinessTypeLabel,
+  getRequirementCompanyLabel,
   toPublicSummary,
   type PublicRequirementSummary,
 } from "@/lib/requirement-utils";
@@ -38,8 +38,6 @@ export type RequirementListItem = PublicRequirementSummary & {
   status: RequirementStatus;
   interestCount: number;
   hasInterest?: boolean;
-  /** Private — only shown in the business dashboard. */
-  companyName?: string | null;
 };
 
 export type InterestedExpert = {
@@ -93,15 +91,13 @@ async function syncRequirementTaxonomy(
 function toListItem(
   req: RequirementWithRelations,
   interestCount: number,
-  hasInterest?: boolean,
-  includePrivate = false
+  hasInterest?: boolean
 ): RequirementListItem {
   return {
     ...toPublicSummary(req),
     status: req.status,
     interestCount,
     hasInterest,
-    ...(includePrivate ? { companyName: req.companyName } : {}),
   };
 }
 
@@ -136,8 +132,8 @@ export async function createRequirement(
       clientUserId,
       title: data.title,
       description: data.description,
-      companyName: data.companyName || null,
-      businessType: data.businessType as Requirement["businessType"],
+      companyName: data.companyName.trim(),
+      businessType: "other",
       budget: data.budget || null,
       location: data.location || null,
       remoteOk: data.remoteOk,
@@ -176,8 +172,8 @@ export async function updateRequirement(
     .set({
       title: data.title,
       description: data.description,
-      companyName: data.companyName || null,
-      businessType: data.businessType as Requirement["businessType"],
+      companyName: data.companyName.trim(),
+      businessType: "other",
       budget: data.budget || null,
       location: data.location || null,
       remoteOk: data.remoteOk,
@@ -258,7 +254,7 @@ export async function getClientRequirements(
       .select({ count: sql<number>`count(*)` })
       .from(requirementInterests)
       .where(eq(requirementInterests.requirementId, row.id));
-    items.push(toListItem(row, countRow?.count ?? 0, undefined, true));
+    items.push(toListItem(row, countRow?.count ?? 0));
   }
   return items;
 }
@@ -565,7 +561,10 @@ export async function notifyMatchingExperts(requirementId: number): Promise<void
           to: expertUser.email,
           expertName: expert.fullName,
           requirementTitle: req.title,
-          businessTypeLabel: getBusinessTypeLabel(req.businessType),
+          companyName: getRequirementCompanyLabel(
+            req.companyName,
+            req.businessType
+          ),
           requirementUrl: requirementUrl(requirementId),
         });
       } catch (err) {

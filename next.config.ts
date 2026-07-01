@@ -15,6 +15,20 @@ const nextConfig: NextConfig = {
     serverMinification: false,
   },
   // Existing static job pages in public/ remain served at /index.html, /job.html, etc.
+  async redirects() {
+    return [
+      {
+        source: "/requirements",
+        destination: "/tasks",
+        permanent: true,
+      },
+      {
+        source: "/requirements/:path*",
+        destination: "/tasks/:path*",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

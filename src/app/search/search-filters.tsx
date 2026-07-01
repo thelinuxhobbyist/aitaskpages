@@ -51,6 +51,9 @@ export function SearchFiltersPanel({
 
   const fields = (
     <div className="space-y-7">
+      {current.sort && current.sort !== "match" && (
+        <input type="hidden" name="sort" value={current.sort} />
+      )}
       <FilterField id="filter-q" label="Keywords">
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
@@ -112,6 +115,36 @@ export function SearchFiltersPanel({
           ))}
         </datalist>
       </FilterField>
+
+      <FilterField id="filter-availability" label="Availability">
+        <select
+          id="filter-availability"
+          name="availability"
+          defaultValue={current.availability ?? ""}
+          className={selectClass}
+        >
+          <option value="">Any availability</option>
+          <option value="available">Available now</option>
+          <option value="limited">Limited availability</option>
+          <option value="unavailable">Not available</option>
+        </select>
+      </FilterField>
+
+      <div className="space-y-4 rounded-xl border border-dashed border-border/80 bg-surface-container/40 p-4">
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted">
+          More filters coming soon
+        </p>
+        <FilterField id="filter-experience" label="Experience">
+          <select id="filter-experience" disabled className={selectClass}>
+            <option>Any experience level</option>
+          </select>
+        </FilterField>
+        <FilterField id="filter-remote" label="Remote / On-site">
+          <select id="filter-remote" disabled className={selectClass}>
+            <option>Any work arrangement</option>
+          </select>
+        </FilterField>
+      </div>
 
       <div className="rounded-xl bg-surface-container/70 p-5">
         <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted">

@@ -9,8 +9,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/", label: "Experts" },
-  { href: "/requirements", label: "Requirements" },
+  { href: "/", label: "Home" },
+  { href: "/tasks", label: "Tasks" },
   { href: "/jobs.html", label: "Jobs" },
   { href: "/join-as-expert", label: "Join as Expert" },
 ];
@@ -20,16 +20,16 @@ export function Header() {
   const { isSignedIn } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-surface md-elevation-1">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-1.5 md:py-2">
+    <header className="sticky top-0 z-50 border-b border-border bg-surface/95 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 md:py-3">
         <BrandMark />
 
-        <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
+        <nav className="hidden items-center gap-0.5 text-sm font-medium md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-full px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+              className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
             >
               {link.label}
             </Link>
@@ -37,7 +37,7 @@ export function Header() {
           {isSignedIn && (
             <Link
               href="/dashboard"
-              className="rounded-full px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+              className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
             >
               Dashboard
             </Link>
@@ -46,14 +46,16 @@ export function Header() {
             <UserButton />
           ) : (
             <SignInButton mode="modal">
-              <Button size="sm">Sign in</Button>
+              <Button size="sm" className="ml-2">
+                Sign in
+              </Button>
             </SignInButton>
           )}
         </nav>
 
         <button
           type="button"
-          className="rounded-full p-2 text-on-surface md:hidden"
+          className="rounded-md p-2 text-on-surface md:hidden"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -67,12 +69,12 @@ export function Header() {
           open ? "block" : "hidden"
         )}
       >
-        <nav className="flex flex-col gap-1 px-4 py-3">
+        <nav className="flex flex-col gap-0.5 px-4 py-3">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
+              className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -81,7 +83,7 @@ export function Header() {
           {isSignedIn && (
             <Link
               href="/dashboard"
-              className="rounded-lg px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
+              className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
               onClick={() => setOpen(false)}
             >
               Dashboard

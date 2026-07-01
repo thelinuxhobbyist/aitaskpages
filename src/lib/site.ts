@@ -3,12 +3,18 @@ export const SITE_URL = "https://aijobsmarket.co.uk";
 export const SITE_LOGO_URL =
   "https://cdn.aijobsmarket.co.uk/images/colored-logo.png";
 
+export const SOCIAL_LINKS = {
+  linkedin: "https://www.linkedin.com/company/ai-jobs-market",
+  x: "https://twitter.com/aijobsmarket",
+  youtube: "https://www.youtube.com/@AIJobsMarket",
+} as const;
+
 export function conversationUrl(conversationId: number): string {
   return `${SITE_URL}/dashboard/conversations/${conversationId}`;
 }
 
 export function requirementUrl(requirementId: number): string {
-  return `${SITE_URL}/requirements/${requirementId}`;
+  return `${SITE_URL}/tasks/${requirementId}`;
 }
 
 /** @deprecated Use requirementUrl — public page is canonical. */

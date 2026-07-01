@@ -87,8 +87,7 @@ export default async function RequirementsPage() {
                   <div className="flex flex-wrap gap-4 text-sm text-muted">
                     <span className="flex items-center gap-1.5">
                       <Building2 className="h-4 w-4" />
-                      {req.businessTypeLabel}
-                      {req.companyName ? ` (${req.companyName})` : ""}
+                      {req.companyName}
                     </span>
                     {req.budget && (
                       <span className="flex items-center gap-1.5">

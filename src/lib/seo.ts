@@ -12,6 +12,7 @@ export const DEFAULT_DESCRIPTION =
 export const ORGANIZATION_SAME_AS = [
   "https://www.linkedin.com/company/ai-jobs-market",
   "https://twitter.com/aijobsmarket",
+  "https://www.youtube.com/@AIJobsMarket",
 ] as const;
 
 export const GA_MEASUREMENT_ID = "G-JRRZ1CWQH9";

@@ -1,92 +1,104 @@
 import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
+import { FooterSocialRow } from "@/components/footer-social-row";
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="site-footer w-full shrink-0">
-      <div className="footer-container">
-        <div className="footer-brand-col">
-          <div className="footer-logo">
-            <BrandMark size="footer" />
-          </div>
-          <p className="footer-tagline">
-            The UK&apos;s home for AI experts and AI jobs.
-          </p>
-          <div className="footer-contact-info">
-            <span className="contact-label">Get in touch</span>
-            <a
-              href="mailto:contact@aijobsmarket.co.uk"
-              className="contact-email"
-            >
-              contact@aijobsmarket.co.uk
-            </a>
-          </div>
-        </div>
+      <div className="footer-main">
+        <FooterSocialRow />
 
-        <div className="footer-links-grid">
-          <div className="footer-col">
-            <h3>AI Experts</h3>
-            <ul>
-              <li>
-                <Link href="/requirements">Browse Requirements</Link>
-              </li>
-              <li>
-                <Link href="/">Browse Experts</Link>
-              </li>
-              <li>
-                <Link href="/join-as-expert">Join as an Expert</Link>
-              </li>
-              <li>
-                <Link href="/dashboard">Dashboard</Link>
-              </li>
-            </ul>
+        <div className="footer-container">
+          <div className="footer-brand-col">
+            <div className="footer-logo">
+              <BrandMark size="footer" />
+            </div>
+            <p className="footer-tagline">
+              The UK&apos;s home for AI experts and AI jobs. Connect directly —
+              no commissions, no middlemen.
+            </p>
+            <div className="footer-contact-info">
+              <span className="contact-label">Get in touch</span>
+              <a
+                href="mailto:contact@aijobsmarket.co.uk"
+                className="contact-email"
+              >
+                contact@aijobsmarket.co.uk
+              </a>
+            </div>
           </div>
 
-          <div className="footer-col">
-            <h3>AI Jobs</h3>
-            <ul>
-              <li>
-                <a href="/jobs.html">Browse Jobs</a>
-              </li>
-              <li>
-                <a href="/ai-jobs-london.html">London Jobs</a>
-              </li>
-              <li>
-                <a href="/remote-ai-jobs-uk.html">Remote Jobs</a>
-              </li>
-            </ul>
-          </div>
+          <div className="footer-links-grid">
+            <div className="footer-col">
+              <h3>AI Experts</h3>
+              <ul>
+                <li>
+                  <Link href="/tasks">Browse Tasks</Link>
+                </li>
+                <li>
+                  <Link href="/">Browse Experts</Link>
+                </li>
+                <li>
+                  <Link href="/join-as-expert">Join as an Expert</Link>
+                </li>
+                <li>
+                  <Link href="/dashboard">Dashboard</Link>
+                </li>
+              </ul>
+            </div>
 
-          <div className="footer-col">
-            <h3>Company</h3>
-            <ul>
-              <li>
-                <Link href="/about">About</Link>
-              </li>
-              <li>
-                <a href="mailto:contact@aijobsmarket.co.uk">Contact</a>
-              </li>
-            </ul>
-          </div>
+            <div className="footer-col">
+              <h3>AI Jobs</h3>
+              <ul>
+                <li>
+                  <a href="/jobs.html">Browse Jobs</a>
+                </li>
+                <li>
+                  <a href="/ai-jobs-london.html">London Jobs</a>
+                </li>
+                <li>
+                  <a href="/remote-ai-jobs-uk.html">Remote Jobs</a>
+                </li>
+              </ul>
+            </div>
 
-          <div className="footer-col">
-            <h3>Legal</h3>
-            <ul>
-              <li>
-                <Link href="/privacy">Privacy Policy</Link>
-              </li>
-              <li>
-                <Link href="/terms">Terms of Service</Link>
-              </li>
-              <li>
-                <Link href="/cookies">Cookie Policy</Link>
-              </li>
-              <li>
-                <Link href="/disclaimer">Disclaimer</Link>
-              </li>
-            </ul>
+            <div className="footer-col">
+              <h3>Company</h3>
+              <ul>
+                <li>
+                  <Link href="/about">About</Link>
+                </li>
+                <li>
+                  <a href="mailto:contact@aijobsmarket.co.uk">Contact</a>
+                </li>
+              </ul>
+            </div>
+
+            <div className="footer-col">
+              <h3>Legal</h3>
+              <ul>
+                <li>
+                  <Link href="/privacy">Privacy Policy</Link>
+                </li>
+                <li>
+                  <Link href="/terms">Terms of Service</Link>
+                </li>
+                <li>
+                  <Link href="/cookies">Cookie Policy</Link>
+                </li>
+                <li>
+                  <Link href="/disclaimer">Disclaimer</Link>
+                </li>
+                <li>
+                  <Link href="/acceptable-use">Acceptable Use Policy</Link>
+                </li>
+                <li>
+                  <Link href="/expert-terms">AI Expert Terms</Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

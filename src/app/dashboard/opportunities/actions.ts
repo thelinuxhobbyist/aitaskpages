@@ -52,6 +52,6 @@ export async function expressInterestAction(
   }
 
   revalidatePath("/dashboard/opportunities");
-  revalidatePath(`/requirements/${parsed.data.requirementId}`);
+  revalidatePath(`/tasks/${parsed.data.requirementId}`);
   return { success: true };
 }

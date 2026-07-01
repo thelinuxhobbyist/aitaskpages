@@ -4,8 +4,13 @@ import {
   Brain,
   GraduationCap,
   Layers,
+  MessageSquare,
+  Percent,
+  Scale,
   Sparkles,
+  Users,
   Workflow,
+  Zap,
 } from "lucide-react";
 
 export type HomeCategory = {
@@ -58,33 +63,59 @@ export const HOME_CATEGORIES: HomeCategory[] = [
 export type HomeBenefit = {
   title: string;
   description: string;
+  icon: LucideIcon;
+  iconBg: string;
+  iconColor: string;
 };
 
 export const HOME_BENEFITS: HomeBenefit[] = [
   {
-    title: "UK-focused AI experts",
+    title: "UK AI Professionals",
     description:
-      "Consultants and specialists based across the United Kingdom, with remote options.",
+      "Hire experienced AI consultants and freelancers across the UK for remote or on-site work.",
+    icon: Users,
+    iconBg: "border-primary/20 bg-primary/5",
+    iconColor: "text-primary",
   },
   {
-    title: "Direct contact",
+    title: "Direct Contact",
     description:
-      "Reach experts directly through their profile — no middlemen in the conversation.",
+      "Speak directly with AI experts without recruiters or unnecessary intermediaries.",
+    icon: MessageSquare,
+    iconBg: "border-accent/30 bg-accent-muted",
+    iconColor: "text-accent",
   },
   {
-    title: "No marketplace commissions",
+    title: "No Platform Commission",
     description:
-      "We don't take a cut of your project. You agree terms directly with the expert.",
+      "We don't take a percentage of your project. Agree pricing directly with the expert.",
+    icon: Percent,
+    iconBg: "border-primary/20 bg-surface-container",
+    iconColor: "text-primary-light",
   },
   {
-    title: "You choose who to work with",
+    title: "Compare Before You Hire",
     description:
-      "Browse profiles, compare skills, and decide who is the right fit for your needs.",
+      "Review profiles, skills and experience before deciding who to work with.",
+    icon: Scale,
+    iconBg: "border-accent/30 bg-accent-muted",
+    iconColor: "text-accent",
   },
   {
-    title: "Specialists across AI disciplines",
+    title: "AI Specialists",
     description:
-      "From LLMs and chatbots to MLOps, strategy, and computer vision.",
+      "Experts in LLMs, AI Agents, RAG, Computer Vision, MLOps, NLP and more.",
+    icon: Brain,
+    iconBg: "border-primary/20 bg-primary/5",
+    iconColor: "text-primary",
+  },
+  {
+    title: "Fast Hiring",
+    description:
+      "Find, compare and contact AI professionals within minutes.",
+    icon: Zap,
+    iconBg: "border-accent/30 bg-accent-muted",
+    iconColor: "text-accent",
   },
 ];
 

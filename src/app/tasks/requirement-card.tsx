@@ -11,13 +11,23 @@ import type { PublicRequirementSummary } from "@/lib/requirement-utils";
 import { formatBudgetGBP, formatDateTime } from "@/lib/utils";
 import { Building2, MapPin, Wallet } from "lucide-react";
 
+const MAX_VISIBLE_TAGS = 3;
+
 export function RequirementCard({
   requirement,
+  showInterestStatus,
+  hasInterest,
 }: {
   requirement: PublicRequirementSummary;
+  showInterestStatus?: boolean;
+  hasInterest?: boolean;
 }) {
+  const allTags = [...requirement.skillNames, ...requirement.serviceNames];
+  const visibleTags = allTags.slice(0, MAX_VISIBLE_TAGS);
+  const hiddenCount = Math.max(0, allTags.length - MAX_VISIBLE_TAGS);
+
   return (
-    <Link href={`/requirements/${requirement.id}`} className="group block">
+    <Link href={`/tasks/${requirement.id}`} className="group block">
       <Card className="h-full transition-shadow hover:shadow-md group-hover:border-primary/30">
         <CardHeader className="space-y-2">
           <div className="flex flex-wrap items-start justify-between gap-3">
@@ -30,7 +40,7 @@ export function RequirementCard({
           </div>
           <CardDescription className="flex items-center gap-1.5 text-sm">
             <Building2 className="h-3.5 w-3.5" />
-            {requirement.businessTypeLabel}
+            {requirement.companyName}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-3">
@@ -53,19 +63,22 @@ export function RequirementCard({
             )}
           </div>
 
-          {(requirement.skillNames.length > 0 ||
-            requirement.serviceNames.length > 0) && (
+          {(visibleTags.length > 0 || showInterestStatus || hiddenCount > 0) && (
             <div className="flex flex-wrap gap-1.5">
-              {requirement.skillNames.map((name) => (
-                <Badge key={`skill-${name}`} variant="secondary">
+              {showInterestStatus &&
+                (hasInterest ? (
+                  <Badge variant="secondary">Interested</Badge>
+                ) : (
+                  <Badge variant="featured">New</Badge>
+                ))}
+              {visibleTags.map((name) => (
+                <Badge key={name} variant="secondary">
                   {name}
                 </Badge>
               ))}
-              {requirement.serviceNames.map((name) => (
-                <Badge key={`service-${name}`} variant="default">
-                  {name}
-                </Badge>
-              ))}
+              {hiddenCount > 0 && (
+                <Badge variant="secondary">+{hiddenCount} more</Badge>
+              )}
             </div>
           )}
         </CardContent>

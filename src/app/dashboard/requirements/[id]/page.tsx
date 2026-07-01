@@ -18,7 +18,7 @@ import { getRequirementById, getRequirementInterestCount } from "@/lib/requireme
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 import {
   formatRequirementLocation,
-  getBusinessTypeLabel,
+  getRequirementCompanyLabel,
 } from "@/lib/requirement-utils";
 import { formatBudgetGBP, formatDateTime } from "@/lib/utils";
 import { Building2, ExternalLink, MapPin, Users, Wallet } from "lucide-react";
@@ -89,7 +89,7 @@ export default async function RequirementDetailPage({ params }: Props) {
           {requirement.status === "open" && (
             <>
               <Button asChild variant="outline">
-                <Link href={`/requirements/${requirementId}`}>
+                <Link href={`/tasks/${requirementId}`}>
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Public page
                 </Link>
@@ -120,10 +120,10 @@ export default async function RequirementDetailPage({ params }: Props) {
             <div className="flex flex-wrap gap-4 text-sm text-muted">
               <span className="flex items-center gap-1.5">
                 <Building2 className="h-4 w-4" />
-                {getBusinessTypeLabel(requirement.businessType)}
-                {requirement.companyName
-                  ? ` · ref: ${requirement.companyName}`
-                  : ""}
+                {getRequirementCompanyLabel(
+                  requirement.companyName,
+                  requirement.businessType
+                )}
               </span>
               {requirement.budget && (
                 <span className="flex items-center gap-1.5">

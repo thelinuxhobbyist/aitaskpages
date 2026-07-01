@@ -1,23 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  /* Material Design 3 — mirrored from public/design-tokens.css */
-  --color-primary: #1a73e8;
-  --color-primary-dark: #1557b0;
-  --color-primary-light: #4285f4;
-  --color-primary-container: #d3e3fd;
-  --color-on-primary: #ffffff;
-  --color-on-primary-container: #041e49;
-  --color-secondary: #1a1c1e;
-  --color-on-surface: #1a1c1e;
-  --color-on-surface-variant: #444746;
-  --color-accent: #1a73e8;
-  --color-muted: #444746;
-  --color-border: #e1e3e1;
-  --color-outline: #c4c7c5;
-  --color-surface: #fdfbff;
-  --color-surface-container: #f0f4f8;
-  --color-surface-container-high: #e8eef3;
+  /* Warm editorial palette — charcoal actions, stone surfaces (not SaaS blue) */
+  --color-primary: #2c2825;
+  --color-primary-dark: #1a1714;
+  --color-primary-light: #44403c;
+  --color-primary-container: #ebe6dc;
+  --color-on-primary: #faf8f4;
+  --color-on-primary-container: #1a1917;
+  --color-secondary: #1a1917;
+  --color-on-surface: #1a1917;
+  --color-on-surface-variant: #4a4640;
+  --color-accent: #2c2825;
+  --color-muted: #6b6560;
+  --color-border: #d9d2c8;
+  --color-outline: #c4bdb3;
+  --color-surface: #faf8f4;
+  --color-surface-container: #f0ebe3;
+  --color-surface-container-high: #e6dfd4;
   --font-sans: "Roboto", system-ui, -apple-system, sans-serif;
   --font-heading: "Roboto", system-ui, sans-serif;
   --radius-md: 12px;
@@ -77,6 +77,62 @@
   padding: 80px 0 0 0;
   font-size: 15px;
   text-align: left;
+}
+
+.site-footer .footer-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.site-footer .footer-social-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 24px;
+}
+
+.site-footer .footer-social-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.site-footer .footer-social-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.site-footer .footer-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  color: var(--text-muted);
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.site-footer .footer-social-icon:hover {
+  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.site-footer .footer-social-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 0 0 48px 0;
 }
 
 .site-footer .footer-container {

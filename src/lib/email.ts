@@ -124,14 +124,14 @@ export async function sendNewRequirementMatchEmail(params: {
   to: string;
   expertName: string;
   requirementTitle: string;
-  businessTypeLabel: string;
+  companyName: string;
   requirementUrl: string;
 }) {
   const html = await render(
     NewRequirementMatchEmail({
       expertName: params.expertName,
       requirementTitle: params.requirementTitle,
-      businessTypeLabel: params.businessTypeLabel,
+      companyName: params.companyName,
       requirementUrl: params.requirementUrl,
     })
   );

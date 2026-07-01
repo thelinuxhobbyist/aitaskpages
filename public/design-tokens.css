@@ -2,30 +2,30 @@
  * Material Design 3 tokens — shared by static HTML (styles.css) and mirrored in Next.js globals.css
  */
 :root {
-  /* Primary — Google Material blue */
-  --md-primary: #1a73e8;
-  --md-on-primary: #ffffff;
-  --md-primary-container: #d3e3fd;
-  --md-on-primary-container: #041e49;
+  /* Warm editorial — charcoal actions, stone surfaces */
+  --md-primary: #2c2825;
+  --md-on-primary: #faf8f4;
+  --md-primary-container: #ebe6dc;
+  --md-on-primary-container: #1a1917;
 
   /* Surfaces */
-  --md-surface: #fdfbff;
-  --md-surface-container: #f0f4f8;
-  --md-surface-container-high: #e8eef3;
-  --md-on-surface: #1a1c1e;
-  --md-on-surface-variant: #444746;
+  --md-surface: #faf8f4;
+  --md-surface-container: #f0ebe3;
+  --md-surface-container-high: #e6dfd4;
+  --md-on-surface: #1a1917;
+  --md-on-surface-variant: #4a4640;
 
   /* Outline & status */
-  --md-outline: #c4c7c5;
-  --md-outline-variant: #e1e3e1;
+  --md-outline: #c4bdb3;
+  --md-outline-variant: #d9d2c8;
   --md-error: #b3261e;
 
   /* Legacy aliases (static pages + JS — do not rename) */
   --primary-color: var(--md-primary);
-  --primary-dark: #1557b0;
-  --primary-light: #4285f4;
+  --primary-dark: #1a1714;
+  --primary-light: #44403c;
   --secondary-color: var(--md-on-surface);
-  --accent-1: #1a73e8;
+  --accent-1: #2c2825;
   --accent-2: #f9ab00;
   --accent-3: #1e8e3e;
   --text-color: var(--md-on-surface);

@@ -10,7 +10,7 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: absoluteUrl("/"), changeFrequency: "daily", priority: 1 },
   { url: absoluteUrl("/search"), changeFrequency: "daily", priority: 0.9 },
   {
-    url: absoluteUrl("/requirements"),
+    url: absoluteUrl("/tasks"),
     changeFrequency: "daily",
     priority: 0.9,
   },
@@ -24,6 +24,16 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: absoluteUrl("/terms"), changeFrequency: "yearly", priority: 0.3 },
   { url: absoluteUrl("/cookies"), changeFrequency: "yearly", priority: 0.3 },
   { url: absoluteUrl("/disclaimer"), changeFrequency: "yearly", priority: 0.3 },
+  {
+    url: absoluteUrl("/acceptable-use"),
+    changeFrequency: "yearly",
+    priority: 0.3,
+  },
+  {
+    url: absoluteUrl("/expert-terms"),
+    changeFrequency: "yearly",
+    priority: 0.3,
+  },
   { url: absoluteUrl("/jobs.html"), changeFrequency: "daily", priority: 0.9 },
   {
     url: absoluteUrl("/ai-jobs-uk.html"),
@@ -57,7 +67,7 @@ async function getDynamicRoutes(): Promise<MetadataRoute.Sitemap> {
     }));
 
     const requirementRoutes: MetadataRoute.Sitemap = requirements.map((req) => ({
-      url: absoluteUrl(`/requirements/${req.id}`),
+      url: absoluteUrl(`/tasks/${req.id}`),
       lastModified: req.updatedAt ? new Date(req.updatedAt) : undefined,
       changeFrequency: "daily",
       priority: 0.75,

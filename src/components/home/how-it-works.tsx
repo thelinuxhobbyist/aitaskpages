@@ -3,7 +3,7 @@ import { Search, MessageSquare, Handshake } from "lucide-react";
 const STEPS = [
   {
     icon: Search,
-    title: "Search experts or post a requirement",
+    title: "Search experts or post a task",
     description:
       "Browse AI consultants across the UK, or describe your project and let matching experts come to you.",
   },

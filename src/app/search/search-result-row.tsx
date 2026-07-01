@@ -2,9 +2,33 @@ import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { AVAILABILITY_LABELS, type ProfileWithRelations } from "@/lib/profile-utils";
-import { ChevronRight, MapPin, Star } from "lucide-react";
+import { getProfileMatchLabels } from "@/lib/search-match-utils";
+import type { DirectoryFilters } from "@/lib/validations/directory";
+import { Check, ChevronRight, Code2, Globe, MapPin, Star } from "lucide-react";
 
-export function SearchResultRow({ profile }: { profile: ProfileWithRelations }) {
+type Props = {
+  profile: ProfileWithRelations;
+  filters: DirectoryFilters;
+  skillLabels: Map<string, string>;
+  serviceLabels: Map<string, string>;
+};
+
+export function SearchResultRow({
+  profile,
+  filters,
+  skillLabels,
+  serviceLabels,
+}: Props) {
+  const matches = getProfileMatchLabels(profile, filters, {
+    skills: skillLabels,
+    services: serviceLabels,
+  });
+
+  const summary =
+    profile.bio?.split("\n")[0]?.slice(0, 120) ??
+    profile.headline ??
+    "AI expert available for hire in the UK.";
+
   return (
     <Link
       href={`/experts/${profile.slug}`}
@@ -31,10 +55,12 @@ export function SearchResultRow({ profile }: { profile: ProfileWithRelations }) 
         </div>
 
         {profile.headline && (
-          <p className="mt-1 line-clamp-2 text-sm text-muted md:text-base">
+          <p className="mt-1 line-clamp-1 text-sm text-muted md:text-base">
             {profile.headline}
           </p>
         )}
+
+        <p className="mt-1 line-clamp-1 text-sm text-muted">{summary}</p>
 
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
           {profile.location && (
@@ -73,6 +99,42 @@ export function SearchResultRow({ profile }: { profile: ProfileWithRelations }) 
                 +{profile.skills.length - 5}
               </Badge>
             )}
+          </div>
+        )}
+
+        {(profile.githubUrl || profile.websiteUrl) && (
+          <div className="mt-3 flex flex-wrap gap-3 text-xs font-medium text-primary">
+            {profile.githubUrl && (
+              <span className="inline-flex items-center gap-1">
+                <Code2 className="h-3.5 w-3.5" />
+                GitHub
+              </span>
+            )}
+            {profile.websiteUrl && (
+              <span className="inline-flex items-center gap-1">
+                <Globe className="h-3.5 w-3.5" />
+                Website
+              </span>
+            )}
+          </div>
+        )}
+
+        {matches.length > 0 && (
+          <div className="mt-3 rounded-lg border border-primary/15 bg-primary/5 px-3 py-2">
+            <p className="text-xs font-semibold text-secondary">
+              Matches your search
+            </p>
+            <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
+              {matches.map((label) => (
+                <li
+                  key={label}
+                  className="flex items-center gap-1 text-xs text-muted"
+                >
+                  <Check className="h-3 w-3 text-emerald-600" />
+                  {label}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </div>

@@ -30,12 +30,13 @@ const features = [
 export default function JoinAsExpertPage() {
   return (
     <>
-      <section className="bg-primary-container text-on-primary-container">
-        <div className="mx-auto max-w-3xl px-4 py-12 text-center md:py-16">
-          <h1 className="text-2xl font-medium tracking-tight md:text-3xl">
+      <section className="relative overflow-hidden bg-primary text-on-primary">
+        <div className="relative mx-auto max-w-3xl px-4 py-12 text-center md:py-16">
+          <span className="brand-rule brand-rule-center mb-5 bg-accent" aria-hidden />
+          <h1 className="font-heading text-3xl tracking-tight md:text-4xl">
             Join as an AI Expert
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed opacity-90 md:text-lg">
+          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-on-primary/85 md:text-lg">
             List your profile on AI Jobs Market and connect with UK businesses
             looking for AI expertise.
           </p>
@@ -56,8 +57,8 @@ export default function JoinAsExpertPage() {
             <ul className="space-y-3">
               {features.map((feature) => (
                 <li key={feature} className="flex items-start gap-3 text-sm md:text-base">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <Check className="h-3.5 w-3.5 text-primary" />
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] border border-accent/30 bg-accent-muted">
+                    <Check className="h-3.5 w-3.5 text-accent" />
                   </span>
                   <span className="text-on-surface">{feature}</span>
                 </li>

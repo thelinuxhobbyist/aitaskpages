@@ -1,10 +1,4 @@
 import { z } from "zod";
-import { BUSINESS_TYPES } from "@/lib/requirement-utils";
-
-const businessTypeValues = BUSINESS_TYPES.map((t) => t.value) as [
-  string,
-  ...string[],
-];
 
 export const requirementSchema = z.object({
   title: z
@@ -15,9 +9,11 @@ export const requirementSchema = z.object({
     .string()
     .min(30, "Description must be at least 30 characters")
     .max(10000),
-  /** Private — never shown on public requirement pages. */
-  companyName: z.string().max(100).optional(),
-  businessType: z.enum(businessTypeValues),
+  companyName: z
+    .string()
+    .trim()
+    .min(2, "Company name is required")
+    .max(100, "Company name must be 100 characters or fewer"),
   budget: z.string().max(100).optional(),
   location: z.string().max(100).optional(),
   remoteOk: z.coerce.boolean().default(false),
@@ -63,8 +59,7 @@ export function parseRequirementFormData(formData: FormData) {
   return requirementSchema.safeParse({
     title: formData.get("title"),
     description: formData.get("description"),
-    companyName: formData.get("companyName") || undefined,
-    businessType: formData.get("businessType") || "sme",
+    companyName: formData.get("companyName"),
     budget: formData.get("budget") || undefined,
     location: formData.get("location") || undefined,
     remoteOk: parseRemoteOk(formData),

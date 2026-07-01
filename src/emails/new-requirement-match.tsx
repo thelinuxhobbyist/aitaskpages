@@ -11,33 +11,33 @@ import {
 type Props = {
   expertName: string;
   requirementTitle: string;
-  businessTypeLabel: string;
+  companyName: string;
   requirementUrl: string;
 };
 
 export default function NewRequirementMatchEmail({
   expertName,
   requirementTitle,
-  businessTypeLabel,
+  companyName,
   requirementUrl,
 }: Props) {
   return (
-    <EmailLayout preview={`New AI requirement matching your profile: ${requirementTitle}`}>
+    <EmailLayout preview={`New AI task matching your profile: ${requirementTitle}`}>
       <Heading style={heading}>New opportunity for you</Heading>
       <Text style={paragraph}>Hi {expertName},</Text>
       <Text style={paragraph}>
-        A new AI requirement matching your profile has been posted:
+        A new AI task matching your profile has been posted:
       </Text>
       <Text style={paragraph}>
         <strong>{requirementTitle}</strong>
-        {` — ${businessTypeLabel}`}
+        {` — ${companyName}`}
       </Text>
       <Text style={paragraph}>
         View the full details and express your interest.
       </Text>
 
       <Button style={button} href={requirementUrl}>
-        View Requirement
+        View task
       </Button>
     </EmailLayout>
   );

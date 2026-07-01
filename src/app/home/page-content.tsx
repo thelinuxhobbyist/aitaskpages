@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { ExpertCard } from "@/app/experts/expert-card";
+import { RequirementCard } from "@/app/tasks/requirement-card";
 import { ExpertSearchForm } from "@/app/experts/expert-search-form";
 import { FeaturedCategories } from "@/components/home/featured-categories";
 import { HowItWorks } from "@/components/home/how-it-works";
 import { JobPreviewCard } from "@/components/home/job-preview-card";
 import { JoinAsExpertCta } from "@/components/home/join-as-expert-cta";
 import { PlatformSection } from "@/components/home/platform-section";
-import { RequirementPreviewCard } from "@/components/home/requirement-preview-card";
 import { SectionEmptyState } from "@/components/home/section-empty-state";
 import { WhyChoose } from "@/components/home/why-choose";
 import { Button } from "@/components/ui/button";
@@ -27,19 +27,17 @@ export async function HomePage() {
 
   return (
     <>
-      {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section className="bg-primary-container text-on-primary-container">
         <div className="mx-auto max-w-6xl px-4 py-14 md:py-20">
           <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.12em] opacity-80">
-              AI Jobs Market
-            </p>
-            <h1 className="mt-2 text-3xl font-medium tracking-tight md:text-[2.75rem] md:leading-tight">
-              Find AI experts or post your AI requirement
+            <h1 className="text-3xl font-medium tracking-tight md:text-[2.75rem] md:leading-tight">
+              Find AI experts or post your AI task
             </h1>
             <p className="mt-4 text-lg leading-relaxed opacity-90 md:text-xl">
-              Search experienced AI consultants across the UK, or describe what
-              you need and let matching experts come to you.
+              Businesses can search AI experts directly or post an AI task.
+              Matching experts are notified and can express interest. You choose
+              who to contact — there are no commissions, contracts or payments
+              through the platform.
             </p>
           </div>
 
@@ -58,7 +56,7 @@ export async function HomePage() {
               className="border-primary/25 bg-white/70 text-on-primary-container hover:bg-white"
             >
               <Link href="/dashboard/requirements/new">
-                Post a requirement
+                Post a task
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -66,7 +64,6 @@ export async function HomePage() {
         </div>
       </section>
 
-      {/* ── Static + dynamic sections ─────────────────────────────────── */}
       <div className="mx-auto max-w-6xl space-y-16 px-4 py-14 md:space-y-20 md:py-16">
         <HowItWorks />
 
@@ -91,7 +88,7 @@ export async function HomePage() {
             <SectionEmptyState
               icon={Users}
               title="Featured experts coming soon"
-              description="We're curating our first group of AI specialists. In the meantime, browse the directory by category or post a requirement to attract the right experts."
+              description="We're curating our first group of AI specialists. In the meantime, browse the directory by category or post a task to attract the right experts."
               actionLabel="Browse all experts"
               actionHref="/search"
             />
@@ -99,24 +96,24 @@ export async function HomePage() {
         </PlatformSection>
 
         <PlatformSection
-          id="requirements"
-          title="Latest AI requirements"
+          id="tasks"
+          title="Latest AI tasks"
           description="Open projects from UK businesses looking for AI expertise."
-          browseHref="/requirements"
-          browseLabel="Browse all requirements"
+          browseHref="/tasks"
+          browseLabel="Browse all tasks"
         >
           {requirements.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2">
               {requirements.map((req) => (
-                <RequirementPreviewCard key={req.id} requirement={req} />
+                <RequirementCard key={req.id} requirement={req} />
               ))}
             </div>
           ) : (
             <SectionEmptyState
               icon={ClipboardList}
-              title="No AI requirements posted yet"
-              description="Be the first business to post an AI requirement. Describe your project and matching experts will be notified."
-              actionLabel="Post a requirement"
+              title="No AI tasks posted yet"
+              description="Be the first business to post an AI task. Describe your project and matching experts will be notified."
+              actionLabel="Post a task"
               actionHref="/dashboard/requirements/new"
             />
           )}

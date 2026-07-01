@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { BUSINESS_TYPES } from "@/lib/requirement-utils";
 import type { RequirementWithRelations } from "@/lib/requirements";
 import type { RequirementFormState } from "@/lib/validations/requirement";
 import type { Service, Skill } from "@/db/schema";
@@ -47,12 +46,12 @@ export function RequirementForm({ requirement, skills, services }: Props) {
       )}
 
       <p className="rounded-lg bg-surface px-4 py-3 text-sm text-muted">
-        Published requirements appear in the public{" "}
-        <Link href="/requirements" className="font-medium text-primary hover:underline">
-          Requirements directory
+        Published tasks appear in the public{" "}
+        <Link href="/tasks" className="font-medium text-primary hover:underline">
+          tasks directory
         </Link>
-        . Your company name and contact details are never shown — only a general
-        business category.
+        . Your company name is shown on the listing; personal contact details
+        are kept private until you choose to connect with an expert.
       </p>
 
       <div className="space-y-2">
@@ -86,39 +85,23 @@ export function RequirementForm({ requirement, skills, services }: Props) {
         )}
       </div>
 
+      <div className="space-y-2">
+        <Label htmlFor="companyName">Company name (shown publicly) *</Label>
+        <Input
+          id="companyName"
+          name="companyName"
+          required
+          placeholder="e.g. Acme Dental Ltd"
+          defaultValue={requirement?.companyName ?? ""}
+        />
+        {state.fieldErrors?.companyName && (
+          <p className="text-sm text-red-600">
+            {state.fieldErrors.companyName[0]}
+          </p>
+        )}
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="businessType">Business category (shown publicly) *</Label>
-          <select
-            id="businessType"
-            name="businessType"
-            required
-            defaultValue={requirement?.businessType ?? "sme"}
-            className="flex h-10 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            {BUSINESS_TYPES.map((type) => (
-              <option key={type.value} value={type.value}>
-                {type.label}
-              </option>
-            ))}
-          </select>
-          {state.fieldErrors?.businessType && (
-            <p className="text-sm text-red-600">
-              {state.fieldErrors.businessType[0]}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="companyName">Internal reference (optional, never public)</Label>
-          <Input
-            id="companyName"
-            name="companyName"
-            placeholder="For your own records only"
-            defaultValue={requirement?.companyName ?? ""}
-          />
-        </div>
-
         <div className="space-y-2">
           <Label htmlFor="budget">Estimated budget (£)</Label>
           <Input

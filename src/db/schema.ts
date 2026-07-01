@@ -342,8 +342,9 @@ export const requirements = sqliteTable(
       .references(() => users.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     description: text("description").notNull(),
+/** Company name shown on public task listings. Personal contact details stay private. */
     companyName: text("company_name"),
-    /** Anonymous category shown publicly — never the business's real name. */
+    /** Legacy category — superseded by company_name on public pages. */
     businessType: text("business_type", {
       enum: [
         "dental_practice",

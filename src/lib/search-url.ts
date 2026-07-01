@@ -16,6 +16,10 @@ export function buildSearchUrl(
     params.set("minRate", String(filters.minRate));
   if (filters.maxRate != null && omit !== "maxRate")
     params.set("maxRate", String(filters.maxRate));
+  if (filters.availability && omit !== "availability")
+    params.set("availability", filters.availability);
+  if (filters.sort && filters.sort !== "match" && omit !== "sort")
+    params.set("sort", filters.sort);
   const qs = params.toString();
   return qs ? `/search?${qs}` : "/search";
 }
@@ -72,6 +76,18 @@ export function getActiveFilters(
       key: "maxRate",
       label: `Up to £${filters.maxRate}/hr`,
       href: buildSearchUrl(filters, "maxRate"),
+    });
+  }
+  if (filters.availability) {
+    const labels: Record<string, string> = {
+      available: "Available now",
+      limited: "Limited availability",
+      unavailable: "Not available",
+    };
+    items.push({
+      key: "availability",
+      label: labels[filters.availability] ?? filters.availability,
+      href: buildSearchUrl(filters, "availability"),
     });
   }
 

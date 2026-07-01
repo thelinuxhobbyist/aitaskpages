@@ -42,8 +42,8 @@ export const config = {
     "/dashboard/:path*",
     "/__clerk/:path*",
     // Requirement pages call auth() for optional expert interest — not protected.
-    "/requirements",
-    "/requirements/:path*",
+    "/tasks",
+    "/tasks/:path*",
     // Profile pages need to know who is signed in (contact form is gated) and
     // their server actions POST back to these paths, so they need Clerk too.
     "/experts/:path*",
