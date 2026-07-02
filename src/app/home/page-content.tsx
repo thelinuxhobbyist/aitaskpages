@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ExpertCard } from "@/app/experts/expert-card";
-import { RequirementCard } from "@/app/tasks/requirement-card";
+import { RequirementCard, taskCardGridClassName } from "@/app/tasks/requirement-card";
 import { ExpertSearchForm } from "@/app/experts/expert-search-form";
 import { FeaturedCategories } from "@/components/home/featured-categories";
 import { HowItWorks } from "@/components/home/how-it-works";
@@ -31,13 +31,15 @@ export async function HomePage() {
         <div className="mx-auto max-w-6xl px-4 py-14 md:py-20">
           <div className="max-w-3xl">
             <h1 className="text-3xl font-medium tracking-tight md:text-[2.75rem] md:leading-tight">
-              Find AI experts or post your AI task
+              Find and hire AI experts in minutes.
             </h1>
-            <p className="mt-4 text-lg leading-relaxed opacity-90 md:text-xl">
-              Businesses can search AI experts directly or post an AI task.
-              Matching experts are notified and can express interest. You choose
-              who to contact — there are no commissions, contracts or payments
-              through the platform.
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-on-primary-container/90 md:text-xl">
+              Search experts directly or post your AI task. Get matched with
+              relevant specialists, review their profiles, and connect with the
+              ones you choose.
+            </p>
+            <p className="hero-benefits mt-5 text-sm font-medium text-on-primary-container md:mt-6 md:text-base">
+              No commissions • No contracts • No platform fees
             </p>
           </div>
 
@@ -103,7 +105,7 @@ export async function HomePage() {
           browseLabel="Browse all tasks"
         >
           {requirements.length > 0 ? (
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className={taskCardGridClassName}>
               {requirements.map((req) => (
                 <RequirementCard key={req.id} requirement={req} />
               ))}

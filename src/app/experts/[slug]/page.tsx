@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAuthIdentity, getOrCreateUser } from "@/lib/auth";
 import { getProfileBySlug, incrementProfileViews } from "@/lib/directory";
-import { AVAILABILITY_LABELS } from "@/lib/profile-utils";
+import { AVAILABILITY_LABELS, parseCustomSkills, parseCustomServices } from "@/lib/profile-utils";
 import { absoluteUrl, createPageMetadata, SITE_NAME } from "@/lib/seo";
 import { getTurnstileSiteKey } from "@/lib/turnstile";
 import {
@@ -71,6 +71,8 @@ export default async function ExpertProfilePage({ params }: PageProps) {
   const isOwner = !!viewer && viewer.id === profile.userId;
   const turnstileSiteKey = getTurnstileSiteKey();
   const profilePath = `/experts/${profile.slug}`;
+  const customSkills = parseCustomSkills(profile.customSkills);
+  const customServices = parseCustomServices(profile.customServices);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -82,7 +84,10 @@ export default async function ExpertProfilePage({ params }: PageProps) {
     ...(profile.location && {
       address: { "@type": "PostalAddress", addressLocality: profile.location },
     }),
-    knowsAbout: profile.skills.map((s) => s.skill.name),
+    knowsAbout: [
+      ...profile.skills.map((s) => s.skill.name),
+      ...customSkills,
+    ],
     worksFor: {
       "@type": "Organization",
       name: SITE_NAME,
@@ -211,33 +216,53 @@ export default async function ExpertProfilePage({ params }: PageProps) {
           </ProfileSection>
         )}
 
-        {profile.skills.length > 0 && (
-          <ProfileSection title="Skills">
-            <div className="flex flex-wrap gap-1.5">
-              {profile.skills.map(({ skill }) => (
-                <Link key={skill.id} href={`/search?skill=${skill.slug}`}>
-                  <Badge variant="secondary" className="hover:bg-stone-200">
-                    {skill.name}
-                  </Badge>
-                </Link>
-              ))}
-            </div>
-          </ProfileSection>
-        )}
+      {(profile.skills.length > 0 || customSkills.length > 0) && (
+        <ProfileSection title="Skills">
+          <div className="flex flex-wrap gap-1.5">
+            {profile.skills.map(({ skill }) => (
+              <Link key={skill.id} href={`/search?skill=${skill.slug}`}>
+                <Badge variant="secondary" className="hover:bg-stone-200">
+                  {skill.name}
+                </Badge>
+              </Link>
+            ))}
+            {customSkills.map((name) => (
+              <Link
+                key={name}
+                href={`/search?q=${encodeURIComponent(name)}`}
+              >
+                <Badge variant="secondary" className="hover:bg-stone-200">
+                  {name}
+                </Badge>
+              </Link>
+            ))}
+          </div>
+        </ProfileSection>
+      )}
 
-        {profile.services.length > 0 && (
-          <ProfileSection title="Services">
-            <div className="flex flex-wrap gap-1.5">
-              {profile.services.map(({ service }) => (
-                <Link key={service.id} href={`/search?service=${service.slug}`}>
-                  <Badge variant="default" className="hover:bg-stone-200">
-                    {service.name}
-                  </Badge>
-                </Link>
-              ))}
-            </div>
-          </ProfileSection>
-        )}
+      {profile.services.length > 0 || customServices.length > 0 ? (
+        <ProfileSection title="Services">
+          <div className="flex flex-wrap gap-1.5">
+            {profile.services.map(({ service }) => (
+              <Link key={service.id} href={`/search?service=${service.slug}`}>
+                <Badge variant="default" className="hover:bg-stone-200">
+                  {service.name}
+                </Badge>
+              </Link>
+            ))}
+            {customServices.map((name) => (
+              <Link
+                key={name}
+                href={`/search?q=${encodeURIComponent(name)}`}
+              >
+                <Badge variant="default" className="hover:bg-stone-200">
+                  {name}
+                </Badge>
+              </Link>
+            ))}
+          </div>
+        </ProfileSection>
+      ) : null}
 
         <section className="mt-8 border-t border-border pt-8">
           <h2 className="text-lg font-semibold text-secondary">

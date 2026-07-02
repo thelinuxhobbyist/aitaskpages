@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { AVAILABILITY_LABELS, type ProfileWithRelations } from "@/lib/profile-utils";
+import { AVAILABILITY_LABELS, parseCustomSkills, type ProfileWithRelations } from "@/lib/profile-utils";
 import { getProfileMatchLabels } from "@/lib/search-match-utils";
 import type { DirectoryFilters } from "@/lib/validations/directory";
 import { Check, ChevronRight, Code2, Globe, MapPin, Star } from "lucide-react";
@@ -28,6 +28,11 @@ export function SearchResultRow({
     profile.bio?.split("\n")[0]?.slice(0, 120) ??
     profile.headline ??
     "AI expert available for hire in the UK.";
+
+  const customSkills = parseCustomSkills(profile.customSkills);
+  const catalogSkills = profile.skills.slice(0, 5);
+  const extraCatalog = Math.max(0, profile.skills.length - catalogSkills.length);
+  const customShown = customSkills.slice(0, Math.max(0, 5 - catalogSkills.length));
 
   return (
     <Link
@@ -87,16 +92,21 @@ export function SearchResultRow({
           )}
         </div>
 
-        {profile.skills.length > 0 && (
+        {(catalogSkills.length > 0 || customShown.length > 0) && (
           <div className="mt-3 flex flex-wrap gap-1.5">
-            {profile.skills.slice(0, 5).map(({ skill }) => (
+            {catalogSkills.map(({ skill }) => (
               <Badge key={skill.id} variant="secondary" className="text-xs">
                 {skill.name}
               </Badge>
             ))}
-            {profile.skills.length > 5 && (
+            {customShown.map((name) => (
+              <Badge key={name} variant="secondary" className="text-xs">
+                {name}
+              </Badge>
+            ))}
+            {(extraCatalog > 0 || customSkills.length > customShown.length) && (
               <Badge variant="secondary" className="text-xs">
-                +{profile.skills.length - 5}
+                +{extraCatalog + customSkills.length - customShown.length}
               </Badge>
             )}
           </div>

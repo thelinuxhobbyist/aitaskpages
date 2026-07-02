@@ -1,5 +1,7 @@
 import {
   compareProfiles,
+  parseCustomSkills,
+  parseCustomServices,
   type ProfileWithRelations,
 } from "@/lib/profile-utils";
 import type { DirectoryFilters } from "@/lib/validations/directory";
@@ -41,7 +43,13 @@ export function getProfileMatchLabels(
       profile.fullName.toLowerCase().includes(q) ||
       profile.headline?.toLowerCase().includes(q) ||
       profile.bio?.toLowerCase().includes(q) ||
-      profile.skills.some((s) => s.skill.name.toLowerCase().includes(q));
+      profile.skills.some((s) => s.skill.name.toLowerCase().includes(q)) ||
+      parseCustomSkills(profile.customSkills).some((name) =>
+        name.toLowerCase().includes(q)
+      ) ||
+      parseCustomServices(profile.customServices).some((name) =>
+        name.toLowerCase().includes(q)
+      );
     if (inProfile) {
       matches.push(`"${filters.q.trim()}"`);
     }

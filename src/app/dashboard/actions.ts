@@ -35,6 +35,8 @@ export async function saveProfile(
     profileImageUrl: formData.get("profileImageUrl") ?? "",
     skillIds: formData.getAll("skillIds"),
     serviceIds: formData.getAll("serviceIds"),
+    customSkills: formData.getAll("customSkills"),
+    customServices: formData.getAll("customServices"),
   };
 
   const parsed = profileSchema.safeParse(raw);

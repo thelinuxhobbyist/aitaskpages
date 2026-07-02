@@ -41,9 +41,46 @@ export default async function DashboardPage() {
   const openRequirements = clientRequirements.filter(
     (r) => r.status === "open"
   ).length;
+  const isNewUser = !profile && clientRequirements.length === 0;
 
   return (
     <>
+      {isNewUser && (
+        <Card className="mb-8 border-primary/25 bg-primary-container/40">
+          <CardHeader>
+            <CardTitle>Welcome — how would you like to get started?</CardTitle>
+            <CardDescription>
+              AI Jobs Market connects UK businesses with AI experts. Pick the
+              path that fits you.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-2">
+            <Link
+              href="/dashboard/requirements/new"
+              className="group rounded-xl border border-border bg-surface p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
+            >
+              <p className="font-semibold text-secondary group-hover:text-primary">
+                I need AI help
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                Post a task and get matched with relevant experts.
+              </p>
+            </Link>
+            <a
+              href="#profile-form"
+              className="group rounded-xl border border-border bg-surface p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
+            >
+              <p className="font-semibold text-secondary group-hover:text-primary">
+                I&apos;m an AI expert
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                Create your profile so businesses can find and contact you.
+              </p>
+            </a>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Link href="/dashboard/requirements" className="group">
           <Card className="h-full transition-shadow group-hover:shadow-md group-hover:border-primary/30">
@@ -149,7 +186,7 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      <Card>
+      <Card id="profile-form">
         <CardHeader>
           <CardTitle>{profile ? "Edit profile" : "Create your profile"}</CardTitle>
           <CardDescription>

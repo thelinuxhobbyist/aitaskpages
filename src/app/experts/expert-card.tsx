@@ -8,10 +8,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AVAILABILITY_LABELS, type ProfileWithRelations } from "@/lib/profile-utils";
+import { AVAILABILITY_LABELS, parseCustomSkills, type ProfileWithRelations } from "@/lib/profile-utils";
 import { MapPin, Star } from "lucide-react";
 
 export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
+  const customSkills = parseCustomSkills(profile.customSkills);
+  const catalogSkills = profile.skills.slice(0, 4);
+  const extraCatalog = Math.max(0, profile.skills.length - catalogSkills.length);
+  const customShown = customSkills.slice(0, Math.max(0, 4 - catalogSkills.length));
+
   return (
     <Link href={`/experts/${profile.slug}`} className="group block">
       <Card className="h-full transition-shadow hover:shadow-md group-hover:border-primary/30">
@@ -68,15 +73,24 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
             )}
           </div>
 
-          {profile.skills.length > 0 && (
+          {(catalogSkills.length > 0 || customShown.length > 0) && (
             <div className="flex flex-wrap gap-1.5">
-              {profile.skills.slice(0, 4).map(({ skill }) => (
+              {catalogSkills.map(({ skill }) => (
                 <Badge key={skill.id} variant="secondary">
                   {skill.name}
                 </Badge>
               ))}
-              {profile.skills.length > 4 && (
-                <Badge variant="secondary">+{profile.skills.length - 4}</Badge>
+              {customShown.map((name) => (
+                <Badge key={name} variant="secondary">
+                  {name}
+                </Badge>
+              ))}
+              {(extraCatalog > 0 || customSkills.length > customShown.length) && (
+                <Badge variant="secondary">
+                  +
+                  {extraCatalog + customSkills.length - customShown.length}{" "}
+                  more
+                </Badge>
               )}
             </div>
           )}

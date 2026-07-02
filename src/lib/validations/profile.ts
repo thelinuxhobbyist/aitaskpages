@@ -34,6 +34,23 @@ const optionalNumber = z.preprocess(
   z.coerce.number().int().min(0).max(10000).optional()
 );
 
+function normalizeCustomTags(values: string[], max: number): string[] {
+  const seen = new Set<string>();
+  const normalized: string[] = [];
+
+  for (const raw of values) {
+    const name = raw.trim().replace(/\s+/g, " ");
+    if (name.length < 2 || name.length > 50) continue;
+    const key = name.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    normalized.push(name);
+    if (normalized.length >= max) break;
+  }
+
+  return normalized;
+}
+
 export const profileSchema = z.object({
   fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
   headline: z.string().max(120).optional(),
@@ -53,6 +70,14 @@ export const profileSchema = z.object({
   profileImageUrl: optionalImageUrl,
   skillIds: z.array(z.coerce.number()).default([]),
   serviceIds: z.array(z.coerce.number()).default([]),
+  customSkills: z
+    .array(z.string())
+    .default([])
+    .transform((values) => normalizeCustomTags(values, 10)),
+  customServices: z
+    .array(z.string())
+    .default([])
+    .transform((values) => normalizeCustomTags(values, 10)),
 });
 
 export type ProfileFormData = z.infer<typeof profileSchema>;

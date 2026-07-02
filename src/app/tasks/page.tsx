@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { RequirementCard } from "@/app/tasks/requirement-card";
+import { RequirementCard, taskCardGridClassName } from "@/app/tasks/requirement-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getOpenRequirements } from "@/lib/requirements";
@@ -73,7 +73,7 @@ export default async function RequirementsDirectoryPage() {
               {requirements.length} open task
               {requirements.length !== 1 ? "s" : ""} · newest first
             </p>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className={taskCardGridClassName}>
               {requirements.map((req) => (
                 <RequirementCard key={req.id} requirement={req} />
               ))}

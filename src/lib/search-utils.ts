@@ -1,4 +1,5 @@
 import type { ProfileWithRelations } from "@/lib/profile-utils";
+import { parseCustomSkills, parseCustomServices } from "@/lib/profile-utils";
 import type { DirectoryFilters } from "@/lib/validations/directory";
 
 /** Words ignored when matching free-text search — keeps queries like "in London" natural. */
@@ -34,7 +35,9 @@ export function profileHaystack(profile: ProfileWithRelations): string {
     profile.bio,
     profile.location,
     ...profile.skills.map((s) => s.skill.name),
+    ...parseCustomSkills(profile.customSkills),
     ...profile.services.map((s) => s.service.name),
+    ...parseCustomServices(profile.customServices),
   ]
     .filter(Boolean)
     .join(" ")

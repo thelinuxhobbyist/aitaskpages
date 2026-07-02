@@ -33,6 +33,10 @@ function emptyToNull(value: string | number | undefined): string | number | null
   return value;
 }
 
+function serializeCustomTags(values: string[]): string | null {
+  return values.length > 0 ? JSON.stringify(values) : null;
+}
+
 async function syncSkillsAndServices(
   expertId: number,
   skillIds: number[],
@@ -80,6 +84,8 @@ export async function createProfile(userId: number, data: ProfileFormData) {
       githubUrl: emptyToNull(data.githubUrl) as string | null,
       websiteUrl: emptyToNull(data.websiteUrl) as string | null,
       profileImageUrl: emptyToNull(data.profileImageUrl) as string | null,
+      customSkills: serializeCustomTags(data.customSkills),
+      customServices: serializeCustomTags(data.customServices),
       status: "approved",
       updatedAt: now,
     })
@@ -115,6 +121,8 @@ export async function updateProfile(
       githubUrl: emptyToNull(data.githubUrl) as string | null,
       websiteUrl: emptyToNull(data.websiteUrl) as string | null,
       profileImageUrl: emptyToNull(data.profileImageUrl) as string | null,
+      customSkills: serializeCustomTags(data.customSkills),
+      customServices: serializeCustomTags(data.customServices),
       updatedAt: now,
     })
     .where(eq(expertProfiles.id, profile.id))

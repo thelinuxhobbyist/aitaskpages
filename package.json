@@ -17,12 +17,15 @@
     "db:migrate:remote": "wrangler d1 migrations apply aijobsmarket_db --remote",
     "db:seed:local": "tsx src/db/seed.ts --local",
     "db:seed:remote": "tsx src/db/seed.ts --remote",
+    "db:seed:tasks:local": "tsx src/db/seed-tasks.ts --local",
+    "db:seed:tasks:remote": "tsx src/db/seed-tasks.ts --remote",
     "db:studio": "drizzle-kit studio",
     "pages:build": "npm run build",
     "pages:deploy": "npm run build && opennextjs-cloudflare deploy",
     "pages:preview": "npm run build && opennextjs-cloudflare preview",
     "deploy": "npm run build && opennextjs-cloudflare deploy -- --keep-vars",
     "secret:put": "wrangler versions secret put CLERK_SECRET_KEY",
+    "secret:put:webhook": "wrangler versions secret put CLERK_WEBHOOK_SIGNING_SECRET",
     "secret:list": "wrangler versions secret list"
   },
   "dependencies": {

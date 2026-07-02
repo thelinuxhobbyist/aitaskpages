@@ -4,4 +4,4 @@
  * build env var is missing or set to "".
  */
 export const CLERK_PUBLISHABLE_KEY =
-  "pk_test_aG9uZXN0LW1hY2tlcmVsLTgzLmNsZXJrLmFjY291bnRzLmRldiQ";
+  "pk_live_Y2xlcmsuYWlqb2JzbWFya2V0LmNvLnVrJA";

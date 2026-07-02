@@ -10,12 +10,8 @@ type Props = {
 };
 
 export async function RequirementInterestPanel({ requirementId }: Props) {
-  const [user, identity] = await Promise.all([
-    getOrCreateUser(),
-    getAuthIdentity(),
-  ]);
-
-  if (!user) {
+  const identity = await getAuthIdentity();
+  if (!identity) {
     return (
       <div className="rounded-[1.125rem] border border-border/80 bg-slate-50/80 px-6 py-8">
         <h2 className="text-lg font-semibold text-secondary">
@@ -32,6 +28,19 @@ export async function RequirementInterestPanel({ requirementId }: Props) {
             Sign in as an expert
           </Link>
         </Button>
+      </div>
+    );
+  }
+
+  const user = await getOrCreateUser();
+  if (!user) {
+    return (
+      <div className="rounded-[1.125rem] border border-amber-200 bg-amber-50 px-6 py-6 text-sm text-amber-900">
+        You&apos;re signed in, but your account is still syncing.{" "}
+        <Link href="/account/setup" className="font-medium underline">
+          Finish setup
+        </Link>{" "}
+        or try again in a moment.
       </div>
     );
   }
@@ -60,7 +69,7 @@ export async function RequirementInterestPanel({ requirementId }: Props) {
     );
   }
 
-  if (!identity?.emailVerified) {
+  if (!identity.emailVerified) {
     return (
       <div className="rounded-[1.125rem] border border-amber-200 bg-amber-50 px-6 py-6 text-sm text-amber-900">
         Verify your email address before expressing interest.

@@ -45,11 +45,16 @@ export function Header() {
           {isSignedIn ? (
             <UserButton />
           ) : (
-            <SignInButton mode="modal">
-              <Button size="sm" className="ml-2">
-                Sign in
+            <div className="ml-2 flex items-center gap-2">
+              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                <Button size="sm" variant="ghost">
+                  Sign in
+                </Button>
+              </SignInButton>
+              <Button size="sm" asChild>
+                <Link href="/sign-up">Sign up</Link>
               </Button>
-            </SignInButton>
+            </div>
           )}
         </nav>
 
@@ -90,11 +95,18 @@ export function Header() {
             </Link>
           )}
           {!isSignedIn && (
-            <SignInButton mode="modal">
-              <Button size="sm" className="mt-2 w-full">
-                Sign in
+            <div className="mt-2 flex flex-col gap-2">
+              <SignInButton mode="modal" forceRedirectUrl="/dashboard">
+                <Button size="sm" variant="outline" className="w-full">
+                  Sign in
+                </Button>
+              </SignInButton>
+              <Button size="sm" asChild>
+                <Link href="/sign-up" onClick={() => setOpen(false)}>
+                  Sign up
+                </Link>
               </Button>
-            </SignInButton>
+            </div>
           )}
         </nav>
       </div>

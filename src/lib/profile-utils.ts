@@ -1,5 +1,26 @@
 import type { ExpertProfile, Service, Skill } from "@/db/schema";
 
+export const MAX_CUSTOM_SKILLS = 10;
+export const MAX_CUSTOM_SERVICES = 10;
+
+/** Parse a JSON string array stored on expert profiles. */
+function parseCustomTags(raw: string | null | undefined): string[] {
+  if (!raw?.trim()) return [];
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((item): item is string => typeof item === "string")
+      .map((s) => s.trim())
+      .filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+export const parseCustomSkills = parseCustomTags;
+export const parseCustomServices = parseCustomTags;
+
 export type ProfileWithRelations = ExpertProfile & {
   skills: { skill: Skill }[];
   services: { service: Service }[];
@@ -18,8 +39,8 @@ const PROFILE_CHECKS: ProfileCheck[] = [
   { label: "Add your location", check: (p) => !!p.location?.trim() },
   { label: "Set your hourly rate", check: (p) => p.hourlyRate != null },
   { label: "Set your availability", check: (p) => !!p.availability },
-  { label: "Add at least one skill", check: (p) => p.skills.length > 0 },
-  { label: "Add at least one service", check: (p) => p.services.length > 0 },
+  { label: "Add at least one skill", check: (p) => p.skills.length > 0 || parseCustomSkills(p.customSkills).length > 0 },
+  { label: "Add at least one service", check: (p) => p.services.length > 0 || parseCustomServices(p.customServices).length > 0 },
   {
     label: "Add a LinkedIn, GitHub, or website link",
     check: (p) =>

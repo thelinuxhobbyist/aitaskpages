@@ -87,6 +87,10 @@ export const expertProfiles = sqliteTable(
       .default("approved"),
     /** Reserved for future monetisation — not used in MVP */
     featured: integer("featured", { mode: "boolean" }).notNull().default(false),
+    /** JSON array of skill names not in the global skills catalog */
+    customSkills: text("custom_skills"),
+    /** JSON array of service names not in the global services catalog */
+    customServices: text("custom_services"),
     createdAt: text("created_at")
       .notNull()
       .default(sql`(datetime('now'))`),

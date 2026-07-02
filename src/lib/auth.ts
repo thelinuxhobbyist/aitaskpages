@@ -1,21 +1,61 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 import { getDb } from "@/db/client";
 import { users } from "@/db/schema";
 import {
   applyPendingMarketingOptIn,
   displayNameFromClerk,
   primaryEmailFromClerk,
-  syncUserFromClerkSession,
   upsertUserFromClerk,
+  type ClerkUserPayload,
 } from "@/lib/clerk-sync";
 import { syncClerkEnvToProcess } from "@/lib/clerk-env";
 import { sendWelcomeEmail, isEmailConfigured } from "@/lib/email";
 import { MARKETING_OPT_IN_COOKIE } from "@/lib/marketing-preferences";
 
-async function getUserWithProfile(clerkUserId: string) {
+type SafeAuth = {
+  userId: string | null;
+  sessionClaims: Record<string, unknown> | null;
+};
+
+async function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  fallback: T
+): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<T>((resolve) => {
+        timeoutId = setTimeout(() => resolve(fallback), ms);
+      }),
+    ]);
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
+
+/** auth() only works on routes listed in middleware — never throw to callers. */
+async function safeGetAuth(): Promise<SafeAuth> {
+  try {
+    await syncClerkEnvToProcess();
+    const result = await auth();
+    const sessionClaims =
+      result.sessionClaims && typeof result.sessionClaims === "object"
+        ? (result.sessionClaims as Record<string, unknown>)
+        : null;
+    return { userId: result.userId ?? null, sessionClaims };
+  } catch (err) {
+    console.error("Clerk auth() failed (route may be outside middleware matcher):", err);
+    return { userId: null, sessionClaims: null };
+  }
+}
+
+async function fetchUserWithProfile(clerkUserId: string) {
   const db = await getDb();
   return db.query.users.findFirst({
     where: eq(users.clerkUserId, clerkUserId),
@@ -30,100 +70,108 @@ async function getUserWithProfile(clerkUserId: string) {
   });
 }
 
-/** Returns the D1 user row. Creates it only if the Clerk webhook has not run yet. */
-export async function getOrCreateUser() {
-  await syncClerkEnvToProcess();
-  const { userId } = await auth();
-  if (!userId) return null;
+const getUserWithProfile = cache(fetchUserWithProfile);
 
-  const clerkUser = await currentUser();
+function payloadFromSessionClaims(
+  userId: string,
+  claims: Record<string, unknown>
+): ClerkUserPayload | null {
   const email =
-    primaryEmailFromClerk({
-      id: userId,
-      first_name: clerkUser?.firstName,
-      last_name: clerkUser?.lastName,
-      username: clerkUser?.username,
-      primary_email_address_id: clerkUser?.primaryEmailAddressId,
-      email_addresses: clerkUser?.emailAddresses?.map((e) => ({
-        id: e.id,
-        email_address: e.emailAddress,
-      })),
-    }) ?? clerkUser?.emailAddresses[0]?.emailAddress;
+    (typeof claims.email === "string" && claims.email) ||
+    (typeof claims.primary_email_address === "string" &&
+      claims.primary_email_address) ||
+    null;
 
   if (!email) return null;
 
-  const name = displayNameFromClerk({
+  return {
     id: userId,
-    first_name: clerkUser?.firstName,
-    last_name: clerkUser?.lastName,
-    username: clerkUser?.username,
-    email_addresses: clerkUser?.emailAddresses?.map((e) => ({
-      id: e.id,
-      email_address: e.emailAddress,
-    })),
-  });
+    first_name:
+      typeof claims.first_name === "string" ? claims.first_name : null,
+    last_name: typeof claims.last_name === "string" ? claims.last_name : null,
+    username: typeof claims.username === "string" ? claims.username : null,
+    primary_email_address_id: null,
+    email_addresses: [{ id: "session", email_address: email }],
+  };
+}
+
+async function fetchClerkPayload(
+  userId: string,
+  sessionClaims: Record<string, unknown> | null | undefined
+): Promise<ClerkUserPayload | null> {
+  if (sessionClaims) {
+    const fromClaims = payloadFromSessionClaims(userId, sessionClaims);
+    if (fromClaims) return fromClaims;
+  }
+
+  try {
+    await syncClerkEnvToProcess();
+    const client = await clerkClient();
+    const user = await withTimeout(client.users.getUser(userId), 4000, null);
+    if (!user) return null;
+    return {
+      id: user.id,
+      first_name: user.firstName,
+      last_name: user.lastName,
+      username: user.username,
+      primary_email_address_id: user.primaryEmailAddressId,
+      email_addresses: user.emailAddresses.map((e) => ({
+        id: e.id,
+        email_address: e.emailAddress,
+      })),
+    };
+  } catch (err) {
+    console.error("Clerk Backend API user fetch failed:", err);
+    return null;
+  }
+}
+
+/** Returns the D1 user row. Webhook is primary; API fallback on first sign-in. */
+export const getOrCreateUser = cache(async () => {
+  const { userId, sessionClaims } = await safeGetAuth();
+  if (!userId) return null;
 
   let existing = await getUserWithProfile(userId);
+  if (existing?.deletedAt) return null;
+  if (existing) return existing;
 
-  if (existing?.deletedAt) {
+  const payload = await fetchClerkPayload(userId, sessionClaims);
+  const email = payload ? primaryEmailFromClerk(payload) : null;
+  if (!email || !payload) {
+    console.error("No email for Clerk user (webhook/API sync failed):", userId);
     return null;
   }
 
-  if (existing) {
-    // Webhook is the source of truth for create/update; session sync is a light fallback.
-    await syncUserFromClerkSession(userId, email, name);
-    existing = await getUserWithProfile(userId);
-  } else {
-    const cookieStore = await cookies();
-    const pendingOptIn =
-      cookieStore.get(MARKETING_OPT_IN_COOKIE)?.value === "1";
+  const cookieStore = await cookies();
+  const pendingOptIn =
+    cookieStore.get(MARKETING_OPT_IN_COOKIE)?.value === "1";
 
-    // Fallback when user.created webhook is delayed or failed.
-    await upsertUserFromClerk(
-      {
-        id: userId,
-        first_name: clerkUser?.firstName,
-        last_name: clerkUser?.lastName,
-        username: clerkUser?.username,
-        primary_email_address_id: clerkUser?.primaryEmailAddressId,
-        email_addresses: clerkUser?.emailAddresses?.map((e) => ({
-          id: e.id,
-          email_address: e.emailAddress,
-        })),
-      },
-      { marketingOptIn: pendingOptIn }
-    );
+  await upsertUserFromClerk(payload, { marketingOptIn: pendingOptIn });
 
-    if (pendingOptIn) {
-      cookieStore.delete(MARKETING_OPT_IN_COOKIE);
-    }
-
-    if (isEmailConfigured()) {
-      sendWelcomeEmail({
-        to: email,
-        name: clerkUser?.firstName ?? undefined,
-      }).catch((err) => console.error("Welcome email failed:", err));
-    }
-
-    existing = await getUserWithProfile(userId);
+  if (pendingOptIn) {
+    cookieStore.delete(MARKETING_OPT_IN_COOKIE);
   }
 
-  if (existing && !existing.marketingOptIn) {
-    const cookieStore = await cookies();
-    if (cookieStore.get(MARKETING_OPT_IN_COOKIE)?.value === "1") {
-      await applyPendingMarketingOptIn(existing.id);
-      cookieStore.delete(MARKETING_OPT_IN_COOKIE);
-      existing = await getUserWithProfile(userId);
-    }
+  if (isEmailConfigured()) {
+    sendWelcomeEmail({
+      to: email,
+      name: payload.first_name ?? undefined,
+    }).catch((err) => console.error("Welcome email failed:", err));
+  }
+
+  existing = await getUserWithProfile(userId);
+
+  if (existing && !existing.marketingOptIn && pendingOptIn) {
+    await applyPendingMarketingOptIn(existing.id);
+    cookieStore.delete(MARKETING_OPT_IN_COOKIE);
+    existing = await getUserWithProfile(userId);
   }
 
   return existing ?? null;
-}
+});
 
-/** Returns the Clerk user id if signed in, otherwise null. Never redirects. */
 export async function getAuthUserId() {
-  await syncClerkEnvToProcess();
-  const { userId } = await auth();
+  const { userId } = await safeGetAuth();
   return userId;
 }
 
@@ -134,40 +182,52 @@ export type AuthIdentity = {
   emailVerified: boolean;
 };
 
-/**
- * Resolves the signed-in user's identity + email verification status from Clerk.
- * Returns null when signed out. Never redirects.
- */
-export async function getAuthIdentity(): Promise<AuthIdentity | null> {
-  await syncClerkEnvToProcess();
-  const { userId } = await auth();
+export const getAuthIdentity = cache(async (): Promise<AuthIdentity | null> => {
+  const { userId, sessionClaims } = await safeGetAuth();
   if (!userId) return null;
 
-  const account = await currentUser();
-  const primary =
-    account?.emailAddresses?.find(
-      (e) => e.id === account.primaryEmailAddressId
-    ) ?? account?.emailAddresses?.[0];
+  const emailVerified =
+    typeof sessionClaims?.email_verified === "boolean"
+      ? sessionClaims.email_verified
+      : true;
 
-  const email = primary?.emailAddress ?? null;
-  const emailVerified = primary?.verification?.status === "verified";
-  const name =
-    [account?.firstName, account?.lastName].filter(Boolean).join(" ") ||
-    account?.username ||
-    email ||
-    "";
+  const dbUser = await getUserWithProfile(userId);
+  if (dbUser && !dbUser.deletedAt) {
+    return {
+      userId,
+      email: dbUser.email,
+      name: dbUser.name ?? dbUser.email,
+      emailVerified,
+    };
+  }
 
-  return { userId, email, name, emailVerified };
+  const payload = sessionClaims
+    ? payloadFromSessionClaims(userId, sessionClaims)
+    : null;
+  if (payload) {
+    const email = primaryEmailFromClerk(payload);
+    return {
+      userId,
+      email,
+      name: displayNameFromClerk(payload) || email || "",
+      emailVerified,
+    };
+  }
+
+  return { userId, email: null, name: "", emailVerified: false };
+});
+
+export async function requireSignedIn() {
+  const userId = await getAuthUserId();
+  if (!userId) redirect("/sign-in");
+  return userId;
 }
 
-/** Requires an authenticated user; redirects to sign-in if missing. */
-export async function requireUser() {
-  await syncClerkEnvToProcess();
-  const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
+export const requireUser = cache(async () => {
+  await requireSignedIn();
 
   const user = await getOrCreateUser();
-  if (!user) redirect("/sign-in");
+  if (!user) redirect("/account/setup");
 
   return user;
-}
+});

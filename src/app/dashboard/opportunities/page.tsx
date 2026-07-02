@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { RequirementCard } from "@/app/tasks/requirement-card";
+import { RequirementCard, taskCardGridClassName } from "@/app/tasks/requirement-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth";
@@ -59,7 +59,7 @@ export default async function OpportunitiesPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className={taskCardGridClassName}>
           {newOpportunities.length > 0 && (
             <p className="col-span-full flex items-center gap-2 text-sm font-medium text-secondary">
               <Sparkles className="h-4 w-4 text-primary" />

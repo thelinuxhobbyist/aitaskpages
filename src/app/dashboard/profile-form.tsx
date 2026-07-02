@@ -3,11 +3,14 @@
 import { useActionState } from "react";
 import { saveProfile } from "@/app/dashboard/actions";
 import { AvatarUpload } from "@/app/dashboard/avatar-upload";
+import { CustomSkillsField } from "@/app/dashboard/custom-skills-field";
+import { CustomServicesField } from "@/app/dashboard/custom-services-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProfileFormState } from "@/lib/validations/profile";
+import { parseCustomSkills, parseCustomServices } from "@/lib/profile-utils";
 import type { ExpertProfile, Service, Skill } from "@/db/schema";
 
 type ProfileWithRelations = ExpertProfile & {
@@ -185,6 +188,9 @@ export function ProfileForm({ profile, skills, services }: Props) {
             </label>
           ))}
         </div>
+        <CustomSkillsField
+          initialSkills={parseCustomSkills(profile?.customSkills)}
+        />
       </fieldset>
 
       <fieldset className="space-y-3">
@@ -206,6 +212,9 @@ export function ProfileForm({ profile, skills, services }: Props) {
             </label>
           ))}
         </div>
+        <CustomServicesField
+          initialServices={parseCustomServices(profile?.customServices)}
+        />
       </fieldset>
 
       <Button type="submit" disabled={pending}>
