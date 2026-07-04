@@ -5,6 +5,7 @@ import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { BrandMark } from "@/components/brand-mark";
+import { ExternalPrefetchLink } from "@/components/external-prefetch-link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -31,18 +32,27 @@ export function Header() {
         <BrandMark />
 
         <nav className="hidden items-center gap-0.5 text-sm font-medium md:flex">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
-              {...("external" in link && link.external
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) =>
+            "external" in link && link.external ? (
+              <ExternalPrefetchLink
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+              >
+                {link.label}
+              </ExternalPrefetchLink>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
           {isSignedIn && (
             <Link
               href="/dashboard"
@@ -84,19 +94,29 @@ export function Header() {
         )}
       >
         <nav className="flex flex-col gap-0.5 px-4 py-3">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
-              onClick={() => setOpen(false)}
-              {...("external" in link && link.external
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) =>
+            "external" in link && link.external ? (
+              <ExternalPrefetchLink
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </ExternalPrefetchLink>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
+                onClick={() => setOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
           {isSignedIn && (
             <Link
               href="/dashboard"

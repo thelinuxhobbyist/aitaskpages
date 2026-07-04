@@ -65,8 +65,6 @@ export async function HomePage() {
               </Link>
             </Button>
             <ExternalPrefetchLink
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-on-primary-container/90 underline-offset-4 hover:text-on-primary-container hover:underline"
             >
               <Sparkles className="h-4 w-4" />

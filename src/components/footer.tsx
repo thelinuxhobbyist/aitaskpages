@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
+import { ExternalPrefetchLink } from "@/components/external-prefetch-link";
 import { FooterSocialRow } from "@/components/footer-social-row";
 
 export function Footer() {
@@ -71,13 +72,12 @@ export function Footer() {
                   <Link href="/about">About</Link>
                 </li>
                 <li>
-                  <a
-                    href="https://finder.aijobsmarket.co.uk"
+                  <ExternalPrefetchLink
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     AI Software Finder
-                  </a>
+                  </ExternalPrefetchLink>
                 </li>
                 <li>
                   <a href="mailto:contact@aijobsmarket.co.uk">Contact</a>
