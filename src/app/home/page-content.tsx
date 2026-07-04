@@ -8,13 +8,14 @@ import { JobPreviewCard } from "@/components/home/job-preview-card";
 import { JoinAsExpertCta } from "@/components/home/join-as-expert-cta";
 import { PlatformSection } from "@/components/home/platform-section";
 import { SectionEmptyState } from "@/components/home/section-empty-state";
+import { SoftwareFinderCta } from "@/components/home/software-finder-cta";
 import { WhyChoose } from "@/components/home/why-choose";
 import { Button } from "@/components/ui/button";
 import { getFeaturedExperts } from "@/lib/directory";
 import { getLatestJobs } from "@/lib/jobs";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 import { getLatestOpenRequirements } from "@/lib/requirements";
-import { ArrowRight, Briefcase, ClipboardList, Users } from "lucide-react";
+import { ArrowRight, Briefcase, ClipboardList, Sparkles, Users } from "lucide-react";
 
 export async function HomePage() {
   const [experts, requirements, jobs, skills, services] = await Promise.all([
@@ -50,7 +51,7 @@ export async function HomePage() {
             locations={[]}
           />
 
-          <div className="mt-6 max-w-3xl">
+          <div className="mt-6 flex max-w-3xl flex-wrap items-center gap-3">
             <Button
               asChild
               variant="outline"
@@ -62,6 +63,15 @@ export async function HomePage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
+            <a
+              href="https://finder.aijobsmarket.co.uk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-medium text-on-primary-container/90 underline-offset-4 hover:text-on-primary-container hover:underline"
+            >
+              <Sparkles className="h-4 w-4" />
+              Looking for AI software? Try our AI Software Finder
+            </a>
           </div>
         </div>
       </section>
@@ -144,6 +154,8 @@ export async function HomePage() {
             />
           )}
         </PlatformSection>
+
+        <SoftwareFinderCta />
 
         <JoinAsExpertCta />
       </div>

@@ -71,6 +71,15 @@ export function Footer() {
                   <Link href="/about">About</Link>
                 </li>
                 <li>
+                  <a
+                    href="https://finder.aijobsmarket.co.uk"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    AI Software Finder
+                  </a>
+                </li>
+                <li>
                   <a href="mailto:contact@aijobsmarket.co.uk">Contact</a>
                 </li>
               </ul>

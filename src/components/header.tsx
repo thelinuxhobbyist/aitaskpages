@@ -8,16 +8,22 @@ import { BrandMark } from "@/components/brand-mark";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const links = [
+const publicLinks = [
   { href: "/", label: "Home" },
   { href: "/tasks", label: "Tasks" },
   { href: "/jobs.html", label: "Jobs" },
+  { href: "https://finder.aijobsmarket.co.uk", label: "Software Finder", external: true },
+];
+
+const guestLinks = [
+  ...publicLinks,
   { href: "/join-as-expert", label: "Join as Expert" },
 ];
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const { isSignedIn } = useAuth();
+  const links = isSignedIn ? publicLinks : guestLinks;
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-surface/95 backdrop-blur-sm">
@@ -30,6 +36,9 @@ export function Header() {
               key={link.href}
               href={link.href}
               className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+              {...("external" in link && link.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
             >
               {link.label}
             </Link>
@@ -81,6 +90,9 @@ export function Header() {
               href={link.href}
               className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
               onClick={() => setOpen(false)}
+              {...("external" in link && link.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
             >
               {link.label}
             </Link>
