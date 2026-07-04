@@ -8,6 +8,7 @@ import { JobPreviewCard } from "@/components/home/job-preview-card";
 import { JoinAsExpertCta } from "@/components/home/join-as-expert-cta";
 import { PlatformSection } from "@/components/home/platform-section";
 import { SectionEmptyState } from "@/components/home/section-empty-state";
+import { ExternalPrefetchLink } from "@/components/external-prefetch-link";
 import { SoftwareFinderCta } from "@/components/home/software-finder-cta";
 import { WhyChoose } from "@/components/home/why-choose";
 import { Button } from "@/components/ui/button";
@@ -63,15 +64,14 @@ export async function HomePage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <a
-              href="https://finder.aijobsmarket.co.uk"
+            <ExternalPrefetchLink
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-on-primary-container/90 underline-offset-4 hover:text-on-primary-container hover:underline"
             >
               <Sparkles className="h-4 w-4" />
               Looking for AI software? Try our AI Software Finder
-            </a>
+            </ExternalPrefetchLink>
           </div>
         </div>
       </section>

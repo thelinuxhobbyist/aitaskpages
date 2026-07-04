@@ -1,3 +1,4 @@
+import { ExternalPrefetchLink } from "@/components/external-prefetch-link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -20,14 +21,10 @@ export function SoftwareFinderCta() {
           guesswork.
         </p>
         <Button asChild size="lg" className="mt-6">
-          <a
-            href="https://finder.aijobsmarket.co.uk"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <ExternalPrefetchLink target="_blank" rel="noopener noreferrer">
             Open AI Software Finder
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </ExternalPrefetchLink>
         </Button>
       </div>
     </section>
