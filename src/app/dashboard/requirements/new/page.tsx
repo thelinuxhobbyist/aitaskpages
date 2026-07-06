@@ -8,15 +8,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getAuthIdentity, requireUser } from "@/lib/auth";
+import { decodeFinderTaskDraft } from "@/lib/finder-task-draft";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 
 export const metadata: Metadata = {
   title: "Post Requirement | Dashboard | AI Jobs Market",
 };
 
-export default async function NewRequirementPage() {
+type Props = {
+  searchParams: Promise<{ from?: string; draft?: string }>;
+};
+
+export default async function NewRequirementPage({ searchParams }: Props) {
   await requireUser();
   const identity = await getAuthIdentity();
+  const { draft: draftParam, from } = await searchParams;
+  const finderDraft =
+    from === "finder" && draftParam ? decodeFinderTaskDraft(draftParam) : null;
+
   const [skills, services] = await Promise.all([
     getAllSkills(),
     getAllServices(),
@@ -27,8 +36,9 @@ export default async function NewRequirementPage() {
       <CardHeader>
         <CardTitle>Post a requirement</CardTitle>
         <CardDescription>
-          Describe the AI expertise you need. Matching experts will be notified
-          when you publish.
+          {finderDraft
+            ? "Your project brief was pre-filled from AI Software Finder. Review the details below, then publish when ready."
+            : "Describe the AI expertise you need. Matching experts will be notified when you publish."}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -37,7 +47,11 @@ export default async function NewRequirementPage() {
             Verify your email before posting requirements.
           </p>
         ) : (
-          <RequirementForm skills={skills} services={services} />
+          <RequirementForm
+            skills={skills}
+            services={services}
+            finderDraft={finderDraft}
+          />
         )}
       </CardContent>
     </Card>

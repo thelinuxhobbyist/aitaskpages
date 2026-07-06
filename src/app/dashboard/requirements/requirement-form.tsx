@@ -2,24 +2,29 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { RequirementCustomSkillsField } from "@/app/dashboard/requirement-custom-skills-field";
 import { saveRequirementAction } from "@/app/dashboard/requirements/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { RequirementWithRelations } from "@/lib/requirements";
+import type { FinderTaskDraft } from "@/lib/finder-task-draft";
+import { parseCustomSkillsFromDraft } from "@/lib/finder-task-draft";
 import type { RequirementFormState } from "@/lib/validations/requirement";
+import { parseCustomSkills } from "@/lib/profile-utils";
 import type { Service, Skill } from "@/db/schema";
 
 type Props = {
   requirement?: RequirementWithRelations | null;
   skills: Skill[];
   services: Service[];
+  finderDraft?: FinderTaskDraft | null;
 };
 
 const initialState: RequirementFormState = {};
 
-export function RequirementForm({ requirement, skills, services }: Props) {
+export function RequirementForm({ requirement, skills, services, finderDraft }: Props) {
   const [state, formAction, pending] = useActionState(
     saveRequirementAction,
     initialState
@@ -32,6 +37,11 @@ export function RequirementForm({ requirement, skills, services }: Props) {
   const selectedServiceIds = new Set(
     requirement?.services.map((s) => s.service.id) ?? []
   );
+  const initialCustomSkills = requirement
+    ? parseCustomSkills(requirement.customSkills)
+    : finderDraft
+      ? parseCustomSkillsFromDraft(finderDraft.customSkills)
+      : [];
 
   return (
     <form action={formAction} className="space-y-6">
@@ -54,6 +64,14 @@ export function RequirementForm({ requirement, skills, services }: Props) {
         are kept private until you choose to connect with an expert.
       </p>
 
+      {finderDraft && (
+        <p className="rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-foreground">
+          Imported from AI Software Finder. Most of your project brief is already
+          filled in — review the title and description, add your company name, then
+          publish.
+        </p>
+      )}
+
       <div className="space-y-2">
         <Label htmlFor="title">Title *</Label>
         <Input
@@ -61,7 +79,7 @@ export function RequirementForm({ requirement, skills, services }: Props) {
           name="title"
           required
           placeholder="e.g. LLM fine-tuning for customer support chatbot"
-          defaultValue={requirement?.title ?? ""}
+          defaultValue={requirement?.title ?? finderDraft?.title ?? ""}
         />
         {state.fieldErrors?.title && (
           <p className="text-sm text-red-600">{state.fieldErrors.title[0]}</p>
@@ -76,7 +94,7 @@ export function RequirementForm({ requirement, skills, services }: Props) {
           rows={8}
           required
           placeholder="Describe what you need, timeline, technical context, and any constraints…"
-          defaultValue={requirement?.description ?? ""}
+          defaultValue={requirement?.description ?? finderDraft?.description ?? ""}
         />
         {state.fieldErrors?.description && (
           <p className="text-sm text-red-600">
@@ -92,7 +110,7 @@ export function RequirementForm({ requirement, skills, services }: Props) {
           name="companyName"
           required
           placeholder="e.g. Acme Dental Ltd"
-          defaultValue={requirement?.companyName ?? ""}
+          defaultValue={requirement?.companyName ?? finderDraft?.companyName ?? ""}
         />
         {state.fieldErrors?.companyName && (
           <p className="text-sm text-red-600">
@@ -127,7 +145,7 @@ export function RequirementForm({ requirement, skills, services }: Props) {
             type="checkbox"
             id="remoteOk"
             name="remoteOk"
-            defaultChecked={requirement?.remoteOk ?? false}
+            defaultChecked={requirement?.remoteOk ?? finderDraft?.remoteOk ?? false}
             className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
           />
           <Label htmlFor="remoteOk" className="font-normal">
@@ -160,6 +178,7 @@ export function RequirementForm({ requirement, skills, services }: Props) {
             </label>
           ))}
         </div>
+        <RequirementCustomSkillsField initialSkills={initialCustomSkills} />
       </fieldset>
 
       <fieldset className="space-y-3">
