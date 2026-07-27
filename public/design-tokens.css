@@ -1,53 +1,52 @@
 /**
- * Material Design 3 tokens — shared by static HTML (styles.css) and mirrored in Next.js globals.css
+ * Design tokens — shared by static HTML (styles.css) and mirrored in Next.js globals.css
  */
 :root {
-  /* Warm editorial — charcoal actions, stone surfaces */
-  --md-primary: #2c2825;
-  --md-on-primary: #faf8f4;
-  --md-primary-container: #ebe6dc;
-  --md-on-primary-container: #1a1917;
+  --md-primary: oklch(17% 0.02 250);
+  --md-on-primary: oklch(97% 0.005 106);
+  --md-primary-container: oklch(95.5% 0.006 106);
+  --md-on-primary-container: oklch(19% 0.015 250);
 
-  /* Surfaces */
-  --md-surface: #faf8f4;
-  --md-surface-container: #f0ebe3;
-  --md-surface-container-high: #e6dfd4;
-  --md-on-surface: #1a1917;
-  --md-on-surface-variant: #4a4640;
+  --md-surface: oklch(98.5% 0.004 106);
+  --md-surface-container: oklch(95.5% 0.006 106);
+  --md-surface-container-high: oklch(93% 0.006 106);
+  --md-on-surface: oklch(19% 0.015 250);
+  --md-on-surface-variant: oklch(52% 0.015 250);
 
-  /* Outline & status */
-  --md-outline: #c4bdb3;
-  --md-outline-variant: #d9d2c8;
-  --md-error: #b3261e;
+  --md-outline: oklch(90.5% 0.008 250);
+  --md-outline-variant: oklch(90.5% 0.008 250);
+  --md-error: oklch(57.7% 0.245 27.325);
+  --md-accent: oklch(84% 0.16 168);
+  --md-accent-foreground: oklch(18% 0.03 200);
 
   /* Legacy aliases (static pages + JS — do not rename) */
   --primary-color: var(--md-primary);
-  --primary-dark: #1a1714;
-  --primary-light: #44403c;
+  --primary-dark: oklch(12% 0.02 250);
+  --primary-light: oklch(24% 0.02 250);
   --secondary-color: var(--md-on-surface);
-  --accent-1: #2c2825;
-  --accent-2: #f9ab00;
-  --accent-3: #1e8e3e;
+  --accent-1: oklch(84% 0.16 168);
+  --accent-2: oklch(84% 0.16 168);
+  --accent-3: oklch(84% 0.16 168);
   --text-color: var(--md-on-surface);
   --text-light: var(--md-on-surface-variant);
   --light-gray: var(--md-surface-container);
   --border-color: var(--md-outline-variant);
-  --success-color: #1e8e3e;
+  --success-color: oklch(60% 0.118 184.704);
 
-  /* Typography */
-  --font-body: "Roboto", system-ui, -apple-system, sans-serif;
-  --font-display: "Roboto", system-ui, sans-serif;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 
-  /* Shape */
   --md-shape-xs: 4px;
   --md-shape-sm: 8px;
-  --md-shape-md: 12px;
+  --md-shape-md: 14px;
   --md-shape-lg: 16px;
   --md-shape-xl: 28px;
   --md-shape-full: 9999px;
 
-  /* Elevation */
-  --md-elevation-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
-  --md-elevation-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
-  --md-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --md-elevation-1: 0 1px 2px oklch(19% 0.02 250 / 0.04),
+    0 12px 32px -16px oklch(19% 0.02 250 / 0.18);
+  --md-elevation-2: 0 2px 6px oklch(19% 0.02 250 / 0.06),
+    0 24px 60px -24px oklch(19% 0.02 250 / 0.28);
+  --md-elevation-3: 0 4px 8px 3px oklch(19% 0.02 250 / 0.15),
+    0 1px 3px oklch(19% 0.02 250 / 0.3);
 }

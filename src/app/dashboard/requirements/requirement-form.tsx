@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
-import { RequirementCustomSkillsField } from "@/app/dashboard/requirement-custom-skills-field";
+import { CustomSkillsField } from "@/app/dashboard/custom-skills-field";
 import { saveRequirementAction } from "@/app/dashboard/requirements/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,7 +12,6 @@ import type { RequirementWithRelations } from "@/lib/requirements";
 import type { FinderTaskDraft } from "@/lib/finder-task-draft";
 import { parseCustomSkillsFromDraft } from "@/lib/finder-task-draft";
 import type { RequirementFormState } from "@/lib/validations/requirement";
-import { parseCustomSkills } from "@/lib/profile-utils";
 import type { Service, Skill } from "@/db/schema";
 
 type Props = {
@@ -37,11 +36,9 @@ export function RequirementForm({ requirement, skills, services, finderDraft }: 
   const selectedServiceIds = new Set(
     requirement?.services.map((s) => s.service.id) ?? []
   );
-  const initialCustomSkills = requirement
-    ? parseCustomSkills(requirement.customSkills)
-    : finderDraft
-      ? parseCustomSkillsFromDraft(finderDraft.customSkills)
-      : [];
+  const initialCustomSkills = finderDraft
+    ? parseCustomSkillsFromDraft(finderDraft.customSkills)
+    : [];
 
   return (
     <form action={formAction} className="space-y-6">
@@ -178,7 +175,7 @@ export function RequirementForm({ requirement, skills, services, finderDraft }: 
             </label>
           ))}
         </div>
-        <RequirementCustomSkillsField initialSkills={initialCustomSkills} />
+        <CustomSkillsField initialSkills={initialCustomSkills} />
       </fieldset>
 
       <fieldset className="space-y-3">

@@ -193,9 +193,11 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("Task seed failed:", err);
-  process.exit(1);
-});
+if (process.argv[1]?.includes("seed-tasks")) {
+  main().catch((err) => {
+    console.error("Task seed failed:", err);
+    process.exit(1);
+  });
+}
 
 export { SEED_TASKS, DEMO_CLERK_ID };

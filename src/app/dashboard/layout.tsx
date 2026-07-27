@@ -18,11 +18,11 @@ export default async function DashboardLayout({
   const user = await getOrCreateUser();
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
+    <div className="mx-auto max-w-4xl px-5 py-10">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-secondary">Dashboard</h1>
-          <p className="mt-1 text-muted">
+          <h1>Dashboard</h1>
+          <p className="mt-2 text-muted">
             Manage your profile, requirements, and conversations.
           </p>
         </div>

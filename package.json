@@ -21,6 +21,8 @@
     "db:seed:tasks:remote": "tsx src/db/seed-tasks.ts --remote",
     "db:cleanup:local": "tsx src/db/cleanup-user-content.ts --local",
     "db:cleanup:remote": "tsx src/db/cleanup-user-content.ts --remote",
+    "db:cleanup:seed:local": "tsx src/db/cleanup-seed-data.ts --local",
+    "db:cleanup:seed:remote": "tsx src/db/cleanup-seed-data.ts --remote",
     "db:studio": "drizzle-kit studio",
     "pages:build": "npm run build",
     "pages:deploy": "npm run build && opennextjs-cloudflare deploy",

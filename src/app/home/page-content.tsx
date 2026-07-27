@@ -16,7 +16,7 @@ import { getFeaturedExperts } from "@/lib/directory";
 import { getLatestJobs } from "@/lib/jobs";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 import { getLatestOpenRequirements } from "@/lib/requirements";
-import { ArrowRight, Briefcase, ClipboardList, Sparkles, Users } from "lucide-react";
+import { ArrowRight, Briefcase, CircleCheck, ClipboardList, Sparkles, Users } from "lucide-react";
 
 export async function HomePage() {
   const [experts, requirements, jobs, skills, services] = await Promise.all([
@@ -29,21 +29,24 @@ export async function HomePage() {
 
   return (
     <>
-      <section className="bg-primary-container text-on-primary-container">
-        <div className="mx-auto max-w-6xl px-4 py-14 md:py-20">
-          <div className="max-w-3xl">
-            <h1 className="text-3xl font-medium tracking-tight md:text-[2.75rem] md:leading-tight">
-              Find and hire AI experts in minutes.
-            </h1>
-            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-on-primary-container/90 md:text-xl">
-              Search experts directly or post your AI task. Get matched with
-              relevant specialists, review their profiles, and connect with the
-              ones you choose.
-            </p>
-            <p className="hero-benefits mt-5 text-sm font-medium text-on-primary-container md:mt-6 md:text-base">
-              No commissions • No contracts • No platform fees
-            </p>
-          </div>
+      <section className="relative overflow-hidden border-b border-border/60">
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-hero"
+          aria-hidden
+        />
+        <div className="relative mx-auto max-w-6xl px-5 py-20 md:py-28">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted shadow-soft">
+            <span className="size-1.5 rounded-full bg-accent" aria-hidden />
+            UK-built marketplace for AI talent
+          </span>
+
+          <h1 className="mt-6 max-w-3xl text-5xl font-bold leading-[1.05] md:text-7xl">
+            Find and hire AI experts in minutes.
+          </h1>
+          <p className="mt-5 max-w-xl text-lg text-muted">
+            Search specialists directly or post your AI task. Review profiles,
+            compare skills and connect with the people who can actually ship it.
+          </p>
 
           <ExpertSearchForm
             variant="hero"
@@ -52,33 +55,42 @@ export async function HomePage() {
             locations={[]}
           />
 
-          <div className="mt-6 flex max-w-3xl flex-wrap items-center gap-3">
+          <div className="mt-6 flex max-w-2xl flex-wrap items-center gap-3">
             <Button
               asChild
               variant="outline"
               size="lg"
-              className="border-primary/25 bg-white/70 text-on-primary-container hover:bg-white"
+              className="rounded-xl border-border bg-card shadow-soft hover:bg-surface-container"
             >
               <Link href="/dashboard/requirements/new">
                 Post a task
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <ExternalPrefetchLink
-              className="inline-flex items-center gap-2 text-sm font-medium text-on-primary-container/90 underline-offset-4 hover:text-on-primary-container hover:underline"
-            >
-              <Sparkles className="h-4 w-4" />
+            <ExternalPrefetchLink className="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-on-surface">
+              <Sparkles className="h-4 w-4 text-accent-foreground" />
               Looking for AI software? Try our AI Software Finder
             </ExternalPrefetchLink>
+          </div>
+
+          <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-muted">
+            {["No commissions", "No contracts", "No platform fees"].map((item) => (
+              <span key={item} className="inline-flex items-center gap-2">
+                <CircleCheck className="h-4 w-4 text-accent-foreground" />
+                {item}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl space-y-16 px-4 py-14 md:space-y-20 md:py-16">
+      <div className="mx-auto max-w-6xl space-y-20 px-5 py-20">
         <HowItWorks />
+      </div>
 
-        <FeaturedCategories />
+      <FeaturedCategories />
 
+      <div className="mx-auto max-w-6xl space-y-20 px-5 pb-20">
         <WhyChoose />
 
         <PlatformSection

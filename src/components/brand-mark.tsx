@@ -10,9 +10,8 @@ type BrandMarkProps = {
 };
 
 const logoSizeClasses = {
-  /** ~58px mobile, ~72px desktop — logo-only, no duplicated wordmark */
-  header: "h-[3.625rem] w-auto md:h-[4.5rem]",
-  footer: "h-12 w-auto md:h-14",
+  header: "h-8 w-auto",
+  footer: "h-10 w-auto md:h-12",
 } as const;
 
 export function BrandMark({ className, size = "header" }: BrandMarkProps) {

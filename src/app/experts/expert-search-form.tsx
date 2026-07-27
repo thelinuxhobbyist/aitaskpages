@@ -52,32 +52,28 @@ export function ExpertSearchForm({
 
   if (variant === "hero") {
     return (
-      <form method="GET" action={action} className="mt-8 w-full max-w-3xl">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
-          <div className="relative min-w-0 flex-1">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
+      <form method="GET" action={action} className="mt-8 max-w-2xl">
+        <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-lift sm:flex-row">
+          <div className="relative flex flex-1 items-center gap-3 px-3">
+            <Search className="h-4 w-4 shrink-0 text-muted" aria-hidden />
             <Input
               id="q"
               name="q"
               defaultValue={current.q ?? ""}
-              placeholder="Search by skill, service, or location…"
-              className="h-14 w-full pl-12 text-base shadow-sm"
+              placeholder="Search by skill, service or location…"
+              className="h-11 border-0 bg-transparent px-0 text-sm shadow-none focus-visible:ring-0"
               autoComplete="off"
+              aria-label="Search experts"
             />
           </div>
-          <Button
-            type="submit"
-            size="lg"
-            variant="default"
-            className="h-14 shrink-0 px-8 sm:w-auto"
-          >
+          <Button type="submit" variant="ink" size="lg" className="rounded-xl">
             Search experts
           </Button>
         </div>
         <p className="mt-3 text-sm">
           <Link
             href="/search"
-            className="font-medium text-on-primary-container underline decoration-on-primary-container/50 underline-offset-2 hover:decoration-on-primary-container"
+            className="font-medium text-muted underline-offset-4 hover:text-on-surface hover:underline"
           >
             Advanced search with filters
           </Link>

@@ -22,7 +22,7 @@ export function DashboardNav({
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-1 border-b border-border">
+    <nav className="flex gap-1 overflow-x-auto border-b border-border/60">
       {TABS.map((tab) => {
         const active =
           tab.href === "/dashboard"
@@ -34,21 +34,21 @@ export function DashboardNav({
             key={tab.href}
             href={tab.href}
             className={cn(
-              "relative -mb-px flex items-center gap-2 border-b-2 px-4 py-2.5 text-sm font-medium transition-colors",
+              "relative -mb-px flex shrink-0 items-center gap-2 border-b-2 px-4 py-3 text-sm font-medium transition-colors",
               active
-                ? "border-primary text-primary"
-                : "border-transparent text-muted hover:text-secondary"
+                ? "border-ink text-on-surface"
+                : "border-transparent text-muted hover:text-on-surface",
             )}
           >
             {tab.label}
             {tab.href === "/dashboard/conversations" && unreadCount > 0 && (
-              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-white">
+              <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1.5 text-xs font-semibold text-ink-foreground">
                 {unreadCount}
               </span>
             )}
             {tab.href === "/dashboard/opportunities" &&
               newOpportunityCount > 0 && (
-                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1.5 text-xs font-semibold text-white">
+                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-ink px-1.5 text-xs font-semibold text-ink-foreground">
                   {newOpportunityCount}
                 </span>
               )}

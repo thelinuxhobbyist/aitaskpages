@@ -23,16 +23,12 @@ export function PlatformSection({
     <section id={id} className="scroll-mt-20">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold tracking-tight text-secondary md:text-2xl">
-            {title}
-          </h2>
+          <h2>{title}</h2>
           {description && (
-            <p className="mt-1 max-w-2xl text-sm text-muted md:text-base">
-              {description}
-            </p>
+            <p className="mt-3 max-w-lg text-muted">{description}</p>
           )}
         </div>
-        <Button asChild variant="outline" size="sm" className="shrink-0">
+        <Button asChild variant="outline" size="sm" className="shrink-0 rounded-xl shadow-soft">
           <Link href={browseHref}>
             {browseLabel}
             <ArrowRight className="h-4 w-4" />

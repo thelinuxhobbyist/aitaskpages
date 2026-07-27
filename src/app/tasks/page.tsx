@@ -21,14 +21,12 @@ export default async function RequirementsDirectoryPage() {
 
   return (
     <>
-      <section className="border-b border-border bg-surface-container">
-        <div className="mx-auto max-w-6xl px-4 py-10 md:py-12">
-          <p className="text-sm font-medium uppercase tracking-wide text-primary">
+      <section className="border-b border-border/60 bg-surface-container/60">
+        <div className="mx-auto max-w-6xl px-5 py-10 md:py-12">
+          <p className="text-xs font-medium uppercase tracking-widest text-muted">
             AI Tasks
           </p>
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight text-secondary md:text-4xl">
-            Browse open AI tasks
-          </h1>
+          <h1 className="mt-2">Browse open AI tasks</h1>
           <p className="mt-3 max-w-2xl text-muted">
             UK businesses posting AI project needs. Experts can express interest;
             businesses choose who to contact.

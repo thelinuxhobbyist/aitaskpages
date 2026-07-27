@@ -21,17 +21,20 @@ const guestLinks = [
   { href: "/join-as-expert", label: "Join as Expert" },
 ];
 
+const navLinkClass =
+  "text-sm font-medium text-muted transition-colors hover:text-on-surface";
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const { isSignedIn } = useAuth();
   const links = isSignedIn ? publicLinks : guestLinks;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-surface/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2.5 md:py-3">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-surface/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
         <BrandMark />
 
-        <nav className="hidden items-center gap-0.5 text-sm font-medium md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {links.map((link) =>
             "external" in link && link.external ? (
               <ExternalPrefetchLink
@@ -39,38 +42,31 @@ export function Header() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+                className={navLinkClass}
               >
                 {link.label}
               </ExternalPrefetchLink>
             ) : (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
-              >
+              <Link key={link.href} href={link.href} className={navLinkClass}>
                 {link.label}
               </Link>
             ),
           )}
           {isSignedIn && (
-            <Link
-              href="/dashboard"
-              className="rounded-md px-3 py-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
-            >
+            <Link href="/dashboard" className={navLinkClass}>
               Dashboard
             </Link>
           )}
           {isSignedIn ? (
             <UserButton />
           ) : (
-            <div className="ml-2 flex items-center gap-2">
+            <div className="ml-1 flex items-center gap-2">
               <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-                <Button size="sm" variant="ghost">
+                <Button size="sm" variant="ghost" className="text-xs">
                   Sign in
                 </Button>
               </SignInButton>
-              <Button size="sm" asChild>
+              <Button size="sm" variant="ink" asChild className="rounded-lg text-xs">
                 <Link href="/sign-up">Sign up</Link>
               </Button>
             </div>
@@ -89,11 +85,11 @@ export function Header() {
 
       <div
         className={cn(
-          "border-t border-border bg-surface md:hidden",
-          open ? "block" : "hidden"
+          "border-t border-border/60 bg-surface md:hidden",
+          open ? "block" : "hidden",
         )}
       >
-        <nav className="flex flex-col gap-0.5 px-4 py-3">
+        <nav className="flex flex-col gap-1 px-5 py-4">
           {links.map((link) =>
             "external" in link && link.external ? (
               <ExternalPrefetchLink
@@ -101,7 +97,7 @@ export function Header() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-container hover:text-on-surface"
                 onClick={() => setOpen(false)}
               >
                 {link.label}
@@ -110,7 +106,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
+                className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-container hover:text-on-surface"
                 onClick={() => setOpen(false)}
               >
                 {link.label}
@@ -120,7 +116,7 @@ export function Header() {
           {isSignedIn && (
             <Link
               href="/dashboard"
-              className="rounded-[4px] px-3 py-2 text-on-surface-variant hover:bg-surface-container hover:text-primary"
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted hover:bg-surface-container hover:text-on-surface"
               onClick={() => setOpen(false)}
             >
               Dashboard
@@ -133,7 +129,7 @@ export function Header() {
                   Sign in
                 </Button>
               </SignInButton>
-              <Button size="sm" asChild>
+              <Button size="sm" variant="ink" asChild className="w-full rounded-lg">
                 <Link href="/sign-up" onClick={() => setOpen(false)}>
                   Sign up
                 </Link>
