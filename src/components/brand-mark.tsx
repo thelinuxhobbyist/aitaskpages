@@ -11,8 +11,8 @@ type BrandMarkProps = {
 
 const logoSizeClasses = {
   /** Full logo — readable in the header bar */
-  header: "h-[3.25rem] w-auto sm:h-[3.625rem] md:h-[4.25rem]",
-  footer: "h-12 w-auto md:h-14",
+  header: "h-[4.5rem] w-auto sm:h-[5rem] md:h-[5.5rem]",
+  footer: "h-14 w-auto md:h-16",
 } as const;
 
 export function BrandMark({ className, size = "header" }: BrandMarkProps) {

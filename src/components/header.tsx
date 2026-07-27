@@ -31,7 +31,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-surface/80 backdrop-blur-xl">
-      <div className="mx-auto flex min-h-[4.5rem] max-w-6xl items-center justify-between gap-6 px-5 py-2">
+      <div className="mx-auto flex min-h-[5.5rem] max-w-6xl items-center justify-between gap-6 px-5 py-2 md:min-h-[6rem]">
         <BrandMark />
 
         <nav className="hidden items-center gap-7 md:flex">

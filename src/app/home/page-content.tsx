@@ -35,12 +35,7 @@ export async function HomePage() {
           aria-hidden
         />
         <div className="relative mx-auto max-w-6xl px-5 py-20 md:py-28">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted shadow-soft">
-            <span className="size-1.5 rounded-full bg-accent" aria-hidden />
-            UK-built marketplace for AI talent
-          </span>
-
-          <h1 className="mt-6 max-w-3xl text-5xl font-bold leading-[1.05] md:text-7xl">
+          <h1 className="max-w-3xl text-5xl font-bold leading-[1.05] md:text-7xl">
             Find and hire AI experts in minutes.
           </h1>
           <p className="mt-5 max-w-xl text-lg text-muted">
@@ -90,7 +85,7 @@ export async function HomePage() {
 
       <FeaturedCategories />
 
-      <div className="mx-auto max-w-6xl space-y-20 px-5 pb-20">
+      <div className="mx-auto max-w-6xl space-y-20 px-5 py-20">
         <WhyChoose />
 
         <PlatformSection
