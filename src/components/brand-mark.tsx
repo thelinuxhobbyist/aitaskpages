@@ -10,8 +10,9 @@ type BrandMarkProps = {
 };
 
 const logoSizeClasses = {
-  header: "h-8 w-auto",
-  footer: "h-10 w-auto md:h-12",
+  /** Full logo — readable in the header bar */
+  header: "h-[3.25rem] w-auto sm:h-[3.625rem] md:h-[4.25rem]",
+  footer: "h-12 w-auto md:h-14",
 } as const;
 
 export function BrandMark({ className, size = "header" }: BrandMarkProps) {
@@ -29,8 +30,8 @@ export function BrandMark({ className, size = "header" }: BrandMarkProps) {
         src={SITE_LOGO_URL}
         alt={SITE_NAME}
         className={cn("block shrink-0", logoSizeClasses[size])}
-        width={72}
-        height={72}
+        width={128}
+        height={64}
         fetchPriority="high"
       />
     </Link>
