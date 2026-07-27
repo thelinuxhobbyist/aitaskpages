@@ -5,13 +5,13 @@ import { ArrowRight } from "lucide-react";
 export function FeaturedCategories() {
   return (
     <section id="categories" className="scroll-mt-20 border-y border-border/60 bg-surface-container/60">
-      <div className="mx-auto max-w-6xl px-5 py-20">
+      <div className="mx-auto max-w-6xl px-5 py-14">
         <h2>Explore by category</h2>
         <p className="mt-3 max-w-lg text-muted">
           Find AI experts by discipline — from chatbots to Copilot rollouts and
           machine learning.
         </p>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {HOME_CATEGORIES.map((category) => (
             <Link
               key={category.name}

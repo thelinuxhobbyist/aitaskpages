@@ -24,10 +24,10 @@ export function HowItWorks() {
     <section id="how-it-works" className="scroll-mt-20">
       <h2>How AI Jobs Market works</h2>
       <p className="mt-3 max-w-lg text-muted">
-        Whether you need an expert today or want to explore opportunities, the
-        platform is built around simple, direct connections.
+        Search experts, post a task, or browse jobs — then connect directly on
+        the platform.
       </p>
-      <div className="mt-10 grid gap-4 md:grid-cols-3">
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
         {STEPS.map((step) => (
           <div
             key={step.number}
