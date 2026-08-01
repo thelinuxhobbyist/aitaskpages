@@ -33,7 +33,7 @@ function TaskTag({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium leading-tight transition-colors",
+        "inline-flex items-center rounded-full px-2.5 py-1 text-[0.8125rem] font-medium leading-tight transition-colors",
         variant === "default" &&
           "border border-transparent bg-surface-container-high text-on-surface-variant group-hover:bg-[#e6dfd4]",
         variant === "more" &&
@@ -77,25 +77,25 @@ export function RequirementCard({
         <header className="mb-4 flex items-center gap-3">
           <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden">
             <p
-              className="min-w-0 truncate text-[0.95rem] font-bold leading-none tracking-tight text-secondary"
+              className="min-w-0 truncate text-base font-bold leading-none tracking-tight text-secondary"
               title={requirement.companyName}
             >
               {requirement.companyName}
             </p>
             {showInterestStatus &&
               (hasInterest ? (
-                <Badge variant="secondary" className="shrink-0 text-[11px]">
+                <Badge variant="secondary" className="shrink-0 text-xs">
                   Interested
                 </Badge>
               ) : (
-                <Badge variant="featured" className="shrink-0 text-[11px]">
+                <Badge variant="featured" className="shrink-0 text-xs">
                   New
                 </Badge>
               ))}
           </div>
           <time
             dateTime={requirement.createdAt}
-            className="shrink-0 whitespace-nowrap text-xs font-medium text-muted"
+            className="shrink-0 whitespace-nowrap text-[0.8125rem] font-medium text-muted"
           >
             {formatTaskCardDate(requirement.createdAt)}
           </time>
@@ -104,14 +104,14 @@ export function RequirementCard({
         <div className="mb-5">
           <h3
             className={cn(
-              "mb-2 font-bold leading-snug tracking-tight text-secondary",
-              "line-clamp-2 text-[clamp(1.0625rem,2.2vw,1.25rem)]",
+              "mb-2.5 font-bold leading-snug tracking-tight text-secondary",
+              "line-clamp-2 text-[clamp(1.125rem,2.2vw,1.375rem)]",
               "group-hover:text-primary"
             )}
           >
             {requirement.title}
           </h3>
-          <p className="line-clamp-2 text-[0.9rem] leading-relaxed text-muted">
+          <p className="line-clamp-2 text-base leading-[1.65] text-muted">
             {requirement.descriptionExcerpt}
           </p>
         </div>
@@ -119,7 +119,7 @@ export function RequirementCard({
         {hasMeta && (
           <div className="mb-4 flex flex-wrap gap-x-6 gap-y-2 border-t border-border/80 pt-4">
             {requirement.budget && (
-              <div className="flex items-center gap-1.5 text-sm text-on-surface-variant">
+              <div className="flex items-center gap-1.5 text-[0.9375rem] text-on-surface-variant">
                 <Wallet
                   className="h-4 w-4 shrink-0 text-muted"
                   strokeWidth={2}
@@ -132,7 +132,7 @@ export function RequirementCard({
               </div>
             )}
             {requirement.locationLabel && (
-              <div className="flex items-center gap-1.5 text-sm text-muted">
+              <div className="flex items-center gap-1.5 text-[0.9375rem] text-muted">
                 <MapPin
                   className="h-4 w-4 shrink-0"
                   strokeWidth={2}

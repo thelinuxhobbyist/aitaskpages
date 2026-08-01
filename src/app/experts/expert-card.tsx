@@ -29,7 +29,7 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
           />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="truncate text-base group-hover:text-primary">
+              <CardTitle className="truncate text-lg group-hover:text-primary">
                 {profile.fullName}
               </CardTitle>
               {profile.featured && (
@@ -40,7 +40,7 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
               )}
             </div>
             {profile.headline && (
-              <CardDescription className="mt-1 line-clamp-2">
+              <CardDescription className="mt-1.5 line-clamp-2 text-[0.9375rem]">
                 {profile.headline}
               </CardDescription>
             )}
@@ -48,7 +48,7 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
         </CardHeader>
 
         <CardContent className="space-y-3">
-          <div className="flex flex-wrap items-center gap-3 text-sm text-muted">
+          <div className="flex flex-wrap items-center gap-3 text-[0.9375rem] text-muted">
             {profile.location && (
               <span className="flex items-center gap-1">
                 <MapPin className="h-3.5 w-3.5" />

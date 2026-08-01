@@ -34,10 +34,10 @@ export async function HomePage() {
           aria-hidden
         />
         <div className="relative mx-auto max-w-6xl px-5 py-16 md:py-20">
-          <h1 className="max-w-3xl text-5xl font-bold leading-[1.05] md:text-7xl">
+          <h1 className="max-w-3xl text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
             Find and hire AI experts in minutes.
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-muted">
+          <p className="mt-6 max-w-xl text-xl leading-[1.65] text-muted">
             Search specialists directly or post your AI task. Review profiles,
             compare skills and connect with the people who can actually ship it.
           </p>
@@ -69,7 +69,7 @@ export async function HomePage() {
             </Button>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm text-muted">
+          <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[0.9375rem] leading-snug text-muted md:text-base">
             {["No commissions", "No contracts", "No platform fees"].map((item) => (
               <span key={item} className="inline-flex items-center gap-2">
                 <CircleCheck className="h-4 w-4 text-accent-foreground" />

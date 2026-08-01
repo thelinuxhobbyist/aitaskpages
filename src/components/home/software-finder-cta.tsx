@@ -13,7 +13,7 @@ export function SoftwareFinderCta() {
           <Sparkles className="h-6 w-6" />
         </div>
         <h2 className="mt-4">Looking for the right AI software?</h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
+        <p className="mx-auto mt-3.5 max-w-xl text-lg leading-[1.65] text-muted">
           Describe your business challenge in plain English and get AI software
           recommendations — with clear reasons why each one fits. No jargon, no
           guesswork.

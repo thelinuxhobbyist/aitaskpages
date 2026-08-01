@@ -29,6 +29,12 @@ function getRequestEnv(): Record<string, unknown> {
 }
 
 function readPublishableKey(env: Record<string, unknown>): string {
+  // Local `next dev`: .env.local must win over wrangler.toml production vars.
+  if (process.env.NODE_ENV === "development") {
+    const fromProcess = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim();
+    if (fromProcess) return fromProcess;
+  }
+
   const fromBinding = env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   if (typeof fromBinding === "string" && fromBinding) {
     return fromBinding;

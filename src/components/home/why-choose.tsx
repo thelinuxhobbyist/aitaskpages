@@ -5,7 +5,7 @@ export function WhyChoose() {
   return (
     <section id="why-choose" className="scroll-mt-20">
       <h2>Why choose AI Jobs Market</h2>
-      <p className="mt-3 max-w-lg text-muted">
+      <p className="section-lead">
         A UK platform built for businesses and independent AI professionals —
         simple, direct, and transparent.
       </p>
@@ -13,13 +13,13 @@ export function WhyChoose() {
         {HOME_BENEFITS.map((benefit) => (
           <li
             key={benefit.title}
-            className="rounded-2xl border border-border bg-card p-6 shadow-soft"
+            className="rounded-2xl border border-border bg-card p-6 shadow-soft md:p-7"
           >
             <div className="flex items-start gap-3">
               <CircleCheck className="mt-0.5 h-5 w-5 shrink-0 text-accent-foreground" />
               <div>
-                <h3 className="text-base">{benefit.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
+                <h3 className="text-lg">{benefit.title}</h3>
+                <p className="mt-2.5 text-base leading-[1.65] text-muted">
                   {benefit.description}
                 </p>
               </div>

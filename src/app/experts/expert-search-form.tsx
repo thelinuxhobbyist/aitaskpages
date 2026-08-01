@@ -52,25 +52,30 @@ export function ExpertSearchForm({
 
   if (variant === "hero") {
     return (
-      <form method="GET" action={action} className="mt-8 max-w-2xl">
+      <form method="GET" action={action} className="mt-9 max-w-2xl">
         <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-2 shadow-lift sm:flex-row">
           <div className="relative flex flex-1 items-center gap-3 px-3">
-            <Search className="h-4 w-4 shrink-0 text-muted" aria-hidden />
+            <Search className="h-5 w-5 shrink-0 text-muted" aria-hidden />
             <Input
               id="q"
               name="q"
               defaultValue={current.q ?? ""}
               placeholder="Search by skill, service or location…"
-              className="h-11 border-0 bg-transparent px-0 text-sm shadow-none focus-visible:ring-0"
+              className="h-12 border-0 bg-transparent px-0 text-base shadow-none placeholder:text-base focus-visible:ring-0"
               autoComplete="off"
               aria-label="Search experts"
             />
           </div>
-          <Button type="submit" variant="ink" size="lg" className="rounded-xl">
+          <Button
+            type="submit"
+            variant="ink"
+            size="lg"
+            className="rounded-xl text-[1.0625rem]"
+          >
             Search experts
           </Button>
         </div>
-        <p className="mt-3 text-sm">
+        <p className="mt-3.5 text-[0.9375rem]">
           <Link
             href="/search"
             className="font-medium text-muted underline-offset-4 hover:text-on-surface hover:underline"

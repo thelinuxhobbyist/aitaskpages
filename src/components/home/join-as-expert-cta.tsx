@@ -13,7 +13,7 @@ export function JoinAsExpertCta() {
           <UserPlus className="h-6 w-6" />
         </div>
         <h2 className="mt-4">Are you an AI expert?</h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
+        <p className="mx-auto mt-3.5 max-w-xl text-lg leading-[1.65] text-muted">
           Create your profile, showcase your skills, and get discovered by UK
           businesses posting AI requirements or searching the directory.
         </p>

@@ -22,7 +22,7 @@ const guestLinks = [
 ];
 
 const navLinkClass =
-  "text-base font-medium text-on-surface-variant transition-colors hover:text-on-surface";
+  "text-[0.9375rem] font-medium tracking-[-0.01em] text-on-surface-variant transition-colors hover:text-on-surface md:text-base";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -62,11 +62,16 @@ export function Header() {
           ) : (
             <div className="ml-2 flex items-center gap-2">
               <SignInButton mode="modal" forceRedirectUrl="/dashboard">
-                <Button size="sm" variant="ghost" className="text-sm">
+                <Button size="sm" variant="ghost" className="text-[0.9375rem]">
                   Sign in
                 </Button>
               </SignInButton>
-              <Button size="sm" variant="ink" asChild className="rounded-lg text-sm">
+              <Button
+                size="sm"
+                variant="ink"
+                asChild
+                className="rounded-lg text-[0.9375rem]"
+              >
                 <Link href="/sign-up">Sign up</Link>
               </Button>
             </div>
@@ -97,7 +102,7 @@ export function Header() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg px-3 py-3 text-base font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+                className="rounded-lg px-3 py-3 text-base font-medium tracking-[-0.01em] text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
                 onClick={() => setOpen(false)}
               >
                 {link.label}
@@ -106,7 +111,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-lg px-3 py-3 text-base font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+                className="rounded-lg px-3 py-3 text-base font-medium tracking-[-0.01em] text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
                 onClick={() => setOpen(false)}
               >
                 {link.label}
@@ -116,7 +121,7 @@ export function Header() {
           {isSignedIn && (
             <Link
               href="/dashboard"
-              className="rounded-lg px-3 py-3 text-base font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+              className="rounded-lg px-3 py-3 text-base font-medium tracking-[-0.01em] text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
               onClick={() => setOpen(false)}
             >
               Dashboard

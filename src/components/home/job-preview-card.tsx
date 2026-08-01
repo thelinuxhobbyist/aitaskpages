@@ -9,23 +9,23 @@ export function JobPreviewCard({ job }: { job: JobListing }) {
   return (
     <Link href={`/job.html?id=${job.jobId}`} className="group block">
       <Card className="h-full transition-shadow hover:shadow-md group-hover:border-primary/30">
-        <CardContent className="space-y-3 p-5">
+        <CardContent className="space-y-3.5 p-5 md:p-6">
           <div>
-            <p className="font-semibold text-secondary group-hover:text-primary">
+            <p className="text-lg font-semibold leading-snug tracking-tight text-secondary group-hover:text-primary">
               {job.jobTitle}
             </p>
-            <p className="mt-0.5 text-sm text-muted">{job.employerName}</p>
+            <p className="mt-1 text-[0.9375rem] text-muted">{job.employerName}</p>
           </div>
-          <div className="flex flex-wrap gap-3 text-sm text-muted">
+          <div className="flex flex-wrap gap-x-4 gap-y-2 text-[0.9375rem] text-muted">
             {job.locationName && (
               <span className="flex items-center gap-1.5">
-                <MapPin className="h-3.5 w-3.5" />
+                <MapPin className="h-4 w-4" />
                 {job.locationName}
               </span>
             )}
             {salary && (
               <span className="flex items-center gap-1.5">
-                <Wallet className="h-3.5 w-3.5" />
+                <Wallet className="h-4 w-4" />
                 {salary}
               </span>
             )}
