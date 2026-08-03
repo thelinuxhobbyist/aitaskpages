@@ -2,16 +2,24 @@
 const navToggle = document.getElementById("nav-toggle");
 const navMenu = document.getElementById("nav-menu");
 
-navToggle.addEventListener("click", () => {
-  navMenu.classList.toggle("active");
-});
-
-// Close menu when a link is clicked
-navMenu.querySelectorAll("a").forEach(link => {
-  link.addEventListener("click", () => {
-    navMenu.classList.remove("active");
+if (navToggle && navMenu) {
+  navToggle.addEventListener("click", () => {
+    const isOpen = navMenu.classList.toggle("active");
+    navToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    navToggle.querySelector(".material-icons").textContent = isOpen
+      ? "close"
+      : "menu";
   });
-});
+
+  // Close menu when a link is clicked
+  navMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("active");
+      navToggle.setAttribute("aria-label", "Open menu");
+      navToggle.querySelector(".material-icons").textContent = "menu";
+    });
+  });
+}
 
 // Search functionality
 let allJobs = [];

@@ -54,7 +54,7 @@ export function Footer() {
               <h3>AI Jobs</h3>
               <ul>
                 <li>
-                  <a href="/jobs.html">Browse Jobs</a>
+                  <a href="/jobs">Browse Jobs</a>
                 </li>
                 <li>
                   <a href="/ai-jobs-london.html">London Jobs</a>

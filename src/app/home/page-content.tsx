@@ -62,8 +62,19 @@ export async function HomePage() {
               size="lg"
               className="rounded-xl border-border bg-card shadow-soft hover:bg-surface-container"
             >
-              <Link href="/jobs.html">
-                Browse jobs
+              <Link href="/tasks">
+                Browse tasks
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="rounded-xl border-border bg-card shadow-soft hover:bg-surface-container"
+            >
+              <Link href="/jobs">
+                Browse AI jobs
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
@@ -125,7 +136,7 @@ export async function HomePage() {
               id="jobs"
               title="Latest AI jobs"
               description="Full-time, contract, and remote AI roles across the United Kingdom."
-              browseHref="/jobs.html"
+              browseHref="/jobs"
               browseLabel="Browse all jobs"
             >
               <div className="grid gap-4 md:grid-cols-2">

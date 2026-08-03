@@ -160,7 +160,7 @@ export default function AboutPage() {
             Browse AI experts
           </Link>
           <Link
-            href="/jobs.html"
+            href="/jobs"
             className="inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm font-medium text-secondary hover:bg-surface"
           >
             Browse AI jobs

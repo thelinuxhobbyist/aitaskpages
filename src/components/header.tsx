@@ -10,10 +10,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const publicLinks = [
-  { href: "/", label: "Home" },
+  { href: "/", label: "Experts" },
   { href: "/tasks", label: "Tasks" },
-  { href: "/jobs.html", label: "Jobs" },
-  { href: "https://finder.aijobsmarket.co.uk", label: "Software Finder", external: true },
+  { href: "/jobs", label: "Jobs" },
+  { href: "/dashboard/requirements/new", label: "Post a Task" },
+  {
+    href: "https://finder.aijobsmarket.co.uk",
+    label: "Software Finder",
+    external: true,
+  },
 ];
 
 const guestLinks = [

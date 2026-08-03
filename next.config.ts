@@ -29,6 +29,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/jobs",
+        destination: "/jobs.html",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

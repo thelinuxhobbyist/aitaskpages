@@ -12,14 +12,14 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="canonical" href="https://aijobsmarket.co.uk/jobs.html">
-  <meta name="description" content="Find the best AI, ML, and Data Science jobs across the United Kingdom on AI Jobs Market. Explore opportunities in London, Manchester, Edinburgh, and remote roles.">
-  <title>AI Jobs UK | AI Jobs Market</title>
+  <link rel="canonical" href="https://aijobsmarket.co.uk/jobs">
+  <meta name="description" content="Find your next AI job on AI Jobs Market. Explore AI roles across the UK, including permanent, contract, and remote opportunities. Also browse AI experts and tasks.">
+  <title>Find your next AI job | AI Jobs Market</title>
   <meta property="og:site_name" content="AI Jobs Market">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://aijobsmarket.co.uk/jobs.html">
-  <meta property="og:title" content="AI Jobs UK | AI Jobs Market">
-  <meta property="og:description" content="Find the best AI, ML, and Data Science jobs across the United Kingdom on AI Jobs Market.">
+  <meta property="og:url" content="https://aijobsmarket.co.uk/jobs">
+  <meta property="og:title" content="Find your next AI job | AI Jobs Market">
+  <meta property="og:description" content="Explore AI roles across the UK, including permanent, contract, and remote opportunities. AI Jobs Market is the place to find AI experts, AI projects, and AI careers.">
   <meta property="og:image" content="https://cdn.aijobsmarket.co.uk/images/colored-logo.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
@@ -48,7 +48,7 @@
     "name": "AI Jobs Market",
     "url": "https://aijobsmarket.co.uk",
     "logo": "https://cdn.aijobsmarket.co.uk/images/colored-logo.png",
-    "description": "AI Jobs Market is the UK's premier platform for discovering AI, machine learning, and data science job opportunities",
+    "description": "AI Jobs Market is the place to find AI experts, AI projects, and AI careers across the UK",
     "sameAs": [
       "https://www.linkedin.com/company/ai-jobs-market",
       "https://twitter.com/aijobsmarket"
@@ -62,42 +62,59 @@
   </script>
 </head>
 <body>
-  <header>
+  <header class="site-header">
     <div class="header-container">
       <a href="/" class="logo" aria-label="AI Jobs Market — home">
         <img src="https://cdn.aijobsmarket.co.uk/images/colored-logo.png" alt="AI Jobs Market" class="logo-img">
       </a>
       <nav id="nav-menu">
-        <a href="/">Home</a>
+        <a href="/">Experts</a>
+        <a href="/tasks">Tasks</a>
+        <a href="/jobs" class="nav-active">Jobs</a>
+        <a href="/dashboard/requirements/new">Post a Task</a>
+        <a href="https://finder.aijobsmarket.co.uk" target="_blank" rel="noopener noreferrer">Software Finder</a>
         <a href="/join-as-expert">Join as Expert</a>
-        <a href="jobs.html">Jobs</a>
-        <a href="ai-jobs-london.html">London</a>
-        <a href="remote-ai-jobs-uk.html">Remote</a>
+        <div class="nav-actions">
+          <a href="/sign-in" class="btn-ghost">Sign in</a>
+          <a href="/sign-up" class="btn-ink">Sign up</a>
+        </div>
       </nav>
-      <button class="mobile-nav-toggle" id="nav-toggle">
+      <button class="mobile-nav-toggle" id="nav-toggle" type="button" aria-label="Open menu">
         <i class="material-icons">menu</i>
       </button>
     </div>
   </header>
 
   <main>
-    <div class="hero-section">
-      <h1>AI Jobs in the United Kingdom</h1>
-      <p>Discover the latest AI and machine learning opportunities across the UK. Need help on a project? <a href="/">Browse AI experts</a> or <a href="/join-as-expert">join the directory</a>.</p>
-    </div>
-    <div class="search-filters">
-      <div class="search-box">
-        <i class="material-icons">search</i>
-        <input type="text" placeholder="Search job title..." id="search-input">
+    <section class="page-hero">
+      <div class="page-hero-inner">
+        <p class="page-hero-eyebrow">AI Jobs</p>
+        <h1>Find your next AI job</h1>
+        <p class="page-hero-lead">Explore AI roles across the UK, including permanent, contract, and remote opportunities.</p>
+        <div class="hero-location-links">
+          <a href="/jobs" class="active">All UK</a>
+          <a href="/ai-jobs-london.html">London</a>
+          <a href="/remote-ai-jobs-uk.html">Remote</a>
+          <a href="/ai-jobs-uk.html">By city</a>
+        </div>
       </div>
-      <select id="city-filter" class="filter-select">
-        <option value="">All Locations</option>
-      </select>
+    </section>
+
+    <div class="page-content">
+      <div class="search-filters">
+        <div class="search-box">
+          <i class="material-icons">search</i>
+          <input type="text" placeholder="Search job title..." id="search-input">
+        </div>
+        <select id="city-filter" class="filter-select">
+          <option value="">All Locations</option>
+        </select>
+      </div>
+      <div class="jobs-stats">
+        <span id="job-count">Loading...</span> opportunities available
+      </div>
+      <div class="jobs-container" id="jobs"></div>
     </div>
-    <div class="jobs-stats">
-      <span id="job-count">Loading...</span> opportunities available
-    </div>
-    <div class="jobs-container" id="jobs"></div>
   </main>
 
 <footer class="site-footer">
@@ -119,57 +136,61 @@
     <hr class="footer-social-divider">
 
     <div class="footer-container">
-    <div class="footer-brand-col">
-      <h2 class="footer-logo"><img src="https://cdn.aijobsmarket.co.uk/images/colored-logo.png" alt="AI Jobs Market" class="footer-logo-img"></h2>
-      <p class="footer-tagline">The UK's home for AI experts and AI jobs.</p>
-      <div class="footer-contact-info">
-        <span class="contact-label">Get in touch</span>
-        <a href="mailto:contact@aijobsmarket.co.uk" class="contact-email">contact@aijobsmarket.co.uk</a>
-      </div>
-    </div>
-
-    <div class="footer-links-grid">
-      <div class="footer-col">
-        <h3>AI Experts</h3>
-        <ul>
-          <li><a href="/">Browse Experts</a></li>
-          <li><a href="/join-as-expert">Join as an Expert</a></li>
-          <li><a href="/dashboard">Dashboard</a></li>
-        </ul>
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <img src="https://cdn.aijobsmarket.co.uk/images/colored-logo.png" alt="AI Jobs Market" class="footer-logo-img">
+        </div>
+        <p class="footer-tagline">The UK's home for AI experts and AI jobs. Connect directly — no commissions, no middlemen.</p>
+        <div class="footer-contact-info">
+          <span class="contact-label">Get in touch</span>
+          <a href="mailto:contact@aijobsmarket.co.uk" class="contact-email">contact@aijobsmarket.co.uk</a>
+        </div>
       </div>
 
-      <div class="footer-col">
-        <h3>AI Jobs</h3>
-        <ul>
-          <li><a href="/jobs.html">Browse Jobs</a></li>
-          <li><a href="/ai-jobs-london.html">London Jobs</a></li>
-          <li><a href="/remote-ai-jobs-uk.html">Remote Jobs</a></li>
-        </ul>
-      </div>
+      <div class="footer-links-grid">
+        <div class="footer-col">
+          <h3>AI Experts</h3>
+          <ul>
+            <li><a href="/tasks">Browse Tasks</a></li>
+            <li><a href="/">Browse Experts</a></li>
+            <li><a href="/join-as-expert">Join as an Expert</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+          </ul>
+        </div>
 
-      <div class="footer-col">
-        <h3>Company</h3>
-        <ul>
-          <li><a href="/about">About</a></li>
-          <li><a href="https://finder.aijobsmarket.co.uk" target="_blank" rel="noopener noreferrer">AI Software Finder</a></li>
-          <li><a href="mailto:contact@aijobsmarket.co.uk">Contact</a></li>
-        </ul>
-      </div>
+        <div class="footer-col">
+          <h3>AI Jobs</h3>
+          <ul>
+            <li><a href="/jobs">Browse Jobs</a></li>
+            <li><a href="/ai-jobs-london.html">London Jobs</a></li>
+            <li><a href="/remote-ai-jobs-uk.html">Remote Jobs</a></li>
+          </ul>
+        </div>
 
-      <div class="footer-col">
-        <h3>Legal</h3>
-        <ul>
-          <li><a href="/privacy">Privacy Policy</a></li>
-          <li><a href="/terms">Terms of Service</a></li>
-          <li><a href="/cookies">Cookie Policy</a></li>
-          <li><a href="/disclaimer">Disclaimer</a></li>
-        </ul>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="https://finder.aijobsmarket.co.uk" target="_blank" rel="noopener noreferrer">AI Software Finder</a></li>
+            <li><a href="mailto:contact@aijobsmarket.co.uk">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/cookies">Cookie Policy</a></li>
+            <li><a href="/disclaimer">Disclaimer</a></li>
+            <li><a href="/acceptable-use">Acceptable Use Policy</a></li>
+            <li><a href="/expert-terms">AI Expert Terms</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 
-    </div>
-  </div>
   <div class="footer-bottom">
     <div class="footer-bottom-container">
       <p class="footer-disclaimer">
@@ -183,4 +204,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-

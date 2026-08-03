@@ -34,7 +34,7 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
     changeFrequency: "yearly",
     priority: 0.3,
   },
-  { url: absoluteUrl("/jobs.html"), changeFrequency: "daily", priority: 0.9 },
+  { url: absoluteUrl("/jobs"), changeFrequency: "daily", priority: 0.9 },
   {
     url: absoluteUrl("/ai-jobs-uk.html"),
     changeFrequency: "daily",
