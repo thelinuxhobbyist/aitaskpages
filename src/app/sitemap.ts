@@ -8,18 +8,18 @@ export const dynamic = "force-dynamic";
 
 const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: absoluteUrl("/"), changeFrequency: "daily", priority: 1 },
-  { url: absoluteUrl("/search"), changeFrequency: "daily", priority: 0.9 },
+  { url: absoluteUrl("/search"), changeFrequency: "daily", priority: 0.95 },
   {
     url: absoluteUrl("/tasks"),
     changeFrequency: "daily",
-    priority: 0.9,
+    priority: 0.95,
   },
   {
     url: absoluteUrl("/join-as-expert"),
     changeFrequency: "monthly",
-    priority: 0.8,
+    priority: 0.9,
   },
-  { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.6 },
+  { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.8 },
   { url: absoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.3 },
   { url: absoluteUrl("/terms"), changeFrequency: "yearly", priority: 0.3 },
   { url: absoluteUrl("/cookies"), changeFrequency: "yearly", priority: 0.3 },
@@ -34,21 +34,22 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
     changeFrequency: "yearly",
     priority: 0.3,
   },
-  { url: absoluteUrl("/jobs"), changeFrequency: "daily", priority: 0.9 },
+  // Supporting vacancy pages — lower priority than marketplace surfaces
+  { url: absoluteUrl("/jobs"), changeFrequency: "daily", priority: 0.45 },
   {
     url: absoluteUrl("/ai-jobs-uk.html"),
-    changeFrequency: "daily",
-    priority: 0.85,
+    changeFrequency: "weekly",
+    priority: 0.35,
   },
   {
     url: absoluteUrl("/ai-jobs-london.html"),
-    changeFrequency: "daily",
-    priority: 0.85,
+    changeFrequency: "weekly",
+    priority: 0.35,
   },
   {
     url: absoluteUrl("/remote-ai-jobs-uk.html"),
-    changeFrequency: "daily",
-    priority: 0.85,
+    changeFrequency: "weekly",
+    priority: 0.35,
   },
 ];
 
@@ -63,14 +64,14 @@ async function getDynamicRoutes(): Promise<MetadataRoute.Sitemap> {
       url: absoluteUrl(`/experts/${expert.slug}`),
       lastModified: expert.updatedAt ? new Date(expert.updatedAt) : undefined,
       changeFrequency: "weekly",
-      priority: 0.7,
+      priority: 0.8,
     }));
 
     const requirementRoutes: MetadataRoute.Sitemap = requirements.map((req) => ({
       url: absoluteUrl(`/tasks/${req.id}`),
       lastModified: req.updatedAt ? new Date(req.updatedAt) : undefined,
       changeFrequency: "daily",
-      priority: 0.75,
+      priority: 0.85,
     }));
 
     return [...expertRoutes, ...requirementRoutes];

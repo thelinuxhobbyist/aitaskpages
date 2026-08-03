@@ -3,16 +3,28 @@ import { SITE_LOGO_URL, SITE_URL } from "@/lib/site";
 
 export const SITE_NAME = "AI Jobs Market";
 
+/** Short brand line — experts & tasks first, not employment news. */
 export const SITE_TAGLINE =
-  "The UK's home for AI experts, requirements, and jobs";
+  "Find AI experts and post AI tasks across the UK";
 
+/**
+ * Default meta description. Written to distinguish the brand from the generic
+ * phrase “AI jobs market” (employment news) and to state what the product is.
+ */
 export const DEFAULT_DESCRIPTION =
-  "AI Jobs Market connects UK businesses with independent AI experts. Search consultants, browse open requirements and AI jobs, or post what you need.";
+  "AI Jobs Market is the UK platform where businesses find independent AI experts and post AI tasks, projects and requirements. Search consultants for AI consulting, automation, integrations and machine learning — then connect directly.";
 
 export const ORGANIZATION_SAME_AS = [
   "https://www.linkedin.com/company/ai-jobs-market",
   "https://twitter.com/aijobsmarket",
   "https://www.youtube.com/@AIJobsMarket",
+] as const;
+
+export const BRAND_ALTERNATE_NAMES = [
+  "AIJobsMarket",
+  "aijobsmarket",
+  "aijobsmarket.co.uk",
+  "AI Jobs Market UK",
 ] as const;
 
 export const GA_MEASUREMENT_ID = "G-JRRZ1CWQH9";
@@ -55,7 +67,7 @@ export function createPageMetadata({
       siteName: SITE_NAME,
       locale: "en_GB",
       type: "website",
-      images: [{ url: SITE_LOGO_URL, alt: SITE_NAME }],
+      images: [{ url: SITE_LOGO_URL, alt: `${SITE_NAME} logo` }],
     },
     twitter: {
       card: "summary",
@@ -69,11 +81,13 @@ export function createPageMetadata({
   };
 }
 
+const ROOT_TITLE = `${SITE_NAME} — Find AI Experts & Post AI Tasks in the UK`;
+
 export function rootMetadata(): Metadata {
   return {
     metadataBase: new URL(SITE_URL),
     title: {
-      default: `${SITE_NAME} — UK AI Experts, Jobs & Requirements`,
+      default: ROOT_TITLE,
       template: `%s | ${SITE_NAME}`,
     },
     description: DEFAULT_DESCRIPTION,
@@ -81,6 +95,16 @@ export function rootMetadata(): Metadata {
     authors: [{ name: SITE_NAME, url: SITE_URL }],
     creator: SITE_NAME,
     publisher: SITE_NAME,
+    keywords: [
+      "AI Jobs Market",
+      "AIJobsMarket",
+      "AI experts UK",
+      "AI consultants",
+      "hire AI freelancer",
+      "post AI task",
+      "AI automation experts",
+      "machine learning consultants UK",
+    ],
     formatDetection: {
       email: false,
       address: false,
@@ -95,14 +119,14 @@ export function rootMetadata(): Metadata {
       locale: "en_GB",
       url: SITE_URL,
       siteName: SITE_NAME,
-      title: `${SITE_NAME} — UK AI Experts, Jobs & Requirements`,
+      title: ROOT_TITLE,
       description: DEFAULT_DESCRIPTION,
-      images: [{ url: SITE_LOGO_URL, alt: SITE_NAME }],
+      images: [{ url: SITE_LOGO_URL, alt: `${SITE_NAME} logo` }],
     },
     twitter: {
       card: "summary",
       site: "@aijobsmarket",
-      title: `${SITE_NAME} — UK AI Experts, Jobs & Requirements`,
+      title: ROOT_TITLE,
       description: DEFAULT_DESCRIPTION,
       images: [SITE_LOGO_URL],
     },
@@ -124,35 +148,51 @@ export function rootMetadata(): Metadata {
 
 export function organizationJsonLd() {
   return {
-    "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["Organization", "OnlineBusiness"],
+    "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
+    legalName: SITE_NAME,
+    alternateName: [...BRAND_ALTERNATE_NAMES],
     url: SITE_URL,
-    logo: SITE_LOGO_URL,
+    logo: {
+      "@type": "ImageObject",
+      url: SITE_LOGO_URL,
+    },
+    image: SITE_LOGO_URL,
     description: DEFAULT_DESCRIPTION,
+    slogan: SITE_TAGLINE,
+    areaServed: {
+      "@type": "Country",
+      name: "United Kingdom",
+    },
+    knowsAbout: [
+      "Artificial intelligence consulting",
+      "AI freelancers and consultants",
+      "AI automation and integrations",
+      "Machine learning",
+      "Custom AI solutions",
+      "AI project requirements",
+    ],
     sameAs: [...ORGANIZATION_SAME_AS],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
       email: "contact@aijobsmarket.co.uk",
-      availableLanguage: "English",
+      availableLanguage: ["English"],
     },
   };
 }
 
 export function websiteJsonLd() {
   return {
-    "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
-    alternateName: ["AIJobsMarket", "aijobsmarket.co.uk"],
+    alternateName: [...BRAND_ALTERNATE_NAMES],
     url: SITE_URL,
     description: DEFAULT_DESCRIPTION,
-    publisher: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      logo: SITE_LOGO_URL,
-    },
+    inLanguage: "en-GB",
+    publisher: { "@id": `${SITE_URL}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -161,5 +201,13 @@ export function websiteJsonLd() {
       },
       "query-input": "required name=search_term_string",
     },
+  };
+}
+
+/** Combined graph for the global layout script. */
+export function siteJsonLdGraph() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [organizationJsonLd(), websiteJsonLd()],
   };
 }

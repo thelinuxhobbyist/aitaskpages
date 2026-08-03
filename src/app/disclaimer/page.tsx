@@ -48,7 +48,7 @@ export default function DisclaimerPage() {
           2. No Employment Guarantee
         </h2>
         <p>
-          AIJobsMarket helps users discover opportunities within the Artificial
+          AI Jobs Market helps users discover AI experts and project requirements within the Artificial
           Intelligence industry.
         </p>
         <p>We do not guarantee:</p>

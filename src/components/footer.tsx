@@ -17,8 +17,8 @@ export function Footer() {
               <BrandMark size="footer" />
             </div>
             <p className="footer-tagline">
-              The UK&apos;s home for AI experts and AI jobs. Connect directly —
-              no commissions, no middlemen.
+              Find AI experts and post AI tasks across the UK. Connect directly
+              — no commissions, no middlemen.
             </p>
             <div className="footer-contact-info">
               <span className="contact-label">Get in touch</span>
@@ -33,13 +33,16 @@ export function Footer() {
 
           <div className="footer-links-grid">
             <div className="footer-col">
-              <h3>AI Experts</h3>
+              <h3>Marketplace</h3>
               <ul>
+                <li>
+                  <Link href="/">Browse Experts</Link>
+                </li>
                 <li>
                   <Link href="/tasks">Browse Tasks</Link>
                 </li>
                 <li>
-                  <Link href="/">Browse Experts</Link>
+                  <Link href="/dashboard/requirements/new">Post a Task</Link>
                 </li>
                 <li>
                   <Link href="/join-as-expert">Join as an Expert</Link>
@@ -51,16 +54,16 @@ export function Footer() {
             </div>
 
             <div className="footer-col">
-              <h3>AI Jobs</h3>
+              <h3>Also on the site</h3>
               <ul>
                 <li>
-                  <a href="/jobs">Browse Jobs</a>
+                  <a href="/jobs">AI vacancies</a>
                 </li>
                 <li>
-                  <a href="/ai-jobs-london.html">London Jobs</a>
+                  <a href="/ai-jobs-london.html">London vacancies</a>
                 </li>
                 <li>
-                  <a href="/remote-ai-jobs-uk.html">Remote Jobs</a>
+                  <a href="/remote-ai-jobs-uk.html">Remote vacancies</a>
                 </li>
               </ul>
             </div>
@@ -115,8 +118,8 @@ export function Footer() {
       <div className="footer-bottom">
         <div className="footer-bottom-container">
           <p className="footer-disclaimer">
-            <strong>AI Jobs Market</strong> is an AI jobs board and expert
-            directory. We provide a platform for businesses and independent AI
+            <strong>AI Jobs Market</strong> is an AI expert directory and task
+            marketplace. We provide a platform for businesses and independent AI
             professionals to connect and communicate. AI Jobs Market is not
             responsible for contracts, project delivery or payments between
             users. Any agreement is made directly between the client and the

@@ -34,9 +34,9 @@ export function EmailLayout({ preview, children }: LayoutProps) {
           {children}
           <Hr style={hr} />
           <Text style={footer}>
-            AI Jobs Market is an AI jobs board and expert directory. We provide a
-            platform that connects businesses with independent AI professionals
-            and allows them to communicate through AI Jobs Market.
+            AI Jobs Market is an AI expert directory and task marketplace. We
+            provide a platform that connects businesses with independent AI
+            professionals and allows them to communicate through AI Jobs Market.
           </Text>
           <Text style={footer}>
             AI Jobs Market is not a party to agreements between users and does
@@ -47,7 +47,7 @@ export function EmailLayout({ preview, children }: LayoutProps) {
           <Text style={brand}>
             <strong>AI Jobs Market</strong>
             <br />
-            The UK&apos;s home for AI experts and AI jobs.
+            Find AI experts and post AI tasks across the UK.
           </Text>
         </Container>
       </Body>

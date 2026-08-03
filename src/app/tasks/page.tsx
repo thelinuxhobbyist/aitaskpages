@@ -8,9 +8,9 @@ import { createPageMetadata } from "@/lib/seo";
 import { Briefcase, Plus } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "AI tasks",
+  title: "Browse AI tasks & project requirements",
   description:
-    "Browse open AI tasks from UK businesses on AI Jobs Market.",
+    "Browse open AI tasks and project requirements from UK businesses on AI Jobs Market. Experts can express interest; businesses choose who to contact.",
   path: "/tasks",
 });
 
@@ -28,8 +28,9 @@ export default async function RequirementsDirectoryPage() {
           </p>
           <h1 className="mt-2">Browse open AI tasks</h1>
           <p className="mt-3 max-w-2xl text-muted">
-            UK businesses posting AI project needs. Experts can express interest;
-            businesses choose who to contact.
+            Project requirements from UK businesses — automation, integrations,
+            consulting and custom AI. Experts express interest; you decide who to
+            contact.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild>

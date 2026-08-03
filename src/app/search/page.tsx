@@ -16,7 +16,7 @@ import { Search, Users } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Search AI experts",
   description:
-    "Search UK AI experts on AI Jobs Market by skills, services, location, and hourly rate.",
+    "Search independent UK AI experts on AI Jobs Market by skills, services, location and rate — consulting, automation, integrations, machine learning and more.",
   path: "/search",
 });
 

@@ -1,70 +1,57 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { createPageMetadata } from "@/lib/seo";
+import { createPageMetadata, SITE_NAME } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "About",
   description:
-    "AIJobsMarket helps people and businesses navigate the AI economy — AI jobs, expert directory, and resources in one place.",
+    "About AI Jobs Market — the UK platform where businesses find independent AI experts and post AI tasks, projects and requirements.",
   path: "/about",
 });
 
 export default function AboutPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-16 text-on-surface">
-      <h1 className="text-3xl font-bold text-secondary">About AIJobsMarket</h1>
+      <h1 className="text-3xl font-bold text-secondary">About {SITE_NAME}</h1>
 
       <p className="mt-6 text-lg font-medium leading-relaxed text-secondary">
-        Helping people and businesses navigate the AI economy.
+        Connecting people who need AI work done with people who have the
+        expertise to deliver it.
       </p>
 
       <section className="mt-10 space-y-4">
         <p>
-          AIJobsMarket is a platform built to make finding AI opportunities
-          simpler.
+          {SITE_NAME} is the UK&apos;s AI expert directory and task marketplace.
+          Businesses and individuals use the platform to find independent AI
+          consultants, post project requirements, and connect directly with
+          specialists who can help with AI consulting, automation, integrations,
+          machine learning and custom AI solutions.
         </p>
         <p>
-          Whether you&apos;re looking for your next role in artificial
-          intelligence, searching for an experienced AI consultant, or exploring
-          the growing AI industry, our goal is to bring everything together in
-          one place.
-        </p>
-        <p>
-          The AI landscape is evolving rapidly. New tools, companies, and careers
-          emerge every day, making it difficult to know where to look.
-          AIJobsMarket exists to reduce that complexity by creating a central hub
-          for AI professionals and the organisations that need them.
+          We are not a traditional job board. Vacancy-style listings may appear
+          as supporting content, but the core product is matching demand for AI
+          work with independent experts — through searchable profiles and open
+          tasks that specialists can express interest in.
         </p>
       </section>
 
       <hr className="my-10 border-border" />
 
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-secondary">What We Do</h2>
-        <p>
-          AIJobsMarket combines several services designed around the AI
-          employment market:
-        </p>
-        <ul className="list-disc space-y-2 pl-6">
+        <h2 className="text-xl font-semibold text-secondary">What we do</h2>
+        <ul className="list-disc space-y-3 pl-6">
           <li>
-            <strong>AI Job Board</strong> – Browse AI-related jobs from a range
-            of employers and discover new opportunities across multiple
-            industries.
+            <strong>AI expert directory</strong> — Search independent AI
+            freelancers and consultants by skills, services and location.
           </li>
           <li>
-            <strong>AI Expert Directory</strong> – Find AI freelancers,
-            consultants, and specialists available to help businesses implement
-            AI solutions.
+            <strong>AI tasks and requirements</strong> — Post what you need done;
+            experts review open tasks and express interest so you can choose who
+            to contact.
           </li>
           <li>
-            <strong>AI Resources</strong> – Practical guides, tools, and
-            information to help individuals and businesses understand the rapidly
-            changing AI landscape. <em>(Coming soon.)</em>
-          </li>
-          <li>
-            <strong>Future Services</strong> – As the platform grows,
-            we&apos;ll continue introducing new features that support both job
-            seekers and businesses.
+            <strong>Direct connections</strong> — Message on the platform and
+            agree terms yourselves. No commissions or platform fees on the work.
           </li>
         </ul>
       </section>
@@ -72,34 +59,24 @@ export default function AboutPage() {
       <hr className="my-10 border-border" />
 
       <section className="space-y-6">
-        <h2 className="text-xl font-semibold text-secondary">Built for Everyone</h2>
+        <h2 className="text-xl font-semibold text-secondary">Who it&apos;s for</h2>
 
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-secondary">For Job Seekers</h3>
+          <h3 className="text-lg font-semibold text-secondary">For businesses</h3>
           <p>
-            Whether you&apos;re taking your first steps into AI or you&apos;re an
-            experienced machine learning engineer, AIJobsMarket helps you
-            discover opportunities that match your skills and ambitions.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-secondary">For Businesses</h3>
-          <p>
-            Finding AI talent shouldn&apos;t be complicated. Our platform helps
-            businesses connect with AI professionals who can provide expertise,
-            consulting, implementation support, and specialist knowledge.
+            Find AI professionals who can provide consulting, implementation
+            support and specialist delivery — or post a task and let matching
+            experts come to you.
           </p>
         </div>
 
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-secondary">
-            For AI Professionals
+            For AI experts
           </h3>
           <p>
-            Create a professional profile, showcase your experience, highlight
-            your services, and make it easier for businesses to discover and
-            contact you.
+            Create a public profile, showcase skills and services, get discovered
+            in search, and express interest in open tasks from UK businesses.
           </p>
         </div>
       </section>
@@ -107,51 +84,25 @@ export default function AboutPage() {
       <hr className="my-10 border-border" />
 
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-secondary">Our Mission</h2>
-        <p>Our mission is simple:</p>
+        <h2 className="text-xl font-semibold text-secondary">Our mission</h2>
         <p className="text-lg font-semibold text-secondary">
-          To make AI talent more accessible.
+          Make AI expertise accessible — without middlemen taking a cut.
         </p>
         <p>
-          We believe businesses of every size should be able to find the
-          expertise they need, and AI professionals should have a
-          straightforward way to showcase their skills and connect with new
-          opportunities.
+          Businesses of every size should be able to find the right specialist,
+          and independent AI professionals should have a straightforward way to
+          showcase their work and win projects.
         </p>
       </section>
 
       <hr className="my-10 border-border" />
 
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-secondary">
-          Growing With the Industry
-        </h2>
+        <h2 className="text-xl font-semibold text-secondary">Get started</h2>
         <p>
-          Artificial intelligence is transforming almost every industry. As the
-          market evolves, so will AIJobsMarket.
+          Search the expert directory, post an AI task, or join as an expert on{" "}
+          {SITE_NAME}.
         </p>
-        <p>
-          We&apos;re continuously improving the platform, expanding our features,
-          and building new tools that help people discover opportunities, build
-          careers, and connect with AI expertise.
-        </p>
-        <p>
-          Our aim is to become a trusted destination for anyone looking to work
-          in AI, hire AI professionals, or stay connected with the future of
-          artificial intelligence.
-        </p>
-      </section>
-
-      <hr className="my-10 border-border" />
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-secondary">Get Started</h2>
-        <p>
-          Whether you&apos;re searching for your next AI role, looking to hire an
-          AI expert, or simply exploring what&apos;s happening in the AI
-          industry, AIJobsMarket is here to help.
-        </p>
-        <p className="font-medium text-secondary">Welcome to AIJobsMarket.</p>
         <div className="flex flex-wrap gap-3 pt-2">
           <Link
             href="/search"
@@ -160,10 +111,10 @@ export default function AboutPage() {
             Browse AI experts
           </Link>
           <Link
-            href="/jobs"
+            href="/tasks"
             className="inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm font-medium text-secondary hover:bg-surface"
           >
-            Browse AI jobs
+            Browse AI tasks
           </Link>
           <Link
             href="/join-as-expert"

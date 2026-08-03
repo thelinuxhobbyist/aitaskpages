@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 const publicLinks = [
   { href: "/", label: "Experts" },
   { href: "/tasks", label: "Tasks" },
-  { href: "/jobs", label: "Jobs" },
   { href: "/dashboard/requirements/new", label: "Post a Task" },
+  { href: "/jobs", label: "Vacancies" },
   {
     href: "https://finder.aijobsmarket.co.uk",
     label: "Software Finder",

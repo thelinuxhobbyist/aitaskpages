@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { HomePage as PlatformHomePage } from "@/app/home/page-content";
-import { createPageMetadata } from "@/lib/seo";
+import { createPageMetadata, SITE_NAME } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
-  absoluteTitle: "AI Jobs Market — UK AI Experts, Jobs & Requirements",
+  absoluteTitle: `${SITE_NAME} — Find AI Experts & Post AI Tasks in the UK`,
   description:
-    "AI Jobs Market is the UK's platform for AI experts, open requirements, and AI jobs. Search consultants, browse opportunities, or post what you need.",
+    "AI Jobs Market is the UK platform for finding independent AI experts and posting AI tasks, projects and requirements. Search consultants for AI consulting, automation, integrations and machine learning — then connect directly.",
   path: "/",
 });
 

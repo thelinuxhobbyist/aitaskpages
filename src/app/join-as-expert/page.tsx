@@ -15,7 +15,7 @@ import { Check } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Join as an AI expert",
   description:
-    "Join AI Jobs Market and list your profile in the UK's AI expert directory.",
+    "Join AI Jobs Market to list your profile in the UK AI expert directory, get discovered by businesses, and express interest in open AI tasks.",
   path: "/join-as-expert",
 });
 
@@ -37,8 +37,8 @@ export default function JoinAsExpertPage() {
             Join as an AI Expert
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-on-primary/85 md:text-lg">
-            List your profile on AI Jobs Market and connect with UK businesses
-            looking for AI expertise.
+            List your profile on AI Jobs Market, get discovered in search, and
+            express interest in open AI tasks from UK businesses.
           </p>
         </div>
       </section>
