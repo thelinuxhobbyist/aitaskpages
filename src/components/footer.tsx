@@ -76,6 +76,7 @@ export function Footer() {
                 </li>
                 <li>
                   <ExternalPrefetchLink
+                    href="https://finder.aijobsmarket.co.uk"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
