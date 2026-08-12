@@ -42,10 +42,10 @@ export async function HomePage() {
             <span className="text-accent-foreground">in minutes.</span>
           </h1>
           <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
-            AI Jobs Market connects UK businesses with independent AI experts.
-            Search consultants for AI consulting, automation, integrations and
-            machine learning — or post a task and let matching specialists
-            express interest.
+            AI Jobs Market is a UK platform for finding and hiring independent AI
+            experts. Search consultants for AI consulting, automation,
+            integrations and machine learning — or post a task and let matching
+            specialists express interest.
           </p>
 
           <ExpertSearchForm
@@ -182,6 +182,7 @@ export async function HomePage() {
               description="Optional listings from UK employers for visitors exploring careers — separate from the expert marketplace."
               browseHref="/jobs"
               browseLabel="Browse vacancies"
+              secondary
             >
               <div className="grid gap-4 md:grid-cols-2">
                 {jobs.map((job) => (

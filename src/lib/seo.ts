@@ -12,7 +12,7 @@ export const SITE_TAGLINE =
  * phrase “AI jobs market” (employment news) and to state what the product is.
  */
 export const DEFAULT_DESCRIPTION =
-  "AI Jobs Market is the UK platform where businesses find independent AI experts and post AI tasks, projects and requirements. Search consultants for AI consulting, automation, integrations and machine learning — then connect directly.";
+  "AI Jobs Market is the UK platform for finding and hiring independent AI experts. Search consultants for AI consulting, automation, integrations and machine learning — or post a task and connect directly.";
 
 export const ORGANIZATION_SAME_AS = [
   "https://www.linkedin.com/company/ai-jobs-market",
@@ -81,7 +81,8 @@ export function createPageMetadata({
   };
 }
 
-const ROOT_TITLE = `${SITE_NAME} — Find AI Experts & Post AI Tasks in the UK`;
+/** Homepage / default document title — brand as platform, hire-experts focus. */
+export const ROOT_TITLE = `${SITE_NAME} — Find & Hire AI Experts`;
 
 export function rootMetadata(): Metadata {
   return {

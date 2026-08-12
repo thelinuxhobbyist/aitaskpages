@@ -9,25 +9,43 @@ import { ExternalPrefetchLink } from "@/components/external-prefetch-link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const publicLinks = [
+type NavLink = {
+  href: string;
+  label: string;
+  external?: boolean;
+  /** Quieter treatment for secondary features (e.g. vacancies). */
+  secondary?: boolean;
+};
+
+const marketplaceLinks: NavLink[] = [
   { href: "/", label: "Experts" },
   { href: "/tasks", label: "Tasks" },
   { href: "/dashboard/requirements/new", label: "Post a Task" },
-  { href: "/jobs", label: "Vacancies" },
+];
+
+const secondaryLinks: NavLink[] = [
+  { href: "/jobs", label: "Vacancies", secondary: true },
   {
     href: "https://finder.aijobsmarket.co.uk",
     label: "Software Finder",
     external: true,
+    secondary: true,
   },
 ];
 
-const guestLinks = [
-  ...publicLinks,
+const publicLinks: NavLink[] = [...marketplaceLinks, ...secondaryLinks];
+
+const guestLinks: NavLink[] = [
+  ...marketplaceLinks,
   { href: "/join-as-expert", label: "Join as Expert" },
+  ...secondaryLinks,
 ];
 
 const navLinkClass =
   "text-[0.9375rem] font-medium tracking-[-0.01em] text-on-surface-variant transition-colors hover:text-on-surface md:text-base";
+
+const navLinkSecondaryClass =
+  "text-[0.875rem] font-medium tracking-[-0.01em] text-muted transition-colors hover:text-on-surface-variant md:text-[0.9375rem]";
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -41,18 +59,22 @@ export function Header() {
 
         <nav className="hidden items-center gap-7 md:flex">
           {links.map((link) =>
-            "external" in link && link.external ? (
+            link.external ? (
               <ExternalPrefetchLink
                 key={link.href}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={navLinkClass}
+                className={link.secondary ? navLinkSecondaryClass : navLinkClass}
               >
                 {link.label}
               </ExternalPrefetchLink>
             ) : (
-              <Link key={link.href} href={link.href} className={navLinkClass}>
+              <Link
+                key={link.href}
+                href={link.href}
+                className={link.secondary ? navLinkSecondaryClass : navLinkClass}
+              >
                 {link.label}
               </Link>
             ),
@@ -101,13 +123,18 @@ export function Header() {
       >
         <nav className="flex flex-col gap-1 px-5 py-4">
           {links.map((link) =>
-            "external" in link && link.external ? (
+            link.external ? (
               <ExternalPrefetchLink
                 key={link.href}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg px-3 py-3 text-base font-medium tracking-[-0.01em] text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+                className={cn(
+                  "rounded-lg px-3 py-3 tracking-[-0.01em] hover:bg-surface-container",
+                  link.secondary
+                    ? "text-[0.9375rem] font-medium text-muted hover:text-on-surface-variant"
+                    : "text-base font-medium text-on-surface-variant hover:text-on-surface",
+                )}
                 onClick={() => setOpen(false)}
               >
                 {link.label}
@@ -116,7 +143,12 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="rounded-lg px-3 py-3 text-base font-medium tracking-[-0.01em] text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
+                className={cn(
+                  "rounded-lg px-3 py-3 tracking-[-0.01em] hover:bg-surface-container",
+                  link.secondary
+                    ? "text-[0.9375rem] font-medium text-muted hover:text-on-surface-variant"
+                    : "text-base font-medium text-on-surface-variant hover:text-on-surface",
+                )}
                 onClick={() => setOpen(false)}
               >
                 {link.label}

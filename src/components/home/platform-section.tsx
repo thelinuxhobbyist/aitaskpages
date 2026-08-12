@@ -8,6 +8,8 @@ type Props = {
   description?: string;
   browseHref: string;
   browseLabel: string;
+  /** Quieter presentation for secondary homepage features. */
+  secondary?: boolean;
   children: React.ReactNode;
 };
 
@@ -17,20 +19,40 @@ export function PlatformSection({
   description,
   browseHref,
   browseLabel,
+  secondary = false,
   children,
 }: Props) {
   return (
-    <section id={id} className="scroll-mt-20">
+    <section
+      id={id}
+      className={secondary ? "scroll-mt-20 border-t border-border/50 pt-12" : "scroll-mt-20"}
+    >
       <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h2>{title}</h2>
-          {description && <p className="section-lead">{description}</p>}
+          <h2 className={secondary ? "text-[clamp(1.375rem,2.5vw,1.75rem)] text-muted" : undefined}>
+            {title}
+          </h2>
+          {description && (
+            <p
+              className={
+                secondary
+                  ? "mt-2 max-w-2xl text-[0.9375rem] leading-[1.6] text-muted"
+                  : "section-lead"
+              }
+            >
+              {description}
+            </p>
+          )}
         </div>
         <Button
           asChild
-          variant="outline"
+          variant={secondary ? "ghost" : "outline"}
           size="default"
-          className="shrink-0 rounded-xl text-[0.9375rem] shadow-soft"
+          className={
+            secondary
+              ? "shrink-0 rounded-xl text-[0.875rem] text-muted"
+              : "shrink-0 rounded-xl text-[0.9375rem] shadow-soft"
+          }
         >
           <Link href={browseHref}>
             {browseLabel}
