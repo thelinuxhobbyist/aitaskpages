@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SITE_LOGO_URL } from "@/lib/site";
+import { SITE_LOGO_SVG_URL } from "@/lib/site";
 import { SITE_NAME } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -11,8 +11,8 @@ type BrandMarkProps = {
 
 const logoSizeClasses = {
   /** Full logo — readable in the header bar */
-  header: "h-[4.5rem] w-auto sm:h-[5rem] md:h-[5.5rem]",
-  footer: "h-14 w-auto md:h-16",
+  header: "h-[5.5rem] w-auto sm:h-[6.5rem] md:h-[7.5rem]",
+  footer: "h-16 w-auto md:h-20",
 } as const;
 
 export function BrandMark({ className, size = "header" }: BrandMarkProps) {
@@ -27,11 +27,11 @@ export function BrandMark({ className, size = "header" }: BrandMarkProps) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={SITE_LOGO_URL}
+        src={SITE_LOGO_SVG_URL}
         alt={SITE_NAME}
         className={cn("block shrink-0", logoSizeClasses[size])}
-        width={128}
-        height={64}
+        width={250}
+        height={200}
         fetchPriority="high"
       />
     </Link>

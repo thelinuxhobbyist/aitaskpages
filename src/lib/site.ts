@@ -3,6 +3,10 @@ export const SITE_URL = "https://aijobsmarket.co.uk";
 export const SITE_LOGO_URL =
   "https://cdn.aijobsmarket.co.uk/images/logos/logo-01.png";
 
+/** Vector logo for crisp display in headers, footers, and UI. */
+export const SITE_LOGO_SVG_URL =
+  "https://cdn.aijobsmarket.co.uk/images/logos/logo.svg";
+
 export const SITE_FAVICON_BASE =
   "https://cdn.aijobsmarket.co.uk/images/logos/favicon";
 
