@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_LOGO_URL, SITE_URL } from "@/lib/site";
+import { SITE_FAVICON_BASE, SITE_LOGO_URL, SITE_URL } from "@/lib/site";
 
 export const SITE_NAME = "AI Jobs Market";
 
@@ -112,8 +112,26 @@ export function rootMetadata(): Metadata {
       telephone: false,
     },
     icons: {
-      icon: SITE_LOGO_URL,
-      apple: SITE_LOGO_URL,
+      icon: [
+        { url: `${SITE_FAVICON_BASE}/favicon.ico` },
+        {
+          url: `${SITE_FAVICON_BASE}/favicon-32x32.png`,
+          sizes: "32x32",
+          type: "image/png",
+        },
+        {
+          url: `${SITE_FAVICON_BASE}/favicon-16x16.png`,
+          sizes: "16x16",
+          type: "image/png",
+        },
+      ],
+      apple: [
+        {
+          url: `${SITE_FAVICON_BASE}/apple-icon-180x180.png`,
+          sizes: "180x180",
+          type: "image/png",
+        },
+      ],
     },
     openGraph: {
       type: "website",

@@ -1,7 +1,10 @@
 export const SITE_URL = "https://aijobsmarket.co.uk";
 
 export const SITE_LOGO_URL =
-  "https://cdn.aijobsmarket.co.uk/images/colored-logo.png";
+  "https://cdn.aijobsmarket.co.uk/images/logos/logo-01.png";
+
+export const SITE_FAVICON_BASE =
+  "https://cdn.aijobsmarket.co.uk/images/logos/favicon";
 
 export const SOCIAL_LINKS = {
   linkedin: "https://www.linkedin.com/company/ai-jobs-market",
