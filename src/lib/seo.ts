@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { SITE_FAVICON_BASE, SITE_LOGO_URL, SITE_URL } from "@/lib/site";
+import {
+  SITE_FAVICON_SVG_URL,
+  SITE_LOGO_URL,
+  SITE_SHARE_ICON_URL,
+  SITE_URL,
+} from "@/lib/site";
 
 export const SITE_NAME = "AI Jobs Market";
 
@@ -73,7 +78,7 @@ export function createPageMetadata({
       card: "summary",
       title: shareTitle,
       description,
-      images: [SITE_LOGO_URL],
+      images: [SITE_SHARE_ICON_URL],
     },
     ...(noIndex && {
       robots: { index: false, follow: false },
@@ -113,21 +118,17 @@ export function rootMetadata(): Metadata {
     },
     icons: {
       icon: [
-        { url: `${SITE_FAVICON_BASE}/favicon.ico` },
+        { url: SITE_FAVICON_SVG_URL, type: "image/svg+xml" },
+        { url: "/favicon.ico", sizes: "any" },
         {
-          url: `${SITE_FAVICON_BASE}/favicon-32x32.png`,
+          url: "/favicon-32x32.png",
           sizes: "32x32",
-          type: "image/png",
-        },
-        {
-          url: `${SITE_FAVICON_BASE}/favicon-16x16.png`,
-          sizes: "16x16",
           type: "image/png",
         },
       ],
       apple: [
         {
-          url: `${SITE_FAVICON_BASE}/apple-icon-180x180.png`,
+          url: "/apple-touch-icon.png",
           sizes: "180x180",
           type: "image/png",
         },
@@ -147,7 +148,7 @@ export function rootMetadata(): Metadata {
       site: "@aijobsmarket",
       title: ROOT_TITLE,
       description: DEFAULT_DESCRIPTION,
-      images: [SITE_LOGO_URL],
+      images: [SITE_SHARE_ICON_URL],
     },
     robots: {
       index: true,

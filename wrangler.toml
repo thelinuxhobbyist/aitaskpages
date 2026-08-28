@@ -36,6 +36,9 @@ run_worker_first = [
   "/unsubscribe",
   "/sitemap.xml",
   "/robots.txt",
+  # Google Search Console HTML verification file — must 200 at the exact .html URL
+  # (Cloudflare asset html_handling otherwise 307s /file.html → /file).
+  "/google8f644ce488bcdd77.html",
 ]
 
 [[services]]

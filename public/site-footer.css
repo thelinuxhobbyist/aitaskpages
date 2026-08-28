@@ -105,7 +105,7 @@
 
 .site-footer .footer-logo img,
 .site-footer .footer-logo-img {
-  height: 4rem;
+  height: 2.5rem;
   width: auto;
   display: block;
 }
@@ -113,7 +113,7 @@
 @media (min-width: 768px) {
   .site-footer .footer-logo img,
   .site-footer .footer-logo-img {
-    height: 5rem;
+    height: 2.75rem;
   }
 }
 
