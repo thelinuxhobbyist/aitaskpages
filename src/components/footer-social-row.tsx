@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { SITE_NAME } from "@/lib/seo";
 import { SOCIAL_LINKS } from "@/lib/site";
 
 function SocialIcon({
@@ -64,7 +65,8 @@ export function FooterSocialRow() {
               target="_blank"
               rel="noopener noreferrer"
               className="footer-social-icon"
-              aria-label={`Follow AI Jobs Market on ${label}`}
+              aria-label={SITE_NAME}
+              title={SITE_NAME}
             >
               <Icon className="h-[18px] w-[18px]" />
             </Link>

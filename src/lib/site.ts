@@ -24,9 +24,9 @@ export const SITE_LOGO_URL = `${SITE_URL}/brand/lockup-horizontal-color.png`;
 export const SITE_SHARE_ICON_URL = `${SITE_URL}/icon-512.png`;
 
 export const SOCIAL_LINKS = {
-  linkedin: "https://www.linkedin.com/company/ai-jobs-market",
+  linkedin: "https://www.linkedin.com/company/aijobsmarket/",
   x: "https://twitter.com/aijobsmarket",
-  youtube: "https://www.youtube.com/@AIJobsMarket",
+  youtube: "https://www.youtube.com/@aijobsmarket",
 } as const;
 
 export function conversationUrl(conversationId: number): string {

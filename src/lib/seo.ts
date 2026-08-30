@@ -20,9 +20,9 @@ export const DEFAULT_DESCRIPTION =
   "AI Jobs Market is the UK platform for finding and hiring independent AI experts. Search consultants for AI consulting, automation, integrations and machine learning — or post a task and connect directly.";
 
 export const ORGANIZATION_SAME_AS = [
-  "https://www.linkedin.com/company/ai-jobs-market",
+  "https://www.linkedin.com/company/aijobsmarket/",
   "https://twitter.com/aijobsmarket",
-  "https://www.youtube.com/@AIJobsMarket",
+  "https://www.youtube.com/@aijobsmarket",
 ] as const;
 
 export const BRAND_ALTERNATE_NAMES = [
