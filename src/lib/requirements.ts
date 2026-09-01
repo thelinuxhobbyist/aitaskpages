@@ -289,8 +289,14 @@ export async function getOpenRequirements(): Promise<PublicRequirementSummary[]>
 export async function getLatestOpenRequirements(
   limit = 6
 ): Promise<PublicRequirementSummary[]> {
-  const all = await getOpenRequirements();
-  return all.slice(0, limit);
+  const db = await getDb();
+  const rows = await db.query.requirements.findMany({
+    where: eq(requirements.status, "open"),
+    with: requirementWithRelations,
+    orderBy: [desc(requirements.createdAt)],
+    limit,
+  });
+  return rows.map((row) => toPublicSummary(row));
 }
 
 /** Open requirements matching an expert's skills or services. */

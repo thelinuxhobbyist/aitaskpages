@@ -17,7 +17,16 @@ export const metadata: Metadata = createPageMetadata({
 export const dynamic = "force-dynamic";
 
 export default async function RequirementsDirectoryPage() {
-  const requirements = await getOpenRequirements();
+  let requirements: Awaited<ReturnType<typeof getOpenRequirements>> = [];
+  try {
+    requirements = await getOpenRequirements();
+  } catch (error) {
+    console.error(
+      "Tasks page data load failed",
+      error,
+      error instanceof Error ? error.cause : undefined,
+    );
+  }
 
   return (
     <>

@@ -46,11 +46,24 @@ export default async function SearchPage({ searchParams }: PageProps) {
     ([key, value]) => key !== "sort" && value !== undefined && value !== ""
   );
 
-  // D1 does not reliably handle concurrent statements on one binding.
-  const skills = await getAllSkills();
-  const services = await getAllServices();
-  const locations = await getDistinctLocations();
-  const rawProfiles = await searchExperts(filters);
+  let skills: Awaited<ReturnType<typeof getAllSkills>> = [];
+  let services: Awaited<ReturnType<typeof getAllServices>> = [];
+  let locations: Awaited<ReturnType<typeof getDistinctLocations>> = [];
+  let rawProfiles: Awaited<ReturnType<typeof searchExperts>> = [];
+
+  try {
+    skills = await getAllSkills();
+    services = await getAllServices();
+    locations = await getDistinctLocations();
+    rawProfiles = await searchExperts(filters);
+  } catch (error) {
+    console.error(
+      "SearchPage data load failed",
+      error,
+      error instanceof Error ? error.cause : undefined,
+    );
+  }
+
   const profiles = sortSearchResults(rawProfiles, filters.sort);
 
   const skillLabels = new Map(skills.map((s) => [s.slug, s.name]));

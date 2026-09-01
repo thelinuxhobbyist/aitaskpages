@@ -16,10 +16,24 @@ import { cn } from "@/lib/utils";
 
 export async function HomePage() {
   const jobsPromise = getLatestJobs(6);
-  const experts = await getFeaturedExperts(6);
-  const requirements = await getLatestOpenRequirements(6);
-  const skills = await getAllSkills();
-  const services = await getAllServices();
+  let experts: Awaited<ReturnType<typeof getFeaturedExperts>> = [];
+  let requirements: Awaited<ReturnType<typeof getLatestOpenRequirements>> = [];
+  let skills: Awaited<ReturnType<typeof getAllSkills>> = [];
+  let services: Awaited<ReturnType<typeof getAllServices>> = [];
+
+  try {
+    experts = await getFeaturedExperts(6);
+    requirements = await getLatestOpenRequirements(6);
+    skills = await getAllSkills();
+    services = await getAllServices();
+  } catch (error) {
+    console.error(
+      "HomePage data load failed",
+      error,
+      error instanceof Error ? error.cause : undefined,
+    );
+  }
+
   const jobs = await jobsPromise;
 
   const hasExperts = experts.length > 0;
