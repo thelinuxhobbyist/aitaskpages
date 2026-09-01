@@ -36,10 +36,9 @@ export async function HomePage() {
         />
         <div className="relative mx-auto max-w-6xl px-5 py-16 md:py-20">
           <h1 className="max-w-3xl text-[clamp(2.375rem,5vw,3.875rem)] font-bold leading-[1.04] tracking-[-0.02em]">
-            Find and hire
+            Find the AI expertise
             <br />
-            AI experts{" "}
-            <span className="text-accent-foreground">in minutes.</span>
+            <span className="text-accent-foreground">you need.</span>
           </h1>
           <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
             AI Jobs Market connects UK businesses with independent AI experts.
@@ -104,9 +103,9 @@ export async function HomePage() {
         <div className="mx-auto max-w-6xl px-5 py-12 md:py-14">
           <h2>What is AI Jobs Market?</h2>
           <p className="section-lead max-w-3xl">
-            We are the UK&apos;s AI expert directory and task marketplace — a
-            place for businesses that need AI work done to connect with people
-            who can deliver it.
+            AI Jobs Market is the UK&apos;s AI expert directory and task
+            marketplace — a place for businesses that need AI work done to
+            connect with people who have the expertise to do it.
           </p>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {[
