@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/brand-mark";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -16,33 +17,101 @@ const navLinks = [
   { href: "/join-as-expert", label: "Join as Expert" },
 ];
 
-const navLinkClass =
-  "text-[0.9375rem] font-medium tracking-[-0.01em] text-on-surface-variant transition-colors hover:text-on-surface md:text-base";
+function isPostTaskPath(pathname: string) {
+  return (
+    pathname === "/dashboard/requirements/new" || pathname === "/tasks/new"
+  );
+}
+
+function isNavActive(href: string, pathname: string): boolean {
+  if (href === "/") return pathname === "/";
+
+  if (href === "/dashboard/requirements/new") {
+    return isPostTaskPath(pathname);
+  }
+
+  if (href === "/dashboard") {
+    return pathname.startsWith("/dashboard") && !isPostTaskPath(pathname);
+  }
+
+  if (href === "/search") {
+    return (
+      pathname === "/search" ||
+      pathname.startsWith("/search/") ||
+      pathname === "/experts" ||
+      pathname.startsWith("/experts/") ||
+      pathname === "/freelancers" ||
+      pathname.startsWith("/freelancers/")
+    );
+  }
+
+  if (href === "/tasks") {
+    return (
+      pathname === "/tasks" ||
+      (pathname.startsWith("/tasks/") && pathname !== "/tasks/new")
+    );
+  }
+
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const { isSignedIn } = useAuth();
+  const pathname = usePathname() ?? "";
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-surface/80 backdrop-blur-xl">
-      <div className="mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-6 px-5 py-2 md:min-h-[4.5rem]">
-        <BrandMark />
+      <div className="mx-auto flex min-h-16 max-w-6xl items-stretch justify-between gap-6 px-5 md:min-h-[4.5rem]">
+        <BrandMark className="self-center" />
 
-        <nav className="hidden items-center gap-7 md:flex">
-          {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className={navLinkClass}>
-              {link.label}
-            </Link>
-          ))}
-          {isSignedIn && (
-            <Link href="/dashboard" className={navLinkClass}>
-              Dashboard
-            </Link>
-          )}
+        <div className="hidden items-stretch gap-8 md:flex">
+          <nav className="flex items-stretch gap-7" aria-label="Primary">
+            {navLinks.map((link) => {
+              const active = isNavActive(link.href, pathname);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "-mb-px flex items-center border-b-2 text-[0.9375rem] tracking-[-0.01em] transition-colors md:text-base",
+                    active
+                      ? "border-ink font-semibold text-on-surface"
+                      : "border-transparent font-medium text-on-surface-variant hover:text-on-surface",
+                  )}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            {isSignedIn && (
+              <Link
+                href="/dashboard"
+                aria-current={
+                  isNavActive("/dashboard", pathname) ? "page" : undefined
+                }
+                className={cn(
+                  "-mb-px flex items-center border-b-2 text-[0.9375rem] tracking-[-0.01em] transition-colors md:text-base",
+                  isNavActive("/dashboard", pathname)
+                    ? "border-ink font-semibold text-on-surface"
+                    : "border-transparent font-medium text-on-surface-variant hover:text-on-surface",
+                )}
+              >
+                Dashboard
+              </Link>
+            )}
+          </nav>
           {isSignedIn ? (
-            <UserButton />
+            <div className="flex items-center self-center">
+              <UserButton />
+            </div>
           ) : (
-            <div className="ml-2 flex items-center gap-2">
+            <div className="flex items-center gap-2 self-center">
               <SignInButton mode="modal" forceRedirectUrl="/dashboard">
                 <Button size="sm" variant="ghost" className="text-[0.9375rem]">
                   Sign in
@@ -58,11 +127,11 @@ export function Header() {
               </Button>
             </div>
           )}
-        </nav>
+        </div>
 
         <button
           type="button"
-          className="rounded-md p-2 text-on-surface md:hidden"
+          className="self-center rounded-md p-2 text-on-surface md:hidden"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -76,22 +145,37 @@ export function Header() {
           open ? "block" : "hidden",
         )}
       >
-        <nav className="flex flex-col gap-1 px-5 py-4">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-lg px-3 py-3 text-base font-medium tracking-[-0.01em] text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
-              onClick={() => setOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="flex flex-col gap-1 px-5 py-4" aria-label="Primary">
+          {navLinks.map((link) => {
+            const active = isNavActive(link.href, pathname);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "rounded-lg px-3 py-3 text-base tracking-[-0.01em]",
+                  active
+                    ? "bg-surface-container font-semibold text-on-surface"
+                    : "font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+                )}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           {isSignedIn && (
             <Link
               href="/dashboard"
-              className="rounded-lg px-3 py-3 text-base font-medium tracking-[-0.01em] text-on-surface-variant hover:bg-surface-container hover:text-on-surface"
-              onClick={() => setOpen(false)}
+              aria-current={
+                isNavActive("/dashboard", pathname) ? "page" : undefined
+              }
+              className={cn(
+                "rounded-lg px-3 py-3 text-base tracking-[-0.01em]",
+                isNavActive("/dashboard", pathname)
+                  ? "bg-surface-container font-semibold text-on-surface"
+                  : "font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+              )}
             >
               Dashboard
             </Link>
@@ -104,9 +188,7 @@ export function Header() {
                 </Button>
               </SignInButton>
               <Button size="sm" variant="ink" asChild className="w-full rounded-lg">
-                <Link href="/sign-up" onClick={() => setOpen(false)}>
-                  Sign up
-                </Link>
+                <Link href="/sign-up">Sign up</Link>
               </Button>
             </div>
           )}
