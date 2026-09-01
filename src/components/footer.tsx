@@ -36,7 +36,7 @@ export function Footer() {
               <h3>Marketplace</h3>
               <ul>
                 <li>
-                  <Link href="/">Browse Experts</Link>
+                  <Link href="/search">Browse Experts</Link>
                 </li>
                 <li>
                   <Link href="/tasks">Browse Tasks</Link>

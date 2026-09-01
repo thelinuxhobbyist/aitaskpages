@@ -4,7 +4,7 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-/** /experts index → directory homepage (filters preserved via query string). */
+/** /experts index → expert directory (filters preserved via query string). */
 export default async function ExpertsIndexRedirect({ searchParams }: PageProps) {
   const params = await searchParams;
   const query = new URLSearchParams();
@@ -18,5 +18,5 @@ export default async function ExpertsIndexRedirect({ searchParams }: PageProps) 
   }
 
   const qs = query.toString();
-  redirect(qs ? `/?${qs}` : "/");
+  redirect(qs ? `/search?${qs}` : "/search");
 }

@@ -51,8 +51,8 @@ export const config = {
     "/__clerk/:path*",
     "/tasks",
     "/tasks/:path*",
-    "/experts/:path*",
-    "/freelancers/:path*",
+    "/experts/:path+",
+    "/freelancers/:path+",
     "/api/upload",
   ],
 };

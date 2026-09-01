@@ -14,9 +14,9 @@ import { parseDirectoryFilters } from "@/lib/validations/directory";
 import { Search, Users } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Search AI experts",
+  title: "AI Experts",
   description:
-    "Search independent UK AI experts on AI Jobs Market by skills, services, location and rate — consulting, automation, integrations, machine learning and more.",
+    "Browse independent UK AI experts on AI Jobs Market. Search by skills, services and location — we make the introduction, you take it from there.",
   path: "/search",
 });
 
@@ -52,7 +52,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
     getDistinctLocations(),
   ]);
 
-  const rawProfiles = hasFilters ? await searchExperts(filters) : [];
+  const rawProfiles = await searchExperts(filters);
   const profiles = sortSearchResults(rawProfiles, filters.sort);
 
   const skillLabels = new Map(skills.map((s) => [s.slug, s.name]));
@@ -67,15 +67,24 @@ export default async function SearchPage({ searchParams }: PageProps) {
     skillLabels,
     serviceLabels
   );
-  const countLabel = `${profiles.length} AI expert${profiles.length !== 1 ? "s" : ""} found`;
+  const countLabel = hasFilters
+    ? `${profiles.length} AI expert${profiles.length !== 1 ? "s" : ""} found`
+    : `${profiles.length} AI expert${profiles.length !== 1 ? "s" : ""}`;
 
   return (
     <>
       <section className="border-b border-border bg-surface-container">
         <div className="mx-auto max-w-6xl px-4 py-8 md:py-10">
           <h1 className="text-2xl font-semibold tracking-tight text-secondary md:text-3xl">
-            Search AI Experts
+            AI Experts
           </h1>
+          {!hasFilters && (
+            <p className="mt-2 max-w-2xl text-base text-muted">
+              Browse independent AI experts across the UK. Search by skill, or
+              post a task and let specialists come to you. We make the
+              introduction — you take it from there.
+            </p>
+          )}
 
           {hasFilters && searchContext && (
             <p className="mt-2 text-base text-muted">
@@ -94,17 +103,15 @@ export default async function SearchPage({ searchParams }: PageProps) {
             />
           </div>
 
-          {hasFilters && (
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-              <p className="flex items-center gap-2 text-sm text-muted">
-                <Users className="h-4 w-4 shrink-0" />
-                {countLabel}
-              </p>
-              <Suspense fallback={null}>
-                <SearchSortSelect />
-              </Suspense>
-            </div>
-          )}
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+            <p className="flex items-center gap-2 text-sm text-muted">
+              <Users className="h-4 w-4 shrink-0" />
+              {countLabel}
+            </p>
+            <Suspense fallback={null}>
+              <SearchSortSelect />
+            </Suspense>
+          </div>
         </div>
       </section>
 
@@ -162,17 +169,23 @@ export default async function SearchPage({ searchParams }: PageProps) {
               </div>
             )}
 
-            {!hasFilters ? (
+            {!hasFilters && profiles.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
-                  <Search className="h-6 w-6 text-muted" />
+                  <Users className="h-6 w-6 text-muted" />
                 </div>
                 <p className="text-lg font-semibold text-secondary">
-                  Start your search
+                  No experts listed yet
                 </p>
                 <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
-                  Enter a keyword above or use the filters to find AI experts
-                  across the UK.
+                  Check back soon, or{" "}
+                  <Link
+                    href="/join-as-expert"
+                    className="font-medium text-primary hover:underline"
+                  >
+                    join as an expert
+                  </Link>
+                  .
                 </p>
               </div>
             ) : profiles.length > 0 ? (

@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/", label: "Experts" },
+  { href: "/", label: "Home" },
+  { href: "/search", label: "Experts" },
   { href: "/tasks", label: "Tasks" },
   { href: "/dashboard/requirements/new", label: "Post a Task" },
   { href: "/join-as-expert", label: "Join as Expert" },

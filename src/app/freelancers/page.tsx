@@ -20,5 +20,5 @@ export default async function LegacyFreelancersRedirect({
   }
 
   const qs = query.toString();
-  permanentRedirect(qs ? `/?${qs}` : "/");
+  permanentRedirect(qs ? `/search?${qs}` : "/search");
 }

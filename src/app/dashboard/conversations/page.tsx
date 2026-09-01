@@ -131,7 +131,7 @@ export default async function ConversationsPage() {
           <EmptyState>
             You haven&apos;t started any conversations yet.{" "}
             <Button asChild variant="ghost" size="sm" className="ml-1">
-              <Link href="/">Browse experts</Link>
+              <Link href="/search">Browse experts</Link>
             </Button>
           </EmptyState>
         ) : (
