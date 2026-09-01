@@ -24,37 +24,37 @@ export type HomeCategory = {
 export const HOME_CATEGORIES: HomeCategory[] = [
   {
     name: "AI Chatbots",
-    description: "Custom chatbots and conversational AI for your business.",
+    description: "Custom chatbots and conversational AI expertise.",
     href: "/search?service=chatbot-agent-development",
     icon: Bot,
   },
   {
     name: "Microsoft Copilot",
-    description: "Copilot rollout, integration, and workplace AI adoption.",
+    description: "Copilot rollout, integration and workplace AI adoption expertise.",
     href: "/search?q=Microsoft+Copilot",
     icon: Sparkles,
   },
   {
     name: "AI Automation",
-    description: "Automate workflows and integrate AI into existing systems.",
+    description: "Workflow automation and AI integration expertise.",
     href: "/search?service=ai-integration",
     icon: Workflow,
   },
   {
     name: "AI Training",
-    description: "Workshops and upskilling for teams adopting AI.",
+    description: "Workshops and upskilling expertise for teams adopting AI.",
     href: "/search?service=ai-training-workshops",
     icon: GraduationCap,
   },
   {
     name: "Machine Learning",
-    description: "ML engineers for models, data, and production systems.",
+    description: "Machine learning expertise for models, data and production systems.",
     href: "/search?skill=machine-learning",
     icon: Brain,
   },
   {
     name: "AI Strategy",
-    description: "Consulting on AI roadmaps, ROI, and implementation plans.",
+    description: "AI strategy, roadmaps, ROI and implementation planning expertise.",
     href: "/search?service=ai-strategy-consulting",
     icon: Layers,
   },
@@ -72,31 +72,31 @@ export const HOME_BENEFITS: HomeBenefit[] = [
   {
     title: "UK AI Professionals",
     description:
-      "Hire experienced AI consultants and freelancers across the UK for remote or on-site work.",
+      "Find independent AI consultants and specialists across the UK for remote or on-site work.",
     icon: Users,
     iconBg: "border-primary/20 bg-primary/5",
     iconColor: "text-primary",
   },
   {
-    title: "Direct Contact",
+    title: "Direct introductions",
     description:
-      "Speak directly with AI experts without recruiters or unnecessary intermediaries.",
+      "We introduce you to AI experts. You agree how to work together — no recruiters in between.",
     icon: MessageSquare,
     iconBg: "border-accent/30 bg-accent-muted",
     iconColor: "text-accent",
   },
   {
-    title: "No Platform Commission",
+    title: "No commission on the relationship",
     description:
-      "We don't take a percentage of your project. Agree pricing directly with the expert.",
+      "We don't take a cut of what you agree. Pricing and terms stay between you and the expert.",
     icon: Percent,
     iconBg: "border-primary/20 bg-surface-container",
     iconColor: "text-primary-light",
   },
   {
-    title: "Compare Before You Hire",
+    title: "Compare before you connect",
     description:
-      "Review profiles, skills and experience before deciding who to work with.",
+      "Review profiles, skills and experience before deciding who to speak with.",
     icon: Scale,
     iconBg: "border-accent/30 bg-accent-muted",
     iconColor: "text-accent",
@@ -110,9 +110,9 @@ export const HOME_BENEFITS: HomeBenefit[] = [
     iconColor: "text-primary",
   },
   {
-    title: "Fast Hiring",
+    title: "Find experts quickly",
     description:
-      "Find, compare and contact AI professionals within minutes.",
+      "Search, compare and contact AI professionals directly.",
     icon: Zap,
     iconBg: "border-accent/30 bg-accent-muted",
     iconColor: "text-accent",

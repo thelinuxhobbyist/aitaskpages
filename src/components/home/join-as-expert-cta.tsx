@@ -15,7 +15,7 @@ export function JoinAsExpertCta() {
         <h2 className="mt-4">Are you an AI expert?</h2>
         <p className="mx-auto mt-3.5 max-w-xl text-lg leading-[1.65] text-muted">
           Create your profile, showcase your skills, and get discovered by UK
-          businesses posting AI requirements or searching the directory.
+          businesses. We introduce you — you take the conversation from there.
         </p>
         <Button asChild variant="ink" size="lg" className="mt-6 rounded-xl">
           <Link href="/join-as-expert">

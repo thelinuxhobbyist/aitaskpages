@@ -10,14 +10,14 @@ export const SITE_NAME = "AI Jobs Market";
 
 /** Short brand line — experts & tasks first, not employment news. */
 export const SITE_TAGLINE =
-  "Find AI experts and post AI tasks across the UK";
+  "Find AI experts and post AI tasks across the UK. We make the introduction.";
 
 /**
  * Default meta description. Written to distinguish the brand from the generic
  * phrase “AI jobs market” (employment news) and to state what the product is.
  */
 export const DEFAULT_DESCRIPTION =
-  "AI Jobs Market is the UK's AI expert directory and task marketplace. Find independent AI experts for consulting, automation, integrations and machine learning — or post a task and let specialists come to you.";
+  "AI Jobs Market is an introduction platform connecting UK businesses with independent AI experts. Find an expert or post a task — we make the introduction, you take it from there.";
 
 export const ORGANIZATION_SAME_AS = [
   "https://www.linkedin.com/company/aijobsmarket/",

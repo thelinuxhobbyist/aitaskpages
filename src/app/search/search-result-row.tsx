@@ -27,7 +27,7 @@ export function SearchResultRow({
   const summary =
     profile.bio?.split("\n")[0]?.slice(0, 120) ??
     profile.headline ??
-    "AI expert available for hire in the UK.";
+    "AI expert in the UK available to connect with businesses.";
 
   const customSkills = parseCustomSkills(profile.customSkills);
   const catalogSkills = profile.skills.slice(0, 5);

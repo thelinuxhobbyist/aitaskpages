@@ -41,9 +41,12 @@ export async function HomePage() {
             <span className="text-accent-foreground">you need.</span>
           </h1>
           <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
-            AI Jobs Market connects UK businesses with independent AI experts.
-            Find an expert for your project, or post a task and let the right
-            specialists come to you.
+            AI Jobs Market is an introduction platform connecting UK businesses
+            with independent AI experts. Find an expert directly, or post what
+            you need and let relevant specialists come to you.
+          </p>
+          <p className="mt-4 max-w-xl text-[1.0625rem] font-medium leading-[1.5] text-on-surface md:text-lg">
+            We make the introduction. You take it from there.
           </p>
 
           <ExpertSearchForm
@@ -84,7 +87,7 @@ export async function HomePage() {
           </div>
 
           <div className="mt-5 flex max-w-[560px] flex-wrap gap-x-4 gap-y-1.5 border-t border-border/80 pt-5 pl-1 text-[0.8125rem] text-muted">
-            {["No commissions", "No contracts", "No platform fees"].map(
+            {["Connect directly", "No commissions", "You agree terms directly"].map(
               (item) => (
                 <span key={item} className="inline-flex items-center gap-1.5">
                   <CircleCheck
@@ -99,47 +102,13 @@ export async function HomePage() {
         </div>
       </section>
 
-      <section className="border-b border-border/60">
-        <div className="mx-auto max-w-6xl px-5 py-12 md:py-14">
-          <h2>What is AI Jobs Market?</h2>
-          <p className="section-lead max-w-3xl">
-            AI Jobs Market is the UK&apos;s AI expert directory and task
-            marketplace — a place for businesses that need AI work done to
-            connect with people who have the expertise to do it.
-          </p>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {[
-              {
-                title: "AI expert profiles",
-                body: "Independent consultants showcase skills, services and availability so businesses can discover the right specialist.",
-              },
-              {
-                title: "AI tasks & requirements",
-                body: "Post a project need — automation, integrations, chatbots, ML or custom AI — and invite experts to express interest.",
-              },
-              {
-                title: "Direct connections",
-                body: "Review interested experts, compare profiles and message them yourself. We stay out of contracts and payments.",
-              },
-            ].map((item) => (
-              <div key={item.title}>
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p className="mt-2 text-base leading-[1.65] text-muted">
-                  {item.body}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <div className="mx-auto max-w-6xl px-5 py-14">
         <HowItWorks />
       </div>
 
       <FeaturedCategories />
 
-      {(hasExperts || hasTasks || hasJobs) && (
+      {(hasExperts || hasTasks) && (
         <div className="mx-auto max-w-6xl space-y-14 px-5 py-14">
           {hasExperts && (
             <PlatformSection
@@ -161,7 +130,7 @@ export async function HomePage() {
             <PlatformSection
               id="tasks"
               title="Open AI tasks"
-              description="Project requirements from UK businesses looking for AI expertise. Experts can express interest."
+              description="What UK businesses need help with — experts can express interest so you can connect directly."
               browseHref="/tasks"
               browseLabel="Browse all tasks"
             >
@@ -172,29 +141,31 @@ export async function HomePage() {
               </div>
             </PlatformSection>
           )}
-
-          {hasJobs && (
-            <PlatformSection
-              id="jobs"
-              title="Related AI vacancies"
-              description="Optional listings from UK employers for visitors exploring careers — separate from the expert marketplace."
-              browseHref="/jobs"
-              browseLabel="Browse vacancies"
-              secondary
-            >
-              <div className="grid gap-4 md:grid-cols-2">
-                {jobs.map((job) => (
-                  <JobPreviewCard key={job.jobId} job={job} />
-                ))}
-              </div>
-            </PlatformSection>
-          )}
         </div>
       )}
 
       <div className="mx-auto max-w-6xl px-5 pb-14">
         <JoinAsExpertCta />
       </div>
+
+      {hasJobs && (
+        <div className="mx-auto max-w-6xl px-5 pb-14">
+          <PlatformSection
+            id="jobs"
+            title="Looking for an AI career?"
+            description="Traditional employment opportunities from UK employers. These vacancies are separate from the AI expert and task marketplace."
+            browseHref="/jobs"
+            browseLabel="Browse AI vacancies"
+            secondary
+          >
+            <div className="grid gap-4 md:grid-cols-2">
+              {jobs.map((job) => (
+                <JobPreviewCard key={job.jobId} job={job} />
+              ))}
+            </div>
+          </PlatformSection>
+        </div>
+      )}
     </>
   );
 }

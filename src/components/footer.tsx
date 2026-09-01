@@ -17,8 +17,8 @@ export function Footer() {
               <BrandMark size="footer" />
             </div>
             <p className="footer-tagline">
-              Find AI experts and post AI tasks across the UK. Connect directly
-              — no commissions, no middlemen.
+              Find AI experts and post AI tasks across the UK. We make the
+              introduction — you connect directly.
             </p>
             <div className="footer-contact-info">
               <span className="contact-label">Get in touch</span>

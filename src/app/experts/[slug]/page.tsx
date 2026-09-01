@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const description =
     profile.headline ??
-    `${profile.fullName} is an independent AI expert on ${SITE_NAME}. Hire for AI consulting, automation, integrations or custom AI projects in the UK.`;
+    `${profile.fullName} is an independent AI expert on ${SITE_NAME}. Connect for AI consulting, automation, integrations or custom AI projects in the UK.`;
 
   return createPageMetadata({
     title: `${profile.fullName} — AI expert`,

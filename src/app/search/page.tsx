@@ -150,7 +150,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
                   Can&apos;t find the right expert?
                 </p>
                 <p className="mt-1 text-sm text-muted">
-                  Post a task and let matching AI experts come to you.
+                  Post a task and let matching AI experts come to you. We make
+                  the introduction; you take it from there.
                 </p>
                 <Link
                   href="/dashboard/requirements/new"
