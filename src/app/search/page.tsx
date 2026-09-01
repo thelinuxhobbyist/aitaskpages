@@ -46,12 +46,10 @@ export default async function SearchPage({ searchParams }: PageProps) {
     ([key, value]) => key !== "sort" && value !== undefined && value !== ""
   );
 
-  const [skills, services, locations] = await Promise.all([
-    getAllSkills(),
-    getAllServices(),
-    getDistinctLocations(),
-  ]);
-
+  // D1 does not reliably handle concurrent statements on one binding.
+  const skills = await getAllSkills();
+  const services = await getAllServices();
+  const locations = await getDistinctLocations();
   const rawProfiles = await searchExperts(filters);
   const profiles = sortSearchResults(rawProfiles, filters.sort);
 

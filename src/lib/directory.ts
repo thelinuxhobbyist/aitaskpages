@@ -1,5 +1,5 @@
 import { and, desc, eq, gte, inArray, isNotNull, like, lte, sql } from "drizzle-orm";
-import { getDb } from "@/db/client";
+import { getDb, withD1Retry } from "@/db/client";
 import { expertProfiles, users } from "@/db/schema";
 import {
   PUBLIC_PROFILE_STATUS,
@@ -15,29 +15,31 @@ import type { DirectoryFilters } from "@/lib/validations/directory";
 async function fetchPublicProfiles(
   extraConditions: ReturnType<typeof and>[] = []
 ): Promise<ProfileWithRelations[]> {
-  const db = await getDb();
-  const where = publicExpertProfileConditions(
-    extraConditions.length > 0 ? and(...extraConditions) : undefined
-  );
+  return withD1Retry("fetchPublicProfiles", async () => {
+    const db = await getDb();
+    const where = publicExpertProfileConditions(
+      extraConditions.length > 0 ? and(...extraConditions) : undefined
+    );
 
-  const rows = await db
-    .select({ profile: expertProfiles })
-    .from(expertProfiles)
-    .innerJoin(users, eq(expertProfiles.userId, users.id))
-    .where(where);
+    const rows = await db
+      .select({ profile: expertProfiles })
+      .from(expertProfiles)
+      .innerJoin(users, eq(expertProfiles.userId, users.id))
+      .where(where);
 
-  const ids = rows.map((r) => r.profile.id);
-  if (ids.length === 0) return [];
+    const ids = rows.map((r) => r.profile.id);
+    if (ids.length === 0) return [];
 
-  const profiles = await db.query.expertProfiles.findMany({
-    where: inArray(expertProfiles.id, ids),
-    with: {
-      skills: { with: { skill: true } },
-      services: { with: { service: true } },
-    },
+    const profiles = await db.query.expertProfiles.findMany({
+      where: inArray(expertProfiles.id, ids),
+      with: {
+        skills: { with: { skill: true } },
+        services: { with: { service: true } },
+      },
+    });
+
+    return profiles as ProfileWithRelations[];
   });
-
-  return profiles as ProfileWithRelations[];
 }
 
 export async function searchExperts(
@@ -77,33 +79,35 @@ export async function incrementProfileViews(profileId: number): Promise<void> {
 export async function getFeaturedExperts(
   limit = 3
 ): Promise<ProfileWithRelations[]> {
-  const db = await getDb();
-  const where = publicExpertProfileConditions(
-    eq(expertProfiles.featured, true)
-  );
+  return withD1Retry("getFeaturedExperts", async () => {
+    const db = await getDb();
+    const where = publicExpertProfileConditions(
+      eq(expertProfiles.featured, true)
+    );
 
-  const rows = await db
-    .select({ id: expertProfiles.id })
-    .from(expertProfiles)
-    .innerJoin(users, eq(expertProfiles.userId, users.id))
-    .where(where)
-    .orderBy(desc(expertProfiles.createdAt))
-    .limit(limit);
+    const rows = await db
+      .select({ id: expertProfiles.id })
+      .from(expertProfiles)
+      .innerJoin(users, eq(expertProfiles.userId, users.id))
+      .where(where)
+      .orderBy(desc(expertProfiles.createdAt))
+      .limit(limit);
 
-  if (rows.length === 0) return [];
+    if (rows.length === 0) return [];
 
-  const profiles = await db.query.expertProfiles.findMany({
-    where: inArray(
-      expertProfiles.id,
-      rows.map((r) => r.id)
-    ),
-    with: {
-      skills: { with: { skill: true } },
-      services: { with: { service: true } },
-    },
+    const profiles = await db.query.expertProfiles.findMany({
+      where: inArray(
+        expertProfiles.id,
+        rows.map((r) => r.id)
+      ),
+      with: {
+        skills: { with: { skill: true } },
+        services: { with: { service: true } },
+      },
+    });
+
+    return rankProfiles(profiles as ProfileWithRelations[]);
   });
-
-  return rankProfiles(profiles as ProfileWithRelations[]);
 }
 
 export async function getDirectoryStats() {
@@ -177,22 +181,24 @@ export async function getPublicExpertSlugs(): Promise<
 }
 
 export async function getDistinctLocations(): Promise<string[]> {
-  const db = await getDb();
-  const rows = await db
-    .selectDistinct({ location: expertProfiles.location })
-    .from(expertProfiles)
-    .innerJoin(users, eq(expertProfiles.userId, users.id))
-    .where(
-      and(
-        publicExpertProfileConditions(),
-        isNotNull(expertProfiles.location)
-      )
-    );
+  return withD1Retry("getDistinctLocations", async () => {
+    const db = await getDb();
+    const rows = await db
+      .selectDistinct({ location: expertProfiles.location })
+      .from(expertProfiles)
+      .innerJoin(users, eq(expertProfiles.userId, users.id))
+      .where(
+        and(
+          publicExpertProfileConditions(),
+          isNotNull(expertProfiles.location)
+        )
+      );
 
-  return rows
-    .map((r) => r.location)
-    .filter((loc): loc is string => !!loc && loc.trim().length > 0)
-    .sort((a, b) => a.localeCompare(b));
+    return rows
+      .map((r) => r.location)
+      .filter((loc): loc is string => !!loc && loc.trim().length > 0)
+      .sort((a, b) => a.localeCompare(b));
+  });
 }
 
 export { PUBLIC_PROFILE_STATUS };

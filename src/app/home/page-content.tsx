@@ -15,13 +15,12 @@ import { ArrowRight, CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export async function HomePage() {
-  const [experts, requirements, jobs, skills, services] = await Promise.all([
-    getFeaturedExperts(6),
-    getLatestOpenRequirements(6),
-    getLatestJobs(6),
-    getAllSkills(),
-    getAllServices(),
-  ]);
+  const jobsPromise = getLatestJobs(6);
+  const experts = await getFeaturedExperts(6);
+  const requirements = await getLatestOpenRequirements(6);
+  const skills = await getAllSkills();
+  const services = await getAllServices();
+  const jobs = await jobsPromise;
 
   const hasExperts = experts.length > 0;
   const hasTasks = requirements.length > 0;

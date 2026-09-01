@@ -14,3 +14,26 @@ export async function getDb(): Promise<Database> {
     return createDb(env.DB);
   }
 }
+
+function logD1Failure(label: string, error: unknown) {
+  const cause = error instanceof Error ? error.cause : undefined;
+  console.error(`D1 ${label} failed`, error, cause);
+}
+
+/** Retry a D1 read once — concurrent statements on the same binding can flake. */
+export async function withD1Retry<T>(
+  label: string,
+  fn: () => Promise<T>
+): Promise<T> {
+  try {
+    return await fn();
+  } catch (first) {
+    logD1Failure(label, first);
+    try {
+      return await fn();
+    } catch (second) {
+      logD1Failure(`${label} (retry)`, second);
+      throw second;
+    }
+  }
+}

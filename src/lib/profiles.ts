@@ -1,5 +1,5 @@
 import { asc, eq } from "drizzle-orm";
-import { getDb } from "@/db/client";
+import { getDb, withD1Retry } from "@/db/client";
 import {
   expertProfiles,
   expertServices,
@@ -133,11 +133,15 @@ export async function updateProfile(
 }
 
 export async function getAllSkills() {
-  const db = await getDb();
-  return db.select().from(skills).orderBy(asc(skills.name));
+  return withD1Retry("getAllSkills", async () => {
+    const db = await getDb();
+    return db.select().from(skills).orderBy(asc(skills.name));
+  });
 }
 
 export async function getAllServices() {
-  const db = await getDb();
-  return db.select().from(services).orderBy(asc(services.name));
+  return withD1Retry("getAllServices", async () => {
+    const db = await getDb();
+    return db.select().from(services).orderBy(asc(services.name));
+  });
 }
