@@ -8,16 +8,17 @@ import {
 
 export const SITE_NAME = "AI Jobs Market";
 
-/** Short brand line — experts & tasks first, not employment news. */
+/** Short brand line — introduction platform, not recruitment. */
 export const SITE_TAGLINE =
-  "Find AI experts and post AI tasks across the UK. We make the introduction.";
+  "Connect with AI experts and post AI tasks across the UK. We make the introduction.";
 
 /**
- * Default meta description. Written to distinguish the brand from the generic
- * phrase “AI jobs market” (employment news) and to state what the product is.
+ * Default meta description. Positions the brand as an introduction platform
+ * (not a recruitment agency) and distinguishes it from generic “AI jobs”
+ * employment news.
  */
 export const DEFAULT_DESCRIPTION =
-  "AI Jobs Market is an introduction platform connecting UK businesses with independent AI experts. Find an expert or post a task — we make the introduction, you take it from there.";
+  "An introduction platform connecting UK businesses with independent AI experts. Find an expert or post a task, then connect directly.";
 
 export const ORGANIZATION_SAME_AS = [
   "https://www.linkedin.com/company/aijobsmarket/",
@@ -86,8 +87,8 @@ export function createPageMetadata({
   };
 }
 
-/** Homepage / default document title — find experts or post a task. */
-export const ROOT_TITLE = `${SITE_NAME} — Find AI Experts`;
+/** Homepage / default document title — introduction platform, not hiring. */
+export const ROOT_TITLE = `${SITE_NAME} — Connect with AI Experts`;
 
 export function rootMetadata(): Metadata {
   return {
@@ -106,7 +107,7 @@ export function rootMetadata(): Metadata {
       "AIJobsMarket",
       "AI experts UK",
       "AI consultants",
-      "hire AI freelancer",
+      "connect with AI experts",
       "post AI task",
       "AI automation experts",
       "machine learning consultants UK",
