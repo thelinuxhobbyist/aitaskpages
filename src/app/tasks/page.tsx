@@ -18,9 +18,11 @@ export const dynamic = "force-dynamic";
 
 export default async function RequirementsDirectoryPage() {
   let requirements: Awaited<ReturnType<typeof getOpenRequirements>> = [];
+  let tasksUnavailable = false;
   try {
     requirements = await getOpenRequirements();
   } catch (error) {
+    tasksUnavailable = true;
     console.error(
       "Tasks page data load failed",
       error,
@@ -55,7 +57,23 @@ export default async function RequirementsDirectoryPage() {
       </section>
 
       <div className="mx-auto max-w-6xl px-4 py-10">
-        {requirements.length === 0 ? (
+        {tasksUnavailable ? (
+          <Card>
+            <CardContent className="px-6 py-16 text-center">
+              <Briefcase
+                className="mx-auto h-10 w-10 text-muted"
+                strokeWidth={1.5}
+              />
+              <p className="mt-4 text-lg font-semibold text-secondary">
+                Tasks are temporarily unavailable
+              </p>
+              <p className="mx-auto mt-2 max-w-md text-sm text-muted">
+                Open tasks have not been removed. We can&apos;t load them just
+                now — please try again after 1am UK time.
+              </p>
+            </CardContent>
+          </Card>
+        ) : requirements.length === 0 ? (
           <Card>
             <CardContent className="px-6 py-16 text-center">
               <Briefcase

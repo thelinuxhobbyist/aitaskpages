@@ -21,12 +21,15 @@ export async function HomePage() {
   let skills: Awaited<ReturnType<typeof getAllSkills>> = [];
   let services: Awaited<ReturnType<typeof getAllServices>> = [];
 
+  let directoryUnavailable = false;
+
   try {
     experts = await getFeaturedExperts(6);
     requirements = await getLatestOpenRequirements(6);
     skills = await getAllSkills();
     services = await getAllServices();
   } catch (error) {
+    directoryUnavailable = true;
     console.error(
       "HomePage data load failed",
       error,
@@ -120,6 +123,20 @@ export async function HomePage() {
       </div>
 
       <FeaturedCategories />
+
+      {directoryUnavailable && (
+        <div className="mx-auto max-w-6xl px-5 pb-14">
+          <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-8 text-center">
+            <p className="text-lg font-semibold text-secondary">
+              Experts and tasks are temporarily unavailable
+            </p>
+            <p className="mx-auto mt-2 max-w-lg text-sm text-muted">
+              Nothing has been removed from the site. The directory should be
+              back after 1am UK time. AI vacancies below are unaffected.
+            </p>
+          </div>
+        </div>
+      )}
 
       {(hasExperts || hasTasks) && (
         <div className="mx-auto max-w-6xl space-y-14 px-5 py-14">

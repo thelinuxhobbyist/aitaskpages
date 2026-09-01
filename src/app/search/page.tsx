@@ -50,6 +50,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
   let services: Awaited<ReturnType<typeof getAllServices>> = [];
   let locations: Awaited<ReturnType<typeof getDistinctLocations>> = [];
   let rawProfiles: Awaited<ReturnType<typeof searchExperts>> = [];
+  let directoryUnavailable = false;
 
   try {
     skills = await getAllSkills();
@@ -57,6 +58,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
     locations = await getDistinctLocations();
     rawProfiles = await searchExperts(filters);
   } catch (error) {
+    directoryUnavailable = true;
     console.error(
       "SearchPage data load failed",
       error,
@@ -117,7 +119,9 @@ export default async function SearchPage({ searchParams }: PageProps) {
           <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
             <p className="flex items-center gap-2 text-sm text-muted">
               <Users className="h-4 w-4 shrink-0" />
-              {countLabel}
+              {directoryUnavailable
+                ? "Directory temporarily unavailable"
+                : countLabel}
             </p>
             <Suspense fallback={null}>
               <SearchSortSelect />
@@ -180,7 +184,20 @@ export default async function SearchPage({ searchParams }: PageProps) {
               </div>
             )}
 
-            {!hasFilters && profiles.length === 0 ? (
+            {directoryUnavailable ? (
+              <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
+                  <Users className="h-6 w-6 text-muted" />
+                </div>
+                <p className="text-lg font-semibold text-secondary">
+                  Experts are temporarily unavailable
+                </p>
+                <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
+                  Expert profiles have not been removed. We can&apos;t load the
+                  directory just now — please try again after 1am UK time.
+                </p>
+              </div>
+            ) : !hasFilters && profiles.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
                 <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
                   <Users className="h-6 w-6 text-muted" />
