@@ -18,11 +18,14 @@ export const SITE_LOGO_ON_DARK_URL = `${logoAsset("footer.png")}?v=1`;
 /** @deprecated Use SITE_LOGO_ON_DARK_URL. */
 export const SITE_LOGO_ON_DARK_SVG_URL = SITE_LOGO_ON_DARK_URL;
 
-export const SITE_FAVICON_16_URL = logoAsset("16x16.png");
-export const SITE_FAVICON_32_URL = logoAsset("32x32.png");
+export const SITE_FAVICON_16_URL = logoAsset("16x16-01.png");
+export const SITE_FAVICON_32_URL = logoAsset("32x32-01.png");
+export const SITE_APPLE_TOUCH_ICON_URL = "/apple-touch-icon.png";
+/** Same-origin ICO built from the CDN 16×16 and 32×32 PNGs. */
+export const SITE_FAVICON_ICO_URL = "/favicon.ico";
 
 /** Square share/app icon (Twitter summary, apple-style previews). */
-export const SITE_SHARE_ICON_URL = SITE_FAVICON_32_URL;
+export const SITE_SHARE_ICON_URL = SITE_APPLE_TOUCH_ICON_URL;
 
 export const SOCIAL_LINKS = {
   linkedin: "https://www.linkedin.com/company/aijobsmarket/",

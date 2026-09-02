@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import {
+  SITE_APPLE_TOUCH_ICON_URL,
   SITE_FAVICON_16_URL,
   SITE_FAVICON_32_URL,
+  SITE_FAVICON_ICO_URL,
   SITE_LOGO_URL,
   SITE_SHARE_ICON_URL,
   SITE_URL,
@@ -120,6 +122,7 @@ export function rootMetadata(): Metadata {
     },
     icons: {
       icon: [
+        { url: SITE_FAVICON_ICO_URL, sizes: "any" },
         {
           url: SITE_FAVICON_16_URL,
           sizes: "16x16",
@@ -133,8 +136,8 @@ export function rootMetadata(): Metadata {
       ],
       apple: [
         {
-          url: SITE_FAVICON_32_URL,
-          sizes: "32x32",
+          url: SITE_APPLE_TOUCH_ICON_URL,
+          sizes: "180x180",
           type: "image/png",
         },
       ],
