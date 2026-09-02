@@ -1,13 +1,18 @@
 /**
  * Clerk publishable key — public, safe in client bundle.
  *
- * Prefer NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY (e.g. pk_test_ in .env.local for
- * `next dev`). Fall back to the production key so Cloudflare builds never
- * ship an empty string when the build env var is missing or set to "".
+ * Production always uses the live key. `next build` also loads `.env.local`,
+ * so reading NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY here would bake pk_test_
+ * into the live site and show Clerk's Development badge.
  *
- * Production (pk_live_) keys only work on aijobsmarket.co.uk — use a Clerk
- * Development instance (pk_test_ / sk_test_) for localhost.
+ * Local `next dev` may override with NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+ * (pk_test_). Production keys only work on aijobsmarket.co.uk.
  */
-export const CLERK_PUBLISHABLE_KEY =
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim() ||
+const PRODUCTION_PUBLISHABLE_KEY =
   "pk_live_Y2xlcmsuYWlqb2JzbWFya2V0LmNvLnVrJA";
+
+export const CLERK_PUBLISHABLE_KEY =
+  process.env.NODE_ENV === "development"
+    ? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim() ||
+      PRODUCTION_PUBLISHABLE_KEY
+    : PRODUCTION_PUBLISHABLE_KEY;
