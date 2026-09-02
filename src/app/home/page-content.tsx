@@ -11,6 +11,7 @@ import { getFeaturedExperts } from "@/lib/directory";
 import { getLatestJobs } from "@/lib/jobs";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 import { getLatestOpenRequirements } from "@/lib/requirements";
+import { PageHero } from "@/components/page-hero";
 import { ArrowRight, CircleCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -45,12 +46,7 @@ export async function HomePage() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-border/60">
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-hero"
-          aria-hidden
-        />
-        <div className="relative mx-auto max-w-6xl px-5 py-16 md:py-20">
+      <PageHero innerClassName="py-16 md:py-20">
           <h1 className="max-w-3xl text-[clamp(2.375rem,5vw,3.875rem)] font-bold leading-[1.04] tracking-[-0.02em]">
             Find the AI expertise
             <br />
@@ -115,8 +111,7 @@ export async function HomePage() {
               ),
             )}
           </div>
-        </div>
-      </section>
+      </PageHero>
 
       <div className="mx-auto max-w-6xl px-5 py-14">
         <HowItWorks />

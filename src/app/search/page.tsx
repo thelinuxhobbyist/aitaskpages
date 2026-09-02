@@ -11,6 +11,7 @@ import { searchExperts, getDistinctLocations } from "@/lib/directory";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 import { createPageMetadata } from "@/lib/seo";
 import { parseDirectoryFilters } from "@/lib/validations/directory";
+import { PageHero } from "@/components/page-hero";
 import { Search, Users } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
@@ -86,8 +87,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <section className="border-b border-border bg-surface-container">
-        <div className="mx-auto max-w-6xl px-4 py-8 md:py-10">
+      <PageHero>
           <h1 className="text-2xl font-semibold tracking-tight text-secondary md:text-3xl">
             AI Experts
           </h1>
@@ -127,8 +127,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
               <SearchSortSelect />
             </Suspense>
           </div>
-        </div>
-      </section>
+      </PageHero>
 
       <div className="mx-auto max-w-6xl px-4 py-8 md:py-10">
         <div className="lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-10">

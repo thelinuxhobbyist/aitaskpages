@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getOpenRequirements } from "@/lib/requirements";
 import { createPageMetadata } from "@/lib/seo";
+import { PageHero } from "@/components/page-hero";
 import { Briefcase, Plus } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
@@ -32,8 +33,7 @@ export default async function RequirementsDirectoryPage() {
 
   return (
     <>
-      <section className="border-b border-border/60 bg-surface-container/60">
-        <div className="mx-auto max-w-6xl px-5 py-10 md:py-12">
+      <PageHero>
           <p className="text-xs font-medium uppercase tracking-widest text-muted">
             AI Tasks
           </p>
@@ -53,8 +53,7 @@ export default async function RequirementsDirectoryPage() {
               <Link href="/dashboard/opportunities">My opportunities</Link>
             </Button>
           </div>
-        </div>
-      </section>
+      </PageHero>
 
       <div className="mx-auto max-w-6xl px-4 py-10">
         {tasksUnavailable ? (

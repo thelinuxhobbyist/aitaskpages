@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { getAuthIdentity, getOrCreateUser } from "@/lib/auth";
 import { getProfileBySlug, incrementProfileViews } from "@/lib/directory";
 import { AVAILABILITY_LABELS, parseCustomSkills, parseCustomServices } from "@/lib/profile-utils";
+import { PageHero } from "@/components/page-hero";
 import { absoluteUrl, createPageMetadata, SITE_NAME } from "@/lib/seo";
 import { getTurnstileSiteKey } from "@/lib/turnstile";
 import {
@@ -97,8 +98,7 @@ export default async function ExpertProfilePage({ params }: PageProps) {
 
   return (
     <>
-      <section className="border-b border-border bg-surface-container">
-        <div className="mx-auto max-w-4xl px-4 pb-8 pt-6">
+      <PageHero innerClassName="max-w-4xl px-4 py-6 md:py-8">
           <Link
             href="/search"
             className="inline-flex items-center gap-1 text-sm text-muted transition-colors hover:text-primary"
@@ -159,8 +159,7 @@ export default async function ExpertProfilePage({ params }: PageProps) {
               </div>
             </div>
           </header>
-        </div>
-      </section>
+      </PageHero>
 
       <div className="mx-auto max-w-3xl px-4 py-10">
         <script

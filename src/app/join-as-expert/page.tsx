@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { PageHero } from "@/components/page-hero";
 import { createPageMetadata } from "@/lib/seo";
 import { Check } from "lucide-react";
 
@@ -30,19 +31,17 @@ const features = [
 export default function JoinAsExpertPage() {
   return (
     <>
-      <section className="relative overflow-hidden bg-primary text-on-primary">
-        <div className="relative mx-auto max-w-3xl px-4 py-12 text-center md:py-16">
-          <span className="brand-rule brand-rule-center mb-5 bg-accent" aria-hidden />
-          <h1 className="font-heading text-3xl tracking-tight md:text-4xl">
-            Join as an AI Expert
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-on-primary/85 md:text-lg">
-            List your profile on AI Jobs Market, get discovered in search, and
-            express interest in open AI tasks. We make the introduction — you
-            take it from there.
-          </p>
-        </div>
-      </section>
+      <PageHero innerClassName="max-w-3xl py-12 text-center md:py-16">
+        <span className="brand-rule brand-rule-center mb-5 bg-accent" aria-hidden />
+        <h1 className="font-heading text-3xl tracking-tight md:text-4xl">
+          Join as an AI Expert
+        </h1>
+        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted md:text-lg">
+          List your profile on AI Jobs Market, get discovered in search, and
+          express interest in open AI tasks. We make the introduction — you
+          take it from there.
+        </p>
+      </PageHero>
 
       <div className="mx-auto max-w-lg px-4 py-12 md:py-14">
         <Card className="md-elevation-1">

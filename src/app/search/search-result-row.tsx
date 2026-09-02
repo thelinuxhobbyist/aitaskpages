@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { AVAILABILITY_LABELS, parseCustomSkills, type ProfileWithRelations } from "@/lib/profile-utils";
 import { getProfileMatchLabels } from "@/lib/search-match-utils";
 import type { DirectoryFilters } from "@/lib/validations/directory";
-import { Check, ChevronRight, Code2, Globe, MapPin, Star } from "lucide-react";
+import { Check, Code2, Globe, MapPin, Star } from "lucide-react";
 
 type Props = {
   profile: ProfileWithRelations;
@@ -147,13 +147,6 @@ export function SearchResultRow({
             </ul>
           </div>
         )}
-      </div>
-
-      <div className="hidden shrink-0 items-center self-center sm:flex">
-        <span className="flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
-          View profile
-          <ChevronRight className="h-4 w-4" />
-        </span>
       </div>
     </Link>
   );
