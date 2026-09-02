@@ -13,7 +13,7 @@ export const SITE_LOGO_URL = logoAsset("AI JobsMarket-01.png");
 export const SITE_LOGO_SVG_URL = SITE_LOGO_URL;
 
 /** Stacked lockup for dark surfaces (footer) — transparent PNG. */
-export const SITE_LOGO_ON_DARK_URL = logoAsset("footer.png");
+export const SITE_LOGO_ON_DARK_URL = `${logoAsset("footer.png")}?v=1`;
 
 /** @deprecated Use SITE_LOGO_ON_DARK_URL. */
 export const SITE_LOGO_ON_DARK_SVG_URL = SITE_LOGO_ON_DARK_URL;
