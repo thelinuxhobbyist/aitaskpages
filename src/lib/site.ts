@@ -2,26 +2,29 @@ export const SITE_URL = "https://aijobsmarket.co.uk";
 
 const SITE_LOGO_CDN_BASE = "https://cdn.aijobsmarket.co.uk/images/logos";
 
-/** Colour horizontal lockup — light backgrounds (header, marketing, schema). */
-export const SITE_LOGO_SVG_URL = `${SITE_LOGO_CDN_BASE}/lockup-horizontal-color.svg`;
+function logoAsset(filename: string): string {
+  return `${SITE_LOGO_CDN_BASE}/${encodeURIComponent(filename)}`;
+}
 
-/** White lockup — dark backgrounds (site footer). */
-export const SITE_LOGO_ON_DARK_SVG_URL = `${SITE_LOGO_CDN_BASE}/lockup-horizontal-white.svg`;
+/** Stacked colour lockup — light / white backgrounds (header, email, schema). */
+export const SITE_LOGO_URL = logoAsset("AI JobsMarket-01.png");
 
-/** Browser/app tile with the colour mark on blue. */
-export const SITE_FAVICON_SVG_URL = `${SITE_LOGO_CDN_BASE}/favicon.svg`;
+/** @deprecated Use SITE_LOGO_URL — lockup is now a PNG. */
+export const SITE_LOGO_SVG_URL = SITE_LOGO_URL;
 
-/** Single-colour mark — Safari pinned-tab mask. */
-export const SITE_ICON_BLACK_SVG_URL = `${SITE_LOGO_CDN_BASE}/icon-black.svg`;
+/** Stacked lockup with dark board — footer and other non-white surfaces. */
+export const SITE_LOGO_ON_DARK_URL = logoAsset(
+  "AI JobsMarket_with background.svg",
+);
 
-/**
- * Raster lockup for email clients and crawlers that do not fetch SVG.
- * Derived from lockup-horizontal-color.svg.
- */
-export const SITE_LOGO_URL = `${SITE_URL}/brand/lockup-horizontal-color.png`;
+/** @deprecated Use SITE_LOGO_ON_DARK_URL. */
+export const SITE_LOGO_ON_DARK_SVG_URL = SITE_LOGO_ON_DARK_URL;
+
+export const SITE_FAVICON_16_URL = logoAsset("16x16.png");
+export const SITE_FAVICON_32_URL = logoAsset("32x32.png");
 
 /** Square share/app icon (Twitter summary, apple-style previews). */
-export const SITE_SHARE_ICON_URL = `${SITE_URL}/icon-512.png`;
+export const SITE_SHARE_ICON_URL = SITE_FAVICON_32_URL;
 
 export const SOCIAL_LINKS = {
   linkedin: "https://www.linkedin.com/company/aijobsmarket/",

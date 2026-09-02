@@ -27,7 +27,7 @@ export function EmailLayout({ preview, children }: LayoutProps) {
           <Img
             src={SITE_LOGO_URL}
             alt="AI Jobs Market"
-            height={56}
+            height={72}
             style={logoImg}
           />
           <Hr style={hr} />

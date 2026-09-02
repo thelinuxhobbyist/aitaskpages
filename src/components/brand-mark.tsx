@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SITE_LOGO_ON_DARK_SVG_URL, SITE_LOGO_SVG_URL } from "@/lib/site";
+import { SITE_LOGO_ON_DARK_URL, SITE_LOGO_URL } from "@/lib/site";
 import { SITE_NAME } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -10,13 +10,13 @@ type BrandMarkProps = {
 };
 
 const logoSizeClasses = {
-  /** Wide lockup — keep height modest so the wordmark fits the bar */
-  header: "h-10 w-auto sm:h-11",
-  footer: "h-10 w-auto md:h-11",
+  /** Stacked lockup — header bar is taller so this can sit at a readable size */
+  header: "h-14 w-auto sm:h-16",
+  footer: "h-14 w-auto md:h-16",
 } as const;
 
 export function BrandMark({ className, size = "header" }: BrandMarkProps) {
-  const src = size === "footer" ? SITE_LOGO_ON_DARK_SVG_URL : SITE_LOGO_SVG_URL;
+  const src = size === "footer" ? SITE_LOGO_ON_DARK_URL : SITE_LOGO_URL;
 
   return (
     <Link
@@ -32,8 +32,8 @@ export function BrandMark({ className, size = "header" }: BrandMarkProps) {
         src={src}
         alt={SITE_NAME}
         className={cn("block shrink-0", logoSizeClasses[size])}
-        width={700}
-        height={180}
+        width={245}
+        height={100}
         fetchPriority="high"
       />
     </Link>

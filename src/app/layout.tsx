@@ -6,7 +6,6 @@ import { Header } from "@/components/header";
 import { SiteStructuredData } from "@/components/site-structured-data";
 import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
 import { rootMetadata } from "@/lib/seo";
-import { SITE_ICON_BLACK_SVG_URL } from "@/lib/site";
 import "./globals.css";
 
 export const dynamic = "force-dynamic";
@@ -39,11 +38,6 @@ export default function RootLayout({
     >
       <html lang="en-GB">
         <head>
-          <link
-            rel="mask-icon"
-            href={SITE_ICON_BLACK_SVG_URL}
-            color="#0F172A"
-          />
           <link rel="preconnect" href="https://finder.aijobsmarket.co.uk" />
           <link rel="dns-prefetch" href="https://finder.aijobsmarket.co.uk" />
           <script
