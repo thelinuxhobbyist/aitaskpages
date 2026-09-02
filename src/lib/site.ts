@@ -12,10 +12,8 @@ export const SITE_LOGO_URL = logoAsset("AI JobsMarket-01.png");
 /** @deprecated Use SITE_LOGO_URL — lockup is now a PNG. */
 export const SITE_LOGO_SVG_URL = SITE_LOGO_URL;
 
-/** Stacked lockup with dark board — footer and other non-white surfaces. */
-export const SITE_LOGO_ON_DARK_URL = logoAsset(
-  "AI JobsMarket_with background.svg",
-);
+/** Stacked lockup for dark surfaces (footer) — transparent PNG. */
+export const SITE_LOGO_ON_DARK_URL = logoAsset("footer.png");
 
 /** @deprecated Use SITE_LOGO_ON_DARK_URL. */
 export const SITE_LOGO_ON_DARK_SVG_URL = SITE_LOGO_ON_DARK_URL;
