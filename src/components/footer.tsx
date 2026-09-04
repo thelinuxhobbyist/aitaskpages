@@ -19,15 +19,6 @@ export function Footer() {
               Find AI experts and post AI tasks across the UK. We make the
               introduction — you connect directly.
             </p>
-            <div className="footer-contact-info">
-              <span className="contact-label">Get in touch</span>
-              <a
-                href="mailto:contact@aijobsmarket.co.uk"
-                className="contact-email"
-              >
-                contact@aijobsmarket.co.uk
-              </a>
-            </div>
           </div>
 
           <div className="footer-links-grid">
