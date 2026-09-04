@@ -1,4 +1,4 @@
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -12,7 +12,7 @@ import {
   upsertUserFromClerk,
   type ClerkUserPayload,
 } from "@/lib/clerk-sync";
-import { syncClerkEnvToProcess } from "@/lib/clerk-env";
+import { getClerkEnv, syncClerkEnvToProcess } from "@/lib/clerk-env";
 import { sendWelcomeEmail, isEmailConfigured } from "@/lib/email";
 import { MARKETING_OPT_IN_COOKIE } from "@/lib/marketing-preferences";
 
@@ -72,26 +72,61 @@ async function fetchUserWithProfile(clerkUserId: string) {
 
 const getUserWithProfile = cache(fetchUserWithProfile);
 
+function claimString(
+  claims: Record<string, unknown>,
+  ...keys: string[]
+): string | null {
+  for (const key of keys) {
+    const value = claims[key];
+    if (typeof value === "string" && value.trim()) return value.trim();
+  }
+  return null;
+}
+
 function payloadFromSessionClaims(
   userId: string,
   claims: Record<string, unknown>
 ): ClerkUserPayload | null {
-  const email =
-    (typeof claims.email === "string" && claims.email) ||
-    (typeof claims.primary_email_address === "string" &&
-      claims.primary_email_address) ||
-    null;
+  // Email is not in Clerk's default session token — only present if customized
+  // in the Clerk Dashboard (Sessions → Customize session token).
+  const email = claimString(
+    claims,
+    "email",
+    "primary_email_address",
+    "primaryEmail",
+    "primaryEmailAddress"
+  );
 
   if (!email) return null;
 
   return {
     id: userId,
-    first_name:
-      typeof claims.first_name === "string" ? claims.first_name : null,
-    last_name: typeof claims.last_name === "string" ? claims.last_name : null,
-    username: typeof claims.username === "string" ? claims.username : null,
+    first_name: claimString(claims, "first_name", "firstName"),
+    last_name: claimString(claims, "last_name", "lastName"),
+    username: claimString(claims, "username"),
     primary_email_address_id: null,
     email_addresses: [{ id: "session", email_address: email }],
+  };
+}
+
+function payloadFromClerkUser(user: {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  username: string | null;
+  primaryEmailAddressId: string | null;
+  emailAddresses: { id: string; emailAddress: string }[];
+}): ClerkUserPayload {
+  return {
+    id: user.id,
+    first_name: user.firstName,
+    last_name: user.lastName,
+    username: user.username,
+    primary_email_address_id: user.primaryEmailAddressId,
+    email_addresses: user.emailAddresses.map((e) => ({
+      id: e.id,
+      email_address: e.emailAddress,
+    })),
   };
 }
 
@@ -106,20 +141,32 @@ async function fetchClerkPayload(
 
   try {
     await syncClerkEnvToProcess();
+    const { secretKey, publishableKey } = await getClerkEnv();
+    if (!secretKey) {
+      console.error(
+        "CLERK_SECRET_KEY missing — cannot sync Clerk user to D1:",
+        userId
+      );
+      return null;
+    }
+    if (secretKey.startsWith("sk_test_") && publishableKey.startsWith("pk_live_")) {
+      console.error(
+        "CLERK_SECRET_KEY is a test key but publishable key is live — user sync will fail"
+      );
+    }
+
+    // Race session + Backend API — cold Workers often need >5s for Clerk.
     const client = await clerkClient();
-    const user = await withTimeout(client.users.getUser(userId), 4000, null);
-    if (!user) return null;
-    return {
-      id: user.id,
-      first_name: user.firstName,
-      last_name: user.lastName,
-      username: user.username,
-      primary_email_address_id: user.primaryEmailAddressId,
-      email_addresses: user.emailAddresses.map((e) => ({
-        id: e.id,
-        email_address: e.emailAddress,
-      })),
-    };
+    const [fromSession, fromApi] = await Promise.all([
+      withTimeout(currentUser(), 12000, null),
+      withTimeout(client.users.getUser(userId), 12000, null),
+    ]);
+
+    if (fromSession?.id === userId && fromSession.emailAddresses.length > 0) {
+      return payloadFromClerkUser(fromSession);
+    }
+    if (fromApi) return payloadFromClerkUser(fromApi);
+    return null;
   } catch (err) {
     console.error("Clerk Backend API user fetch failed:", err);
     return null;
@@ -146,7 +193,14 @@ export const getOrCreateUser = cache(async () => {
   const pendingOptIn =
     cookieStore.get(MARKETING_OPT_IN_COOKIE)?.value === "1";
 
-  await upsertUserFromClerk(payload, { marketingOptIn: pendingOptIn });
+  try {
+    await upsertUserFromClerk(payload, { marketingOptIn: pendingOptIn });
+  } catch (err) {
+    console.error("D1 upsert from Clerk failed:", userId, err);
+    // Webhook may have won the race — re-read before giving up.
+    existing = await getUserWithProfile(userId);
+    return existing && !existing.deletedAt ? existing : null;
+  }
 
   if (pendingOptIn) {
     cookieStore.delete(MARKETING_OPT_IN_COOKIE);

@@ -22,7 +22,7 @@ export function DashboardNav({
   const pathname = usePathname();
 
   return (
-    <nav className="flex gap-1 overflow-x-auto border-b border-border/60">
+    <nav className="flex gap-1 overflow-x-auto overflow-y-hidden border-b border-border/60">
       {TABS.map((tab) => {
         const active =
           tab.href === "/dashboard"
