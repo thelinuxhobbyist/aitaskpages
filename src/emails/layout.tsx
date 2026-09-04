@@ -34,14 +34,14 @@ export function EmailLayout({ preview, children }: LayoutProps) {
           {children}
           <Hr style={hr} />
           <Text style={footer}>
-            AI Jobs Market is an AI expert directory and task marketplace. We
-            provide a platform that connects businesses with independent AI
-            professionals and allows them to communicate through AI Jobs Market.
+            AI Jobs Market is an AI expert directory and business-to-expert
+            introduction platform. We provide a platform for businesses and
+            independent AI professionals to discover, connect and communicate
+            with each other.
           </Text>
           <Text style={footer}>
-            AI Jobs Market is not a party to agreements between users and does
-            not participate in contracts, project delivery, professional
-            services, or payments between clients and experts. Any agreement is
+            AI Jobs Market does not arrange contracts, project delivery or
+            payments between users. Any agreement or working relationship is
             made directly between the client and the expert.
           </Text>
           <Text style={brand}>

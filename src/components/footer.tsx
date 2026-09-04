@@ -33,7 +33,7 @@ export function Footer() {
 
           <div className="footer-links-grid">
             <div className="footer-col">
-              <h3>Marketplace</h3>
+              <h3>Connect</h3>
               <ul>
                 <li>
                   <Link href="/search">Browse Experts</Link>
@@ -119,11 +119,12 @@ export function Footer() {
       <div className="footer-bottom">
         <div className="footer-bottom-container">
           <p className="footer-disclaimer">
-            <strong>AI Jobs Market</strong> is an AI expert directory and task
-            marketplace. We provide a platform for businesses and independent AI
-            professionals to connect and communicate. AI Jobs Market is not
-            responsible for contracts, project delivery or payments between
-            users. Any agreement is made directly between the client and the
+            <strong>AI Jobs Market</strong> is an AI expert directory and
+            business-to-expert introduction platform. We provide a platform for
+            businesses and independent AI professionals to discover, connect and
+            communicate with each other. AI Jobs Market does not arrange
+            contracts, project delivery or payments between users. Any agreement
+            or working relationship is made directly between the client and the
             expert.
           </p>
           <div className="footer-copyright">

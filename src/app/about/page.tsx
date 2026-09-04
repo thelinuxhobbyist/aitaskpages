@@ -21,10 +21,10 @@ export default function AboutPage() {
 
       <section className="mt-10 space-y-4">
         <p>
-          {SITE_NAME} is an introduction platform — the UK&apos;s AI expert
-          directory and task marketplace. Businesses use it to find independent
-          AI consultants, post what they need, and connect directly with
-          specialists in AI consulting, automation, integrations, machine
+          {SITE_NAME} is the UK&apos;s AI expert directory and
+          business-to-expert introduction platform. Businesses use it to find
+          independent AI consultants, post what they need, and connect directly
+          with specialists in AI consulting, automation, integrations, machine
           learning and custom AI. Once you connect, you decide how to work
           together.
         </p>

@@ -6,14 +6,17 @@ function logoAsset(filename: string): string {
   return `${SITE_LOGO_CDN_BASE}/${encodeURIComponent(filename)}`;
 }
 
+/** Bump when replacing R2 objects at the same key so CDN/browser caches miss. */
+const SITE_LOGO_CACHE = "v=2";
+
 /** Stacked colour lockup — light / white backgrounds (header, email, schema). */
-export const SITE_LOGO_URL = logoAsset("AI JobsMarket-01.png");
+export const SITE_LOGO_URL = `${logoAsset("AI JobsMarket-01.png")}?${SITE_LOGO_CACHE}`;
 
 /** @deprecated Use SITE_LOGO_URL — lockup is now a PNG. */
 export const SITE_LOGO_SVG_URL = SITE_LOGO_URL;
 
 /** Stacked lockup for dark surfaces (footer) — transparent PNG. */
-export const SITE_LOGO_ON_DARK_URL = `${logoAsset("footer.png")}?v=1`;
+export const SITE_LOGO_ON_DARK_URL = `${logoAsset("footer.png")}?${SITE_LOGO_CACHE}`;
 
 /** @deprecated Use SITE_LOGO_ON_DARK_URL. */
 export const SITE_LOGO_ON_DARK_SVG_URL = SITE_LOGO_ON_DARK_URL;

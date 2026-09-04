@@ -178,7 +178,7 @@ export async function HomePage() {
           <PlatformSection
             id="jobs"
             title="Looking for an AI career?"
-            description="Traditional employment opportunities from UK employers. These vacancies are separate from the AI expert and task marketplace."
+            description="Traditional employment opportunities from UK employers. These vacancies are separate from the expert directory and introduction platform."
             browseHref="/jobs"
             browseLabel="Browse AI vacancies"
             secondary
