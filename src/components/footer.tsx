@@ -120,12 +120,11 @@ export function Footer() {
         <div className="footer-bottom-container">
           <p className="footer-disclaimer">
             <strong>AI Jobs Market</strong> is an AI expert directory and
-            business-to-expert introduction platform. We provide a platform for
-            businesses and independent AI professionals to discover, connect and
-            communicate with each other. AI Jobs Market does not arrange
-            contracts, project delivery or payments between users. Any agreement
-            or working relationship is made directly between the client and the
-            expert.
+            business-to-expert introduction platform. Our role is simply to
+            provide a place where businesses and independent AI professionals
+            can discover each other and connect. What happens after that
+            introduction is entirely between the parties and is independent of
+            AI Jobs Market.
           </p>
           <div className="footer-copyright">
             &copy; {year} AI Jobs Market. All rights reserved.
