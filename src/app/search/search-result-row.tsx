@@ -28,11 +28,9 @@ export function SearchResultRow({ profile }: Props) {
     ? AVAILABILITY_LABELS[availability] ?? availability
     : "Available now";
 
-  const locationText = profile.location?.trim() || "Location flexible";
+  const locationText = profile.location?.trim() || null;
   const rateText =
-    profile.hourlyRate != null
-      ? `£${profile.hourlyRate}/hr`
-      : "Rate on request";
+    profile.hourlyRate != null ? `£${profile.hourlyRate}/hr` : null;
 
   // 3. Bio snippet (strictly 2 lines, no heading)
   const bioCleaned = profile.bio?.replace(/\r\n/g, "\n").trim();
@@ -103,7 +101,7 @@ export function SearchResultRow({ profile }: Props) {
         </div>
       </div>
 
-      {/* 2. Metadata Bar: Availability status • Location • Hourly Rate (with fallbacks) */}
+      {/* 2. Metadata Bar: Availability status • Location (optional) • Hourly Rate (optional) */}
       <div className="mt-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-muted">
         <span
           className={cn(
@@ -129,20 +127,28 @@ export function SearchResultRow({ profile }: Props) {
           {availabilityLabel}
         </span>
 
-        <span className="text-slate-300 select-none" aria-hidden>
-          •
-        </span>
+        {locationText && (
+          <>
+            <span className="text-slate-300 select-none" aria-hidden>
+              •
+            </span>
 
-        <span className="inline-flex items-center gap-1 text-muted">
-          <MapPin className="h-3.5 w-3.5 shrink-0 text-muted/70" />
-          {locationText}
-        </span>
+            <span className="inline-flex items-center gap-1 text-muted">
+              <MapPin className="h-3.5 w-3.5 shrink-0 text-muted/70" />
+              {locationText}
+            </span>
+          </>
+        )}
 
-        <span className="text-slate-300 select-none" aria-hidden>
-          •
-        </span>
+        {rateText && (
+          <>
+            <span className="text-slate-300 select-none" aria-hidden>
+              •
+            </span>
 
-        <span className="font-semibold text-secondary">{rateText}</span>
+            <span className="font-semibold text-secondary">{rateText}</span>
+          </>
+        )}
       </div>
 
       {/* 3. Bio Preview: Exactly 2 lines max with CSS line-clamp (no section heading) */}
