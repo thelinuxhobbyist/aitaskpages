@@ -2,101 +2,233 @@ import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { AVAILABILITY_LABELS, parseCustomSkills, type ProfileWithRelations } from "@/lib/profile-utils";
-import { MapPin, Star } from "lucide-react";
+  AVAILABILITY_LABELS,
+  parseCustomServices,
+  parseCustomSkills,
+  type ProfileWithRelations,
+} from "@/lib/profile-utils";
+import { cn } from "@/lib/utils";
+import { ArrowUpRight, MapPin, Star } from "lucide-react";
 
 export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
+  const roleText = profile.headline?.trim();
+
+  // What they can do (priority 2, visually prominent)
+  const bioCleaned = profile.bio?.replace(/\r\n/g, "\n").trim();
+  const canHelpWith =
+    bioCleaned ||
+    roleText ||
+    "AI specialist available to help with projects, consulting, and implementation.";
+
+  // Existing specialisms / skills
   const customSkills = parseCustomSkills(profile.customSkills);
-  const catalogSkills = profile.skills.slice(0, 4);
-  const extraCatalog = Math.max(0, profile.skills.length - catalogSkills.length);
-  const customShown = customSkills.slice(0, Math.max(0, 4 - catalogSkills.length));
+  const customServices = parseCustomServices(profile.customServices);
+
+  const allSpecialisms = [
+    ...profile.services.map((s) => s.service.name),
+    ...customServices,
+    ...profile.skills.map((s) => s.skill.name),
+    ...customSkills,
+  ];
+
+  const uniqueSpecialisms: string[] = [];
+  const seenSpecialisms = new Set<string>();
+  for (const item of allSpecialisms) {
+    const key = item.toLowerCase();
+    if (!seenSpecialisms.has(key)) {
+      seenSpecialisms.add(key);
+      uniqueSpecialisms.push(item);
+    }
+  }
+
+  const visibleSpecialisms = uniqueSpecialisms.slice(0, 5);
+  const extraSpecialismsCount = Math.max(
+    0,
+    uniqueSpecialisms.length - visibleSpecialisms.length
+  );
+
+  const hasMeta = Boolean(
+    profile.availability || profile.location || profile.hourlyRate != null
+  );
+
+  const hasExternalLinks = Boolean(
+    profile.websiteUrl?.trim() ||
+      profile.linkedinUrl?.trim() ||
+      profile.githubUrl?.trim()
+  );
 
   return (
-    <Link href={`/experts/${profile.slug}`} className="group block">
-      <Card className="h-full transition-shadow hover:shadow-md group-hover:border-primary/30">
-        <CardHeader className="flex flex-row items-start gap-4">
+    <article className="group relative flex h-full flex-col justify-between rounded-2xl border border-border bg-surface p-5 transition-all hover:border-primary/40 hover:shadow-md sm:p-6">
+      <div>
+        {/* 1. Header: Avatar + Expert Name & Role */}
+        <header className="flex items-start gap-3.5 sm:gap-4">
           <Avatar
             src={profile.profileImageUrl}
             alt={profile.fullName}
-            className="h-14 w-14"
-            textClassName="text-lg"
+            className="h-14 w-14 shrink-0 sm:h-16 sm:w-16"
+            textClassName="text-xl font-semibold"
           />
+
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <CardTitle className="truncate text-lg group-hover:text-primary">
-                {profile.fullName}
-              </CardTitle>
+              <h3 className="text-lg font-bold tracking-tight text-secondary transition-colors group-hover:text-primary sm:text-xl">
+                <Link
+                  href={`/experts/${profile.slug}`}
+                  className="focus:outline-none after:absolute after:inset-0 after:z-0"
+                >
+                  {profile.fullName}
+                </Link>
+              </h3>
+
               {profile.featured && (
-                <Badge variant="featured" className="gap-1">
+                <Badge variant="featured" className="shrink-0 gap-1 text-xs">
                   <Star className="h-3 w-3 fill-current" />
                   Featured
                 </Badge>
               )}
             </div>
-            {profile.headline && (
-              <CardDescription className="mt-1.5 line-clamp-2 text-[0.9375rem]">
-                {profile.headline}
-              </CardDescription>
+
+            {roleText && (
+              <p className="mt-1 line-clamp-2 text-sm font-medium text-slate-600 sm:text-base">
+                {roleText}
+              </p>
             )}
           </div>
-        </CardHeader>
+        </header>
 
-        <CardContent className="space-y-3">
-          <div className="flex flex-wrap items-center gap-3 text-[0.9375rem] text-muted">
-            {profile.location && (
-              <span className="flex items-center gap-1">
-                <MapPin className="h-3.5 w-3.5" />
-                {profile.location}
-              </span>
-            )}
-            {profile.hourlyRate != null && (
-              <span className="font-medium text-slate-700">
-                £{profile.hourlyRate}/hr
-              </span>
-            )}
-            {profile.availability && (
-              <span
-                className={
-                  profile.availability === "available"
-                    ? "text-emerald-600"
-                    : undefined
-                }
-              >
-                {AVAILABILITY_LABELS[profile.availability] ?? profile.availability}
-              </span>
-            )}
-          </div>
+        {/* 2. What they can do (Most Important) */}
+        <section className="mt-5">
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            Can help with
+          </p>
+          <p className="mt-1.5 line-clamp-3 text-[0.9375rem] leading-relaxed text-slate-800 sm:text-base">
+            {canHelpWith}
+          </p>
+        </section>
 
-          {(catalogSkills.length > 0 || customShown.length > 0) && (
-            <div className="flex flex-wrap gap-1.5">
-              {catalogSkills.map(({ skill }) => (
-                <Badge key={skill.id} variant="secondary">
-                  {skill.name}
-                </Badge>
-              ))}
-              {customShown.map((name) => (
-                <Badge key={name} variant="secondary">
+        {/* 3. Existing specialisms / skills */}
+        {visibleSpecialisms.length > 0 && (
+          <section className="mt-5">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+              Specialisms
+            </p>
+            <div className="mt-2.5 flex flex-wrap gap-2">
+              {visibleSpecialisms.map((name) => (
+                <Badge
+                  key={name}
+                  variant="secondary"
+                  className="rounded-md border border-border/50 px-2.5 py-1 text-xs font-normal"
+                >
                   {name}
                 </Badge>
               ))}
-              {(extraCatalog > 0 || customSkills.length > customShown.length) && (
-                <Badge variant="secondary">
-                  +
-                  {extraCatalog + customSkills.length - customShown.length}{" "}
-                  more
+              {extraSpecialismsCount > 0 && (
+                <Badge
+                  variant="secondary"
+                  className="rounded-md border border-border/50 px-2.5 py-1 text-xs font-normal text-muted"
+                >
+                  +{extraSpecialismsCount} more
                 </Badge>
               )}
             </div>
-          )}
+          </section>
+        )}
 
-        </CardContent>
-      </Card>
-    </Link>
+        {/* 4 & 5. Availability and Location */}
+        {hasMeta && (
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs sm:text-sm">
+            {profile.availability && (
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1.5 font-medium",
+                  profile.availability === "available"
+                    ? "text-emerald-700"
+                    : profile.availability === "limited"
+                    ? "text-amber-700"
+                    : "text-muted"
+                )}
+              >
+                <span
+                  className={cn(
+                    "h-2.5 w-2.5 shrink-0 rounded-full",
+                    profile.availability === "available"
+                      ? "bg-emerald-500"
+                      : profile.availability === "limited"
+                      ? "bg-amber-500"
+                      : "bg-slate-400"
+                  )}
+                  aria-hidden
+                />
+                {AVAILABILITY_LABELS[profile.availability] ??
+                  profile.availability}
+              </span>
+            )}
+
+            {profile.location && (
+              <span className="inline-flex items-center gap-1 text-muted">
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-muted/70" />
+                {profile.location}
+              </span>
+            )}
+
+            {profile.hourlyRate != null && (
+              <span className="font-semibold text-secondary">
+                £{profile.hourlyRate}/hr
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 6. Subtle divider before external links & profile action */}
+      <footer className="relative z-10 mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4">
+        {hasExternalLinks ? (
+          <div className="flex flex-wrap items-center gap-2">
+            {profile.websiteUrl?.trim() && (
+              <a
+                href={profile.websiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
+              >
+                <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted" />
+                Website
+              </a>
+            )}
+            {profile.linkedinUrl?.trim() && (
+              <a
+                href={profile.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
+              >
+                <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted" />
+                LinkedIn
+              </a>
+            )}
+            {profile.githubUrl?.trim() && (
+              <a
+                href={profile.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
+              >
+                <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted" />
+                GitHub
+              </a>
+            )}
+          </div>
+        ) : (
+          <div />
+        )}
+
+        <Link
+          href={`/experts/${profile.slug}`}
+          className="inline-flex items-center gap-1 py-1 text-xs font-semibold text-primary transition-colors hover:underline"
+        >
+          View profile →
+        </Link>
+      </footer>
+    </article>
   );
 }
