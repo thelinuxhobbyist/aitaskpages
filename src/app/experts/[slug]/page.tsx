@@ -74,6 +74,9 @@ export default async function ExpertProfilePage({ params }: PageProps) {
   const profilePath = `/experts/${profile.slug}`;
   const customSkills = parseCustomSkills(profile.customSkills);
   const customServices = parseCustomServices(profile.customServices);
+  const hasExternalLinks = Boolean(
+    profile.githubUrl || profile.websiteUrl || profile.linkedinUrl
+  );
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -167,47 +170,49 @@ export default async function ExpertProfilePage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        <div className="flex flex-wrap gap-2">
-          {profile.githubUrl && (
-            <Button variant="outline" size="sm" asChild>
-              <a
-                href={profile.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Code2 className="h-4 w-4" />
-                GitHub
-                <ExternalLink className="h-3 w-3 opacity-50" />
-              </a>
-            </Button>
-          )}
-          {profile.websiteUrl && (
-            <Button variant="outline" size="sm" asChild>
-              <a
-                href={profile.websiteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Globe className="h-4 w-4" />
-                Website
-                <ExternalLink className="h-3 w-3 opacity-50" />
-              </a>
-            </Button>
-          )}
-          {profile.linkedinUrl && (
-            <Button variant="outline" size="sm" asChild>
-              <a
-                href={profile.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Link2 className="h-4 w-4" />
-                LinkedIn
-                <ExternalLink className="h-3 w-3 opacity-50" />
-              </a>
-            </Button>
-          )}
-        </div>
+        {hasExternalLinks && (
+          <div className="mb-8 flex flex-wrap gap-2">
+            {profile.githubUrl && (
+              <Button variant="outline" size="sm" asChild>
+                <a
+                  href={profile.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Code2 className="h-4 w-4" />
+                  GitHub
+                  <ExternalLink className="h-3 w-3 opacity-50" />
+                </a>
+              </Button>
+            )}
+            {profile.websiteUrl && (
+              <Button variant="outline" size="sm" asChild>
+                <a
+                  href={profile.websiteUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Globe className="h-4 w-4" />
+                  Website
+                  <ExternalLink className="h-3 w-3 opacity-50" />
+                </a>
+              </Button>
+            )}
+            {profile.linkedinUrl && (
+              <Button variant="outline" size="sm" asChild>
+                <a
+                  href={profile.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Link2 className="h-4 w-4" />
+                  LinkedIn
+                  <ExternalLink className="h-3 w-3 opacity-50" />
+                </a>
+              </Button>
+            )}
+          </div>
+        )}
 
         {profile.bio && (
           <ProfileSection title="About">
