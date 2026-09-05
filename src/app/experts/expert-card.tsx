@@ -58,7 +58,7 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
   );
 
   return (
-    <article className="group relative flex h-full flex-col justify-between rounded-2xl border border-border bg-surface p-5 transition-all hover:border-primary/40 hover:shadow-md sm:p-6">
+    <article className="group relative flex h-full flex-col justify-between rounded-2xl border border-border bg-surface p-5 transition-all hover:border-primary/40 hover:shadow-md cursor-pointer sm:p-6">
       <div>
         {/* 1. Header: Avatar + Expert Name & Role */}
         <header className="flex items-start gap-3.5 sm:gap-4">
@@ -74,7 +74,7 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
               <h3 className="text-lg font-bold tracking-tight text-secondary transition-colors group-hover:text-primary sm:text-xl">
                 <Link
                   href={`/experts/${profile.slug}`}
-                  className="focus:outline-none after:absolute after:inset-0 after:z-0"
+                  className="focus:outline-none after:absolute after:inset-0 after:z-0 after:rounded-2xl"
                 >
                   {profile.fullName}
                 </Link>
@@ -180,16 +180,16 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
         )}
       </div>
 
-      {/* 6. Subtle divider before external links & profile action */}
-      <footer className="relative z-10 mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4">
-        {hasExternalLinks ? (
+      {/* 6. Subtle divider before external links */}
+      {hasExternalLinks && (
+        <footer className="mt-5 border-t border-border/60 pt-4">
           <div className="flex flex-wrap items-center gap-2">
             {profile.websiteUrl?.trim() && (
               <a
                 href={profile.websiteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
+                className="relative z-10 inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
               >
                 <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted" />
                 Website
@@ -200,7 +200,7 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
                 href={profile.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
+                className="relative z-10 inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
               >
                 <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted" />
                 LinkedIn
@@ -211,24 +211,15 @@ export function ExpertCard({ profile }: { profile: ProfileWithRelations }) {
                 href={profile.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
+                className="relative z-10 inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-border/80 bg-surface px-3.5 py-1.5 text-xs font-medium text-secondary shadow-xs transition-colors hover:border-primary/50 hover:bg-surface-container hover:text-primary active:bg-surface-container-high"
               >
                 <ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-muted" />
                 GitHub
               </a>
             )}
           </div>
-        ) : (
-          <div />
-        )}
-
-        <Link
-          href={`/experts/${profile.slug}`}
-          className="inline-flex items-center gap-1 py-1 text-xs font-semibold text-primary transition-colors hover:underline"
-        >
-          View profile →
-        </Link>
-      </footer>
+        </footer>
+      )}
     </article>
   );
 }
