@@ -8,7 +8,7 @@ import {
 } from "@/lib/profile-utils";
 import type { DirectoryFilters } from "@/lib/validations/directory";
 import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 type Props = {
   profile: ProfileWithRelations;
@@ -17,31 +17,9 @@ type Props = {
   serviceLabels?: Map<string, string>;
 };
 
-function getFirstName(fullName: string): string {
-  const parts = fullName.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "expert";
-  const titlePrefixes = new Set([
-    "dr",
-    "dr.",
-    "mr",
-    "mr.",
-    "mrs",
-    "mrs.",
-    "ms",
-    "ms.",
-    "prof",
-    "prof.",
-  ]);
-  if (parts.length > 1 && titlePrefixes.has(parts[0].toLowerCase())) {
-    return parts[1];
-  }
-  return parts[0];
-}
-
 export function SearchResultRow({ profile }: Props) {
   // 1. Identity & Role
   const roleText = profile.headline?.trim();
-  const firstName = getFirstName(profile.fullName);
 
   // 2. What they are good at: top 2-3 focus areas for instant scanning
   const customSkills = parseCustomSkills(profile.customSkills);
@@ -88,7 +66,7 @@ export function SearchResultRow({ profile }: Props) {
       className="group flex flex-col justify-between rounded-2xl border border-border bg-surface p-5 transition-all duration-200 hover:border-primary/40 hover:shadow-md active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 sm:p-6"
     >
       <div className="space-y-3">
-        {/* 1. Header: Avatar, Full Name, Headline */}
+        {/* 1. Header: Avatar, Full Name, Headline, and subtle Chevron */}
         <div className="flex items-start gap-3.5 sm:gap-4">
           <Avatar
             src={profile.profileImageUrl}
@@ -98,15 +76,21 @@ export function SearchResultRow({ profile }: Props) {
           />
 
           <div className="min-w-0 flex-1">
-            <h2 className="font-heading text-lg font-semibold tracking-tight text-secondary transition-colors group-hover:text-primary">
-              {profile.fullName}
-            </h2>
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0 flex-1">
+                <h2 className="font-heading text-lg font-semibold tracking-tight text-secondary transition-colors group-hover:text-primary">
+                  {profile.fullName}
+                </h2>
 
-            {roleText && (
-              <p className="mt-0.5 line-clamp-1 text-sm text-muted">
-                {roleText}
-              </p>
-            )}
+                {roleText && (
+                  <p className="mt-0.5 line-clamp-1 text-sm text-muted">
+                    {roleText}
+                  </p>
+                )}
+              </div>
+
+              <ChevronRight className="h-5 w-5 shrink-0 text-muted/60 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-primary" />
+            </div>
           </div>
         </div>
 
@@ -123,49 +107,42 @@ export function SearchResultRow({ profile }: Props) {
         </p>
       </div>
 
-      {/* 4. Bottom Row: Availability • Location (left) & Connection CTA (right) */}
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-2 text-sm text-muted">
-        <div className="inline-flex items-center gap-2">
+      {/* 4. Bottom Row: Availability • Location */}
+      <div className="mt-5 flex flex-wrap items-center gap-2 pt-1 text-sm text-muted">
+        <span
+          className={cn(
+            "inline-flex items-center gap-1.5 font-medium",
+            availability === "available" || !availability
+              ? "text-emerald-700"
+              : availability === "limited"
+              ? "text-amber-700"
+              : "text-muted"
+          )}
+        >
           <span
             className={cn(
-              "inline-flex items-center gap-1.5 font-medium",
+              "h-2 w-2 shrink-0 rounded-full",
               availability === "available" || !availability
-                ? "text-emerald-700"
+                ? "bg-emerald-500"
                 : availability === "limited"
-                ? "text-amber-700"
-                : "text-muted"
+                ? "bg-amber-500"
+                : "bg-slate-400"
             )}
-          >
-            <span
-              className={cn(
-                "h-2 w-2 shrink-0 rounded-full",
-                availability === "available" || !availability
-                  ? "bg-emerald-500"
-                  : availability === "limited"
-                  ? "bg-amber-500"
-                  : "bg-slate-400"
-              )}
-              aria-hidden
-            />
-            {availabilityLabel}
-          </span>
-
-          {locationText && (
-            <>
-              <span className="text-slate-300 select-none" aria-hidden>
-                ·
-              </span>
-              <span className="max-w-[180px] truncate text-muted sm:max-w-[260px]">
-                {locationText}
-              </span>
-            </>
-          )}
-        </div>
-
-        <span className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors group-hover:text-primary-dark">
-          <span>Meet {firstName}</span>
-          <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            aria-hidden
+          />
+          {availabilityLabel}
         </span>
+
+        {locationText && (
+          <>
+            <span className="text-slate-300 select-none" aria-hidden>
+              ·
+            </span>
+            <span className="text-muted">
+              {locationText}
+            </span>
+          </>
+        )}
       </div>
     </Link>
   );
