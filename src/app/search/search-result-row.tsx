@@ -81,18 +81,18 @@ export function SearchResultRow({ profile }: Props) {
           src={profile.profileImageUrl}
           alt={profile.fullName}
           className="h-12 w-12 shrink-0 sm:h-14 sm:w-14"
-          textClassName="text-base font-semibold sm:text-lg"
+          textClassName="text-base font-semibold"
         />
 
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0 flex-1">
-              <h2 className="text-base font-bold tracking-tight text-secondary transition-colors group-hover:text-primary sm:text-lg">
+              <h2 className="font-heading text-lg font-semibold tracking-tight text-secondary transition-colors group-hover:text-primary">
                 {profile.fullName}
               </h2>
 
               {roleText && (
-                <p className="mt-0.5 line-clamp-1 text-xs font-medium text-slate-600 sm:text-sm">
+                <p className="mt-0.5 line-clamp-1 text-sm text-muted">
                   {roleText}
                 </p>
               )}
@@ -104,7 +104,7 @@ export function SearchResultRow({ profile }: Props) {
       </div>
 
       {/* 2. Metadata Bar: Availability status • Location • Hourly Rate (with fallbacks) */}
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted sm:mt-3 sm:text-[13px]">
+      <div className="mt-2.5 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-muted">
         <span
           className={cn(
             "inline-flex items-center gap-1.5 font-medium",
@@ -134,7 +134,7 @@ export function SearchResultRow({ profile }: Props) {
         </span>
 
         <span className="inline-flex items-center gap-1 text-muted">
-          <MapPin className="h-3 w-3 shrink-0 text-muted/70" />
+          <MapPin className="h-3.5 w-3.5 shrink-0 text-muted/70" />
           {locationText}
         </span>
 
@@ -146,19 +146,19 @@ export function SearchResultRow({ profile }: Props) {
       </div>
 
       {/* 3. Bio Preview: Exactly 2 lines max with CSS line-clamp (no section heading) */}
-      <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-700 sm:mt-2.5 sm:text-sm">
+      <p className="mt-2.5 line-clamp-2 text-sm leading-relaxed text-muted">
         {bioSnippet}
       </p>
 
       {/* 4. Skills Row: Clean tag pills (no section heading) */}
       {displaySpecialisms.length > 0 && (
-        <div className="mt-2.5 flex items-center gap-1.5 overflow-x-auto py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:overflow-visible sm:mt-3">
+        <div className="mt-3 flex items-center gap-1.5 overflow-x-auto py-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:overflow-visible">
           {displaySpecialisms.map((name, index) => (
             <Badge
               key={name}
               variant="secondary"
               className={cn(
-                "shrink-0 rounded-md border border-border/50 px-2 py-0.5 text-xs font-normal text-secondary md:shrink",
+                "shrink-0 rounded-md border border-border/50 px-2 py-0.5 text-xs font-medium text-secondary md:shrink",
                 index >= desktopVisibleCount && "md:hidden"
               )}
             >
@@ -168,7 +168,7 @@ export function SearchResultRow({ profile }: Props) {
           {extraDesktopCount > 0 && (
             <Badge
               variant="secondary"
-              className="hidden shrink-0 rounded-md border border-border/50 px-2 py-0.5 text-xs font-normal text-muted md:inline-flex"
+              className="hidden shrink-0 rounded-md border border-border/50 px-2 py-0.5 text-xs font-medium text-muted md:inline-flex"
             >
               +{extraDesktopCount} more
             </Badge>
