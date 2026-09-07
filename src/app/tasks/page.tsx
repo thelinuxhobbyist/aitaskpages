@@ -44,7 +44,7 @@ export default async function RequirementsDirectoryPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild>
-              <Link href="/dashboard/requirements/new">
+              <Link href="/tasks/new">
                 <Plus className="mr-2 h-4 w-4" />
                 Post a task
               </Link>
@@ -87,7 +87,7 @@ export default async function RequirementsDirectoryPage() {
                 add new opportunities.
               </p>
               <Button asChild className="mt-6">
-                <Link href="/dashboard/requirements/new">Post a task</Link>
+                <Link href="/tasks/new">Post a task</Link>
               </Button>
             </CardContent>
           </Card>

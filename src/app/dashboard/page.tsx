@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ProfileForm } from "@/app/dashboard/profile-form";
 import {
   Card,
@@ -15,6 +16,10 @@ import {
 import { getClientRequirements } from "@/lib/requirements";
 import { computeCompleteness, getProfileCompletenessSuggestions, type ProfileWithRelations } from "@/lib/profile-utils";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default async function DashboardPage() {
   const user = await requireUser();
@@ -56,7 +61,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <Link
-              href="/dashboard/requirements/new"
+              href="/tasks/new"
               className="group rounded-xl border border-border bg-surface p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
             >
               <p className="font-semibold text-secondary group-hover:text-primary">

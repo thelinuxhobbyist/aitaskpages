@@ -29,9 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const req = await getRequirementById(Number(id));
   return {
-    title: req
-      ? `${req.title} | Requirements | AI Jobs Market`
-      : "Requirement | AI Jobs Market",
+    title: req ? `${req.title} | Requirements` : "Requirement",
   };
 }
 

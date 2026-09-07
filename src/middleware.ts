@@ -4,7 +4,10 @@ import type { NextFetchEvent, NextRequest } from "next/server";
 import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
 import { getClerkEnvSync, syncClerkEnvFromBindings } from "@/lib/clerk-env";
 
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
+const isProtectedRoute = createRouteMatcher([
+  "/dashboard(.*)",
+  "/tasks/new(.*)",
+]);
 
 const clerkHandler = clerkMiddleware(
   async (auth, req) => {

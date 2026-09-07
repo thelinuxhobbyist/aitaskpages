@@ -9,7 +9,7 @@ import { formatBudgetGBP, formatDateTime } from "@/lib/utils";
 import { Building2, MapPin, Plus, Users, Wallet } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "My Requirements | Dashboard | AI Jobs Market",
+  title: "My Requirements",
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -35,7 +35,7 @@ export default async function RequirementsPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/dashboard/requirements/new">
+          <Link href="/tasks/new">
             <Plus className="mr-2 h-4 w-4" />
             Post requirement
           </Link>
@@ -50,7 +50,7 @@ export default async function RequirementsPage() {
               and matching experts will be notified.
             </p>
             <Button asChild className="mt-4">
-              <Link href="/dashboard/requirements/new">Post your first requirement</Link>
+              <Link href="/tasks/new">Post your first requirement</Link>
             </Button>
           </CardContent>
         </Card>

@@ -71,7 +71,7 @@ export async function HomePage() {
           <div className="mt-5 flex max-w-[560px] flex-wrap gap-x-7 gap-y-2 pl-1">
             {[
               {
-                href: "/dashboard/requirements/new",
+                href: "/tasks/new",
                 label: "Post a task",
                 primary: true,
               },

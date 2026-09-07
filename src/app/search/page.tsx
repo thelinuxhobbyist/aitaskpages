@@ -175,7 +175,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                   the introduction; you take it from there.
                 </p>
                 <Link
-                  href="/dashboard/requirements/new"
+                  href="/tasks/new"
                   className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
                 >
                   Post a task →

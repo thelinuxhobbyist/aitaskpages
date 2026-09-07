@@ -13,7 +13,7 @@ import { formatBudgetGBP, formatDateTime } from "@/lib/utils";
 import { Building2, MessageSquare, Wallet } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Conversations | Dashboard | AI Jobs Market",
+  title: "Conversations",
 };
 
 function ConversationRow({ item }: { item: ConversationListItem }) {

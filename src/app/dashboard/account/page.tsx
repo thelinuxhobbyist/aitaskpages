@@ -10,7 +10,7 @@ import {
 import { requireUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
-  title: "Account | Dashboard | AI Jobs Market",
+  title: "Account",
 };
 
 export default async function AccountPage() {

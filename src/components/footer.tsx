@@ -32,7 +32,7 @@ export function Footer() {
                   <Link href="/tasks">Browse Tasks</Link>
                 </li>
                 <li>
-                  <Link href="/dashboard/requirements/new">Post a Task</Link>
+                  <Link href="/tasks/new">Post a Task</Link>
                 </li>
                 <li>
                   <Link href="/join-as-expert">Join as an Expert</Link>

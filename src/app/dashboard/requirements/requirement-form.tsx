@@ -19,11 +19,18 @@ type Props = {
   skills: Skill[];
   services: Service[];
   finderDraft?: FinderTaskDraft | null;
+  cancelHref?: string;
 };
 
 const initialState: RequirementFormState = {};
 
-export function RequirementForm({ requirement, skills, services, finderDraft }: Props) {
+export function RequirementForm({
+  requirement,
+  skills,
+  services,
+  finderDraft,
+  cancelHref = "/dashboard/requirements",
+}: Props) {
   const [state, formAction, pending] = useActionState(
     saveRequirementAction,
     initialState
@@ -223,7 +230,7 @@ export function RequirementForm({ requirement, skills, services, finderDraft }: 
           </Button>
         )}
         <Button type="button" variant="ghost" asChild>
-          <Link href="/dashboard/requirements">Cancel</Link>
+          <Link href={cancelHref}>Cancel</Link>
         </Button>
       </div>
     </form>

@@ -16,9 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const req = await getRequirementById(Number(id));
   return {
-    title: req
-      ? `Interested experts — ${req.title} | AI Jobs Market`
-      : "Interested experts | AI Jobs Market",
+    title: req ? `Interested experts — ${req.title}` : "Interested experts",
   };
 }
 

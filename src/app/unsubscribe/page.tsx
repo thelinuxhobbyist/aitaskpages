@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Email preferences | AI Jobs Market",
+  title: "Email preferences",
   robots: { index: false },
 };
 

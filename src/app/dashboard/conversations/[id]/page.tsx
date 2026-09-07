@@ -13,7 +13,7 @@ import { cn, formatBudgetGBP, formatDateTime } from "@/lib/utils";
 import { ArrowLeft, Building2, Wallet } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Conversation | Dashboard | AI Jobs Market",
+  title: "Conversation",
 };
 
 type PageProps = {

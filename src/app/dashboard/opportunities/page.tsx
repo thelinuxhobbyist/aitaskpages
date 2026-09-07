@@ -8,7 +8,7 @@ import { getMatchingOpportunities } from "@/lib/requirements";
 import { Briefcase, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Opportunities | Dashboard | AI Jobs Market",
+  title: "Opportunities",
 };
 
 export default async function OpportunitiesPage() {

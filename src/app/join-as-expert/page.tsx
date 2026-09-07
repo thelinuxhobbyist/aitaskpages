@@ -14,7 +14,7 @@ import { createPageMetadata } from "@/lib/seo";
 import { Check } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Join as an AI expert",
+  title: "Join as an Expert",
   description:
     "Join AI Jobs Market to list your profile, get discovered by UK businesses, and connect directly. We make the introduction — you take it from there.",
   path: "/join-as-expert",
@@ -65,7 +65,7 @@ export default function JoinAsExpertPage() {
               ))}
             </ul>
 
-            <SignUpButton mode="redirect" forceRedirectUrl="/dashboard">
+            <SignUpButton mode="redirect" fallbackRedirectUrl="/dashboard">
               <Button className="w-full" size="lg">
                 Sign up and create your profile
               </Button>

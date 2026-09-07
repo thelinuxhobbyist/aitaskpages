@@ -98,7 +98,7 @@ export default function ContactPage() {
           </Link>{" "}
           or{" "}
           <Link
-            href="/dashboard/requirements/new"
+            href="/tasks/new"
             className="text-primary underline"
           >
             Post a Task
@@ -131,7 +131,7 @@ export default function ContactPage() {
           </li>
           <li>
             <Link
-              href="/dashboard/requirements/new"
+              href="/tasks/new"
               className="text-primary underline"
             >
               Post a Task
