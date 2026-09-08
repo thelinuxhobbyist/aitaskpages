@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/footer";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { Header } from "@/components/header";
-import { NavigationProgress } from "@/components/navigation-progress";
 import { SiteStructuredData } from "@/components/site-structured-data";
 import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
 import { rootMetadata } from "@/lib/seo";
@@ -68,7 +67,6 @@ export default function RootLayout({
         </head>
         <body className="min-h-screen flex flex-col bg-surface">
           <GoogleAnalytics />
-          <NavigationProgress />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
