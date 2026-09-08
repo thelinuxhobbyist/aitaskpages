@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { RequirementInterestPanel } from "@/app/tasks/requirement-interest-panel";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PublicRequirementPage({ params }: Props) {
   const { id } = await params;
+  if (id === "new") redirect("/tasks/new");
   const requirementId = Number(id);
   if (!Number.isInteger(requirementId)) notFound();
 

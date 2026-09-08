@@ -1,6 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { RequirementCard, taskCardGridClassName } from "@/app/tasks/requirement-card";
+import { DocumentLink } from "@/components/document-link";
+import { TasksPageSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getOpenRequirements } from "@/lib/requirements";
@@ -17,7 +20,15 @@ export const metadata: Metadata = createPageMetadata({
 
 export const dynamic = "force-dynamic";
 
-export default async function RequirementsDirectoryPage() {
+export default function RequirementsDirectoryPage() {
+  return (
+    <Suspense fallback={<TasksPageSkeleton />}>
+      <RequirementsDirectoryContent />
+    </Suspense>
+  );
+}
+
+async function RequirementsDirectoryContent() {
   let requirements: Awaited<ReturnType<typeof getOpenRequirements>> = [];
   let tasksUnavailable = false;
   try {
@@ -44,10 +55,10 @@ export default async function RequirementsDirectoryPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Button asChild>
-              <Link href="/tasks/new">
+              <DocumentLink href="/tasks/new">
                 <Plus className="mr-2 h-4 w-4" />
                 Post a task
-              </Link>
+              </DocumentLink>
             </Button>
             <Button asChild variant="outline">
               <Link href="/dashboard/opportunities">My opportunities</Link>
@@ -87,7 +98,7 @@ export default async function RequirementsDirectoryPage() {
                 add new opportunities.
               </p>
               <Button asChild className="mt-6">
-                <Link href="/tasks/new">Post a task</Link>
+                <DocumentLink href="/tasks/new">Post a task</DocumentLink>
               </Button>
             </CardContent>
           </Card>

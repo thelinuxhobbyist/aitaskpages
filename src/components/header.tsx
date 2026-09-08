@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { BrandMark } from "@/components/brand-mark";
+import { DocumentLink } from "@/components/document-link";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,10 @@ function isPostTaskPath(pathname: string) {
     pathname === "/dashboard/requirements/new" ||
     pathname.startsWith("/dashboard/requirements/new")
   );
+}
+
+function isProtectedNavHref(href: string) {
+  return href === "/tasks/new" || href === "/dashboard";
 }
 
 function isNavActive(href: string, pathname: string): boolean {
@@ -87,8 +92,9 @@ export function Header() {
           <nav className="flex items-stretch gap-7" aria-label="Primary">
             {links.map((link) => {
               const active = isNavActive(link.href, pathname);
+              const NavLink = isProtectedNavHref(link.href) ? DocumentLink : Link;
               return (
-                <Link
+                <NavLink
                   key={link.href}
                   href={link.href}
                   aria-current={active ? "page" : undefined}
@@ -100,7 +106,7 @@ export function Header() {
                   )}
                 >
                   {link.label}
-                </Link>
+                </NavLink>
               );
             })}
           </nav>
@@ -149,8 +155,9 @@ export function Header() {
         <nav className="flex flex-col gap-1 px-5 py-4" aria-label="Primary">
           {links.map((link) => {
             const active = isNavActive(link.href, pathname);
+            const NavLink = isProtectedNavHref(link.href) ? DocumentLink : Link;
             return (
-              <Link
+              <NavLink
                 key={link.href}
                 href={link.href}
                 aria-current={active ? "page" : undefined}
@@ -162,7 +169,7 @@ export function Header() {
                 )}
               >
                 {link.label}
-              </Link>
+              </NavLink>
             );
           })}
           {!isSignedIn ? (

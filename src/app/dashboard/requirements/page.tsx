@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { DocumentLink } from "@/components/document-link";
 import { requireUser } from "@/lib/auth";
 import { getClientRequirements } from "@/lib/requirements";
 import { formatBudgetGBP, formatDateTime } from "@/lib/utils";
@@ -35,10 +36,10 @@ export default async function RequirementsPage() {
           </p>
         </div>
         <Button asChild>
-          <Link href="/tasks/new">
+          <DocumentLink href="/tasks/new">
             <Plus className="mr-2 h-4 w-4" />
             Post requirement
-          </Link>
+          </DocumentLink>
         </Button>
       </div>
 
@@ -50,7 +51,7 @@ export default async function RequirementsPage() {
               and matching experts will be notified.
             </p>
             <Button asChild className="mt-4">
-              <Link href="/tasks/new">Post your first requirement</Link>
+              <DocumentLink href="/tasks/new">Post your first requirement</DocumentLink>
             </Button>
           </CardContent>
         </Card>

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense, type ReactNode } from "react";
 import { DashboardNav } from "@/app/dashboard/dashboard-nav";
 import { AccountSyncBanner } from "@/components/account-sync-banner";
+import { DashboardSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 import { getOrCreateUser, requireSignedIn } from "@/lib/auth";
 
@@ -9,16 +11,26 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
+  return (
+    <div className="mx-auto max-w-4xl px-5 py-10">
+      <Suspense fallback={<DashboardSkeleton />}>
+        <DashboardLayoutBody>{children}</DashboardLayoutBody>
+      </Suspense>
+    </div>
+  );
+}
+
+async function DashboardLayoutBody({ children }: { children: ReactNode }) {
   await requireSignedIn();
   const user = await getOrCreateUser();
 
   return (
-    <div className="mx-auto max-w-4xl px-5 py-10">
+    <>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1>Dashboard</h1>
@@ -39,6 +51,6 @@ export default async function DashboardLayout({
       ) : (
         <AccountSyncBanner />
       )}
-    </div>
+    </>
   );
 }

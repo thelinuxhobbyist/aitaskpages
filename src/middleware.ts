@@ -6,7 +6,6 @@ import { getClerkEnvSync, syncClerkEnvFromBindings } from "@/lib/clerk-env";
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
-  "/tasks/new(.*)",
 ]);
 
 const clerkHandler = clerkMiddleware(
@@ -32,6 +31,16 @@ const clerkHandler = clerkMiddleware(
 
 function middleware(req: NextRequest, event: NextFetchEvent) {
   syncClerkEnvFromBindings();
+  const { secretKey } = getClerkEnvSync();
+  // Clerk throws and Next serves pages/_error with body{display:none} — a blank
+  // screen — when secretKey is missing (cold Worker, local without .env).
+  // Let the request through; page-level requireUser() still gates the UI.
+  if (!secretKey) {
+    console.error(
+      "Clerk secretKey missing in middleware — continuing without auth.protect",
+    );
+    return NextResponse.next();
+  }
   return clerkHandler(req, event);
 }
 

@@ -110,6 +110,48 @@ export async function getFeaturedExperts(
   });
 }
 
+/** Curated experts for the directory landing — featured first, then recent. */
+export async function getSuggestedExperts(limit = 6): Promise<{
+  profiles: ProfileWithRelations[];
+  source: "featured" | "recent";
+}> {
+  const featured = await getFeaturedExperts(limit);
+  if (featured.length > 0) {
+    return { profiles: featured, source: "featured" };
+  }
+
+  return withD1Retry("getSuggestedExperts.recent", async () => {
+    const db = await getDb();
+    const rows = await db
+      .select({ id: expertProfiles.id })
+      .from(expertProfiles)
+      .innerJoin(users, eq(expertProfiles.userId, users.id))
+      .where(publicExpertProfileConditions())
+      .orderBy(desc(expertProfiles.createdAt))
+      .limit(limit);
+
+    if (rows.length === 0) {
+      return { profiles: [], source: "recent" };
+    }
+
+    const profiles = await db.query.expertProfiles.findMany({
+      where: inArray(
+        expertProfiles.id,
+        rows.map((r) => r.id)
+      ),
+      with: {
+        skills: { with: { skill: true } },
+        services: { with: { service: true } },
+      },
+    });
+
+    return {
+      profiles: rankProfiles(profiles as ProfileWithRelations[]),
+      source: "recent",
+    };
+  });
+}
+
 export async function getDirectoryStats() {
   const db = await getDb();
   const [row] = await db

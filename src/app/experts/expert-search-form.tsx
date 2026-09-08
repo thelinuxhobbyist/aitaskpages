@@ -30,19 +30,22 @@ export function ExpertSearchForm({
   if (variant === "inline") {
     return (
       <form method="GET" action={action}>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <div className="relative flex-1">
+        <div className="flex flex-col gap-1.5 rounded-[14px] border border-border/80 bg-card p-1.5 shadow-soft sm:flex-row sm:items-stretch sm:gap-1.5">
+          <div className="relative min-w-0 flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <Input
               id="q"
               name="q"
               defaultValue={current.q ?? ""}
               placeholder="e.g. machine learning consultant in London"
-              className="h-11 bg-white pl-9"
+              className="h-11 border-0 bg-transparent pl-9 shadow-none focus-visible:ring-0"
               autoComplete="off"
             />
           </div>
-          <Button type="submit" className="shrink-0">
+          <Button
+            type="submit"
+            className="h-11 shrink-0 rounded-[9px] px-5 sm:self-stretch"
+          >
             Search
           </Button>
         </div>

@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DocumentLink } from "@/components/document-link";
 import { requireUser } from "@/lib/auth";
 import {
   getClientConversations,
@@ -60,7 +61,7 @@ export default async function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
-            <Link
+            <DocumentLink
               href="/tasks/new"
               className="group rounded-xl border border-border bg-surface p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
             >
@@ -70,7 +71,7 @@ export default async function DashboardPage() {
               <p className="mt-1 text-sm text-muted">
                 Post a task and get matched with relevant experts.
               </p>
-            </Link>
+            </DocumentLink>
             <a
               href="#profile-form"
               className="group rounded-xl border border-border bg-surface p-5 transition-shadow hover:border-primary/30 hover:shadow-md"

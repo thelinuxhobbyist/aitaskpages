@@ -7,6 +7,7 @@ import { HowItWorks } from "@/components/home/how-it-works";
 import { JobPreviewCard } from "@/components/home/job-preview-card";
 import { JoinAsExpertCta } from "@/components/home/join-as-expert-cta";
 import { PlatformSection } from "@/components/home/platform-section";
+import { DocumentLink } from "@/components/document-link";
 import { getFeaturedExperts } from "@/lib/directory";
 import { getLatestJobs } from "@/lib/jobs";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
@@ -81,8 +82,10 @@ export async function HomePage() {
                 label: "Join as an expert",
                 primary: false,
               },
-            ].map((item) => (
-              <Link
+            ].map((item) => {
+              const ItemLink = item.href === "/tasks/new" ? DocumentLink : Link;
+              return (
+              <ItemLink
                 key={item.href}
                 href={item.href}
                 className={cn(
@@ -94,8 +97,9 @@ export async function HomePage() {
               >
                 {item.label}
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-            ))}
+              </ItemLink>
+              );
+            })}
           </div>
 
           <div className="mt-5 flex max-w-[560px] flex-wrap gap-x-4 gap-y-1.5 border-t border-border/80 pt-5 pl-1 text-[0.8125rem] text-muted">

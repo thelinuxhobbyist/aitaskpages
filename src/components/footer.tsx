@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
+import { DocumentLink } from "@/components/document-link";
 import { FooterSocialRow } from "@/components/footer-social-row";
 
 export function Footer() {
@@ -32,13 +33,13 @@ export function Footer() {
                   <Link href="/tasks">Browse Tasks</Link>
                 </li>
                 <li>
-                  <Link href="/tasks/new">Post a Task</Link>
+                  <DocumentLink href="/tasks/new">Post a Task</DocumentLink>
                 </li>
                 <li>
                   <Link href="/join-as-expert">Join as an Expert</Link>
                 </li>
                 <li>
-                  <Link href="/dashboard">Dashboard</Link>
+                  <DocumentLink href="/dashboard">Dashboard</DocumentLink>
                 </li>
               </ul>
             </div>

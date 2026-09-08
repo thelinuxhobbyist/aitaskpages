@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { RequirementForm } from "@/app/dashboard/requirements/requirement-form";
 import {
   Card,
@@ -8,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { PostTaskPageSkeleton } from "@/components/skeletons";
 import { getAuthIdentity, requireUser } from "@/lib/auth";
 import { decodeFinderTaskDraft } from "@/lib/finder-task-draft";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
@@ -19,11 +21,21 @@ export const metadata: Metadata = {
     "Post an AI task or project requirement on AI Jobs Market. Connect directly with independent UK AI experts.",
 };
 
+export const dynamic = "force-dynamic";
+
 type Props = {
   searchParams: Promise<{ from?: string; draft?: string }>;
 };
 
-export default async function PostTaskPage({ searchParams }: Props) {
+export default function PostTaskPage(props: Props) {
+  return (
+    <Suspense fallback={<PostTaskPageSkeleton />}>
+      <PostTaskContent {...props} />
+    </Suspense>
+  );
+}
+
+async function PostTaskContent({ searchParams }: Props) {
   await requireUser();
   const identity = await getAuthIdentity();
   const { draft: draftParam, from } = await searchParams;

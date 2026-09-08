@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 import { HomePage as PlatformHomePage } from "@/app/home/page-content";
+import { HomePageSkeleton } from "@/components/skeletons";
 import { createPageMetadata, ROOT_TITLE } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
@@ -34,5 +36,9 @@ export default async function HomePage({ searchParams }: PageProps) {
     redirect(`/search?${query.toString()}`);
   }
 
-  return <PlatformHomePage />;
+  return (
+    <Suspense fallback={<HomePageSkeleton />}>
+      <PlatformHomePage />
+    </Suspense>
+  );
 }
