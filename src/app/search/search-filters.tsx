@@ -61,7 +61,7 @@ export function SearchFiltersPanel({
             id="filter-q"
             name="q"
             defaultValue={current.q ?? ""}
-            placeholder="e.g. NLP expert in London"
+            placeholder="e.g. AI consultant"
             className={cn(inputClass, "pl-11")}
             autoComplete="off"
           />

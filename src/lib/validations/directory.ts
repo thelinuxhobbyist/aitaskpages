@@ -16,6 +16,22 @@ export const directoryFiltersSchema = z.object({
 
 export type DirectoryFilters = z.infer<typeof directoryFiltersSchema>;
 
+/**
+ * Params that control presentation rather than which experts match. They are
+ * excluded from "has the visitor searched?" checks and from the filter chips.
+ */
+export const DIRECTORY_VIEW_PARAMS = ["sort"] as const;
+
+/** True when at least one real filter narrows the result set. */
+export function hasActiveFilters(filters: DirectoryFilters): boolean {
+  return Object.entries(filters).some(([key, value]) => {
+    if ((DIRECTORY_VIEW_PARAMS as readonly string[]).includes(key)) return false;
+    if (value === undefined || value === "") return false;
+    if (typeof value === "string" && !value.trim()) return false;
+    return true;
+  });
+}
+
 export function parseDirectoryFilters(
   searchParams: Record<string, string | string[] | undefined>
 ): DirectoryFilters {

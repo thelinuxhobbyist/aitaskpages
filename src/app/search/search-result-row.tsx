@@ -1,14 +1,14 @@
 import { ExpertPreviewCard } from "@/components/expert/expert-preview-card";
 import type { ProfileWithRelations } from "@/lib/profile-utils";
-import type { DirectoryFilters } from "@/lib/validations/directory";
 
 type Props = {
   profile: ProfileWithRelations;
-  filters?: DirectoryFilters;
-  skillLabels?: Map<string, string>;
-  serviceLabels?: Map<string, string>;
+  /** Kept in sync with the enclosing section heading level. */
+  heading?: "h2" | "h3";
 };
 
-export function SearchResultRow({ profile }: Props) {
-  return <ExpertPreviewCard profile={profile} variant="row" />;
+export function SearchResultRow({ profile, heading = "h3" }: Props) {
+  return (
+    <ExpertPreviewCard profile={profile} variant="row" heading={heading} />
+  );
 }

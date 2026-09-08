@@ -37,9 +37,10 @@ export function ExpertSearchForm({
               id="q"
               name="q"
               defaultValue={current.q ?? ""}
-              placeholder="e.g. machine learning consultant in London"
+              placeholder="Search by skill or role"
               className="h-11 border-0 bg-transparent pl-9 shadow-none focus-visible:ring-0"
               autoComplete="off"
+              aria-label="Search experts by skill or role"
             />
           </div>
           <Button
@@ -102,7 +103,7 @@ export function ExpertSearchForm({
               id="q"
               name="q"
               defaultValue={current.q ?? ""}
-              placeholder="e.g. machine learning consultant in London"
+              placeholder="Search by skill or role"
               className="pl-9"
               autoComplete="off"
             />

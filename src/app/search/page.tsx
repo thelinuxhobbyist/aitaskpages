@@ -1,21 +1,27 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { ExpertCard } from "@/app/experts/expert-card";
 import { ExpertSearchForm } from "@/app/experts/expert-search-form";
+import { CantFindExpertCta } from "@/app/search/cant-find-expert-cta";
 import { SearchFiltersPanel } from "@/app/search/search-filters";
 import { SearchResultRow } from "@/app/search/search-result-row";
 import { SearchSortSelect } from "@/app/search/search-sort";
-import { DocumentLink } from "@/components/document-link";
 import { PageHero } from "@/components/page-hero";
+import { EXPERT_DIRECTORY_LIMITS } from "@/lib/directory-limits";
 import { getActiveFilters } from "@/lib/search-url";
 import { sortSearchResults } from "@/lib/search-match-utils";
 import {
   searchExperts,
   getDistinctLocations,
+  getRecentExperts,
 } from "@/lib/directory";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 import { createPageMetadata } from "@/lib/seo";
-import { parseDirectoryFilters } from "@/lib/validations/directory";
+import {
+  hasActiveFilters,
+  parseDirectoryFilters,
+} from "@/lib/validations/directory";
 import { Search, Users } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
@@ -31,17 +37,6 @@ type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-function hasActiveFilters(
-  filters: ReturnType<typeof parseDirectoryFilters>
-): boolean {
-  return Object.entries(filters).some(([key, value]) => {
-    if (key === "sort") return false;
-    if (value === undefined || value === "") return false;
-    if (typeof value === "string" && !value.trim()) return false;
-    return true;
-  });
-}
-
 function getSearchContextLabel(
   filters: ReturnType<typeof parseDirectoryFilters>,
   skillLabels: Map<string, string>,
@@ -55,23 +50,50 @@ function getSearchContextLabel(
   return null;
 }
 
+function EmptyPanel({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: typeof Search;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
+      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
+        <Icon className="h-6 w-6 text-muted" />
+      </div>
+      <p className="text-lg font-semibold text-secondary">{title}</p>
+      <p className="mx-auto mt-2 max-w-sm text-sm text-muted">{children}</p>
+    </div>
+  );
+}
+
 export default async function SearchPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const filters = parseDirectoryFilters(params);
-  const hasFilters = hasActiveFilters(filters);
+  const searched = hasActiveFilters(filters);
 
   let skills: Awaited<ReturnType<typeof getAllSkills>> = [];
   let services: Awaited<ReturnType<typeof getAllServices>> = [];
   let locations: Awaited<ReturnType<typeof getDistinctLocations>> = [];
   let rawProfiles: Awaited<ReturnType<typeof searchExperts>> = [];
+  let recentProfiles: Awaited<ReturnType<typeof getRecentExperts>> = [];
   let directoryUnavailable = false;
 
   try {
     skills = await getAllSkills();
     services = await getAllServices();
     locations = await getDistinctLocations();
-    if (hasFilters) {
+    if (searched) {
       rawProfiles = await searchExperts(filters);
+    } else {
+      // Default state: a small, fixed set of the newest experts so the page has
+      // content without listing everyone on the platform.
+      recentProfiles = await getRecentExperts(
+        EXPERT_DIRECTORY_LIMITS.defaultCards
+      );
     }
   } catch (error) {
     directoryUnavailable = true;
@@ -82,7 +104,9 @@ export default async function SearchPage({ searchParams }: PageProps) {
     );
   }
 
-  const profiles = sortSearchResults(rawProfiles, filters.sort);
+  const matched = sortSearchResults(rawProfiles, filters.sort);
+  const results = matched.slice(0, EXPERT_DIRECTORY_LIMITS.maxSearchResults);
+  const resultsTruncated = matched.length > results.length;
 
   const skillLabels = new Map(skills.map((s) => [s.slug, s.name]));
   const serviceLabels = new Map(services.map((s) => [s.slug, s.name]));
@@ -96,9 +120,11 @@ export default async function SearchPage({ searchParams }: PageProps) {
     skillLabels,
     serviceLabels
   );
-  const countLabel = hasFilters
-    ? `${profiles.length} AI expert${profiles.length !== 1 ? "s" : ""} found`
-    : "Search to find the right expert";
+
+  const shownCount = searched ? results.length : recentProfiles.length;
+  const countLabel = searched
+    ? `${matched.length} AI expert${matched.length !== 1 ? "s" : ""} found`
+    : `${shownCount} AI expert${shownCount !== 1 ? "s" : ""}`;
 
   return (
     <>
@@ -106,7 +132,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
           <h1 className="text-2xl font-semibold tracking-tight text-secondary md:text-3xl">
             AI Experts
           </h1>
-          {!hasFilters && (
+          {!searched && (
             <p className="mt-2 max-w-2xl text-base text-muted">
               Search by skill, service or location to find independent AI
               experts across the UK. Or post a task and let specialists come to
@@ -114,7 +140,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
             </p>
           )}
 
-          {hasFilters && searchContext && (
+          {searched && searchContext && (
             <p className="mt-2 text-base text-muted">
               Search:{" "}
               <span className="font-medium text-secondary">{searchContext}</span>
@@ -138,14 +164,16 @@ export default async function SearchPage({ searchParams }: PageProps) {
                 ? "Directory temporarily unavailable"
                 : countLabel}
             </p>
-            <Suspense fallback={null}>
-              <SearchSortSelect />
-            </Suspense>
+            {searched && results.length > 0 && (
+              <Suspense fallback={null}>
+                <SearchSortSelect />
+              </Suspense>
+            )}
           </div>
       </PageHero>
 
-      <div className="mx-auto max-w-6xl px-4 py-8 md:py-10">
-        <div className="lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-10">
+      <div className="mx-auto max-w-6xl px-5 py-8 md:py-10">
+        <div className="lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-16 xl:gap-20">
           <SearchFiltersPanel
             skills={skills}
             services={services}
@@ -180,76 +208,66 @@ export default async function SearchPage({ searchParams }: PageProps) {
               </div>
             )}
 
-            {hasFilters && (
-              <div className="mb-6 rounded-xl border border-primary/20 bg-primary/[0.04] px-5 py-4">
-                <p className="text-sm font-medium text-secondary">
-                  Can&apos;t find the right expert?
-                </p>
-                <p className="mt-1 text-sm text-muted">
-                  Post a task and let matching AI experts come to you. We make
-                  the introduction; you take it from there.
-                </p>
-                <DocumentLink
-                  href="/tasks/new"
-                  className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
+            {directoryUnavailable ? (
+              <EmptyPanel icon={Users} title="Experts are temporarily unavailable">
+                Expert profiles have not been removed. We can&apos;t load the
+                directory just now — please try again after 1am UK time.
+              </EmptyPanel>
+            ) : !searched ? (
+              recentProfiles.length > 0 ? (
+                <section aria-labelledby="recent-experts-heading">
+                  <h2
+                    id="recent-experts-heading"
+                    className="text-lg font-semibold text-secondary"
+                  >
+                    Recently added experts
+                  </h2>
+                  <p className="mt-1 text-sm text-muted">
+                    Search above to find experts by skill, service or location.
+                  </p>
+                  <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                    {recentProfiles.map((profile) => (
+                      <ExpertCard key={profile.id} profile={profile} />
+                    ))}
+                  </div>
+                </section>
+              ) : (
+                <EmptyPanel icon={Users} title="No experts listed yet">
+                  We&apos;re onboarding the first AI experts now. Post a task
+                  and we&apos;ll match you as soon as they join.
+                </EmptyPanel>
+              )
+            ) : results.length > 0 ? (
+              <section aria-labelledby="search-results-heading">
+                <h2 id="search-results-heading" className="sr-only">
+                  Search results
+                </h2>
+                <div className="flex flex-col gap-4">
+                  {results.map((profile) => (
+                    <SearchResultRow key={profile.id} profile={profile} />
+                  ))}
+                </div>
+                {resultsTruncated && (
+                  <p className="mt-6 text-sm text-muted">
+                    Showing the first {results.length} matches. Add a filter or
+                    more keywords to narrow things down.
+                  </p>
+                )}
+              </section>
+            ) : (
+              <EmptyPanel icon={Search} title="No experts match your search">
+                Try broader keywords, remove a filter, or{" "}
+                <Link
+                  href="/search"
+                  className="font-medium text-primary hover:underline"
                 >
-                  Post a task →
-                </DocumentLink>
-              </div>
+                  start a new search
+                </Link>
+                .
+              </EmptyPanel>
             )}
 
-            {directoryUnavailable ? (
-              <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
-                  <Users className="h-6 w-6 text-muted" />
-                </div>
-                <p className="text-lg font-semibold text-secondary">
-                  Experts are temporarily unavailable
-                </p>
-                <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
-                  Expert profiles have not been removed. We can&apos;t load the
-                  directory just now — please try again after 1am UK time.
-                </p>
-              </div>
-            ) : !hasFilters ? (
-              <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
-                  <Search className="h-6 w-6 text-muted" />
-                </div>
-                <p className="text-lg font-semibold text-secondary">
-                  Search for an AI expert
-                </p>
-                <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
-                  Enter a skill, service or location above, or use the filters,
-                  to browse matching experts.
-                </p>
-              </div>
-            ) : profiles.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                {profiles.map((profile) => (
-                  <SearchResultRow key={profile.id} profile={profile} />
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
-                  <Search className="h-6 w-6 text-muted" />
-                </div>
-                <p className="text-lg font-semibold text-secondary">
-                  No experts match your search
-                </p>
-                <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
-                  Try broader keywords, remove a filter, or{" "}
-                  <Link
-                    href="/search"
-                    className="font-medium text-primary hover:underline"
-                  >
-                    start a new search
-                  </Link>
-                  .
-                </p>
-              </div>
-            )}
+            {!directoryUnavailable && <CantFindExpertCta />}
           </main>
         </div>
       </div>

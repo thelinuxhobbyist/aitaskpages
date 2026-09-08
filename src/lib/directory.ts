@@ -1,10 +1,21 @@
-import { and, desc, eq, gte, inArray, isNotNull, like, lte, sql } from "drizzle-orm";
+import {
+  and,
+  desc,
+  eq,
+  gte,
+  inArray,
+  isNotNull,
+  like,
+  lte,
+  sql,
+} from "drizzle-orm";
 import { getDb, withD1Retry } from "@/db/client";
 import { expertProfiles, users } from "@/db/schema";
 import {
   PUBLIC_PROFILE_STATUS,
   publicExpertProfileConditions,
 } from "@/lib/directory-filters";
+import { EXPERT_DIRECTORY_LIMITS } from "@/lib/directory-limits";
 import {
   rankProfiles,
   type ProfileWithRelations,
@@ -12,8 +23,29 @@ import {
 import { filterProfiles } from "@/lib/search-utils";
 import type { DirectoryFilters } from "@/lib/validations/directory";
 
+type Db = Awaited<ReturnType<typeof getDb>>;
+
+/** Hydrate skills/services for an already-narrowed set of profile ids. */
+async function loadProfilesWithRelations(
+  db: Db,
+  ids: number[]
+): Promise<ProfileWithRelations[]> {
+  if (ids.length === 0) return [];
+
+  const profiles = await db.query.expertProfiles.findMany({
+    where: inArray(expertProfiles.id, ids),
+    with: {
+      skills: { with: { skill: true } },
+      services: { with: { service: true } },
+    },
+  });
+
+  return profiles as ProfileWithRelations[];
+}
+
 async function fetchPublicProfiles(
-  extraConditions: ReturnType<typeof and>[] = []
+  extraConditions: ReturnType<typeof and>[] = [],
+  limit: number = EXPERT_DIRECTORY_LIMITS.maxScannedProfiles
 ): Promise<ProfileWithRelations[]> {
   return withD1Retry("fetchPublicProfiles", async () => {
     const db = await getDb();
@@ -21,27 +53,60 @@ async function fetchPublicProfiles(
       extraConditions.length > 0 ? and(...extraConditions) : undefined
     );
 
+    // Ordered so the cap takes a stable slice (newest profiles) rather than
+    // whatever SQLite happens to return first.
     const rows = await db
-      .select({ profile: expertProfiles })
+      .select({ id: expertProfiles.id })
       .from(expertProfiles)
       .innerJoin(users, eq(expertProfiles.userId, users.id))
-      .where(where);
+      .where(where)
+      .orderBy(desc(expertProfiles.createdAt))
+      .limit(limit);
 
-    const ids = rows.map((r) => r.profile.id);
-    if (ids.length === 0) return [];
-
-    const profiles = await db.query.expertProfiles.findMany({
-      where: inArray(expertProfiles.id, ids),
-      with: {
-        skills: { with: { skill: true } },
-        services: { with: { service: true } },
-      },
-    });
-
-    return profiles as ProfileWithRelations[];
+    return loadProfilesWithRelations(
+      db,
+      rows.map((r) => r.id)
+    );
   });
 }
 
+/**
+ * Newest approved profiles, for the directory's default state.
+ *
+ * Returns at most `limit` profiles — and fewer when the platform has fewer —
+ * so the page never renders the whole database.
+ */
+export async function getRecentExperts(
+  limit = EXPERT_DIRECTORY_LIMITS.defaultCards
+): Promise<ProfileWithRelations[]> {
+  if (limit <= 0) return [];
+
+  return withD1Retry("getRecentExperts", async () => {
+    const db = await getDb();
+    const rows = await db
+      .select({ id: expertProfiles.id })
+      .from(expertProfiles)
+      .innerJoin(users, eq(expertProfiles.userId, users.id))
+      .where(publicExpertProfileConditions())
+      .orderBy(desc(expertProfiles.createdAt))
+      .limit(limit);
+
+    const ids = rows.map((r) => r.id);
+    const profiles = await loadProfilesWithRelations(db, ids);
+
+    // findMany() ignores the ordering above, so restore newest-first here.
+    const position = new Map(ids.map((id, index) => [id, index]));
+    return profiles.sort(
+      (a, b) => (position.get(a.id) ?? 0) - (position.get(b.id) ?? 0)
+    );
+  });
+}
+
+/**
+ * Ranked matches for the given filters. Bounded by
+ * `EXPERT_DIRECTORY_LIMITS.maxScannedProfiles` — this never loads the whole
+ * table, and callers cap again before rendering.
+ */
 export async function searchExperts(
   filters: DirectoryFilters
 ): Promise<ProfileWithRelations[]> {
@@ -93,62 +158,12 @@ export async function getFeaturedExperts(
       .orderBy(desc(expertProfiles.createdAt))
       .limit(limit);
 
-    if (rows.length === 0) return [];
+    const profiles = await loadProfilesWithRelations(
+      db,
+      rows.map((r) => r.id)
+    );
 
-    const profiles = await db.query.expertProfiles.findMany({
-      where: inArray(
-        expertProfiles.id,
-        rows.map((r) => r.id)
-      ),
-      with: {
-        skills: { with: { skill: true } },
-        services: { with: { service: true } },
-      },
-    });
-
-    return rankProfiles(profiles as ProfileWithRelations[]);
-  });
-}
-
-/** Curated experts for the directory landing — featured first, then recent. */
-export async function getSuggestedExperts(limit = 6): Promise<{
-  profiles: ProfileWithRelations[];
-  source: "featured" | "recent";
-}> {
-  const featured = await getFeaturedExperts(limit);
-  if (featured.length > 0) {
-    return { profiles: featured, source: "featured" };
-  }
-
-  return withD1Retry("getSuggestedExperts.recent", async () => {
-    const db = await getDb();
-    const rows = await db
-      .select({ id: expertProfiles.id })
-      .from(expertProfiles)
-      .innerJoin(users, eq(expertProfiles.userId, users.id))
-      .where(publicExpertProfileConditions())
-      .orderBy(desc(expertProfiles.createdAt))
-      .limit(limit);
-
-    if (rows.length === 0) {
-      return { profiles: [], source: "recent" };
-    }
-
-    const profiles = await db.query.expertProfiles.findMany({
-      where: inArray(
-        expertProfiles.id,
-        rows.map((r) => r.id)
-      ),
-      with: {
-        skills: { with: { skill: true } },
-        services: { with: { service: true } },
-      },
-    });
-
-    return {
-      profiles: rankProfiles(profiles as ProfileWithRelations[]),
-      source: "recent",
-    };
+    return rankProfiles(profiles);
   });
 }
 
