@@ -18,12 +18,12 @@ export async function GET(request: Request) {
     return new Response("Storage unavailable", { status: 503 });
   }
 
-  // Check R2 for favicon.ico, fallback to 32x32-01.png
+  // Check R2 for favicon.ico, fallback to favicon-32x32.png
   let object = await env.IMAGES.get("images/logos/favicon.ico");
   let contentType = "image/x-icon";
 
   if (!object) {
-    object = await env.IMAGES.get("images/logos/32x32-01.png");
+    object = await env.IMAGES.get("images/logos/favicon-32x32.png");
     contentType = "image/png";
   }
 

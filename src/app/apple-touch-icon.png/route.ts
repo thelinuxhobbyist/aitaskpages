@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 
   let object = await env.IMAGES.get("images/logos/apple-touch-icon.png");
   if (!object) {
-    object = await env.IMAGES.get("images/logos/32x32-01.png");
+    object = await env.IMAGES.get("images/logos/favicon-192x192.png");
   }
 
   if (!object) {

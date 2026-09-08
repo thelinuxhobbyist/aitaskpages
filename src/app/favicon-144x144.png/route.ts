@@ -18,10 +18,11 @@ export async function GET(request: Request) {
     return new Response("Storage unavailable", { status: 503 });
   }
 
-  let object = await env.IMAGES.get("images/logos/favicon-16x16.png");
+  let object = await env.IMAGES.get("images/logos/favicon-144x144.png");
   if (!object) {
-    object = await env.IMAGES.get("images/logos/favicon-32x32.png");
+    object = await env.IMAGES.get("images/logos/favicon-96x96.png");
   }
+
   if (!object) {
     return new Response("Not found", { status: 404 });
   }

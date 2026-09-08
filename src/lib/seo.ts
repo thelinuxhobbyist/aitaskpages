@@ -3,6 +3,11 @@ import {
   SITE_APPLE_TOUCH_ICON_URL,
   SITE_FAVICON_16_URL,
   SITE_FAVICON_32_URL,
+  SITE_FAVICON_48_URL,
+  SITE_FAVICON_96_URL,
+  SITE_FAVICON_192_URL,
+  SITE_FAVICON_512_URL,
+  SITE_FAVICON_SVG_URL,
   SITE_FAVICON_ICO_URL,
   SITE_LOGO_URL,
   SITE_SHARE_ICON_URL,
@@ -122,15 +127,37 @@ export function rootMetadata(): Metadata {
     },
     icons: {
       icon: [
-        { url: SITE_FAVICON_ICO_URL, sizes: "any" },
         {
-          url: SITE_FAVICON_16_URL,
-          sizes: "16x16",
+          url: SITE_FAVICON_SVG_URL,
+          type: "image/svg+xml",
+        },
+        {
+          url: SITE_FAVICON_ICO_URL,
+          sizes: "any",
+        },
+        {
+          url: SITE_FAVICON_48_URL,
+          sizes: "48x48",
+          type: "image/png",
+        },
+        {
+          url: SITE_FAVICON_96_URL,
+          sizes: "96x96",
+          type: "image/png",
+        },
+        {
+          url: SITE_FAVICON_192_URL,
+          sizes: "192x192",
           type: "image/png",
         },
         {
           url: SITE_FAVICON_32_URL,
           sizes: "32x32",
+          type: "image/png",
+        },
+        {
+          url: SITE_FAVICON_16_URL,
+          sizes: "16x16",
           type: "image/png",
         },
       ],
@@ -142,6 +169,7 @@ export function rootMetadata(): Metadata {
         },
       ],
     },
+    manifest: "/site.webmanifest",
     openGraph: {
       type: "website",
       locale: "en_GB",

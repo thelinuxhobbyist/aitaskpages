@@ -18,10 +18,11 @@ export async function GET(request: Request) {
     return new Response("Storage unavailable", { status: 503 });
   }
 
-  let object = await env.IMAGES.get("images/logos/favicon-16x16.png");
+  let object = await env.IMAGES.get("images/logos/favicon.svg");
   if (!object) {
-    object = await env.IMAGES.get("images/logos/favicon-32x32.png");
+    object = await env.IMAGES.get("images/logos/AI JobsMarket-512x512_favicons.svg");
   }
+
   if (!object) {
     return new Response("Not found", { status: 404 });
   }
@@ -32,7 +33,7 @@ export async function GET(request: Request) {
   }
 
   const headers = new Headers();
-  headers.set("content-type", "image/png");
+  headers.set("content-type", "image/svg+xml");
   headers.set("etag", object.httpEtag);
   headers.set("last-modified", object.uploaded.toUTCString());
   headers.set("cache-control", "public, no-cache, must-revalidate");

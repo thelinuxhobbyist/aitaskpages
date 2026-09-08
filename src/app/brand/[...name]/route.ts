@@ -25,11 +25,20 @@ const BRAND_ALIASES: Record<string, string> = {
   "logo.png": "images/logos/AI JobsMarket-01.png",
   "logo-on-dark.png": "images/logos/footer.png",
   "footer.png": "images/logos/footer.png",
-  "16x16-01.png": "images/logos/16x16-01.png",
-  "32x32-01.png": "images/logos/32x32-01.png",
-  "16x16.png": "images/logos/16x16-01.png",
-  "32x32.png": "images/logos/32x32-01.png",
   "favicon.ico": "images/logos/favicon.ico",
+  "favicon.svg": "images/logos/favicon.svg",
+  "AI JobsMarket-512x512_favicons.svg": "images/logos/AI JobsMarket-512x512_favicons.svg",
+  "16x16-01.png": "images/logos/favicon-16x16.png",
+  "32x32-01.png": "images/logos/favicon-32x32.png",
+  "16x16.png": "images/logos/favicon-16x16.png",
+  "32x32.png": "images/logos/favicon-32x32.png",
+  "favicon-16x16.png": "images/logos/favicon-16x16.png",
+  "favicon-32x32.png": "images/logos/favicon-32x32.png",
+  "favicon-48x48.png": "images/logos/favicon-48x48.png",
+  "favicon-96x96.png": "images/logos/favicon-96x96.png",
+  "favicon-144x144.png": "images/logos/favicon-144x144.png",
+  "favicon-192x192.png": "images/logos/favicon-192x192.png",
+  "favicon-512x512.png": "images/logos/favicon-512x512.png",
   "apple-touch-icon.png": "images/logos/apple-touch-icon.png",
 };
 
@@ -50,9 +59,9 @@ export async function GET(
 
   let object = await env.IMAGES.get(r2Key);
 
-  // If alias didn't find specific object (e.g. apple-touch-icon not in R2 yet), fall back
+  // If alias didn't find specific object, fall back safely
   if (!object && filename === "apple-touch-icon.png") {
-    object = await env.IMAGES.get("images/logos/32x32-01.png");
+    object = await env.IMAGES.get("images/logos/favicon-192x192.png");
   }
 
   if (!object) {
