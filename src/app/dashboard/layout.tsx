@@ -3,7 +3,8 @@ import Link from "next/link";
 import { Suspense, type ReactNode } from "react";
 import { DashboardNav } from "@/app/dashboard/dashboard-nav";
 import { AccountSyncBanner } from "@/components/account-sync-banner";
-import { DashboardSkeleton } from "@/components/skeletons";
+import { DelayedFallback } from "@/components/delayed-fallback";
+import { RouteLoadingIndicator } from "@/components/route-loading-indicator";
 import { Button } from "@/components/ui/button";
 import { getOrCreateUser, requireSignedIn } from "@/lib/auth";
 
@@ -18,7 +19,13 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="mx-auto max-w-4xl px-5 py-10">
-      <Suspense fallback={<DashboardSkeleton />}>
+      <Suspense
+        fallback={
+          <DelayedFallback>
+            <RouteLoadingIndicator label="Loading dashboard" />
+          </DelayedFallback>
+        }
+      >
         <DashboardLayoutBody>{children}</DashboardLayoutBody>
       </Suspense>
     </div>

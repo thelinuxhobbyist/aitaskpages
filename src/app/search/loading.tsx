@@ -1,5 +1,10 @@
-import { SearchPageSkeleton } from "@/components/skeletons";
+import { DelayedFallback } from "@/components/delayed-fallback";
+import { RouteLoadingIndicator } from "@/components/route-loading-indicator";
 
 export default function SearchLoading() {
-  return <SearchPageSkeleton />;
+  return (
+    <DelayedFallback>
+      <RouteLoadingIndicator label="Loading experts" />
+    </DelayedFallback>
+  );
 }

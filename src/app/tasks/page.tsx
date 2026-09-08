@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { RequirementCard, taskCardGridClassName } from "@/app/tasks/requirement-card";
 import { DocumentLink } from "@/components/document-link";
-import { TasksPageSkeleton } from "@/components/skeletons";
+import { DelayedFallback } from "@/components/delayed-fallback";
+import { TasksListSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getOpenRequirements } from "@/lib/requirements";
@@ -22,13 +23,45 @@ export const dynamic = "force-dynamic";
 
 export default function RequirementsDirectoryPage() {
   return (
-    <Suspense fallback={<TasksPageSkeleton />}>
-      <RequirementsDirectoryContent />
-    </Suspense>
+    <>
+      <PageHero>
+        <p className="text-xs font-medium uppercase tracking-widest text-muted">
+          AI Tasks
+        </p>
+        <h1 className="mt-2">Browse open AI tasks</h1>
+        <p className="mt-3 max-w-2xl text-muted">
+          Open requests from UK businesses looking for independent AI
+          expertise. Experts can express interest; you connect directly.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button asChild>
+            <DocumentLink href="/tasks/new">
+              <Plus className="mr-2 h-4 w-4" />
+              Post a task
+            </DocumentLink>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/dashboard/opportunities">My opportunities</Link>
+          </Button>
+        </div>
+      </PageHero>
+
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        <Suspense
+          fallback={
+            <DelayedFallback>
+              <TasksListSkeleton />
+            </DelayedFallback>
+          }
+        >
+          <RequirementsList />
+        </Suspense>
+      </div>
+    </>
   );
 }
 
-async function RequirementsDirectoryContent() {
+async function RequirementsList() {
   let requirements: Awaited<ReturnType<typeof getOpenRequirements>> = [];
   let tasksUnavailable = false;
   try {
@@ -42,79 +75,59 @@ async function RequirementsDirectoryContent() {
     );
   }
 
+  if (tasksUnavailable) {
+    return (
+      <Card>
+        <CardContent className="px-6 py-16 text-center">
+          <Briefcase
+            className="mx-auto h-10 w-10 text-muted"
+            strokeWidth={1.5}
+          />
+          <p className="mt-4 text-lg font-semibold text-secondary">
+            Tasks are temporarily unavailable
+          </p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted">
+            Open tasks have not been removed. We can&apos;t load them just
+            now — please try again after 1am UK time.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (requirements.length === 0) {
+    return (
+      <Card>
+        <CardContent className="px-6 py-16 text-center">
+          <Briefcase
+            className="mx-auto h-10 w-10 text-muted"
+            strokeWidth={1.5}
+          />
+          <p className="mt-4 text-lg font-semibold text-secondary">
+            No open tasks yet
+          </p>
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted">
+            Be the first to post an AI task, or check back as businesses add
+            new opportunities.
+          </p>
+          <Button asChild className="mt-6">
+            <DocumentLink href="/tasks/new">Post a task</DocumentLink>
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <>
-      <PageHero>
-          <p className="text-xs font-medium uppercase tracking-widest text-muted">
-            AI Tasks
-          </p>
-          <h1 className="mt-2">Browse open AI tasks</h1>
-          <p className="mt-3 max-w-2xl text-muted">
-            Open requests from UK businesses looking for independent AI
-            expertise. Experts can express interest; you connect directly.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Button asChild>
-              <DocumentLink href="/tasks/new">
-                <Plus className="mr-2 h-4 w-4" />
-                Post a task
-              </DocumentLink>
-            </Button>
-            <Button asChild variant="outline">
-              <Link href="/dashboard/opportunities">My opportunities</Link>
-            </Button>
-          </div>
-      </PageHero>
-
-      <div className="mx-auto max-w-6xl px-4 py-10">
-        {tasksUnavailable ? (
-          <Card>
-            <CardContent className="px-6 py-16 text-center">
-              <Briefcase
-                className="mx-auto h-10 w-10 text-muted"
-                strokeWidth={1.5}
-              />
-              <p className="mt-4 text-lg font-semibold text-secondary">
-                Tasks are temporarily unavailable
-              </p>
-              <p className="mx-auto mt-2 max-w-md text-sm text-muted">
-                Open tasks have not been removed. We can&apos;t load them just
-                now — please try again after 1am UK time.
-              </p>
-            </CardContent>
-          </Card>
-        ) : requirements.length === 0 ? (
-          <Card>
-            <CardContent className="px-6 py-16 text-center">
-              <Briefcase
-                className="mx-auto h-10 w-10 text-muted"
-                strokeWidth={1.5}
-              />
-              <p className="mt-4 text-lg font-semibold text-secondary">
-                No open tasks yet
-              </p>
-              <p className="mx-auto mt-2 max-w-md text-sm text-muted">
-                Be the first to post an AI task, or check back as businesses
-                add new opportunities.
-              </p>
-              <Button asChild className="mt-6">
-                <DocumentLink href="/tasks/new">Post a task</DocumentLink>
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <>
-            <p className="mb-6 text-sm text-muted">
-              {requirements.length} open task
-              {requirements.length !== 1 ? "s" : ""} · newest first
-            </p>
-            <div className={taskCardGridClassName}>
-              {requirements.map((req) => (
-                <RequirementCard key={req.id} requirement={req} />
-              ))}
-            </div>
-          </>
-        )}
+      <p className="mb-6 text-sm text-muted">
+        {requirements.length} open task
+        {requirements.length !== 1 ? "s" : ""} · newest first
+      </p>
+      <div className={taskCardGridClassName}>
+        {requirements.map((req) => (
+          <RequirementCard key={req.id} requirement={req} />
+        ))}
       </div>
     </>
   );

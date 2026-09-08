@@ -7,18 +7,16 @@ import { SearchResultRow } from "@/app/search/search-result-row";
 import { SearchSortSelect } from "@/app/search/search-sort";
 import { DocumentLink } from "@/components/document-link";
 import { PageHero } from "@/components/page-hero";
-import { HOME_CATEGORIES } from "@/lib/home-content";
 import { getActiveFilters } from "@/lib/search-url";
 import { sortSearchResults } from "@/lib/search-match-utils";
 import {
   searchExperts,
   getDistinctLocations,
-  getSuggestedExperts,
 } from "@/lib/directory";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 import { createPageMetadata } from "@/lib/seo";
 import { parseDirectoryFilters } from "@/lib/validations/directory";
-import { ArrowRight, Search, Sparkles, Users } from "lucide-react";
+import { Search, Users } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
   title: "AI Experts",
@@ -32,6 +30,17 @@ export const dynamic = "force-dynamic";
 type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
+
+function hasActiveFilters(
+  filters: ReturnType<typeof parseDirectoryFilters>
+): boolean {
+  return Object.entries(filters).some(([key, value]) => {
+    if (key === "sort") return false;
+    if (value === undefined || value === "") return false;
+    if (typeof value === "string" && !value.trim()) return false;
+    return true;
+  });
+}
 
 function getSearchContextLabel(
   filters: ReturnType<typeof parseDirectoryFilters>,
@@ -49,16 +58,13 @@ function getSearchContextLabel(
 export default async function SearchPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const filters = parseDirectoryFilters(params);
-  const hasFilters = Object.entries(filters).some(
-    ([key, value]) => key !== "sort" && value !== undefined && value !== ""
-  );
+  const hasFilters = hasActiveFilters(filters);
 
   let skills: Awaited<ReturnType<typeof getAllSkills>> = [];
   let services: Awaited<ReturnType<typeof getAllServices>> = [];
   let locations: Awaited<ReturnType<typeof getDistinctLocations>> = [];
   let rawProfiles: Awaited<ReturnType<typeof searchExperts>> = [];
   let directoryUnavailable = false;
-  let suggestionSource: "featured" | "recent" | null = null;
 
   try {
     skills = await getAllSkills();
@@ -66,10 +72,6 @@ export default async function SearchPage({ searchParams }: PageProps) {
     locations = await getDistinctLocations();
     if (hasFilters) {
       rawProfiles = await searchExperts(filters);
-    } else {
-      const suggested = await getSuggestedExperts(6);
-      rawProfiles = suggested.profiles;
-      suggestionSource = suggested.source;
     }
   } catch (error) {
     directoryUnavailable = true;
@@ -137,7 +139,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                 : countLabel}
             </p>
             <Suspense fallback={null}>
-              {hasFilters ? <SearchSortSelect /> : null}
+              <SearchSortSelect />
             </Suspense>
           </div>
       </PageHero>
@@ -210,87 +212,17 @@ export default async function SearchPage({ searchParams }: PageProps) {
                 </p>
               </div>
             ) : !hasFilters ? (
-              <div className="space-y-8">
-                <div className="rounded-2xl border border-border bg-card px-5 py-6 shadow-soft sm:px-6">
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-muted text-accent-foreground">
-                      <Search className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-heading text-lg font-semibold text-secondary">
-                        Start with a search
-                      </p>
-                      <p className="mt-1 text-sm leading-relaxed text-muted">
-                        Type a skill, service or city above — or pick a category
-                        to see matching experts. Results only appear once you
-                        search.
-                      </p>
-                    </div>
-                  </div>
-                  <ul className="mt-5 flex flex-wrap gap-2">
-                    {HOME_CATEGORIES.map((category) => (
-                      <li key={category.name}>
-                        <Link
-                          href={category.href}
-                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-sm font-medium text-on-surface transition-colors hover:border-primary/40 hover:bg-primary/5"
-                        >
-                          {category.name}
-                          <ArrowRight className="h-3.5 w-3.5 text-muted" />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+              <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
+                  <Search className="h-6 w-6 text-muted" />
                 </div>
-
-                {profiles.length > 0 ? (
-                  <section aria-labelledby="suggested-experts-heading">
-                    <div className="mb-4 flex items-start gap-2">
-                      <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-accent-foreground" />
-                      <div>
-                        <h2
-                          id="suggested-experts-heading"
-                          className="font-heading text-lg font-semibold tracking-tight text-secondary"
-                        >
-                          {suggestionSource === "featured"
-                            ? "Featured experts"
-                            : "Experts to get you started"}
-                        </h2>
-                        <p className="mt-0.5 text-sm text-muted">
-                          {suggestionSource === "featured"
-                            ? "A curated selection to browse while you search — not your full search results."
-                            : "A small selection from the directory. Search or filter to find someone specific."}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-4">
-                      {profiles.map((profile) => (
-                        <SearchResultRow
-                          key={profile.id}
-                          profile={profile}
-                        />
-                      ))}
-                    </div>
-                  </section>
-                ) : (
-                  <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
-                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
-                      <Users className="h-6 w-6 text-muted" />
-                    </div>
-                    <p className="text-lg font-semibold text-secondary">
-                      No experts listed yet
-                    </p>
-                    <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
-                      Check back soon, or{" "}
-                      <Link
-                        href="/join-as-expert"
-                        className="font-medium text-primary hover:underline"
-                      >
-                        join as an expert
-                      </Link>
-                      .
-                    </p>
-                  </div>
-                )}
+                <p className="text-lg font-semibold text-secondary">
+                  Search for an AI expert
+                </p>
+                <p className="mx-auto mt-2 max-w-sm text-sm text-muted">
+                  Enter a skill, service or location above, or use the filters,
+                  to browse matching experts.
+                </p>
               </div>
             ) : profiles.length > 0 ? (
               <div className="flex flex-col gap-4">

@@ -23,35 +23,95 @@ function ExpertResultCardSkeleton() {
   );
 }
 
-export function HomePageSkeleton() {
+function CardGridSkeleton({ count = 3 }: { count?: number }) {
   return (
-    <div aria-busy="true" aria-label="Loading page">
-      <PageHero innerClassName="py-16 md:py-20">
-        <Skeleton className="h-12 w-3/4 max-w-xl md:h-16" />
-        <Skeleton className="mt-3 h-12 w-2/3 max-w-lg md:h-14" />
-        <Skeleton className="mt-6 h-5 w-full max-w-xl" />
-        <Skeleton className="mt-2 h-5 w-5/6 max-w-lg" />
-        <div className="mt-8 flex h-[3.75rem] w-full max-w-[560px] items-center rounded-[14px] border border-border/80 bg-card p-1.5 shadow-lift">
-          <Skeleton className="h-10 flex-1 rounded-lg" />
-          <Skeleton className="ml-1.5 h-12 w-36 rounded-[9px]" />
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          className="rounded-2xl border border-border bg-card p-6 shadow-soft"
+        >
+          <Skeleton className="h-12 w-12 rounded-full" />
+          <Skeleton className="mt-4 h-5 w-3/4" />
+          <Skeleton className="mt-2 h-4 w-full" />
+          <Skeleton className="mt-2 h-4 w-5/6" />
         </div>
-      </PageHero>
-      <div className="mx-auto max-w-6xl space-y-6 px-5 py-14">
+      ))}
+    </div>
+  );
+}
+
+/** Homepage: only the platform sections that wait on D1/API data. */
+export function HomeSectionsSkeleton() {
+  return (
+    <div
+      className="mx-auto max-w-6xl space-y-14 px-5 py-14"
+      aria-busy="true"
+      aria-label="Loading featured content"
+    >
+      <div>
         <Skeleton className="h-8 w-56" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-border bg-card p-6 shadow-soft"
-            >
-              <Skeleton className="h-12 w-12 rounded-full" />
-              <Skeleton className="mt-4 h-5 w-3/4" />
-              <Skeleton className="mt-2 h-4 w-full" />
-              <Skeleton className="mt-2 h-4 w-5/6" />
-            </div>
-          ))}
+        <Skeleton className="mt-3 h-4 w-80 max-w-full" />
+        <div className="mt-7">
+          <CardGridSkeleton count={3} />
         </div>
       </div>
+    </div>
+  );
+}
+
+/** Homepage: jobs feed only (external API). */
+export function HomeJobsSkeleton() {
+  return (
+    <div
+      className="mx-auto max-w-6xl px-5 pb-14"
+      aria-busy="true"
+      aria-label="Loading vacancies"
+    >
+      <Skeleton className="h-8 w-52" />
+      <Skeleton className="mt-3 h-4 w-96 max-w-full" />
+      <div className="mt-7 grid gap-4 md:grid-cols-2">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <div
+            key={i}
+            className="rounded-2xl border border-border bg-card p-6 shadow-soft"
+          >
+            <Skeleton className="h-5 w-2/3" />
+            <Skeleton className="mt-3 h-4 w-full" />
+            <Skeleton className="mt-2 h-4 w-4/5" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Tasks directory: list area only — hero stays visible. */
+export function TasksListSkeleton() {
+  return (
+    <div
+      className="grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr))]"
+      aria-busy="true"
+      aria-label="Loading tasks"
+    >
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div
+          key={i}
+          className="rounded-2xl border border-border bg-card p-6 shadow-soft"
+        >
+          <div className="flex justify-between">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+          <Skeleton className="mt-4 h-6 w-5/6" />
+          <Skeleton className="mt-3 h-4 w-full" />
+          <Skeleton className="mt-2 h-4 w-4/5" />
+          <div className="mt-5 flex gap-2">
+            <Skeleton className="h-7 w-16 rounded-full" />
+            <Skeleton className="h-7 w-20 rounded-full" />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -84,44 +144,6 @@ export function SearchPageSkeleton() {
               <ExpertResultCardSkeleton key={i} />
             ))}
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function TasksPageSkeleton() {
-  return (
-    <div aria-busy="true" aria-label="Loading tasks">
-      <PageHero>
-        <Skeleton className="h-3 w-20" />
-        <Skeleton className="mt-3 h-9 w-72" />
-        <Skeleton className="mt-3 h-4 w-full max-w-xl" />
-        <div className="mt-6 flex gap-3">
-          <Skeleton className="h-10 w-32 rounded-md" />
-          <Skeleton className="h-10 w-40 rounded-md" />
-        </div>
-      </PageHero>
-      <div className="mx-auto max-w-6xl px-4 py-10">
-        <div className="grid gap-5 [grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr))]">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={i}
-              className="rounded-2xl border border-border bg-card p-6 shadow-soft"
-            >
-              <div className="flex justify-between">
-                <Skeleton className="h-4 w-28" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-              <Skeleton className="mt-4 h-6 w-5/6" />
-              <Skeleton className="mt-3 h-4 w-full" />
-              <Skeleton className="mt-2 h-4 w-4/5" />
-              <div className="mt-5 flex gap-2">
-                <Skeleton className="h-7 w-16 rounded-full" />
-                <Skeleton className="h-7 w-20 rounded-full" />
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>
@@ -217,34 +239,6 @@ export function ExpertProfileSkeleton() {
           </div>
         </div>
         <Skeleton className="mt-8 h-64 rounded-2xl md:mt-0" />
-      </div>
-    </div>
-  );
-}
-
-export function DashboardSkeleton() {
-  return (
-    <div aria-busy="true" aria-label="Loading dashboard">
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <Skeleton className="h-8 w-40" />
-          <Skeleton className="mt-3 h-4 w-72" />
-        </div>
-        <Skeleton className="h-9 w-28 rounded-md" />
-      </div>
-      <div className="flex gap-2">
-        <Skeleton className="h-10 w-24 rounded-lg" />
-        <Skeleton className="h-10 w-28 rounded-lg" />
-        <Skeleton className="h-10 w-32 rounded-lg" />
-      </div>
-      <div className="mt-8 rounded-2xl border border-border bg-card p-6 shadow-soft">
-        <Skeleton className="h-6 w-40" />
-        <Skeleton className="mt-2 h-4 w-2/3" />
-        <div className="mt-6 space-y-4">
-          <Skeleton className="h-10 w-full rounded-lg" />
-          <Skeleton className="h-10 w-full rounded-lg" />
-          <Skeleton className="h-24 w-full rounded-lg" />
-        </div>
       </div>
     </div>
   );
