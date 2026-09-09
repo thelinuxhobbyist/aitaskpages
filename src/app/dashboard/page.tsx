@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Building2, User } from "lucide-react";
+import { ArrowLeft, Building2, User } from "lucide-react";
 import { ProfileForm } from "@/app/dashboard/profile-form";
 import {
   Card,
@@ -86,85 +86,88 @@ export default async function DashboardPage({
       )}
 
       {showTypeChoice && (
-        <Card className="border-accent/30 bg-card">
-          <CardHeader>
-            <CardTitle>What type of profile do you want?</CardTitle>
-            <CardDescription>
-              Choose how you appear in Find AI Expertise. You can switch between
-              Individual and Company later from your dashboard.
-            </CardDescription>
-            <p className="pt-1">
+        <div>
+          <Link
+            href="/dashboard"
+            className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-on-surface"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to get started
+          </Link>
+          <Card className="border-accent/30 bg-card">
+            <CardHeader>
+              <CardTitle>What type of profile do you want?</CardTitle>
+              <CardDescription>
+                Choose how you appear in Find AI Expertise. You can switch
+                between Individual and Company later from your dashboard.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4 sm:grid-cols-2">
               <Link
-                href="/dashboard"
-                className="text-sm font-medium text-muted hover:text-primary hover:underline"
+                href="/dashboard?intent=offer&type=individual"
+                className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
               >
-                ← Back to get started
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <User className="h-5 w-5" />
+                </span>
+                <p className="mt-3 font-semibold text-secondary group-hover:text-primary">
+                  Individual Expert
+                </p>
+                <p className="mt-1 text-sm text-muted">
+                  Showcase your personal AI expertise and experience.
+                </p>
               </Link>
-            </p>
-          </CardHeader>
-          <CardContent className="grid gap-4 sm:grid-cols-2">
-            <Link
-              href="/dashboard?intent=offer&type=individual"
-              className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <User className="h-5 w-5" />
-              </span>
-              <p className="mt-3 font-semibold text-secondary group-hover:text-primary">
-                Individual Expert
-              </p>
-              <p className="mt-1 text-sm text-muted">
-                Showcase your personal AI expertise and experience.
-              </p>
-            </Link>
-            <Link
-              href="/dashboard?intent=offer&type=company"
-              className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
-            >
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Building2 className="h-5 w-5" />
-              </span>
-              <p className="mt-3 font-semibold text-secondary group-hover:text-primary">
-                Company
-              </p>
-              <p className="mt-1 text-sm text-muted">
-                Showcase your company&apos;s AI capabilities and team.
-              </p>
-            </Link>
-          </CardContent>
-        </Card>
+              <Link
+                href="/dashboard?intent=offer&type=company"
+                className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
+              >
+                <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Building2 className="h-5 w-5" />
+                </span>
+                <p className="mt-3 font-semibold text-secondary group-hover:text-primary">
+                  Company
+                </p>
+                <p className="mt-1 text-sm text-muted">
+                  Showcase your company&apos;s AI capabilities and team.
+                </p>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       )}
 
       {showProfileForm && (
-        <Card id="profile-form">
-          <CardHeader>
-            <CardTitle>
-              {profile ? "Edit profile" : "Create your profile"}
-            </CardTitle>
-            <CardDescription>
-              Add your details so businesses can find and contact you. Individual
-              and company profiles appear together in Find AI Expertise.
-            </CardDescription>
-            {isNewUser && selectedType && (
-              <p className="pt-1">
-                <Link
-                  href="/dashboard?intent=offer"
-                  className="text-sm font-medium text-muted hover:text-primary hover:underline"
-                >
-                  ← Change profile type
-                </Link>
-              </p>
-            )}
-          </CardHeader>
-          <CardContent>
-            <ProfileForm
-              profile={profile}
-              skills={skills}
-              services={services}
-              initialProfileType={selectedType}
-            />
-          </CardContent>
-        </Card>
+        <div>
+          {isNewUser && selectedType && (
+            <Link
+              href="/dashboard?intent=offer"
+              className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-muted hover:text-on-surface"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Change profile type
+            </Link>
+          )}
+          <Card id="profile-form">
+            <CardHeader>
+              <CardTitle>
+                {profile ? "Edit profile" : "Create your profile"}
+              </CardTitle>
+              <CardDescription>
+                Add your details so businesses can find and contact you.
+                Individual and company profiles appear together in Find AI
+                Expertise.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ProfileForm
+                profile={profile}
+                skills={skills}
+                services={services}
+                initialProfileType={selectedType}
+              />
+            </CardContent>
+          </Card>
+        </div>
       )}
     </>
   );
