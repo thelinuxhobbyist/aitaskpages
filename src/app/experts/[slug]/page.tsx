@@ -34,6 +34,14 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+function linkHostname(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "External link";
+  }
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const profile = await getProfileBySlug(slug);
@@ -263,7 +271,7 @@ export default async function ExpertProfilePage({ params }: PageProps) {
               <Button key={url} variant="outline" size="sm" asChild>
                 <a href={url} target="_blank" rel="noopener noreferrer">
                   <Globe className="h-4 w-4" />
-                  External link
+                  {linkHostname(url)}
                   <ExternalLink className="h-3 w-3 opacity-50" />
                 </a>
               </Button>

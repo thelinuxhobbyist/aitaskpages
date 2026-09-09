@@ -66,13 +66,33 @@ function normalizeCustomTags(values: string[], max: number): string[] {
   return normalized;
 }
 
+export const MAX_EXTERNAL_LINKS = 8;
+
 function normalizeExternalLinks(value: unknown): string[] {
-  if (typeof value !== "string") return [];
+  let lines: string[] = [];
+
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (trimmed.startsWith("[")) {
+      try {
+        const parsed: unknown = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) {
+          lines = parsed.filter((item): item is string => typeof item === "string");
+        }
+      } catch {
+        lines = value.split(/\r?\n/);
+      }
+    } else {
+      lines = value.split(/\r?\n/);
+    }
+  } else if (Array.isArray(value)) {
+    lines = value.filter((item): item is string => typeof item === "string");
+  }
 
   const seen = new Set<string>();
   const normalized: string[] = [];
 
-  for (const line of value.split(/\r?\n/)) {
+  for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
     const url = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
@@ -81,7 +101,7 @@ function normalizeExternalLinks(value: unknown): string[] {
     if (seen.has(result.data)) continue;
     seen.add(result.data);
     normalized.push(result.data);
-    if (normalized.length >= 8) break;
+    if (normalized.length >= MAX_EXTERNAL_LINKS) break;
   }
 
   return normalized;

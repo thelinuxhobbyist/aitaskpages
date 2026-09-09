@@ -68,15 +68,16 @@ export function WorkExamplesField({ initialExamples = [] }: Props) {
     .filter((example) => example.title || example.url || example.description);
 
   return (
-    <fieldset className="space-y-4">
+    <fieldset className="space-y-4 rounded-xl border border-border bg-surface-container/20 p-4 sm:p-5">
       <div>
         <legend className="text-sm font-medium text-slate-700">
           Examples of work
         </legend>
         <p className="mt-1 text-xs text-muted">
-          Optional. Link to external evidence of the skills or services you
-          offer — GitHub repos, case studies, demos, articles, or live products.
-          AI Jobs Market does not host any files or media.
+          Optional. Showcase specific projects or deliverables — each with a
+          title, short note, and link to the work itself (case study, repo,
+          demo, article). This is different from the presence links above
+          (LinkedIn, website, etc.). We don’t host files or media.
         </p>
       </div>
 
@@ -89,7 +90,7 @@ export function WorkExamplesField({ initialExamples = [] }: Props) {
       {examples.map((example, index) => (
         <div
           key={example.id}
-          className="space-y-3 rounded-xl border border-border bg-surface-container/30 p-4"
+          className="space-y-3 rounded-xl border border-border bg-surface p-4"
         >
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm font-medium text-secondary">
@@ -103,7 +104,7 @@ export function WorkExamplesField({ initialExamples = [] }: Props) {
               aria-label={`Remove example ${index + 1}`}
             >
               <Trash2 className="h-4 w-4" />
-              Remove
+              <span className="hidden sm:inline">Remove</span>
             </Button>
           </div>
 
@@ -137,14 +138,14 @@ export function WorkExamplesField({ initialExamples = [] }: Props) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor={`work-url-${example.id}`}>External link *</Label>
+            <Label htmlFor={`work-url-${example.id}`}>Link to this work *</Label>
             <Input
               id={`work-url-${example.id}`}
               type="text"
               inputMode="url"
               value={example.url}
               onChange={(e) => updateExample(example.id, "url", e.target.value)}
-              placeholder="https://github.com/… or case-study URL"
+              placeholder="https://github.com/…/repo or case-study URL"
             />
           </div>
         </div>
@@ -155,6 +156,7 @@ export function WorkExamplesField({ initialExamples = [] }: Props) {
           type="button"
           variant="outline"
           size="sm"
+          className="w-full sm:w-auto"
           onClick={() =>
             setExamples((prev) => [...prev, createEmptyDraft()])
           }

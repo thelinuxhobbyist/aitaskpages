@@ -6,6 +6,7 @@ import { AvatarUpload } from "@/app/dashboard/avatar-upload";
 import { CustomSkillsField } from "@/app/dashboard/custom-skills-field";
 import { CustomServicesField } from "@/app/dashboard/custom-services-field";
 import { ProfileTypePicker } from "@/app/dashboard/profile-type-picker";
+import { ExternalLinksField } from "@/app/dashboard/external-links-field";
 import { WorkExamplesField } from "@/app/dashboard/work-examples-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,7 +61,6 @@ export function ProfileForm({ profile, skills, services }: Props) {
   const selectedServiceIds = new Set(
     profile?.services.map((s) => s.service.id) ?? []
   );
-  const initialExternalLinks = parseExternalLinks(profile?.externalLinks).join("\n");
 
   if (!profileType) {
     return (
@@ -238,66 +238,74 @@ export function ProfileForm({ profile, skills, services }: Props) {
             </select>
           </div>
         )}
+      </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="linkedinUrl">LinkedIn</Label>
-          <Input
-            id="linkedinUrl"
-            name="linkedinUrl"
-            type="text"
-            inputMode="url"
-            placeholder={
-              isCompany ? "linkedin.com/company/…" : "linkedin.com/in/…"
-            }
-            defaultValue={profile?.linkedinUrl ?? ""}
-          />
+      <fieldset className="space-y-4 rounded-xl border border-border bg-surface-container/20 p-4 sm:p-5">
+        <div>
+          <legend className="text-sm font-medium text-slate-700">
+            Where to find you online
+          </legend>
+          <p className="mt-1 text-xs text-muted">
+            Your presence links — LinkedIn, GitHub, website, and other profiles.
+            These show who you are, not individual projects. For project
+            showcases, use Examples of work below.
+          </p>
         </div>
 
-        {!isCompany && (
+        <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="githubUrl">GitHub</Label>
+            <Label htmlFor="linkedinUrl">
+              {isCompany ? "Company LinkedIn" : "LinkedIn profile"}
+            </Label>
+            <Input
+              id="linkedinUrl"
+              name="linkedinUrl"
+              type="text"
+              inputMode="url"
+              placeholder={
+                isCompany ? "linkedin.com/company/…" : "linkedin.com/in/…"
+              }
+              defaultValue={profile?.linkedinUrl ?? ""}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="githubUrl">
+              {isCompany ? "GitHub organisation" : "GitHub profile"}
+            </Label>
             <Input
               id="githubUrl"
               name="githubUrl"
               type="text"
               inputMode="url"
-              placeholder="github.com/…"
+              placeholder={
+                isCompany ? "github.com/your-org" : "github.com/…"
+              }
               defaultValue={profile?.githubUrl ?? ""}
             />
           </div>
-        )}
 
-        <div className="space-y-2">
-          <Label htmlFor="websiteUrl">
-            {isCompany ? "Company website" : "Website"}
-          </Label>
-          <Input
-            id="websiteUrl"
-            name="websiteUrl"
-            type="text"
-            inputMode="url"
-            placeholder="mywebsite.com"
-            defaultValue={profile?.websiteUrl ?? ""}
-          />
-        </div>
-
-        {isCompany && (
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="externalLinks">Other external links</Label>
-            <Textarea
-              id="externalLinks"
-              name="externalLinks"
-              rows={4}
-              placeholder={"one URL per line\nhttps://example.com/case-study\nhttps://github.com/company"}
-              defaultValue={initialExternalLinks}
+            <Label htmlFor="websiteUrl">
+              {isCompany ? "Company website" : "Personal or portfolio website"}
+            </Label>
+            <Input
+              id="websiteUrl"
+              name="websiteUrl"
+              type="text"
+              inputMode="url"
+              placeholder="example.com"
+              defaultValue={profile?.websiteUrl ?? ""}
             />
-            <p className="text-xs text-muted">
-              Add one URL per line for case studies, GitHub, portfolios, or
-              other relevant company links.
-            </p>
           </div>
-        )}
-      </div>
+
+          <div className="sm:col-span-2">
+            <ExternalLinksField
+              initialLinks={parseExternalLinks(profile?.externalLinks)}
+            />
+          </div>
+        </div>
+      </fieldset>
 
       <fieldset className="space-y-3">
         <legend className="text-sm font-medium text-slate-700">

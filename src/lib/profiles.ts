@@ -64,20 +64,17 @@ function individualOnlyFields(data: ProfileFormData): {
 function companyOnlyFields(data: ProfileFormData): {
   companySize: string | null;
   yearEstablished: number | null;
-  externalLinks: string | null;
 } {
   if (parseProfileType(data.profileType) !== "company") {
     return {
       companySize: null,
       yearEstablished: null,
-      externalLinks: null,
     };
   }
 
   return {
     companySize: emptyToNull(data.companySize) as string | null,
     yearEstablished: emptyToNull(data.yearEstablished) as number | null,
-    externalLinks: serializeExternalLinks(data.externalLinks),
   };
 }
 
@@ -117,10 +114,11 @@ export async function createProfile(userId: number, data: ProfileFormData) {
     ...data,
     profileType,
   });
-  const { companySize, yearEstablished, externalLinks } = companyOnlyFields({
+  const { companySize, yearEstablished } = companyOnlyFields({
     ...data,
     profileType,
   });
+  const externalLinks = serializeExternalLinks(data.externalLinks);
 
   const [profile] = await db
     .insert(expertProfiles)
@@ -169,10 +167,11 @@ export async function updateProfile(
     ...data,
     profileType,
   });
-  const { companySize, yearEstablished, externalLinks } = companyOnlyFields({
+  const { companySize, yearEstablished } = companyOnlyFields({
     ...data,
     profileType,
   });
+  const externalLinks = serializeExternalLinks(data.externalLinks);
 
   const [updated] = await db
     .update(expertProfiles)
