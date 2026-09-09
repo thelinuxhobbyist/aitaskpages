@@ -44,7 +44,7 @@ async function DashboardLayoutBody({ children }: { children: ReactNode }) {
           <div>
             <h1>Dashboard</h1>
             <p className="mt-2 max-w-xl text-muted">
-              Manage your profile, requirements, and conversations.
+              Manage your profile, overview, requirements, and conversations.
             </p>
           </div>
           <Button asChild variant="outline" size="sm">
