@@ -23,7 +23,7 @@ export default async function OpportunitiesPage() {
             Create your expert profile to see matching opportunities.
           </p>
           <Button asChild className="mt-4" variant="ghost" size="sm">
-            <Link href="/dashboard">Set up your profile</Link>
+            <Link href="/dashboard?intent=offer">Set up your profile</Link>
           </Button>
         </CardContent>
       </Card>

@@ -66,7 +66,10 @@ export default function CreateAProfilePage() {
               ))}
             </ul>
 
-            <SignUpButton mode="redirect" fallbackRedirectUrl="/dashboard">
+            <SignUpButton
+              mode="redirect"
+              fallbackRedirectUrl="/dashboard?intent=offer"
+            >
               <Button className="w-full" size="lg">
                 Sign up and create your profile
               </Button>

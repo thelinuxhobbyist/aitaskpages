@@ -55,7 +55,7 @@ export async function RequirementInterestPanel({ requirementId }: Props) {
           Create your expert profile to express interest in tasks.
         </p>
         <Button asChild className="mt-5">
-          <Link href="/dashboard">Create expert profile</Link>
+          <Link href="/dashboard?intent=offer">Create expert profile</Link>
         </Button>
       </div>
     );
