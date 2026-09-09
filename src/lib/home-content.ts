@@ -72,7 +72,7 @@ export const HOME_BENEFITS: HomeBenefit[] = [
   {
     title: "UK AI Professionals",
     description:
-      "Find independent AI consultants and specialists across the UK for remote or on-site work.",
+      "Find independent AI consultants, specialists and companies across the UK for remote or on-site work.",
     icon: Users,
     iconBg: "border-primary/20 bg-primary/5",
     iconColor: "text-primary",
@@ -80,7 +80,7 @@ export const HOME_BENEFITS: HomeBenefit[] = [
   {
     title: "Direct introductions",
     description:
-      "We introduce you to AI experts. You agree how to work together — no recruiters in between.",
+      "We introduce you to AI professionals and companies. You agree how to work together — no recruiters in between.",
     icon: MessageSquare,
     iconBg: "border-accent/30 bg-accent-muted",
     iconColor: "text-accent",
@@ -104,15 +104,15 @@ export const HOME_BENEFITS: HomeBenefit[] = [
   {
     title: "AI Specialists",
     description:
-      "Experts in LLMs, AI Agents, RAG, Computer Vision, MLOps, NLP and more.",
+      "Professionals and companies in LLMs, AI Agents, RAG, Computer Vision, MLOps, NLP and more.",
     icon: Brain,
     iconBg: "border-primary/20 bg-primary/5",
     iconColor: "text-primary",
   },
   {
-    title: "Find experts quickly",
+    title: "Find expertise quickly",
     description:
-      "Search, compare and contact AI professionals directly.",
+      "Search, compare and contact AI professionals and companies directly.",
     icon: Zap,
     iconBg: "border-accent/30 bg-accent-muted",
     iconColor: "text-accent",

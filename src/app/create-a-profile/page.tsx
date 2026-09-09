@@ -14,32 +14,32 @@ import { createPageMetadata } from "@/lib/seo";
 import { Check } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Join as an Expert",
+  title: "Create a Profile",
   description:
-    "Join AI Jobs Market to list your profile, get discovered by UK businesses, and connect directly. We make the introduction — you take it from there.",
-  path: "/join-as-expert",
+    "Create an individual or company profile on AI Jobs Market, get discovered by UK businesses, and connect directly. We make the introduction — you take it from there.",
+  path: "/create-a-profile",
 });
 
 const features = [
-  "A public expert profile in the UK directory",
+  "A public profile in Find AI Expertise — as an individual or a company",
   "Visibility in search results",
   "Enquiries from businesses via your dashboard",
-  "Skills, services, and availability on your profile",
+  "Skills and services on your profile",
   "Direct introductions — you agree terms with the business yourselves",
 ];
 
-export default function JoinAsExpertPage() {
+export default function CreateAProfilePage() {
   return (
     <>
       <PageHero innerClassName="max-w-3xl py-12 text-center md:py-16">
         <span className="brand-rule brand-rule-center mb-5 bg-accent" aria-hidden />
         <h1 className="font-heading text-3xl tracking-tight md:text-4xl">
-          Join as an AI Expert
+          Create a profile
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted md:text-lg">
-          List your profile on AI Jobs Market, get discovered in search, and
-          express interest in open AI tasks. We make the introduction — you
-          take it from there.
+          Choose Individual or Company, then list your AI expertise on AI Jobs
+          Market. Get discovered in Find AI Expertise and express interest in
+          open AI tasks. We make the introduction — you take it from there.
         </p>
       </PageHero>
 
@@ -48,8 +48,9 @@ export default function JoinAsExpertPage() {
           <CardHeader className="space-y-2 pb-2 text-center">
             <CardTitle className="text-2xl">Get started</CardTitle>
             <CardDescription className="text-base">
-              Sign up to create your expert profile. Here&apos;s what you&apos;ll
-              have access to:
+              Sign up to create your profile. You&apos;ll choose Individual or
+              Company as the first step. Here&apos;s what you&apos;ll have
+              access to:
             </CardDescription>
           </CardHeader>
 

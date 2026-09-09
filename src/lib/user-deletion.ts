@@ -59,9 +59,13 @@ export async function processUserDeletion(
         location: null,
         hourlyRate: null,
         availability: null,
+        companySize: null,
+        yearEstablished: null,
         linkedinUrl: null,
         githubUrl: null,
         websiteUrl: null,
+        externalLinks: null,
+        workExamples: null,
         profileImageUrl: null,
         updatedAt: ts,
       })

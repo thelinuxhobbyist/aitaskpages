@@ -14,8 +14,8 @@ export function CantFindExpertCta() {
         Can&apos;t find what you need?
       </p>
       <p className="mt-1 text-sm text-muted">
-        Post a task and let matching AI experts come to you. We make the
-        introduction; you take it from there.
+        Post a task and let matching AI professionals and companies come to
+        you. We make the introduction; you take it from there.
       </p>
       <DocumentLink
         href="/tasks/new"

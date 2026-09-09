@@ -94,7 +94,7 @@ export default function ContactPage() {
         <p>
           If you&apos;re a business, you can{" "}
           <Link href="/search" className="text-primary underline">
-            Browse Experts
+            Find Expertise
           </Link>{" "}
           or{" "}
           <Link
@@ -107,10 +107,10 @@ export default function ContactPage() {
         </p>
         <p>
           If you&apos;re an AI professional, you can{" "}
-          <Link href="/join-as-expert" className="text-primary underline">
-            Join as an Expert
+          <Link href="/create-a-profile" className="text-primary underline">
+            Create a Profile
           </Link>{" "}
-          and create a public profile.
+          and choose Individual or Company.
         </p>
       </section>
 
@@ -121,7 +121,7 @@ export default function ContactPage() {
         <ul className="list-disc space-y-2 pl-6">
           <li>
             <Link href="/search" className="text-primary underline">
-              Browse AI Experts
+              Find AI Expertise
             </Link>
           </li>
           <li>
@@ -138,8 +138,8 @@ export default function ContactPage() {
             </Link>
           </li>
           <li>
-            <Link href="/join-as-expert" className="text-primary underline">
-              Join as an Expert
+            <Link href="/create-a-profile" className="text-primary underline">
+              Create a Profile
             </Link>
           </li>
           <li>

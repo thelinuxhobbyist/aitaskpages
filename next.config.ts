@@ -28,6 +28,11 @@ const nextConfig: NextConfig = {
         destination: "/tasks/:path*",
         permanent: true,
       },
+      {
+        source: "/join-as-expert",
+        destination: "/create-a-profile",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {

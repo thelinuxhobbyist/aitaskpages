@@ -5,6 +5,7 @@ import { ExpertCard } from "@/app/experts/expert-card";
 import { ExpertSearchForm } from "@/app/experts/expert-search-form";
 import { CantFindExpertCta } from "@/app/search/cant-find-expert-cta";
 import { SearchFiltersPanel } from "@/app/search/search-filters";
+import { ProfileTypeTabs } from "@/app/search/profile-type-tabs";
 import { SearchResultRow } from "@/app/search/search-result-row";
 import { SearchSortSelect } from "@/app/search/search-sort";
 import { PageHero } from "@/components/page-hero";
@@ -25,9 +26,9 @@ import {
 import { Search, Users } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "AI Experts",
+  title: "Find AI Expertise",
   description:
-    "Browse independent UK AI experts on AI Jobs Market. Search by skills, services and location — we make the introduction, you take it from there.",
+    "Find UK AI professionals and companies on AI Jobs Market. Search by skills, services and location — we make the introduction, you take it from there.",
   path: "/search",
 });
 
@@ -36,6 +37,19 @@ export const dynamic = "force-dynamic";
 type PageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
+
+function listingNoun(
+  count: number,
+  type: "individual" | "company" | undefined
+): string {
+  if (type === "individual") {
+    return count === 1 ? "AI professional" : "AI professionals";
+  }
+  if (type === "company") {
+    return count === 1 ? "company" : "companies";
+  }
+  return count === 1 ? "result" : "results";
+}
 
 function getSearchContextLabel(
   filters: ReturnType<typeof parseDirectoryFilters>,
@@ -122,21 +136,22 @@ export default async function SearchPage({ searchParams }: PageProps) {
   );
 
   const shownCount = searched ? results.length : recentProfiles.length;
+  const resultCount = searched ? matched.length : shownCount;
   const countLabel = searched
-    ? `${matched.length} AI expert${matched.length !== 1 ? "s" : ""} found`
-    : `${shownCount} AI expert${shownCount !== 1 ? "s" : ""}`;
+    ? `${resultCount} ${listingNoun(resultCount, filters.type)} found`
+    : `${shownCount} ${listingNoun(shownCount, filters.type)}`;
 
   return (
     <>
       <PageHero>
           <h1 className="text-2xl font-semibold tracking-tight text-secondary md:text-3xl">
-            AI Experts
+            Find AI Expertise
           </h1>
           {!searched && (
             <p className="mt-2 max-w-2xl text-base text-muted">
-              Search by skill, service or location to find independent AI
-              experts across the UK. Or post a task and let specialists come to
-              you.
+              Search by skill, service or location to find AI professionals and
+              companies across the UK. Or post a task and let specialists come
+              to you.
             </p>
           )}
 
@@ -157,18 +172,21 @@ export default async function SearchPage({ searchParams }: PageProps) {
             />
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-            <p className="flex items-center gap-2 text-sm text-muted">
-              <Users className="h-4 w-4 shrink-0" />
-              {directoryUnavailable
-                ? "Directory temporarily unavailable"
-                : countLabel}
-            </p>
-            {searched && results.length > 0 && (
-              <Suspense fallback={null}>
-                <SearchSortSelect />
-              </Suspense>
-            )}
+          <div className="mt-6 space-y-4">
+            <ProfileTypeTabs current={filters} />
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <p className="flex items-center gap-2 text-sm text-muted">
+                <Users className="h-4 w-4 shrink-0" />
+                {directoryUnavailable
+                  ? "Directory temporarily unavailable"
+                  : countLabel}
+              </p>
+              {searched && results.length > 0 && (
+                <Suspense fallback={null}>
+                  <SearchSortSelect />
+                </Suspense>
+              )}
+            </div>
           </div>
       </PageHero>
 
@@ -209,9 +227,9 @@ export default async function SearchPage({ searchParams }: PageProps) {
             )}
 
             {directoryUnavailable ? (
-              <EmptyPanel icon={Users} title="Experts are temporarily unavailable">
-                Expert profiles have not been removed. We can&apos;t load the
-                directory just now — please try again after 1am UK time.
+              <EmptyPanel icon={Users} title="Directory temporarily unavailable">
+                Profiles have not been removed. We can&apos;t load the directory
+                just now — please try again after 1am UK time.
               </EmptyPanel>
             ) : !searched ? (
               recentProfiles.length > 0 ? (
@@ -220,10 +238,11 @@ export default async function SearchPage({ searchParams }: PageProps) {
                     id="recent-experts-heading"
                     className="text-lg font-semibold text-secondary"
                   >
-                    Recently added experts
+                    Recently added
                   </h2>
                   <p className="mt-1 text-sm text-muted">
-                    Search above to find experts by skill, service or location.
+                    Search above to find AI professionals and companies by
+                    skill, service or location.
                   </p>
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">
                     {recentProfiles.map((profile) => (
@@ -232,9 +251,10 @@ export default async function SearchPage({ searchParams }: PageProps) {
                   </div>
                 </section>
               ) : (
-                <EmptyPanel icon={Users} title="No experts listed yet">
-                  We&apos;re onboarding the first AI experts now. Post a task
-                  and we&apos;ll match you as soon as they join.
+                <EmptyPanel icon={Users} title="No listings yet">
+                  We&apos;re onboarding the first AI professionals and companies
+                  now. Post a task and we&apos;ll match you as soon as they
+                  join.
                 </EmptyPanel>
               )
             ) : results.length > 0 ? (
@@ -255,7 +275,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
                 )}
               </section>
             ) : (
-              <EmptyPanel icon={Search} title="No experts match your search">
+              <EmptyPanel icon={Search} title="No matches for your search">
                 Try broader keywords, remove a filter, or{" "}
                 <Link
                   href="/search"

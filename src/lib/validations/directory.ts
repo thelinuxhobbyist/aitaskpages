@@ -2,6 +2,10 @@ import { z } from "zod";
 
 export const directoryFiltersSchema = z.object({
   q: z.string().optional(),
+  type: z.preprocess(
+    (val) => (val === "all" || val === "" || val == null ? undefined : val),
+    z.enum(["individual", "company"]).optional().catch(undefined)
+  ),
   skill: z.string().optional(),
   service: z.string().optional(),
   location: z.string().optional(),
@@ -42,6 +46,7 @@ export function parseDirectoryFilters(
 
   return directoryFiltersSchema.parse({
     q: get("q") || undefined,
+    type: get("type") || undefined,
     skill: get("skill") || undefined,
     service: get("service") || undefined,
     location: get("location") || undefined,

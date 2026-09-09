@@ -7,6 +7,7 @@ import {
   isNotNull,
   like,
   lte,
+  or,
   sql,
 } from "drizzle-orm";
 import { getDb, withD1Retry } from "@/db/client";
@@ -112,20 +113,47 @@ export async function searchExperts(
 ): Promise<ProfileWithRelations[]> {
   const conditions = [];
 
+  if (filters.type === "individual") {
+    conditions.push(eq(expertProfiles.profileType, "individual"));
+  } else if (filters.type === "company") {
+    conditions.push(eq(expertProfiles.profileType, "company"));
+  }
+
   if (filters.location) {
     conditions.push(like(expertProfiles.location, `%${filters.location}%`));
   }
 
-  if (filters.minRate != null) {
-    conditions.push(gte(expertProfiles.hourlyRate, filters.minRate));
+  const individualConditions = [];
+
+  if (filters.type !== "company") {
+    if (filters.minRate != null) {
+      individualConditions.push(gte(expertProfiles.hourlyRate, filters.minRate));
+    }
+    if (filters.maxRate != null) {
+      individualConditions.push(lte(expertProfiles.hourlyRate, filters.maxRate));
+    }
+    if (filters.availability) {
+      individualConditions.push(
+        eq(expertProfiles.availability, filters.availability)
+      );
+    }
   }
 
-  if (filters.maxRate != null) {
-    conditions.push(lte(expertProfiles.hourlyRate, filters.maxRate));
-  }
-
-  if (filters.availability) {
-    conditions.push(eq(expertProfiles.availability, filters.availability));
+  if (individualConditions.length > 0) {
+    if (filters.type === "individual") {
+      conditions.push(...individualConditions);
+    } else {
+      // All: rate/availability apply to individuals only — companies still match.
+      conditions.push(
+        or(
+          eq(expertProfiles.profileType, "company"),
+          and(
+            eq(expertProfiles.profileType, "individual"),
+            ...individualConditions
+          )
+        )
+      );
+    }
   }
 
   const profiles = await fetchPublicProfiles(conditions);

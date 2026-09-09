@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,21 +41,62 @@ function FilterField({
   );
 }
 
-export function SearchFiltersPanel({
+function FilterFields({
   skills,
   services,
   locations,
   current,
 }: Props) {
+  const [profileType, setProfileType] = useState<"all" | "individual" | "company">(
+    current.type ?? "all"
+  );
+  const showIndividualFilters = profileType !== "company";
+
   const inputClass = "h-11 rounded-xl border-border bg-white px-4 text-sm";
   const selectClass =
     "flex h-11 w-full rounded-xl border border-border bg-white px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary";
 
-  const fields = (
+  return (
     <div className="space-y-7">
       {current.sort && current.sort !== "match" && (
         <input type="hidden" name="sort" value={current.sort} />
       )}
+
+      <fieldset className="space-y-3">
+        <legend className="text-xs font-semibold uppercase tracking-wider text-muted">
+          Profile type
+        </legend>
+        <div className="grid gap-2">
+          {(
+            [
+              { value: "all", label: "All" },
+              { value: "individual", label: "Individuals" },
+              { value: "company", label: "Companies" },
+            ] as const
+          ).map((option) => (
+            <label
+              key={option.value}
+              className={cn(
+                "flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-2.5 text-sm transition-colors",
+                profileType === option.value
+                  ? "border-primary/40 bg-primary/5 font-medium text-on-surface"
+                  : "border-border bg-white text-on-surface-variant hover:border-primary/20",
+              )}
+            >
+              <input
+                type="radio"
+                name="type"
+                value={option.value}
+                checked={profileType === option.value}
+                onChange={() => setProfileType(option.value)}
+                className="h-4 w-4 border-border text-primary focus:ring-primary"
+              />
+              {option.label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
       <FilterField id="filter-q" label="Keywords">
         <div className="relative">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
@@ -116,65 +159,75 @@ export function SearchFiltersPanel({
         </datalist>
       </FilterField>
 
-      <FilterField id="filter-availability" label="Availability">
-        <select
-          id="filter-availability"
-          name="availability"
-          defaultValue={current.availability ?? ""}
-          className={selectClass}
-        >
-          <option value="">Any availability</option>
-          <option value="available">Available now</option>
-          <option value="limited">Limited availability</option>
-          <option value="unavailable">Not available</option>
-        </select>
-      </FilterField>
-
-      <div className="space-y-4 rounded-xl border border-dashed border-border/80 bg-surface-container/40 p-4">
-        <p className="text-xs font-semibold uppercase tracking-wider text-muted">
-          More filters coming soon
-        </p>
-        <FilterField id="filter-experience" label="Experience">
-          <select id="filter-experience" disabled className={selectClass}>
-            <option>Any experience level</option>
-          </select>
-        </FilterField>
-        <FilterField id="filter-remote" label="Remote / On-site">
-          <select id="filter-remote" disabled className={selectClass}>
-            <option>Any work arrangement</option>
-          </select>
-        </FilterField>
-      </div>
-
-      <div className="rounded-xl bg-surface-container/70 p-5">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted">
-          Hourly rate
-        </p>
-        <div className="grid grid-cols-2 gap-4">
-          <FilterField id="filter-minRate" label="Min (£/hr)">
-            <Input
-              id="filter-minRate"
-              name="minRate"
-              type="number"
-              min={0}
-              defaultValue={current.minRate ?? ""}
-              placeholder="0"
-              className={inputClass}
-            />
+      {showIndividualFilters && (
+        <>
+          <FilterField id="filter-availability" label="Availability">
+            <select
+              id="filter-availability"
+              name="availability"
+              defaultValue={current.availability ?? ""}
+              className={selectClass}
+            >
+              <option value="">Any availability</option>
+              <option value="available">Available now</option>
+              <option value="limited">Limited availability</option>
+              <option value="unavailable">Not available</option>
+            </select>
           </FilterField>
-          <FilterField id="filter-maxRate" label="Max (£/hr)">
-            <Input
-              id="filter-maxRate"
-              name="maxRate"
-              type="number"
-              min={0}
-              defaultValue={current.maxRate ?? ""}
-              placeholder="500"
-              className={inputClass}
-            />
-          </FilterField>
-        </div>
-      </div>
+
+          <div className="space-y-4 rounded-xl border border-dashed border-border/80 bg-surface-container/40 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted">
+              More filters coming soon
+            </p>
+            <FilterField id="filter-experience" label="Experience">
+              <select id="filter-experience" disabled className={selectClass}>
+                <option>Any experience level</option>
+              </select>
+            </FilterField>
+            <FilterField id="filter-remote" label="Remote / On-site">
+              <select id="filter-remote" disabled className={selectClass}>
+                <option>Any work arrangement</option>
+              </select>
+            </FilterField>
+          </div>
+
+          <div className="rounded-xl bg-surface-container/70 p-5">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted">
+              Hourly rate
+            </p>
+            {profileType === "all" && (
+              <p className="mb-4 text-xs leading-relaxed text-muted">
+                Applies to individuals. Companies without an hourly rate still
+                appear in All results.
+              </p>
+            )}
+            <div className="grid grid-cols-2 gap-4">
+              <FilterField id="filter-minRate" label="Min (£/hr)">
+                <Input
+                  id="filter-minRate"
+                  name="minRate"
+                  type="number"
+                  min={0}
+                  defaultValue={current.minRate ?? ""}
+                  placeholder="0"
+                  className={inputClass}
+                />
+              </FilterField>
+              <FilterField id="filter-maxRate" label="Max (£/hr)">
+                <Input
+                  id="filter-maxRate"
+                  name="maxRate"
+                  type="number"
+                  min={0}
+                  defaultValue={current.maxRate ?? ""}
+                  placeholder="500"
+                  className={inputClass}
+                />
+              </FilterField>
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="flex flex-col gap-3 border-t border-border pt-7">
         <Button type="submit" size="lg" className="h-11 w-full rounded-xl">
@@ -192,6 +245,15 @@ export function SearchFiltersPanel({
       </div>
     </div>
   );
+}
+
+export function SearchFiltersPanel({
+  skills,
+  services,
+  locations,
+  current,
+}: Props) {
+  const fieldsProps = { skills, services, locations, current };
 
   const panelHeader = (
     <div className="flex items-start gap-3">
@@ -201,7 +263,7 @@ export function SearchFiltersPanel({
       <div>
         <h2 className="text-base font-semibold text-secondary">Refine search</h2>
         <p className="mt-0.5 text-sm leading-relaxed text-muted">
-          Narrow results by skill, location, or budget.
+          Narrow results by profile type, skill, or location.
         </p>
       </div>
     </div>
@@ -218,7 +280,7 @@ export function SearchFiltersPanel({
             </span>
             <div className="min-w-0">
               <p className="font-semibold text-secondary">Refine search</p>
-              <p className="text-sm text-muted">Skill, location, budget</p>
+              <p className="text-sm text-muted">Type, skill, location</p>
             </div>
           </div>
           <span className="shrink-0 rounded-full bg-surface-container px-3 py-1.5 text-xs font-medium text-muted">
@@ -231,7 +293,7 @@ export function SearchFiltersPanel({
           action="/search"
           className="border-t border-border px-6 pb-7 pt-6"
         >
-          {fields}
+          <FilterFields key={current.type ?? "all"} {...fieldsProps} />
         </form>
       </details>
 
@@ -240,7 +302,7 @@ export function SearchFiltersPanel({
         <div className="sticky top-24 overflow-hidden rounded-2xl border border-border bg-surface p-7 md-elevation-1">
           <div className="mb-8">{panelHeader}</div>
           <form method="GET" action="/search">
-            {fields}
+            <FilterFields key={`${current.type ?? "all"}-desktop`} {...fieldsProps} />
           </form>
         </div>
       </aside>

@@ -12,7 +12,7 @@ Internal reference for how authentication, users, expert profiles, and conversat
 2. **D1 owns application data** — profiles, conversations, marketing preferences, admin exports.
 3. **Clerk webhooks are the primary sync path** — `getOrCreateUser()` is a fallback only.
 4. **Internal integer IDs** (`users.id`) are used for all foreign keys — not Clerk user IDs.
-5. **Expert vs client** is derived from whether a user has an `expert_profiles` row — no separate `user_type` column.
+5. **Expert vs client vs company** is derived from the profile row — `profile_type` is `individual` (expert) or `company`. Users without a profile are clients.
 
 ---
 
@@ -30,8 +30,8 @@ Clerk User (user_xxx)
      │ role (freelancer | admin)              │
      │ deleted_at (soft delete / GDPR)        │
      │                                        │
-     ├──1:1──► expert_profiles (optional)    │
-     │           slug, full_name, bio, …     │
+     ├──1:1──► expert_profiles (optional)
+     │           slug, full_name, profile_type (individual|company), bio, …
      │           status: pending|approved|hidden
      │                                        │
      └──1:N──► conversations (as client) ◄───┘
@@ -54,7 +54,8 @@ Created/updated by the Clerk webhook (`user.created`, `user.updated`). Fallback 
 
 Optional. One row per expert. Linked via `user_id` → `users.id`.
 
-- **Expert** = user with a profile row.
+- **Expert** = user with a profile row where `profile_type` is `individual`.
+- **Company** = user with a profile row where `profile_type` is `company`.
 - **Client / business** = user without a profile row.
 - **`status`:** `approved` (public directory), `pending` (future moderation), `hidden` (account deleted).
 

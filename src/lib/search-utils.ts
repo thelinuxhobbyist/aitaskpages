@@ -1,5 +1,6 @@
 import type { ProfileWithRelations } from "@/lib/profile-utils";
 import { parseCustomSkills, parseCustomServices } from "@/lib/profile-utils";
+import { isCompanyProfile } from "@/lib/profile-type";
 import type { DirectoryFilters } from "@/lib/validations/directory";
 
 /** Words ignored when matching free-text search — keeps queries like "in London" natural. */
@@ -63,6 +64,11 @@ export function filterProfiles(
   const loc = filters.location?.trim().toLowerCase();
 
   return profiles.filter((p) => {
+    const company = isCompanyProfile(p);
+
+    if (filters.type === "individual" && company) return false;
+    if (filters.type === "company" && !company) return false;
+
     if (filters.q && !matchesTextQuery(p, filters.q)) return false;
     if (filters.skill && !p.skills.some((s) => s.skill.slug === filters.skill))
       return false;
@@ -72,16 +78,22 @@ export function filterProfiles(
     )
       return false;
     if (loc && !(p.location ?? "").toLowerCase().includes(loc)) return false;
-    if (
-      filters.minRate != null &&
-      (p.hourlyRate == null || p.hourlyRate < filters.minRate)
-    )
-      return false;
-    if (
-      filters.maxRate != null &&
-      (p.hourlyRate == null || p.hourlyRate > filters.maxRate)
-    )
-      return false;
+
+    // Rate/availability are individual-specific. Companies stay in "All"
+    // results even when those filters are set.
+    if (filters.type !== "company" && !company) {
+      if (
+        filters.minRate != null &&
+        (p.hourlyRate == null || p.hourlyRate < filters.minRate)
+      )
+        return false;
+      if (
+        filters.maxRate != null &&
+        (p.hourlyRate == null || p.hourlyRate > filters.maxRate)
+      )
+        return false;
+    }
+
     return true;
   });
 }

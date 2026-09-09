@@ -23,20 +23,25 @@ export async function saveProfile(
   }
 
   const raw = {
+    profileType: formData.get("profileType") ?? "individual",
     fullName: formData.get("fullName"),
     headline: formData.get("headline") ?? "",
     bio: formData.get("bio") ?? "",
     location: formData.get("location") ?? "",
     hourlyRate: formData.get("hourlyRate") ?? "",
+    companySize: formData.get("companySize") ?? "",
+    yearEstablished: formData.get("yearEstablished") ?? "",
     availability: formData.get("availability") ?? "",
     linkedinUrl: formData.get("linkedinUrl") ?? "",
     githubUrl: formData.get("githubUrl") ?? "",
     websiteUrl: formData.get("websiteUrl") ?? "",
+    externalLinks: formData.get("externalLinks") ?? "",
     profileImageUrl: formData.get("profileImageUrl") ?? "",
     skillIds: formData.getAll("skillIds"),
     serviceIds: formData.getAll("serviceIds"),
     customSkills: formData.getAll("customSkills"),
     customServices: formData.getAll("customServices"),
+    workExamples: formData.get("workExamples") ?? "[]",
   };
 
   const parsed = profileSchema.safeParse(raw);
@@ -57,6 +62,10 @@ export async function saveProfile(
     }
 
     revalidatePath("/dashboard");
+    if (user.profile?.slug) {
+      revalidatePath(`/experts/${user.profile.slug}`);
+    }
+    revalidatePath("/search");
     return { success: true };
   } catch {
     return { error: "Failed to save profile. Please try again." };

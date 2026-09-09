@@ -12,14 +12,14 @@ import { cn } from "@/lib/utils";
 
 const baseNavLinks = [
   { href: "/", label: "Home" },
-  { href: "/search", label: "Experts" },
+  { href: "/search", label: "Find Expertise" },
   { href: "/tasks", label: "Tasks" },
   { href: "/tasks/new", label: "Post a Task" },
 ];
 
 const loggedOutLinks = [
   ...baseNavLinks,
-  { href: "/join-as-expert", label: "Join as an Expert" },
+  { href: "/create-a-profile", label: "Create a Profile" },
 ];
 
 const loggedInLinks = [

@@ -15,7 +15,7 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
     priority: 0.95,
   },
   {
-    url: absoluteUrl("/join-as-expert"),
+    url: absoluteUrl("/create-a-profile"),
     changeFrequency: "monthly",
     priority: 0.9,
   },

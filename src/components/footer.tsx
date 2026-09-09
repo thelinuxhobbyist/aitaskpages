@@ -17,7 +17,7 @@ export function Footer() {
               <BrandMark size="footer" />
             </div>
             <p className="footer-tagline">
-              Find AI experts and post AI tasks across the UK. We make the
+              Find AI expertise and post AI tasks across the UK. We make the
               introduction — you connect directly.
             </p>
           </div>
@@ -27,7 +27,7 @@ export function Footer() {
               <h3>Connect</h3>
               <ul>
                 <li>
-                  <Link href="/search">Browse Experts</Link>
+                  <Link href="/search">Find Expertise</Link>
                 </li>
                 <li>
                   <Link href="/tasks">Browse Tasks</Link>
@@ -36,7 +36,7 @@ export function Footer() {
                   <DocumentLink href="/tasks/new">Post a Task</DocumentLink>
                 </li>
                 <li>
-                  <Link href="/join-as-expert">Join as an Expert</Link>
+                  <Link href="/create-a-profile">Create a Profile</Link>
                 </li>
                 <li>
                   <DocumentLink href="/dashboard">Dashboard</DocumentLink>
@@ -101,9 +101,9 @@ export function Footer() {
       <div className="footer-bottom">
         <div className="footer-bottom-container">
           <p className="footer-disclaimer">
-            <strong>AI Jobs Market</strong> is an AI expert directory and
-            business-to-expert introduction platform. Our role is simply to
-            provide a place where businesses and independent AI professionals
+            <strong>AI Jobs Market</strong> is a directory of AI professionals
+            and companies, and an introduction platform. Our role is simply to
+            provide a place where businesses, AI professionals and companies
             can discover each other and connect. What happens after that
             introduction is entirely between the parties and is independent of
             AI Jobs Market.

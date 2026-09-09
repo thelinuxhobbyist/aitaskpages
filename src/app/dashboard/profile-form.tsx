@@ -1,16 +1,28 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { saveProfile } from "@/app/dashboard/actions";
 import { AvatarUpload } from "@/app/dashboard/avatar-upload";
 import { CustomSkillsField } from "@/app/dashboard/custom-skills-field";
 import { CustomServicesField } from "@/app/dashboard/custom-services-field";
+import { ProfileTypePicker } from "@/app/dashboard/profile-type-picker";
+import { WorkExamplesField } from "@/app/dashboard/work-examples-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProfileFormState } from "@/lib/validations/profile";
-import { parseCustomSkills, parseCustomServices } from "@/lib/profile-utils";
+import {
+  parseCustomSkills,
+  parseCustomServices,
+  parseExternalLinks,
+  parseWorkExamples,
+} from "@/lib/profile-utils";
+import {
+  parseProfileType,
+  PROFILE_TYPE_LABELS,
+  type ProfileType,
+} from "@/lib/profile-type";
 import type { ExpertProfile, Service, Skill } from "@/db/schema";
 
 type ProfileWithRelations = ExpertProfile & {
@@ -25,11 +37,21 @@ type Props = {
 };
 
 const initialState: ProfileFormState = {};
+const COMPANY_SIZE_OPTIONS = [
+  "1-10",
+  "11-50",
+  "51-200",
+  "201-500",
+  "500+",
+] as const;
 
 export function ProfileForm({ profile, skills, services }: Props) {
   const [state, formAction, pending] = useActionState(
     saveProfile,
     initialState
+  );
+  const [profileType, setProfileType] = useState<ProfileType | null>(
+    profile ? parseProfileType(profile.profileType) : null
   );
 
   const selectedSkillIds = new Set(
@@ -38,9 +60,27 @@ export function ProfileForm({ profile, skills, services }: Props) {
   const selectedServiceIds = new Set(
     profile?.services.map((s) => s.service.id) ?? []
   );
+  const initialExternalLinks = parseExternalLinks(profile?.externalLinks).join("\n");
+
+  if (!profileType) {
+    return (
+      <ProfileTypePicker
+        onSelect={setProfileType}
+        onCancel={
+          profile
+            ? () => setProfileType(parseProfileType(profile.profileType))
+            : undefined
+        }
+      />
+    );
+  }
+
+  const isCompany = profileType === "company";
 
   return (
     <form action={formAction} className="space-y-6">
+      <input type="hidden" name="profileType" value={profileType} />
+
       {state.error && (
         <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
           {state.error}
@@ -52,17 +92,36 @@ export function ProfileForm({ profile, skills, services }: Props) {
         </p>
       )}
 
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-surface-container/50 px-4 py-3">
+        <p className="text-sm text-on-surface">
+          Profile type:{" "}
+          <span className="font-semibold">
+            {PROFILE_TYPE_LABELS[profileType]}
+          </span>
+        </p>
+        <button
+          type="button"
+          onClick={() => setProfileType(null)}
+          className="text-sm font-medium text-primary hover:underline"
+        >
+          Change
+        </button>
+      </div>
+
       <div className="space-y-2">
-        <Label>Profile photo</Label>
+        <Label>{isCompany ? "Company logo" : "Profile photo"}</Label>
         <AvatarUpload
           name={profile?.fullName ?? ""}
           defaultUrl={profile?.profileImageUrl}
+          variant={isCompany ? "logo" : "photo"}
         />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="fullName">Full name *</Label>
+          <Label htmlFor="fullName">
+            {isCompany ? "Company name *" : "Full name *"}
+          </Label>
           <Input
             id="fullName"
             name="fullName"
@@ -75,22 +134,32 @@ export function ProfileForm({ profile, skills, services }: Props) {
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="headline">Headline</Label>
+          <Label htmlFor="headline">
+            {isCompany ? "Tagline / headline" : "Headline"}
+          </Label>
           <Input
             id="headline"
             name="headline"
-            placeholder="e.g. ML Engineer specialising in LLMs"
+            placeholder={
+              isCompany
+                ? "e.g. AI Consultancy & Automation"
+                : "e.g. ML Engineer specialising in LLMs"
+            }
             defaultValue={profile?.headline ?? ""}
           />
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="bio">Bio</Label>
+          <Label htmlFor="bio">{isCompany ? "About the company" : "Bio"}</Label>
           <Textarea
             id="bio"
             name="bio"
             rows={5}
-            placeholder="Tell businesses about your experience and expertise…"
+            placeholder={
+              isCompany
+                ? "Tell businesses about your team and the AI expertise you provide…"
+                : "Tell businesses about your experience and expertise…"
+            }
             defaultValue={profile?.bio ?? ""}
           />
         </div>
@@ -105,32 +174,70 @@ export function ProfileForm({ profile, skills, services }: Props) {
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="hourlyRate">Hourly rate (£)</Label>
-          <Input
-            id="hourlyRate"
-            name="hourlyRate"
-            type="number"
-            min={0}
-            placeholder="150"
-            defaultValue={profile?.hourlyRate ?? ""}
-          />
-        </div>
+        {isCompany && (
+          <div className="space-y-2">
+            <Label htmlFor="companySize">Company size</Label>
+            <select
+              id="companySize"
+              name="companySize"
+              defaultValue={profile?.companySize ?? ""}
+              className="flex h-10 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <option value="">Select…</option>
+              {COMPANY_SIZE_OPTIONS.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-        <div className="space-y-2">
-          <Label htmlFor="availability">Availability</Label>
-          <select
-            id="availability"
-            name="availability"
-            defaultValue={profile?.availability ?? ""}
-            className="flex h-10 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <option value="">Select…</option>
-            <option value="available">Available now</option>
-            <option value="limited">Limited availability</option>
-            <option value="unavailable">Not available</option>
-          </select>
-        </div>
+        {isCompany && (
+          <div className="space-y-2">
+            <Label htmlFor="yearEstablished">Year established</Label>
+            <Input
+              id="yearEstablished"
+              name="yearEstablished"
+              type="number"
+              min={1900}
+              max={new Date().getFullYear()}
+              placeholder="2019"
+              defaultValue={profile?.yearEstablished ?? ""}
+            />
+          </div>
+        )}
+
+        {!isCompany && (
+          <div className="space-y-2">
+            <Label htmlFor="hourlyRate">Hourly rate (£)</Label>
+            <Input
+              id="hourlyRate"
+              name="hourlyRate"
+              type="number"
+              min={0}
+              placeholder="150"
+              defaultValue={profile?.hourlyRate ?? ""}
+            />
+          </div>
+        )}
+
+        {!isCompany && (
+          <div className="space-y-2">
+            <Label htmlFor="availability">Availability</Label>
+            <select
+              id="availability"
+              name="availability"
+              defaultValue={profile?.availability ?? ""}
+              className="flex h-10 w-full rounded-lg border border-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <option value="">Select…</option>
+              <option value="available">Available now</option>
+              <option value="limited">Limited availability</option>
+              <option value="unavailable">Not available</option>
+            </select>
+          </div>
+        )}
 
         <div className="space-y-2">
           <Label htmlFor="linkedinUrl">LinkedIn</Label>
@@ -139,25 +246,31 @@ export function ProfileForm({ profile, skills, services }: Props) {
             name="linkedinUrl"
             type="text"
             inputMode="url"
-            placeholder="linkedin.com/in/…"
+            placeholder={
+              isCompany ? "linkedin.com/company/…" : "linkedin.com/in/…"
+            }
             defaultValue={profile?.linkedinUrl ?? ""}
           />
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="githubUrl">GitHub</Label>
-          <Input
-            id="githubUrl"
-            name="githubUrl"
-            type="text"
-            inputMode="url"
-            placeholder="github.com/…"
-            defaultValue={profile?.githubUrl ?? ""}
-          />
-        </div>
+        {!isCompany && (
+          <div className="space-y-2">
+            <Label htmlFor="githubUrl">GitHub</Label>
+            <Input
+              id="githubUrl"
+              name="githubUrl"
+              type="text"
+              inputMode="url"
+              placeholder="github.com/…"
+              defaultValue={profile?.githubUrl ?? ""}
+            />
+          </div>
+        )}
 
         <div className="space-y-2">
-          <Label htmlFor="websiteUrl">Website</Label>
+          <Label htmlFor="websiteUrl">
+            {isCompany ? "Company website" : "Website"}
+          </Label>
           <Input
             id="websiteUrl"
             name="websiteUrl"
@@ -167,10 +280,29 @@ export function ProfileForm({ profile, skills, services }: Props) {
             defaultValue={profile?.websiteUrl ?? ""}
           />
         </div>
+
+        {isCompany && (
+          <div className="space-y-2 sm:col-span-2">
+            <Label htmlFor="externalLinks">Other external links</Label>
+            <Textarea
+              id="externalLinks"
+              name="externalLinks"
+              rows={4}
+              placeholder={"one URL per line\nhttps://example.com/case-study\nhttps://github.com/company"}
+              defaultValue={initialExternalLinks}
+            />
+            <p className="text-xs text-muted">
+              Add one URL per line for case studies, GitHub, portfolios, or
+              other relevant company links.
+            </p>
+          </div>
+        )}
       </div>
 
       <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-slate-700">Skills</legend>
+        <legend className="text-sm font-medium text-slate-700">
+          {isCompany ? "Areas of expertise" : "Skills"}
+        </legend>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
           {skills.map((skill) => (
             <label
@@ -194,7 +326,9 @@ export function ProfileForm({ profile, skills, services }: Props) {
       </fieldset>
 
       <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-slate-700">Services</legend>
+        <legend className="text-sm font-medium text-slate-700">
+          {isCompany ? "Services / capabilities" : "Services"}
+        </legend>
         <div className="grid gap-2 sm:grid-cols-2">
           {services.map((service) => (
             <label
@@ -216,6 +350,10 @@ export function ProfileForm({ profile, skills, services }: Props) {
           initialServices={parseCustomServices(profile?.customServices)}
         />
       </fieldset>
+
+      <WorkExamplesField
+        initialExamples={parseWorkExamples(profile?.workExamples)}
+      />
 
       <Button type="submit" disabled={pending}>
         {pending ? "Saving…" : profile ? "Update profile" : "Create profile"}

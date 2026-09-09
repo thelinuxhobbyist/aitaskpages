@@ -8,13 +8,14 @@ import {
   skills,
   type ExpertProfile,
 } from "@/db/schema";
+import { parseProfileType } from "@/lib/profile-type";
 import { slugify } from "@/lib/utils";
 import type { ProfileFormData } from "@/lib/validations/profile";
 
 async function uniqueSlug(base: string, excludeId?: number): Promise<string> {
   const db = await getDb();
   let slug = slugify(base);
-  if (!slug) slug = "expert";
+  if (!slug) slug = "profile";
 
   let candidate = slug;
   let n = 2;
@@ -35,6 +36,49 @@ function emptyToNull(value: string | number | undefined): string | number | null
 
 function serializeCustomTags(values: string[]): string | null {
   return values.length > 0 ? JSON.stringify(values) : null;
+}
+
+function serializeExternalLinks(values: string[]): string | null {
+  return values.length > 0 ? JSON.stringify(values) : null;
+}
+
+function serializeWorkExamples(
+  values: ProfileFormData["workExamples"]
+): string | null {
+  return values.length > 0 ? JSON.stringify(values) : null;
+}
+
+function individualOnlyFields(data: ProfileFormData): {
+  hourlyRate: number | null;
+  availability: string | null;
+} {
+  if (parseProfileType(data.profileType) === "company") {
+    return { hourlyRate: null, availability: null };
+  }
+  return {
+    hourlyRate: emptyToNull(data.hourlyRate) as number | null,
+    availability: emptyToNull(data.availability) as string | null,
+  };
+}
+
+function companyOnlyFields(data: ProfileFormData): {
+  companySize: string | null;
+  yearEstablished: number | null;
+  externalLinks: string | null;
+} {
+  if (parseProfileType(data.profileType) !== "company") {
+    return {
+      companySize: null,
+      yearEstablished: null,
+      externalLinks: null,
+    };
+  }
+
+  return {
+    companySize: emptyToNull(data.companySize) as string | null,
+    yearEstablished: emptyToNull(data.yearEstablished) as number | null,
+    externalLinks: serializeExternalLinks(data.externalLinks),
+  };
 }
 
 async function syncSkillsAndServices(
@@ -68,6 +112,15 @@ export async function createProfile(userId: number, data: ProfileFormData) {
   const db = await getDb();
   const slug = await uniqueSlug(data.fullName);
   const now = new Date().toISOString();
+  const profileType = parseProfileType(data.profileType);
+  const { hourlyRate, availability } = individualOnlyFields({
+    ...data,
+    profileType,
+  });
+  const { companySize, yearEstablished, externalLinks } = companyOnlyFields({
+    ...data,
+    profileType,
+  });
 
   const [profile] = await db
     .insert(expertProfiles)
@@ -75,17 +128,22 @@ export async function createProfile(userId: number, data: ProfileFormData) {
       userId,
       slug,
       fullName: data.fullName,
+      profileType,
       headline: emptyToNull(data.headline) as string | null,
       bio: emptyToNull(data.bio) as string | null,
       location: emptyToNull(data.location) as string | null,
-      hourlyRate: emptyToNull(data.hourlyRate) as number | null,
-      availability: emptyToNull(data.availability) as string | null,
+      hourlyRate,
+      availability,
+      companySize,
+      yearEstablished,
       linkedinUrl: emptyToNull(data.linkedinUrl) as string | null,
       githubUrl: emptyToNull(data.githubUrl) as string | null,
       websiteUrl: emptyToNull(data.websiteUrl) as string | null,
+      externalLinks,
       profileImageUrl: emptyToNull(data.profileImageUrl) as string | null,
       customSkills: serializeCustomTags(data.customSkills),
       customServices: serializeCustomTags(data.customServices),
+      workExamples: serializeWorkExamples(data.workExamples),
       status: "approved",
       updatedAt: now,
     })
@@ -106,23 +164,37 @@ export async function updateProfile(
       : profile.slug;
 
   const now = new Date().toISOString();
+  const profileType = parseProfileType(data.profileType);
+  const { hourlyRate, availability } = individualOnlyFields({
+    ...data,
+    profileType,
+  });
+  const { companySize, yearEstablished, externalLinks } = companyOnlyFields({
+    ...data,
+    profileType,
+  });
 
   const [updated] = await db
     .update(expertProfiles)
     .set({
       slug,
       fullName: data.fullName,
+      profileType,
       headline: emptyToNull(data.headline) as string | null,
       bio: emptyToNull(data.bio) as string | null,
       location: emptyToNull(data.location) as string | null,
-      hourlyRate: emptyToNull(data.hourlyRate) as number | null,
-      availability: emptyToNull(data.availability) as string | null,
+      hourlyRate,
+      availability,
+      companySize,
+      yearEstablished,
       linkedinUrl: emptyToNull(data.linkedinUrl) as string | null,
       githubUrl: emptyToNull(data.githubUrl) as string | null,
       websiteUrl: emptyToNull(data.websiteUrl) as string | null,
+      externalLinks,
       profileImageUrl: emptyToNull(data.profileImageUrl) as string | null,
       customSkills: serializeCustomTags(data.customSkills),
       customServices: serializeCustomTags(data.customServices),
+      workExamples: serializeWorkExamples(data.workExamples),
       updatedAt: now,
     })
     .where(eq(expertProfiles.id, profile.id))

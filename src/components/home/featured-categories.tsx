@@ -26,7 +26,7 @@ export function FeaturedCategories() {
                 {category.description}
               </p>
               <span className="mt-4 inline-flex items-center gap-1.5 text-[0.9375rem] font-medium md:text-base">
-                Browse experts
+                Find expertise
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
             </Link>

@@ -6,6 +6,7 @@ import {
   parseCustomSkills,
   type ProfileWithRelations,
 } from "@/lib/profile-utils";
+import { isCompanyProfile, profileTypeLabel } from "@/lib/profile-type";
 import { cn } from "@/lib/utils";
 import { ArrowRight, MapPin } from "lucide-react";
 
@@ -79,12 +80,17 @@ export function ExpertPreviewCard({
   heading?: "h2" | "h3";
 }) {
   const roleText = profile.headline?.trim();
+  const typeLabel = profileTypeLabel(profile);
+  const subtitle = roleText ? `${typeLabel} · ${roleText}` : typeLabel;
+  const company = isCompanyProfile(profile);
   const focusAreas = uniqueSpecialisms(profile).slice(0, 3);
   const bioCleaned = profile.bio?.replace(/\r\n/g, "\n").trim();
   const bioSnippet =
     bioCleaned ||
     roleText ||
-    "AI specialist available to help with projects, consulting, and implementation.";
+    (company
+      ? "AI team available to help with projects, consulting, and implementation."
+      : "AI specialist available to help with projects, consulting, and implementation.");
   const locationText = profile.location?.trim() || null;
 
   return (
@@ -116,9 +122,9 @@ export function ExpertPreviewCard({
               <Heading className="font-heading text-lg font-semibold tracking-tight text-secondary transition-colors group-hover:text-primary">
                 {profile.fullName}
               </Heading>
-              {roleText && (
+              {subtitle && (
                 <p className="mt-0.5 line-clamp-1 text-sm text-muted">
-                  {roleText}
+                  {subtitle}
                 </p>
               )}
             </div>
@@ -149,12 +155,16 @@ export function ExpertPreviewCard({
 
       <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-border/80 pt-4 text-sm text-muted">
         <div className="flex flex-wrap items-center gap-2">
-          <AvailabilityDot availability={profile.availability} />
+          {!company && (
+            <AvailabilityDot availability={profile.availability} />
+          )}
           {locationText && (
             <>
-              <span className="text-slate-300 select-none" aria-hidden>
-                ·
-              </span>
+              {!company && (
+                <span className="text-slate-300 select-none" aria-hidden>
+                  ·
+                </span>
+              )}
               <span className="inline-flex items-center gap-1">
                 <MapPin className="h-3.5 w-3.5 shrink-0" aria-hidden />
                 {locationText}

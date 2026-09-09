@@ -7,9 +7,11 @@ import { Button } from "@/components/ui/button";
 type Props = {
   name: string;
   defaultUrl?: string | null;
+  /** Defaults to a personal photo; companies upload a logo. */
+  variant?: "photo" | "logo";
 };
 
-export function AvatarUpload({ name, defaultUrl }: Props) {
+export function AvatarUpload({ name, defaultUrl, variant = "photo" }: Props) {
   const [url, setUrl] = useState(defaultUrl ?? "");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +45,7 @@ export function AvatarUpload({ name, defaultUrl }: Props) {
     <div className="flex items-center gap-4">
       <Avatar
         src={url || null}
-        alt={name || "Your profile photo"}
+        alt={name || (variant === "logo" ? "Company logo" : "Your profile photo")}
         className="h-20 w-20"
         textClassName="text-xl"
       />
@@ -67,7 +69,15 @@ export function AvatarUpload({ name, defaultUrl }: Props) {
             disabled={uploading}
             onClick={() => inputRef.current?.click()}
           >
-            {uploading ? "Uploading…" : url ? "Change photo" : "Upload photo"}
+            {uploading
+              ? "Uploading…"
+              : url
+                ? variant === "logo"
+                  ? "Change logo"
+                  : "Change photo"
+                : variant === "logo"
+                  ? "Upload logo"
+                  : "Upload photo"}
           </Button>
           {url && !uploading && (
             <Button
@@ -83,7 +93,10 @@ export function AvatarUpload({ name, defaultUrl }: Props) {
 
         {error && <p className="text-sm text-red-600">{error}</p>}
         <p className="text-xs text-muted">
-          JPEG, PNG, WebP or GIF. Max 5MB. Leave blank to use your initials.
+          JPEG, PNG, WebP or GIF. Max 5MB.
+          {variant === "logo"
+            ? " Leave blank to use your company initials."
+            : " Leave blank to use your initials."}
         </p>
       </div>
     </div>

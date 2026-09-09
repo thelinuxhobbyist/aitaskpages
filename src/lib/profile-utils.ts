@@ -1,4 +1,5 @@
 import type { ExpertProfile, Service, Skill } from "@/db/schema";
+import { isCompanyProfile } from "@/lib/profile-type";
 
 export const MAX_CUSTOM_SKILLS = 10;
 export const MAX_CUSTOM_SERVICES = 10;
@@ -20,6 +21,46 @@ function parseCustomTags(raw: string | null | undefined): string[] {
 
 export const parseCustomSkills = parseCustomTags;
 export const parseCustomServices = parseCustomTags;
+export const parseExternalLinks = parseCustomTags;
+
+export type WorkExample = {
+  title: string;
+  description?: string;
+  url: string;
+};
+
+/** Parse external work examples stored as JSON on profiles. */
+export function parseWorkExamples(
+  raw: string | null | undefined
+): WorkExample[] {
+  if (!raw?.trim()) return [];
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+
+    const examples: WorkExample[] = [];
+    for (const item of parsed) {
+      if (!item || typeof item !== "object") continue;
+      const record = item as Record<string, unknown>;
+      const title =
+        typeof record.title === "string" ? record.title.trim() : "";
+      const url = typeof record.url === "string" ? record.url.trim() : "";
+      const description =
+        typeof record.description === "string"
+          ? record.description.trim()
+          : "";
+      if (!title || !url) continue;
+      examples.push({
+        title,
+        url,
+        ...(description ? { description } : undefined),
+      });
+    }
+    return examples;
+  } catch {
+    return [];
+  }
+}
 
 export type ProfileWithRelations = ExpertProfile & {
   skills: { skill: Skill }[];
@@ -32,7 +73,26 @@ type ProfileCheck = {
 };
 
 /** Fields that make a profile useful to clients — used for dashboard guidance and ranking. */
-const PROFILE_CHECKS: ProfileCheck[] = [
+const SHARED_PROFILE_CHECKS: ProfileCheck[] = [
+  { label: "Add a profile photo", check: (p) => !!p.profileImageUrl?.trim() },
+  { label: "Add a headline", check: (p) => !!p.headline?.trim() },
+  { label: "Write your bio", check: (p) => !!p.bio?.trim() },
+  { label: "Add your location", check: (p) => !!p.location?.trim() },
+  { label: "Add at least one skill", check: (p) => p.skills.length > 0 || parseCustomSkills(p.customSkills).length > 0 },
+  { label: "Add at least one service", check: (p) => p.services.length > 0 || parseCustomServices(p.customServices).length > 0 },
+  {
+    label: "Add a LinkedIn, website, or other external link",
+    check: (p) =>
+      !!(
+        p.linkedinUrl?.trim() ||
+        p.githubUrl?.trim() ||
+        p.websiteUrl?.trim() ||
+        parseExternalLinks(p.externalLinks).length > 0
+      ),
+  },
+];
+
+const INDIVIDUAL_PROFILE_CHECKS: ProfileCheck[] = [
   { label: "Add a profile photo", check: (p) => !!p.profileImageUrl?.trim() },
   { label: "Add a headline", check: (p) => !!p.headline?.trim() },
   { label: "Write your bio", check: (p) => !!p.bio?.trim() },
@@ -48,18 +108,31 @@ const PROFILE_CHECKS: ProfileCheck[] = [
   },
 ];
 
+const COMPANY_PROFILE_CHECKS: ProfileCheck[] = [
+  { label: "Add a company logo", check: (p) => !!p.profileImageUrl?.trim() },
+  { label: "Add a company size", check: (p) => !!p.companySize?.trim() },
+  ...SHARED_PROFILE_CHECKS.slice(1),
+];
+
+function profileChecksFor(profile: ProfileWithRelations): ProfileCheck[] {
+  return isCompanyProfile(profile)
+    ? COMPANY_PROFILE_CHECKS
+    : INDIVIDUAL_PROFILE_CHECKS;
+}
+
 export function computeCompleteness(profile: ProfileWithRelations): number {
-  const filled = PROFILE_CHECKS.filter(({ check }) => check(profile)).length;
-  return Math.round((filled / PROFILE_CHECKS.length) * 100);
+  const checks = profileChecksFor(profile);
+  const filled = checks.filter(({ check }) => check(profile)).length;
+  return Math.round((filled / checks.length) * 100);
 }
 
 /** Actionable items the expert can complete to improve their profile. */
 export function getProfileCompletenessSuggestions(
   profile: ProfileWithRelations
 ): string[] {
-  return PROFILE_CHECKS.filter(({ check }) => !check(profile)).map(
-    ({ label }) => label
-  );
+  return profileChecksFor(profile)
+    .filter(({ check }) => !check(profile))
+    .map(({ label }) => label);
 }
 
 /**
@@ -78,14 +151,17 @@ export function compareProfiles(
   const compDiff = computeCompleteness(b) - computeCompleteness(a);
   if (compDiff !== 0) return compDiff;
 
-  const availDiff = availabilityRank(a.availability) - availabilityRank(b.availability);
+  const availDiff =
+    availabilityRank(a) - availabilityRank(b);
   if (availDiff !== 0) return availDiff;
 
   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 }
 
-function availabilityRank(availability: string | null): number {
-  switch (availability) {
+function availabilityRank(profile: ProfileWithRelations): number {
+  if (isCompanyProfile(profile)) return 1;
+
+  switch (profile.availability) {
     case "available":
       return 0;
     case "limited":

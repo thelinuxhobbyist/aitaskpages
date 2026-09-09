@@ -1,15 +1,15 @@
 const STEPS = [
   {
     number: "01",
-    title: "Find an expert or post a task",
+    title: "Find an expert, a company, or post a task",
     description:
-      "Search the AI expert directory and contact someone directly, or post what you need and let relevant experts express interest.",
+      "Search Find AI Expertise and contact someone directly, or post what you need and let relevant specialists express interest.",
   },
   {
     number: "02",
-    title: "Review interested experts",
+    title: "Review who is interested",
     description:
-      "Independent AI professionals review open tasks and express interest. Review their profiles and decide who you'd like to speak with.",
+      "AI professionals and companies review open tasks and express interest. Review their profiles and decide who you'd like to speak with.",
   },
   {
     number: "03",

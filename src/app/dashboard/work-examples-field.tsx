@@ -1,0 +1,168 @@
+"use client";
+
+import { useState } from "react";
+import { Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { MAX_WORK_EXAMPLES } from "@/lib/validations/profile";
+import type { WorkExample } from "@/lib/profile-utils";
+
+type DraftExample = {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+};
+
+type Props = {
+  initialExamples?: WorkExample[];
+};
+
+function createEmptyDraft(): DraftExample {
+  return {
+    id: crypto.randomUUID(),
+    title: "",
+    description: "",
+    url: "",
+  };
+}
+
+function toDrafts(examples: WorkExample[]): DraftExample[] {
+  return examples.map((example) => ({
+    id: crypto.randomUUID(),
+    title: example.title,
+    description: example.description ?? "",
+    url: example.url,
+  }));
+}
+
+export function WorkExamplesField({ initialExamples = [] }: Props) {
+  const [examples, setExamples] = useState<DraftExample[]>(() =>
+    toDrafts(initialExamples)
+  );
+
+  const updateExample = (
+    id: string,
+    field: keyof Omit<DraftExample, "id">,
+    value: string
+  ) => {
+    setExamples((prev) =>
+      prev.map((example) =>
+        example.id === id ? { ...example, [field]: value } : example
+      )
+    );
+  };
+
+  const removeExample = (id: string) => {
+    setExamples((prev) => prev.filter((example) => example.id !== id));
+  };
+
+  const payload = examples
+    .map((example) => ({
+      title: example.title.trim(),
+      description: example.description.trim() || undefined,
+      url: example.url.trim(),
+    }))
+    .filter((example) => example.title || example.url || example.description);
+
+  return (
+    <fieldset className="space-y-4">
+      <div>
+        <legend className="text-sm font-medium text-slate-700">
+          Examples of work
+        </legend>
+        <p className="mt-1 text-xs text-muted">
+          Optional. Link to external evidence of the skills or services you
+          offer — GitHub repos, case studies, demos, articles, or live products.
+          AI Jobs Market does not host any files or media.
+        </p>
+      </div>
+
+      <input
+        type="hidden"
+        name="workExamples"
+        value={JSON.stringify(payload)}
+      />
+
+      {examples.map((example, index) => (
+        <div
+          key={example.id}
+          className="space-y-3 rounded-xl border border-border bg-surface-container/30 p-4"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm font-medium text-secondary">
+              Example {index + 1}
+            </p>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => removeExample(example.id)}
+              aria-label={`Remove example ${index + 1}`}
+            >
+              <Trash2 className="h-4 w-4" />
+              Remove
+            </Button>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor={`work-title-${example.id}`}>Title *</Label>
+            <Input
+              id={`work-title-${example.id}`}
+              value={example.title}
+              onChange={(e) =>
+                updateExample(example.id, "title", e.target.value)
+              }
+              placeholder="e.g. AI Customer Support Agent"
+              maxLength={120}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor={`work-description-${example.id}`}>
+              Short description
+            </Label>
+            <Textarea
+              id={`work-description-${example.id}`}
+              rows={3}
+              value={example.description}
+              onChange={(e) =>
+                updateExample(example.id, "description", e.target.value)
+              }
+              placeholder="e.g. Built an AI-powered customer support system using RAG and LLMs."
+              maxLength={500}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor={`work-url-${example.id}`}>External link *</Label>
+            <Input
+              id={`work-url-${example.id}`}
+              type="text"
+              inputMode="url"
+              value={example.url}
+              onChange={(e) => updateExample(example.id, "url", e.target.value)}
+              placeholder="https://github.com/… or case-study URL"
+            />
+          </div>
+        </div>
+      ))}
+
+      {examples.length < MAX_WORK_EXAMPLES && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            setExamples((prev) => [...prev, createEmptyDraft()])
+          }
+        >
+          <Plus className="h-4 w-4" />
+          {examples.length === 0 ? "Add an example" : "Add another example"}
+        </Button>
+      )}
+    </fieldset>
+  );
+}

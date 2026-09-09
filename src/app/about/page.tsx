@@ -103,7 +103,7 @@ export default function AboutPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">Get started</h2>
         <p>
-          Search the expert directory, post an AI task, or join as an expert on{" "}
+          Search the expert directory, post an AI task, or create a profile on{" "}
           {SITE_NAME}.
         </p>
         <div className="flex flex-wrap gap-3 pt-2">
@@ -120,10 +120,10 @@ export default function AboutPage() {
             Browse AI tasks
           </Link>
           <Link
-            href="/join-as-expert"
+            href="/create-a-profile"
             className="inline-flex items-center rounded-lg border border-border px-4 py-2 text-sm font-medium text-secondary hover:bg-surface"
           >
-            Join as an expert
+            Create a profile
           </Link>
         </div>
       </section>

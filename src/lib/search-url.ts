@@ -7,6 +7,7 @@ export function buildSearchUrl(
 ): string {
   const params = new URLSearchParams();
   if (filters.q && omit !== "q") params.set("q", filters.q);
+  if (filters.type && omit !== "type") params.set("type", filters.type);
   if (filters.skill && omit !== "skill") params.set("skill", filters.skill);
   if (filters.service && omit !== "service")
     params.set("service", filters.service);
@@ -41,6 +42,20 @@ export function getActiveFilters(
       key: "q",
       label: `"${filters.q.trim()}"`,
       href: buildSearchUrl(filters, "q"),
+    });
+  }
+  if (filters.type === "individual") {
+    items.push({
+      key: "type",
+      label: "Individuals",
+      href: buildSearchUrl(filters, "type"),
+    });
+  }
+  if (filters.type === "company") {
+    items.push({
+      key: "type",
+      label: "Companies",
+      href: buildSearchUrl(filters, "type"),
     });
   }
   if (filters.skill) {
@@ -92,4 +107,21 @@ export function getActiveFilters(
   }
 
   return items;
+}
+
+/** Switch All / Individuals / Companies without dropping other filters. */
+export function buildProfileTypeUrl(
+  filters: DirectoryFilters,
+  type: "all" | "individual" | "company"
+): string {
+  const next: DirectoryFilters = {
+    ...filters,
+    type: type === "all" ? undefined : type,
+  };
+  if (type === "company") {
+    next.minRate = undefined;
+    next.maxRate = undefined;
+    next.availability = undefined;
+  }
+  return buildSearchUrl(next);
 }

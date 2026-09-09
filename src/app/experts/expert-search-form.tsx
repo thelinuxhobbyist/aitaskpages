@@ -40,9 +40,12 @@ export function ExpertSearchForm({
               placeholder="Search by skill or role"
               className="h-11 border-0 bg-transparent pl-9 shadow-none focus-visible:ring-0"
               autoComplete="off"
-              aria-label="Search experts by skill or role"
+              aria-label="Search AI professionals and companies by skill or role"
             />
           </div>
+          {current.type && (
+            <input type="hidden" name="type" value={current.type} />
+          )}
           <Button
             type="submit"
             className="h-11 shrink-0 rounded-[9px] px-5 sm:self-stretch"
@@ -65,7 +68,7 @@ export function ExpertSearchForm({
             placeholder="Search by skill, service or location…"
             className="h-12 min-w-0 flex-1 border-0 bg-transparent px-4 text-[0.9375rem] shadow-none placeholder:text-muted focus-visible:ring-0"
             autoComplete="off"
-            aria-label="Search experts"
+            aria-label="Search AI expertise"
           />
           <Button
             type="submit"
@@ -73,7 +76,7 @@ export function ExpertSearchForm({
             className="h-12 shrink-0 rounded-[9px] px-5 text-[0.90625rem] font-semibold sm:self-stretch"
           >
             <Search className="h-4 w-4" />
-            Search experts
+            Search
           </Button>
         </div>
         <p className="mt-3 pl-1 text-[0.84375rem]">
@@ -94,6 +97,7 @@ export function ExpertSearchForm({
       action={action}
       className="rounded-[6px] border border-border bg-surface p-5"
     >
+      {current.type && <input type="hidden" name="type" value={current.type} />}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-2 sm:col-span-2 lg:col-span-3">
           <Label htmlFor="q">Search</Label>

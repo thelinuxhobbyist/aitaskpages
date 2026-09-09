@@ -56,8 +56,8 @@ export default async function DashboardPage() {
           <CardHeader>
             <CardTitle>Welcome — how would you like to get started?</CardTitle>
             <CardDescription>
-              AI Jobs Market connects UK businesses with AI experts. Pick the
-              path that fits you.
+              AI Jobs Market connects UK businesses with AI professionals and
+              companies. Pick the path that fits you.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
@@ -69,7 +69,8 @@ export default async function DashboardPage() {
                 I need AI help
               </p>
               <p className="mt-1 text-sm text-muted">
-                Post a task and get matched with relevant experts.
+                Post a task and get matched with relevant AI professionals and
+                companies.
               </p>
             </DocumentLink>
             <a
@@ -77,10 +78,11 @@ export default async function DashboardPage() {
               className="group rounded-xl border border-border bg-surface p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
             >
               <p className="font-semibold text-secondary group-hover:text-primary">
-                I&apos;m an AI expert
+                I offer AI expertise
               </p>
               <p className="mt-1 text-sm text-muted">
-                Create your profile so businesses can find and contact you.
+                Create an individual or company profile so businesses can find
+                and contact you.
               </p>
             </a>
           </CardContent>
@@ -196,7 +198,8 @@ export default async function DashboardPage() {
         <CardHeader>
           <CardTitle>{profile ? "Edit profile" : "Create your profile"}</CardTitle>
           <CardDescription>
-            Add your details so businesses can find and contact you.
+            Add your details so businesses can find and contact you. Individual
+            and company profiles appear together in Find AI Expertise.
           </CardDescription>
         </CardHeader>
         <CardContent>

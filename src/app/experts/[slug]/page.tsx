@@ -9,7 +9,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAuthIdentity, getOrCreateUser } from "@/lib/auth";
 import { getProfileBySlug, incrementProfileViews } from "@/lib/directory";
-import { AVAILABILITY_LABELS, parseCustomSkills, parseCustomServices } from "@/lib/profile-utils";
+import {
+  AVAILABILITY_LABELS,
+  parseCustomSkills,
+  parseCustomServices,
+  parseExternalLinks,
+  parseWorkExamples,
+} from "@/lib/profile-utils";
+import { isCompanyProfile, profileTypeLabel } from "@/lib/profile-type";
 import { PageHero } from "@/components/page-hero";
 import { absoluteUrl, createPageMetadata, SITE_NAME } from "@/lib/seo";
 import { getTurnstileSiteKey } from "@/lib/turnstile";
@@ -20,7 +27,7 @@ import {
   Globe,
   Link2,
   MapPin,
-  Star,
+  Users,
 } from "lucide-react";
 
 type PageProps = {
@@ -32,12 +39,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const profile = await getProfileBySlug(slug);
   if (!profile) return { title: "Expert not found" };
 
+  const company = isCompanyProfile(profile);
   const description =
     profile.headline ??
-    `${profile.fullName} is an independent AI expert on ${SITE_NAME}. Connect for AI consulting, automation, integrations or custom AI projects in the UK.`;
+    (company
+      ? `${profile.fullName} is a company providing AI expertise on ${SITE_NAME}. Connect for AI consulting, automation, integrations or custom AI projects in the UK.`
+      : `${profile.fullName} is an independent AI expert on ${SITE_NAME}. Connect for AI consulting, automation, integrations or custom AI projects in the UK.`);
 
   return createPageMetadata({
-    title: `${profile.fullName} — AI expert`,
+    title: company
+      ? `${profile.fullName} — AI company`
+      : `${profile.fullName} — AI expert`,
     description,
     path: `/experts/${profile.slug}`,
   });
@@ -74,30 +86,64 @@ export default async function ExpertProfilePage({ params }: PageProps) {
   const profilePath = `/experts/${profile.slug}`;
   const customSkills = parseCustomSkills(profile.customSkills);
   const customServices = parseCustomServices(profile.customServices);
+  const externalLinks = parseExternalLinks(profile.externalLinks);
+  const workExamples = parseWorkExamples(profile.workExamples);
+  const company = isCompanyProfile(profile);
+  const typeLabel = profileTypeLabel(profile);
   const hasExternalLinks = Boolean(
-    profile.githubUrl || profile.websiteUrl || profile.linkedinUrl
+    profile.githubUrl ||
+      profile.websiteUrl ||
+      profile.linkedinUrl ||
+      externalLinks.length > 0
   );
+  const aboutTitle = company ? "About the company" : "About";
+  const skillsTitle = company ? "Areas of expertise" : "Skills";
+  const servicesTitle = company ? "Services / capabilities" : "Services";
+  const contactTitle = isOwner
+    ? "Your profile"
+    : company
+      ? `Connect with ${profile.fullName}`
+      : `Contact ${profile.fullName}`;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: profile.fullName,
-    description: profile.headline ?? profile.bio,
-    url: absoluteUrl(`/experts/${profile.slug}`),
-    ...(profile.profileImageUrl && { image: profile.profileImageUrl }),
-    ...(profile.location && {
-      address: { "@type": "PostalAddress", addressLocality: profile.location },
-    }),
-    knowsAbout: [
-      ...profile.skills.map((s) => s.skill.name),
-      ...customSkills,
-    ],
-    worksFor: {
-      "@type": "Organization",
-      name: SITE_NAME,
-      url: absoluteUrl("/"),
-    },
-  };
+  const jsonLd = company
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: profile.fullName,
+        description: profile.headline ?? profile.bio,
+        url: absoluteUrl(`/experts/${profile.slug}`),
+        ...(profile.profileImageUrl && { image: profile.profileImageUrl }),
+        ...(profile.location && {
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: profile.location,
+          },
+        }),
+        knowsAbout: [
+          ...profile.skills.map((s) => s.skill.name),
+          ...customSkills,
+        ],
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: profile.fullName,
+        description: profile.headline ?? profile.bio,
+        url: absoluteUrl(`/experts/${profile.slug}`),
+        ...(profile.profileImageUrl && { image: profile.profileImageUrl }),
+        ...(profile.location && {
+          address: { "@type": "PostalAddress", addressLocality: profile.location },
+        }),
+        knowsAbout: [
+          ...profile.skills.map((s) => s.skill.name),
+          ...customSkills,
+        ],
+        worksFor: {
+          "@type": "Organization",
+          name: SITE_NAME,
+          url: absoluteUrl("/"),
+        },
+      };
 
   return (
     <>
@@ -119,21 +165,14 @@ export default async function ExpertProfilePage({ params }: PageProps) {
             />
 
             <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-3xl font-semibold tracking-tight text-secondary md:text-4xl">
-                  {profile.fullName}
-                </h1>
-                {profile.featured && (
-                  <Badge variant="featured" className="gap-1">
-                    <Star className="h-3 w-3 fill-current" />
-                    Featured
-                  </Badge>
-                )}
-              </div>
-
-              {profile.headline && (
-                <p className="mt-2 text-lg text-muted">{profile.headline}</p>
-              )}
+              <h1 className="text-3xl font-semibold tracking-tight text-secondary md:text-4xl">
+                {profile.fullName}
+              </h1>
+              <p className="mt-2 text-lg text-muted">
+                {profile.headline?.trim()
+                  ? `${typeLabel} · ${profile.headline.trim()}`
+                  : typeLabel}
+              </p>
 
               <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
                 {profile.location && (
@@ -141,6 +180,15 @@ export default async function ExpertProfilePage({ params }: PageProps) {
                     <MapPin className="h-3.5 w-3.5" />
                     {profile.location}
                   </span>
+                )}
+                {company && profile.companySize && (
+                  <span className="flex items-center gap-1 text-muted">
+                    <Users className="h-3.5 w-3.5" />
+                    {profile.companySize} team
+                  </span>
+                )}
+                {company && profile.yearEstablished != null && (
+                  <span className="text-muted">Est. {profile.yearEstablished}</span>
                 )}
                 {profile.availability && (
                   <span
@@ -211,17 +259,26 @@ export default async function ExpertProfilePage({ params }: PageProps) {
                 </a>
               </Button>
             )}
+            {externalLinks.map((url) => (
+              <Button key={url} variant="outline" size="sm" asChild>
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                  <Globe className="h-4 w-4" />
+                  External link
+                  <ExternalLink className="h-3 w-3 opacity-50" />
+                </a>
+              </Button>
+            ))}
           </div>
         )}
 
         {profile.bio && (
-          <ProfileSection title="About">
+          <ProfileSection title={aboutTitle}>
             <ReadMoreBio text={profile.bio} />
           </ProfileSection>
         )}
 
       {(profile.skills.length > 0 || customSkills.length > 0) && (
-        <ProfileSection title="Skills">
+        <ProfileSection title={skillsTitle}>
           <div className="flex flex-wrap gap-1.5">
             {profile.skills.map(({ skill }) => (
               <Link key={skill.id} href={`/search?skill=${skill.slug}`}>
@@ -245,7 +302,7 @@ export default async function ExpertProfilePage({ params }: PageProps) {
       )}
 
       {profile.services.length > 0 || customServices.length > 0 ? (
-        <ProfileSection title="Services">
+        <ProfileSection title={servicesTitle}>
           <div className="flex flex-wrap gap-1.5">
             {profile.services.map(({ service }) => (
               <Link key={service.id} href={`/search?service=${service.slug}`}>
@@ -268,10 +325,33 @@ export default async function ExpertProfilePage({ params }: PageProps) {
         </ProfileSection>
       ) : null}
 
+      {workExamples.length > 0 && (
+        <ProfileSection title="Examples of work">
+          <ul className="space-y-5">
+            {workExamples.map((example) => (
+              <li key={`${example.title}-${example.url}`}>
+                <p className="font-medium text-secondary">{example.title}</p>
+                {example.description && (
+                  <p className="mt-1 text-sm leading-relaxed text-muted">
+                    {example.description}
+                  </p>
+                )}
+                <a
+                  href={example.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                >
+                  View work →
+                </a>
+              </li>
+            ))}
+          </ul>
+        </ProfileSection>
+      )}
+
         <section className="mt-8 border-t border-border pt-8">
-          <h2 className="text-lg font-semibold text-secondary">
-            {isOwner ? "Your profile" : `Contact ${profile.fullName}`}
-          </h2>
+          <h2 className="text-lg font-semibold text-secondary">{contactTitle}</h2>
 
           {isOwner ? (
             <div className="mt-4 rounded-xl border border-dashed border-border bg-surface px-5 py-6">
@@ -286,9 +366,9 @@ export default async function ExpertProfilePage({ params }: PageProps) {
           ) : !identity ? (
             <div className="mt-4 rounded-xl border border-border bg-surface px-5 py-6">
               <p className="text-sm text-muted">
-                Sign in to contact this AI expert. Businesses can reach experts
-                directly through AI Jobs Market while keeping personal contact
-                details private.
+                {company
+                  ? "Sign in to connect with this company. Businesses can reach AI professionals and companies directly through AI Jobs Market while keeping personal contact details private."
+                  : "Sign in to contact this AI expert. Businesses can reach AI professionals and companies directly through AI Jobs Market while keeping personal contact details private."}
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Button asChild>
@@ -310,7 +390,7 @@ export default async function ExpertProfilePage({ params }: PageProps) {
           ) : !identity.emailVerified ? (
             <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-5 py-6">
               <p className="text-sm font-medium text-amber-900">
-                Verify your email to contact experts
+                Verify your email to get in touch
               </p>
               <p className="mt-1 text-sm text-amber-800">
                 Open the account menu in the top-right to verify your email, then

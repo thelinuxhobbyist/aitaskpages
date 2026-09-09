@@ -71,14 +71,21 @@ export const expertProfiles = sqliteTable(
       .references(() => users.id, { onDelete: "cascade" }),
     slug: text("slug").notNull().unique(),
     fullName: text("full_name").notNull(),
+    /** Individual expert vs company/team listing. */
+    profileType: text("profile_type", { enum: ["individual", "company"] })
+      .notNull()
+      .default("individual"),
     headline: text("headline"),
     bio: text("bio"),
     location: text("location"),
     hourlyRate: integer("hourly_rate"),
     availability: text("availability"),
+    companySize: text("company_size"),
+    yearEstablished: integer("year_established"),
     linkedinUrl: text("linkedin_url"),
     githubUrl: text("github_url"),
     websiteUrl: text("website_url"),
+    externalLinks: text("external_links"),
     profileImageUrl: text("profile_image_url"),
     profileViews: integer("profile_views").notNull().default(0),
     /** Public directory visibility — hidden when the account is deleted. */
@@ -91,6 +98,11 @@ export const expertProfiles = sqliteTable(
     customSkills: text("custom_skills"),
     /** JSON array of service names not in the global services catalog */
     customServices: text("custom_services"),
+    /**
+     * JSON array of { title, description?, url } pointing to external work.
+     * AI Jobs Market does not host any of this content.
+     */
+    workExamples: text("work_examples"),
     createdAt: text("created_at")
       .notNull()
       .default(sql`(datetime('now'))`),
@@ -103,6 +115,7 @@ export const expertProfiles = sqliteTable(
     index("freelancer_profiles_featured_idx").on(table.featured),
     index("freelancer_profiles_location_idx").on(table.location),
     index("freelancer_profiles_status_idx").on(table.status),
+    index("freelancer_profiles_profile_type_idx").on(table.profileType),
   ]
 );
 

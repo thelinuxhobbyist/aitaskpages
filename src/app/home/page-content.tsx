@@ -32,8 +32,8 @@ function HomeHero() {
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
         AI Jobs Market is an introduction platform connecting UK businesses
-        with independent AI experts. Find an expert directly, or post what
-        you need and let relevant specialists come to you.
+        with AI professionals and companies. Find expertise directly, or post
+        what you need and let relevant specialists come to you.
       </p>
       <p className="mt-4 max-w-xl text-[1.0625rem] font-medium leading-[1.5] text-on-surface md:text-lg">
         We make the introduction. You take it from there.
@@ -55,8 +55,8 @@ function HomeHero() {
           },
           { href: "/tasks", label: "Browse tasks", primary: false },
           {
-            href: "/join-as-expert",
-            label: "Join as an expert",
+            href: "/create-a-profile",
+            label: "Create a profile",
             primary: false,
           },
         ].map((item) => {
@@ -128,7 +128,7 @@ async function HomePlatformSections() {
         <div className="mx-auto max-w-6xl px-5 pb-14">
           <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-8 text-center">
             <p className="text-lg font-semibold text-secondary">
-              Experts and tasks are temporarily unavailable
+              Listings and tasks are temporarily unavailable
             </p>
             <p className="mx-auto mt-2 max-w-lg text-sm text-muted">
               Nothing has been removed from the site. The directory should be
@@ -143,10 +143,10 @@ async function HomePlatformSections() {
           {hasExperts && (
             <PlatformSection
               id="experts"
-              title="Featured AI experts"
-              description="Independent UK consultants for AI consulting, automation, integrations and machine learning."
+              title="Featured AI expertise"
+              description="Independent UK professionals and companies for AI consulting, automation, integrations and machine learning."
               browseHref="/search"
-              browseLabel="Browse all experts"
+              browseLabel="Find AI expertise"
             >
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {experts.map((profile) => (
@@ -160,7 +160,7 @@ async function HomePlatformSections() {
             <PlatformSection
               id="tasks"
               title="Open AI tasks"
-              description="What UK businesses need help with — experts can express interest so you can connect directly."
+              description="What UK businesses need help with — AI professionals and companies can express interest so you can connect directly."
               browseHref="/tasks"
               browseLabel="Browse all tasks"
             >
