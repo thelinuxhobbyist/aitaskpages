@@ -92,7 +92,7 @@ export function ProfileForm({ profile, skills, services }: Props) {
         </p>
       )}
 
-      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-surface-container/50 px-4 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3">
         <p className="text-sm text-on-surface">
           Profile type:{" "}
           <span className="font-semibold">
@@ -240,15 +240,17 @@ export function ProfileForm({ profile, skills, services }: Props) {
         )}
       </div>
 
-      <fieldset className="space-y-4 rounded-xl border border-border bg-surface-container/20 p-4 sm:p-5">
+      <fieldset className="space-y-4 rounded-xl border border-border bg-card p-4 sm:p-5">
         <div>
           <legend className="text-sm font-medium text-slate-700">
-            Where to find you online
+            {isCompany
+              ? "Where to find this company online"
+              : "Where to find you online"}
           </legend>
           <p className="mt-1 text-xs text-muted">
-            Your presence links — LinkedIn, GitHub, website, and other profiles.
-            These show who you are, not individual projects. For project
-            showcases, use Examples of work below.
+            {isCompany
+              ? "Company presence links — LinkedIn page, GitHub organisation, website, and other official profiles. These show where the company lives online, not individual case studies. For project showcases, use Examples of work below."
+              : "Your presence links — LinkedIn, GitHub, website, and other profiles. These show who you are, not individual projects. For project showcases, use Examples of work below."}
           </p>
         </div>
 
@@ -302,6 +304,7 @@ export function ProfileForm({ profile, skills, services }: Props) {
           <div className="sm:col-span-2">
             <ExternalLinksField
               initialLinks={parseExternalLinks(profile?.externalLinks)}
+              isCompany={isCompany}
             />
           </div>
         </div>
@@ -315,7 +318,7 @@ export function ProfileForm({ profile, skills, services }: Props) {
           {skills.map((skill) => (
             <label
               key={skill.id}
-              className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm hover:bg-surface"
+              className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm hover:bg-surface"
             >
               <input
                 type="checkbox"
@@ -341,7 +344,7 @@ export function ProfileForm({ profile, skills, services }: Props) {
           {services.map((service) => (
             <label
               key={service.id}
-              className="flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm hover:bg-surface"
+              className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm hover:bg-surface"
             >
               <input
                 type="checkbox"
@@ -361,6 +364,7 @@ export function ProfileForm({ profile, skills, services }: Props) {
 
       <WorkExamplesField
         initialExamples={parseWorkExamples(profile?.workExamples)}
+        isCompany={isCompany}
       />
 
       <Button type="submit" disabled={pending}>

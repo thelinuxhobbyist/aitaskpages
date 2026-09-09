@@ -42,6 +42,29 @@ function linkHostname(url: string): string {
   }
 }
 
+function PresenceLink({
+  href,
+  label,
+  icon: Icon,
+}: {
+  href: string;
+  label: string;
+  icon: typeof Globe;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex max-w-full items-center gap-2 rounded-md border border-border bg-card px-3.5 py-2 text-[0.8125rem] font-medium text-on-surface shadow-soft transition-colors hover:bg-surface-container"
+    >
+      <Icon className="h-4 w-4 shrink-0" aria-hidden />
+      <span className="min-w-0 truncate">{label}</span>
+      <ExternalLink className="h-3 w-3 shrink-0 opacity-50" aria-hidden />
+    </a>
+  );
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const profile = await getProfileBySlug(slug);
@@ -227,55 +250,41 @@ export default async function ExpertProfilePage({ params }: PageProps) {
         />
 
         {hasExternalLinks && (
-          <div className="mb-8 flex flex-wrap gap-2">
-            {profile.githubUrl && (
-              <Button variant="outline" size="sm" asChild>
-                <a
-                  href={profile.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Code2 className="h-4 w-4" />
-                  GitHub
-                  <ExternalLink className="h-3 w-3 opacity-50" />
-                </a>
-              </Button>
-            )}
-            {profile.websiteUrl && (
-              <Button variant="outline" size="sm" asChild>
-                <a
-                  href={profile.websiteUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Globe className="h-4 w-4" />
-                  Website
-                  <ExternalLink className="h-3 w-3 opacity-50" />
-                </a>
-              </Button>
-            )}
-            {profile.linkedinUrl && (
-              <Button variant="outline" size="sm" asChild>
-                <a
+          <div className="mb-8">
+            <p className="mb-3 text-sm font-medium text-secondary">
+              {company ? "Company online" : "Online"}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {profile.linkedinUrl && (
+                <PresenceLink
                   href={profile.linkedinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Link2 className="h-4 w-4" />
-                  LinkedIn
-                  <ExternalLink className="h-3 w-3 opacity-50" />
-                </a>
-              </Button>
-            )}
-            {externalLinks.map((url) => (
-              <Button key={url} variant="outline" size="sm" asChild>
-                <a href={url} target="_blank" rel="noopener noreferrer">
-                  <Globe className="h-4 w-4" />
-                  {linkHostname(url)}
-                  <ExternalLink className="h-3 w-3 opacity-50" />
-                </a>
-              </Button>
-            ))}
+                  label="LinkedIn"
+                  icon={Link2}
+                />
+              )}
+              {profile.websiteUrl && (
+                <PresenceLink
+                  href={profile.websiteUrl}
+                  label="Website"
+                  icon={Globe}
+                />
+              )}
+              {profile.githubUrl && (
+                <PresenceLink
+                  href={profile.githubUrl}
+                  label="GitHub"
+                  icon={Code2}
+                />
+              )}
+              {externalLinks.map((url) => (
+                <PresenceLink
+                  key={url}
+                  href={url}
+                  label={linkHostname(url)}
+                  icon={Globe}
+                />
+              ))}
+            </div>
           </div>
         )}
 

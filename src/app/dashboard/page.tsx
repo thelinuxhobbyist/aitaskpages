@@ -52,7 +52,7 @@ export default async function DashboardPage() {
   return (
     <>
       {isNewUser && (
-        <Card className="mb-8 border-primary/25 bg-primary-container/40">
+        <Card className="mb-8 border-accent/30 bg-card">
           <CardHeader>
             <CardTitle>Welcome — how would you like to get started?</CardTitle>
             <CardDescription>
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <DocumentLink
               href="/tasks/new"
-              className="group rounded-xl border border-border bg-surface p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
+              className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
             >
               <p className="font-semibold text-secondary group-hover:text-primary">
                 I need AI help
@@ -75,7 +75,7 @@ export default async function DashboardPage() {
             </DocumentLink>
             <a
               href="#profile-form"
-              className="group rounded-xl border border-border bg-surface p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
+              className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
             >
               <p className="font-semibold text-secondary group-hover:text-primary">
                 I offer AI expertise

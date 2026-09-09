@@ -4,6 +4,7 @@ import { Suspense, type ReactNode } from "react";
 import { DashboardNav } from "@/app/dashboard/dashboard-nav";
 import { AccountSyncBanner } from "@/components/account-sync-banner";
 import { DelayedFallback } from "@/components/delayed-fallback";
+import { PageHero } from "@/components/page-hero";
 import { RouteLoadingIndicator } from "@/components/route-loading-indicator";
 import { Button } from "@/components/ui/button";
 import { getOrCreateUser, requireSignedIn } from "@/lib/auth";
@@ -18,17 +19,17 @@ export default function DashboardLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="mx-auto max-w-4xl px-5 py-10">
-      <Suspense
-        fallback={
-          <DelayedFallback>
+    <Suspense
+      fallback={
+        <DelayedFallback>
+          <div className="mx-auto max-w-4xl px-5 py-10">
             <RouteLoadingIndicator label="Loading dashboard" />
-          </DelayedFallback>
-        }
-      >
-        <DashboardLayoutBody>{children}</DashboardLayoutBody>
-      </Suspense>
-    </div>
+          </div>
+        </DelayedFallback>
+      }
+    >
+      <DashboardLayoutBody>{children}</DashboardLayoutBody>
+    </Suspense>
   );
 }
 
@@ -38,26 +39,30 @@ async function DashboardLayoutBody({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1>Dashboard</h1>
-          <p className="mt-2 text-muted">
-            Manage your profile, requirements, and conversations.
-          </p>
+      <PageHero>
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1>Dashboard</h1>
+            <p className="mt-2 max-w-xl text-muted">
+              Manage your profile, requirements, and conversations.
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/">Back to site</Link>
+          </Button>
         </div>
-        <Button asChild variant="outline" size="sm">
-          <Link href="/">Back to site</Link>
-        </Button>
-      </div>
+      </PageHero>
 
-      {user ? (
-        <>
-          <DashboardNav unreadCount={0} newOpportunityCount={0} />
-          <div className="mt-8">{children}</div>
-        </>
-      ) : (
-        <AccountSyncBanner />
-      )}
+      <div className="mx-auto max-w-4xl px-5 py-8 md:py-10">
+        {user ? (
+          <>
+            <DashboardNav unreadCount={0} newOpportunityCount={0} />
+            <div className="mt-8">{children}</div>
+          </>
+        ) : (
+          <AccountSyncBanner />
+        )}
+      </div>
     </>
   );
 }

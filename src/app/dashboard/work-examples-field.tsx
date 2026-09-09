@@ -18,6 +18,7 @@ type DraftExample = {
 
 type Props = {
   initialExamples?: WorkExample[];
+  isCompany?: boolean;
 };
 
 function createEmptyDraft(): DraftExample {
@@ -38,7 +39,10 @@ function toDrafts(examples: WorkExample[]): DraftExample[] {
   }));
 }
 
-export function WorkExamplesField({ initialExamples = [] }: Props) {
+export function WorkExamplesField({
+  initialExamples = [],
+  isCompany = false,
+}: Props) {
   const [examples, setExamples] = useState<DraftExample[]>(() =>
     toDrafts(initialExamples)
   );
@@ -68,16 +72,15 @@ export function WorkExamplesField({ initialExamples = [] }: Props) {
     .filter((example) => example.title || example.url || example.description);
 
   return (
-    <fieldset className="space-y-4 rounded-xl border border-border bg-surface-container/20 p-4 sm:p-5">
+    <fieldset className="space-y-4 rounded-xl border border-border bg-card p-4 sm:p-5">
       <div>
         <legend className="text-sm font-medium text-slate-700">
           Examples of work
         </legend>
         <p className="mt-1 text-xs text-muted">
-          Optional. Showcase specific projects or deliverables — each with a
-          title, short note, and link to the work itself (case study, repo,
-          demo, article). This is different from the presence links above
-          (LinkedIn, website, etc.). We don’t host files or media.
+          {isCompany
+            ? "Optional. Showcase specific company projects or deliverables — each with a title, short note, and link to the work itself (case study, repo, demo, article). This is different from the company presence links above (LinkedIn, website, etc.). We don’t host files or media."
+            : "Optional. Showcase specific projects or deliverables — each with a title, short note, and link to the work itself (case study, repo, demo, article). This is different from the presence links above (LinkedIn, website, etc.). We don’t host files or media."}
         </p>
       </div>
 
