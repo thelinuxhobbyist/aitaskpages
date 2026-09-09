@@ -35,6 +35,7 @@ type Props = {
   profile: ProfileWithRelations | null;
   skills: Skill[];
   services: Service[];
+  initialProfileType?: ProfileType | null;
 };
 
 const initialState: ProfileFormState = {};
@@ -46,13 +47,20 @@ const COMPANY_SIZE_OPTIONS = [
   "500+",
 ] as const;
 
-export function ProfileForm({ profile, skills, services }: Props) {
+export function ProfileForm({
+  profile,
+  skills,
+  services,
+  initialProfileType = null,
+}: Props) {
   const [state, formAction, pending] = useActionState(
     saveProfile,
     initialState
   );
   const [profileType, setProfileType] = useState<ProfileType | null>(
-    profile ? parseProfileType(profile.profileType) : null
+    profile
+      ? parseProfileType(profile.profileType)
+      : initialProfileType
   );
 
   const selectedSkillIds = new Set(

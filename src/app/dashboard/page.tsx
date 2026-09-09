@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Building2, User } from "lucide-react";
 import { ProfileForm } from "@/app/dashboard/profile-form";
 import {
   Card,
@@ -15,14 +16,19 @@ import {
   getExpertConversations,
 } from "@/lib/conversations";
 import { getClientRequirements } from "@/lib/requirements";
-import { computeCompleteness, getProfileCompletenessSuggestions, type ProfileWithRelations } from "@/lib/profile-utils";
+import {
+  computeCompleteness,
+  getProfileCompletenessSuggestions,
+  type ProfileWithRelations,
+} from "@/lib/profile-utils";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
+import { isProfileType, type ProfileType } from "@/lib/profile-type";
 
 export const metadata: Metadata = {
   title: "Dashboard",
 };
 
-type SearchParams = Promise<{ intent?: string }>;
+type SearchParams = Promise<{ intent?: string; type?: string }>;
 
 export default async function DashboardPage({
   searchParams,
@@ -56,13 +62,18 @@ export default async function DashboardPage({
   ).length;
   const isNewUser = !profile && clientRequirements.length === 0;
   const wantsToOffer = params.intent === "offer";
-  // New users only see stats after they have a profile or a posted requirement.
-  const showStats = !isNewUser;
-  const showProfileForm = !isNewUser || wantsToOffer;
+  const selectedType: ProfileType | null = isProfileType(params.type)
+    ? params.type
+    : null;
+  const showWelcomeChoice = isNewUser && !wantsToOffer;
+  const showTypeChoice = isNewUser && wantsToOffer && !selectedType;
+  const showStats = !isNewUser || wantsToOffer;
+  // Form after a type is chosen, or for anyone who already has activity/profile.
+  const showProfileForm = !isNewUser || Boolean(selectedType);
 
   return (
     <>
-      {isNewUser && !wantsToOffer && (
+      {showWelcomeChoice && (
         <Card className="mb-8 border-accent/30 bg-card">
           <CardHeader>
             <CardTitle>Welcome — how would you like to get started?</CardTitle>
@@ -94,6 +105,56 @@ export default async function DashboardPage({
               <p className="mt-1 text-sm text-muted">
                 Create an individual or company profile so businesses can find
                 and contact you.
+              </p>
+            </Link>
+          </CardContent>
+        </Card>
+      )}
+
+      {showTypeChoice && (
+        <Card className="mb-8 border-accent/30 bg-card">
+          <CardHeader>
+            <CardTitle>What type of profile do you want?</CardTitle>
+            <CardDescription>
+              Choose how you appear in Find AI Expertise. You can switch between
+              Individual and Company later from your dashboard.
+            </CardDescription>
+            <p className="pt-1">
+              <Link
+                href="/dashboard"
+                className="text-sm font-medium text-muted hover:text-primary hover:underline"
+              >
+                ← Back to get started
+              </Link>
+            </p>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-2">
+            <Link
+              href="/dashboard?intent=offer&type=individual"
+              className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <User className="h-5 w-5" />
+              </span>
+              <p className="mt-3 font-semibold text-secondary group-hover:text-primary">
+                Individual Expert
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                Showcase your personal AI expertise and experience.
+              </p>
+            </Link>
+            <Link
+              href="/dashboard?intent=offer&type=company"
+              className="group rounded-xl border border-border bg-card p-5 transition-shadow hover:border-primary/30 hover:shadow-md"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <Building2 className="h-5 w-5" />
+              </span>
+              <p className="mt-3 font-semibold text-secondary group-hover:text-primary">
+                Company
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                Showcase your company&apos;s AI capabilities and team.
               </p>
             </Link>
           </CardContent>
@@ -201,7 +262,9 @@ export default async function DashboardPage({
                 </Link>
               ) : (
                 <p className="text-sm text-muted">
-                  Complete the form below to publish
+                  {showTypeChoice
+                    ? "Choose a profile type above to get started"
+                    : "Complete the form below to publish"}
                 </p>
               )}
             </CardContent>
@@ -216,23 +279,27 @@ export default async function DashboardPage({
               {profile ? "Edit profile" : "Create your profile"}
             </CardTitle>
             <CardDescription>
-              {profile
-                ? "Update your details so businesses can find and contact you."
-                : "Choose Individual or Company, then add your details so businesses can find and contact you."}
+              Add your details so businesses can find and contact you. Individual
+              and company profiles appear together in Find AI Expertise.
             </CardDescription>
-            {isNewUser && wantsToOffer && (
+            {isNewUser && selectedType && (
               <p className="pt-1">
                 <Link
-                  href="/dashboard"
+                  href="/dashboard?intent=offer"
                   className="text-sm font-medium text-muted hover:text-primary hover:underline"
                 >
-                  ← Back to get started
+                  ← Change profile type
                 </Link>
               </p>
             )}
           </CardHeader>
           <CardContent>
-            <ProfileForm profile={profile} skills={skills} services={services} />
+            <ProfileForm
+              profile={profile}
+              skills={skills}
+              services={services}
+              initialProfileType={selectedType}
+            />
           </CardContent>
         </Card>
       )}
