@@ -56,8 +56,9 @@ export default async function DashboardPage({
   ).length;
   const isNewUser = !profile && clientRequirements.length === 0;
   const wantsToOffer = params.intent === "offer";
+  // New users only see stats after they have a profile or a posted requirement.
+  const showStats = !isNewUser;
   const showProfileForm = !isNewUser || wantsToOffer;
-  const showStats = !isNewUser || wantsToOffer;
 
   return (
     <>
@@ -215,9 +216,20 @@ export default async function DashboardPage({
               {profile ? "Edit profile" : "Create your profile"}
             </CardTitle>
             <CardDescription>
-              Add your details so businesses can find and contact you. Individual
-              and company profiles appear together in Find AI Expertise.
+              {profile
+                ? "Update your details so businesses can find and contact you."
+                : "Choose Individual or Company, then add your details so businesses can find and contact you."}
             </CardDescription>
+            {isNewUser && wantsToOffer && (
+              <p className="pt-1">
+                <Link
+                  href="/dashboard"
+                  className="text-sm font-medium text-muted hover:text-primary hover:underline"
+                >
+                  ← Back to get started
+                </Link>
+              </p>
+            )}
           </CardHeader>
           <CardContent>
             <ProfileForm profile={profile} skills={skills} services={services} />
