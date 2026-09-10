@@ -1,3 +1,6 @@
+# Production Worker for aijobsmarket.co.uk / aijobsmarket.uk.
+# Do not rename, and do not "Create application" from this GitHub repo again —
+# that creates a duplicate Worker. Open the existing aijobsmarket2 app instead.
 name = "aijobsmarket2"
 main = ".open-next/worker.js"
 compatibility_date = "2025-04-01"

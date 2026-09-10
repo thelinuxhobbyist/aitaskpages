@@ -7,8 +7,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build && opennextjs-cloudflare build --skipNextBuild",
-    "build:worker": "opennextjs-cloudflare build --skipNextBuild",
+    "assert:worker": "node scripts/assert-production-worker.js",
+    "build": "npm run assert:worker && next build && opennextjs-cloudflare build --skipNextBuild",
+    "build:worker": "npm run assert:worker && opennextjs-cloudflare build --skipNextBuild",
     "build:next": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -27,9 +28,9 @@
     "db:cleanup:seed:remote": "tsx src/db/cleanup-seed-data.ts --remote",
     "db:studio": "drizzle-kit studio",
     "pages:build": "npm run build",
-    "pages:deploy": "npm run build && opennextjs-cloudflare deploy",
+    "pages:deploy": "npm run assert:worker && npm run build && opennextjs-cloudflare deploy",
     "pages:preview": "npm run build && opennextjs-cloudflare preview",
-    "deploy": "npm run build && opennextjs-cloudflare deploy -- --keep-vars",
+    "deploy": "npm run assert:worker && npm run build && opennextjs-cloudflare deploy -- --keep-vars",
     "secret:put": "wrangler versions secret put CLERK_SECRET_KEY",
     "secret:put:webhook": "wrangler versions secret put CLERK_WEBHOOK_SIGNING_SECRET",
     "secret:list": "wrangler versions secret list"
