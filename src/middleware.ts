@@ -49,22 +49,17 @@ export default process.env.PREVIEW_SKIP_AUTH === "1"
   : middleware;
 
 /**
- * Routes that call auth() on the server MUST be listed here.
- * /tasks/[id] uses RequirementInterestPanel → auth(); without this matcher it 500s.
+ * Run Clerk on all app routes (not static assets) so auth is available during SSR.
+ * Without this on `/` and `/search`, the sticky header only learns signed-in state
+ * after client Clerk loads — which feels like the nav "settling" on the custom
+ * domain (where live Clerk sessions exist) but not on workers.dev.
+ *
+ * Routes that call auth() also need middleware; missing it can 500 those pages.
  */
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/account/setup",
-    "/sign-in",
-    "/sign-in/:path*",
-    "/sign-up",
-    "/sign-up/:path*",
-    "/__clerk/:path*",
-    "/tasks",
-    "/tasks/:path*",
-    "/experts/:path+",
-    "/freelancers/:path+",
-    "/api/upload",
+    // Skip Next.js internals and static files (same pattern Clerk recommends)
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/(api|trpc)(.*)",
   ],
 };
