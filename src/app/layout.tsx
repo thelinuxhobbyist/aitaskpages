@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { Header } from "@/components/header";
 import { SiteStructuredData } from "@/components/site-structured-data";
+import { getAuthUserId } from "@/lib/auth";
 import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -12,14 +13,17 @@ import "./globals.css";
 const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dm-sans",
-  display: "swap",
+  // Avoid late font swaps on hard refresh (fallback stays if font is slow)
+  display: "optional",
+  adjustFontFallback: true,
 });
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["500", "600", "700"],
   variable: "--font-space-grotesk",
-  display: "swap",
+  display: "optional",
+  adjustFontFallback: true,
 });
 
 export const dynamic = "force-dynamic";
@@ -33,11 +37,13 @@ export const metadata: Metadata = {
   }),
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const userId = await getAuthUserId();
+
   return (
     <ClerkProvider
       publishableKey={CLERK_PUBLISHABLE_KEY}
@@ -71,7 +77,7 @@ export default function RootLayout({
         </head>
         <body className="min-h-screen flex flex-col bg-surface">
           <GoogleAnalytics />
-          <Header />
+          <Header initialSignedIn={Boolean(userId)} />
           <main className="flex-1">{children}</main>
           <Footer />
         </body>

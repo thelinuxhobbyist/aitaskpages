@@ -2,16 +2,17 @@ export const SITE_URL = "https://aijobsmarket.co.uk";
 
 /**
  * Brand assets served dynamically from R2 with live ETag revalidation.
- * When files are updated or replaced on R2, changes are automatically
- * picked up across the site via HTTP 304 conditional revalidation.
+ * Absolute URLs for OG/email; same-origin paths for in-app <img> first paint.
  */
-export const SITE_LOGO_URL = `${SITE_URL}/brand/logo.png`;
+export const SITE_LOGO_PATH = "/brand/logo.png";
+export const SITE_LOGO_URL = `${SITE_URL}${SITE_LOGO_PATH}`;
 
 /** @deprecated Use SITE_LOGO_URL — lockup is now a PNG. */
 export const SITE_LOGO_SVG_URL = SITE_LOGO_URL;
 
 /** Stacked lockup for dark surfaces (footer) — transparent PNG. */
-export const SITE_LOGO_ON_DARK_URL = `${SITE_URL}/brand/footer.png`;
+export const SITE_LOGO_ON_DARK_PATH = "/brand/footer.png";
+export const SITE_LOGO_ON_DARK_URL = `${SITE_URL}${SITE_LOGO_ON_DARK_PATH}`;
 
 /** @deprecated Use SITE_LOGO_ON_DARK_URL. */
 export const SITE_LOGO_ON_DARK_SVG_URL = SITE_LOGO_ON_DARK_URL;

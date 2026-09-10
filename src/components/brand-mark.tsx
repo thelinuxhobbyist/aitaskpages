@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SITE_LOGO_ON_DARK_URL, SITE_LOGO_URL } from "@/lib/site";
+import { SITE_LOGO_ON_DARK_PATH, SITE_LOGO_PATH } from "@/lib/site";
 import { SITE_NAME } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ const logoSizeClasses = {
 } as const;
 
 export function BrandMark({ className, size = "header" }: BrandMarkProps) {
-  const src = size === "footer" ? SITE_LOGO_ON_DARK_URL : SITE_LOGO_URL;
+  const src = size === "footer" ? SITE_LOGO_ON_DARK_PATH : SITE_LOGO_PATH;
 
   return (
     <Link
