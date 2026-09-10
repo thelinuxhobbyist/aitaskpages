@@ -1,4 +1,4 @@
-/** Minimal loading state for route transitions and short auth checks. */
+/** Stable loading state for route transitions — keeps main height so the sticky nav does not jump. */
 export function RouteLoadingIndicator({
   label = "Loading",
 }: {
@@ -6,7 +6,7 @@ export function RouteLoadingIndicator({
 }) {
   return (
     <div
-      className="flex min-h-[8rem] items-center justify-center py-10"
+      className="flex min-h-[calc(100dvh-5.5rem)] items-center justify-center py-10"
       aria-busy="true"
       aria-label={label}
     >

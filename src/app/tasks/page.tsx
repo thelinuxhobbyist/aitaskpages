@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { RequirementCard, taskCardGridClassName } from "@/app/tasks/requirement-card";
 import { DocumentLink } from "@/components/document-link";
-import { DelayedFallback } from "@/components/delayed-fallback";
 import { TasksListSkeleton } from "@/components/skeletons";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -47,13 +46,7 @@ export default function RequirementsDirectoryPage() {
       </PageHero>
 
       <div className="mx-auto max-w-6xl px-4 py-10">
-        <Suspense
-          fallback={
-            <DelayedFallback>
-              <TasksListSkeleton />
-            </DelayedFallback>
-          }
-        >
+        <Suspense fallback={<TasksListSkeleton />}>
           <RequirementsList />
         </Suspense>
       </div>

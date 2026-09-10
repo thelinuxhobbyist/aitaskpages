@@ -9,7 +9,6 @@ import { JobPreviewCard } from "@/components/home/job-preview-card";
 import { JoinAsExpertCta } from "@/components/home/join-as-expert-cta";
 import { PlatformSection } from "@/components/home/platform-section";
 import { DocumentLink } from "@/components/document-link";
-import { DelayedFallback } from "@/components/delayed-fallback";
 import {
   HomeJobsSkeleton,
   HomeSectionsSkeleton,
@@ -212,13 +211,7 @@ export function HomePage() {
 
       <FeaturedCategories />
 
-      <Suspense
-        fallback={
-          <DelayedFallback>
-            <HomeSectionsSkeleton />
-          </DelayedFallback>
-        }
-      >
+      <Suspense fallback={<HomeSectionsSkeleton />}>
         <HomePlatformSections />
       </Suspense>
 
@@ -226,13 +219,7 @@ export function HomePage() {
         <JoinAsExpertCta />
       </div>
 
-      <Suspense
-        fallback={
-          <DelayedFallback>
-            <HomeJobsSkeleton />
-          </DelayedFallback>
-        }
-      >
+      <Suspense fallback={<HomeJobsSkeleton />}>
         <HomeJobsSection />
       </Suspense>
     </>
