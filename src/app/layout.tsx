@@ -1,5 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
+import { DM_Sans, Space_Grotesk } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { Header } from "@/components/header";
@@ -7,6 +8,19 @@ import { SiteStructuredData } from "@/components/site-structured-data";
 import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +50,7 @@ export default function RootLayout({
         "http://localhost:3000",
       ]}
     >
-      <html lang="en-GB">
+      <html lang="en-GB" className={`${dmSans.variable} ${spaceGrotesk.variable}`}>
         <head>
           <link rel="preconnect" href="https://finder.aijobsmarket.co.uk" />
           <link rel="dns-prefetch" href="https://finder.aijobsmarket.co.uk" />
@@ -52,16 +66,6 @@ export default function RootLayout({
                 ],
               }),
             }}
-          />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin="anonymous"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap"
-            rel="stylesheet"
           />
           <SiteStructuredData />
         </head>

@@ -40,9 +40,9 @@
 
   --color-ring: oklch(84% 0.16 168);
 
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
 
   --radius-md: 0.875rem;
   --radius-lg: calc(0.875rem + 4px);
@@ -72,6 +72,8 @@
 @layer base {
   html {
     font-size: 16px;
+    /* Keep layout stable when the vertical scrollbar appears after content loads */
+    scrollbar-gutter: stable;
   }
 
   body {
