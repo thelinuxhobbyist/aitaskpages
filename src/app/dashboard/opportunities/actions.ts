@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { getAuthIdentity, requireUser } from "@/lib/auth";
-import { expressInterest } from "@/lib/requirements";
+import { expressInterest, getRequirementById } from "@/lib/requirements";
 import {
   interestSchema,
   type InterestFormState,
@@ -25,7 +25,6 @@ export async function expressInterestAction(
 
   const parsed = interestSchema.safeParse({
     requirementId: formData.get("requirementId"),
-    message: formData.get("message") || undefined,
   });
 
   if (!parsed.success) {
@@ -37,12 +36,16 @@ export async function expressInterestAction(
     };
   }
 
+  const requirement = await getRequirementById(parsed.data.requirementId);
+  if (requirement?.clientUserId === user.id) {
+    return { error: "You cannot express interest in your own requirement." };
+  }
+
   try {
     await expressInterest({
       requirementId: parsed.data.requirementId,
       expertId: user.profile.id,
       expertUserId: user.id,
-      message: parsed.data.message,
     });
   } catch (err) {
     return {

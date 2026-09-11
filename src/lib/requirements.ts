@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, ne, sql } from "drizzle-orm";
 import { getDb } from "@/db/client";
 import {
   expertProfiles,
@@ -378,6 +378,12 @@ export async function getMatchingOpportunities(
 ): Promise<RequirementListItem[]> {
   const db = await getDb();
 
+  const expert = await db.query.expertProfiles.findFirst({
+    where: eq(expertProfiles.id, expertId),
+    columns: { id: true, userId: true },
+  });
+  if (!expert) return [];
+
   const [expertSkillRows, expertServiceRows] = await Promise.all([
     db.query.expertSkills.findMany({
       where: eq(expertSkills.expertId, expertId),
@@ -417,7 +423,8 @@ export async function getMatchingOpportunities(
   const rows = await db.query.requirements.findMany({
     where: and(
       eq(requirements.status, "open"),
-      inArray(requirements.id, [...matchingIds])
+      inArray(requirements.id, [...matchingIds]),
+      ne(requirements.clientUserId, expert.userId)
     ),
     with: requirementWithRelations,
     orderBy: [desc(requirements.createdAt)],

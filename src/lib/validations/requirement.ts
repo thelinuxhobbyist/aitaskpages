@@ -42,11 +42,6 @@ export type RequirementFormData = z.infer<typeof requirementSchema>;
 
 export const interestSchema = z.object({
   requirementId: z.coerce.number().int().positive(),
-  message: z
-    .string()
-    .max(2000)
-    .optional()
-    .transform((v) => v?.trim() || undefined),
 });
 
 export type InterestFormData = z.infer<typeof interestSchema>;

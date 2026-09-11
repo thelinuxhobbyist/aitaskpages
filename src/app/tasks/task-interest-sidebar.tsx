@@ -3,8 +3,9 @@ import { InterestButton } from "@/app/dashboard/opportunities/interest-button";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-type ViewerState =
+export type TaskInterestViewer =
   | { kind: "signed_out" }
+  | { kind: "owner" }
   | { kind: "syncing" }
   | { kind: "needs_profile" }
   | { kind: "pending_profile" }
@@ -14,7 +15,7 @@ type ViewerState =
 type Props = {
   requirementId: number;
   budgetLabel: string | null;
-  viewer: ViewerState;
+  viewer: TaskInterestViewer;
   className?: string;
 };
 
@@ -41,13 +42,28 @@ export function TaskInterestSidebar({
       </div>
 
       <div className="mt-5 space-y-3 border-t border-border pt-5">
+        {viewer.kind === "owner" && (
+          <>
+            <p className="text-sm leading-relaxed text-muted">
+              This is your task. Experts and companies can show interest here —
+              you can review them from your dashboard.
+            </p>
+            <Button asChild variant="outline" className="w-full" size="lg">
+              <Link href={`/dashboard/requirements/${requirementId}`}>
+                Manage task
+              </Link>
+            </Button>
+          </>
+        )}
+
         {viewer.kind === "signed_out" && (
           <>
             <Button asChild className="w-full" size="lg">
-              <Link href={signInHref}>Show interest</Link>
+              <Link href={signInHref}>Sign in to show interest</Link>
             </Button>
             <p className="text-sm leading-relaxed text-muted">
-              The business reviews your expert profile if you show interest.
+              Individual experts and companies need to be signed in to show
+              interest. The business then reviews your profile.
             </p>
           </>
         )}
@@ -65,11 +81,11 @@ export function TaskInterestSidebar({
         {viewer.kind === "needs_profile" && (
           <>
             <Button asChild className="w-full" size="lg">
-              <Link href="/dashboard?intent=offer">Show interest</Link>
+              <Link href="/dashboard?intent=offer">Create expert profile</Link>
             </Button>
             <p className="text-sm leading-relaxed text-muted">
-              Create your expert profile so the business can review your
-              experience.
+              Create your individual or company profile before you can show
+              interest. The business reviews it if you do.
             </p>
           </>
         )}

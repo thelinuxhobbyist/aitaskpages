@@ -3,8 +3,6 @@
 import { expressInterestAction } from "@/app/dashboard/opportunities/actions";
 import { FormErrorBanner } from "@/components/form-error-banner";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useFriendlyActionState } from "@/lib/use-friendly-action-state";
 import type { InterestFormState } from "@/lib/validations/requirement";
 
@@ -36,20 +34,10 @@ export function InterestButton({
   }
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-3">
       <input type="hidden" name="requirementId" value={requirementId} />
 
       {state.error && <FormErrorBanner message={state.error} />}
-
-      <div className="space-y-2">
-        <Label htmlFor="message">Optional note</Label>
-        <Textarea
-          id="message"
-          name="message"
-          rows={compact ? 2 : 3}
-          placeholder="Briefly explain why you're a good fit…"
-        />
-      </div>
 
       <Button
         type="submit"
@@ -59,6 +47,10 @@ export function InterestButton({
       >
         {pending ? "Sending…" : "Show interest"}
       </Button>
+      <p className="text-sm leading-relaxed text-muted">
+        The business reviews your expert or company profile if you show
+        interest.
+      </p>
     </form>
   );
 }

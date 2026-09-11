@@ -2,7 +2,10 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { TaskInterestSidebar } from "@/app/tasks/task-interest-sidebar";
+import {
+  TaskInterestSidebar,
+  type TaskInterestViewer,
+} from "@/app/tasks/task-interest-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PageHero } from "@/components/page-hero";
@@ -128,17 +131,13 @@ export default async function PublicRequirementPage({
     requirement.remoteOk ? "Remote OK" : null,
   ].filter(Boolean);
 
-  let interestViewer:
-    | { kind: "signed_out" }
-    | { kind: "syncing" }
-    | { kind: "needs_profile" }
-    | { kind: "pending_profile" }
-    | { kind: "unverified" }
-    | { kind: "ready"; alreadyInterested: boolean } = { kind: "signed_out" };
+  let interestViewer: TaskInterestViewer = { kind: "signed_out" };
 
   if (identity) {
     if (!viewer) {
       interestViewer = { kind: "syncing" };
+    } else if (isOwner) {
+      interestViewer = { kind: "owner" };
     } else if (!viewer.profile) {
       interestViewer = { kind: "needs_profile" };
     } else if (viewer.profile.status !== PUBLIC_PROFILE_STATUS) {
