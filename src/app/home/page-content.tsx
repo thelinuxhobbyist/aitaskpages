@@ -30,9 +30,10 @@ function HomeHero() {
         <span className="text-accent-foreground">you need.</span>
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
-        AI Task Pages is an introduction platform connecting UK businesses
-        with AI professionals and companies. Find expertise directly, or post
-        what you need and let relevant specialists come to you.
+        AI Task Pages is an introduction platform connecting businesses and
+        individuals with AI professionals and companies around the world. Find
+        expertise directly, or post what you need and let relevant specialists
+        come to you.
       </p>
       <p className="mt-4 max-w-xl text-[1.0625rem] font-medium leading-[1.5] text-on-surface md:text-lg">
         We make the introduction. You take it from there.
@@ -131,7 +132,7 @@ async function HomePlatformSections() {
             </p>
             <p className="mx-auto mt-2 max-w-lg text-sm text-muted">
               Nothing has been removed from the site. The directory should be
-              back after 1am UK time. AI vacancies below are unaffected.
+              back shortly. Vacancy listings below are unaffected.
             </p>
           </div>
         </div>
@@ -143,7 +144,7 @@ async function HomePlatformSections() {
             <PlatformSection
               id="experts"
               title="Featured AI expertise"
-              description="Independent UK professionals and companies for AI consulting, automation, integrations and machine learning."
+              description="Independent professionals and companies for AI consulting, automation, integrations and machine learning."
               browseHref="/search"
               browseLabel="Find AI expertise"
             >
@@ -159,7 +160,7 @@ async function HomePlatformSections() {
             <PlatformSection
               id="tasks"
               title="Open AI tasks"
-              description="What UK businesses need help with — AI professionals and companies can express interest so you can connect directly."
+              description="What businesses and individuals need help with — AI professionals and companies can express interest so you can connect directly."
               browseHref="/tasks"
               browseLabel="Browse all tasks"
             >
@@ -184,10 +185,10 @@ async function HomeJobsSection() {
     <div className="mx-auto max-w-6xl px-5 pb-14">
       <PlatformSection
         id="jobs"
-        title="Looking for an AI career?"
-        description="Traditional employment opportunities from UK employers. These vacancies are separate from the expert directory and introduction platform."
+        title="Looking for an AI job?"
+        description="Employment vacancies are listed separately from AI Task Pages introductions. Browse them if you are looking for a traditional AI role."
         browseHref="/jobs"
-        browseLabel="Browse AI vacancies"
+        browseLabel="Browse vacancies"
         secondary
       >
         <div className="grid gap-4 md:grid-cols-2">

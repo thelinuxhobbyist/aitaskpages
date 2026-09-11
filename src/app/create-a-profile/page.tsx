@@ -16,16 +16,16 @@ import { Check } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Create a Profile",
   description:
-    "Create an individual or company profile on AI Task Pages, get discovered by UK businesses, and connect directly. We make the introduction — you take it from there.",
+    "Create an individual or company profile on AI Task Pages, get discovered by businesses and individuals looking for AI expertise, and connect directly. We make the introduction — you take it from there.",
   path: "/create-a-profile",
 });
 
 const features = [
   "A public profile in Find AI Expertise — as an individual or a company",
   "Visibility in search results",
-  "Enquiries from businesses via your dashboard",
+  "Enquiries from businesses and individuals via your dashboard",
   "Skills and services on your profile",
-  "Direct introductions — you agree terms with the business yourselves",
+  "Direct introductions — you agree terms yourselves",
 ];
 
 export default function CreateAProfilePage() {
@@ -37,8 +37,8 @@ export default function CreateAProfilePage() {
           Create a profile
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted md:text-lg">
-          Choose Individual or Company, then list your AI expertise on AI Jobs
-          Market. Get discovered in Find AI Expertise and express interest in
+          Choose Individual or Company, then list your AI expertise on AI Task
+          Pages. Get discovered in Find AI Expertise and express interest in
           open AI tasks. We make the introduction — you take it from there.
         </p>
       </PageHero>

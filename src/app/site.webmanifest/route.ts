@@ -2,7 +2,7 @@ export async function GET() {
   const manifest = {
     name: "AI Task Pages",
     short_name: "AITaskPages",
-    description: "An introduction platform connecting UK businesses with independent AI experts.",
+    description: "An introduction platform connecting businesses and individuals with independent AI experts around the world.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

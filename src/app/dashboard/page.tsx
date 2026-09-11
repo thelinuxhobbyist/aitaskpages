@@ -52,8 +52,8 @@ export default async function DashboardPage({
           <CardHeader>
             <CardTitle>Welcome — how would you like to get started?</CardTitle>
             <CardDescription>
-              AI Task Pages connects UK businesses with AI professionals and
-              companies. Pick the path that fits you.
+              AI Task Pages connects businesses and individuals with AI
+              professionals and companies. Pick the path that fits you.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">

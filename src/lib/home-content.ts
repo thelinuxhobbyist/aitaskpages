@@ -70,9 +70,9 @@ export type HomeBenefit = {
 
 export const HOME_BENEFITS: HomeBenefit[] = [
   {
-    title: "UK AI Professionals",
+    title: "AI professionals and companies",
     description:
-      "Find independent AI consultants, specialists and companies across the UK for remote or on-site work.",
+      "Find independent AI consultants, specialists and companies for remote or on-site work.",
     icon: Users,
     iconBg: "border-primary/20 bg-primary/5",
     iconColor: "text-primary",

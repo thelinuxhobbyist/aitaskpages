@@ -18,7 +18,7 @@ export const SITE_NAME = "AI Task Pages";
 
 /** Short brand line — introduction platform, not recruitment. */
 export const SITE_TAGLINE =
-  "Connect with AI experts and post AI tasks across the UK. We make the introduction.";
+  "Connect with AI experts and post AI tasks from anywhere in the world. We make the introduction.";
 
 /**
  * Default meta description. Positions the brand as an introduction platform
@@ -26,7 +26,7 @@ export const SITE_TAGLINE =
  * employment news.
  */
 export const DEFAULT_DESCRIPTION =
-  "An introduction platform connecting UK businesses with independent AI experts. Find an expert or post a task, then connect directly.";
+  "An introduction platform connecting businesses and individuals with independent AI experts around the world. Find an expert or post a task, then connect directly.";
 
 /** Social profile URLs for JSON-LD sameAs — add when AI Task Pages accounts exist. */
 export const ORGANIZATION_SAME_AS = [] as const;
@@ -213,10 +213,7 @@ export function organizationJsonLd() {
     image: SITE_LOGO_URL,
     description: DEFAULT_DESCRIPTION,
     slogan: SITE_TAGLINE,
-    areaServed: {
-      "@type": "Country",
-      name: "United Kingdom",
-    },
+    areaServed: "Worldwide",
     knowsAbout: [
       "Artificial intelligence consulting",
       "AI freelancers and consultants",

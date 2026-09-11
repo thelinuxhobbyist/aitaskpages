@@ -139,7 +139,7 @@ export function RequirementForm({
           <Input
             id="location"
             name="location"
-            placeholder="e.g. London, UK"
+            placeholder="e.g. Remote, or city and country"
             defaultValue={requirement?.location ?? ""}
           />
         </div>

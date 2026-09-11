@@ -17,8 +17,8 @@ export function Footer() {
               <BrandMark size="footer" />
             </div>
             <p className="footer-tagline">
-              Find AI expertise and post AI tasks across the UK. We make the
-              introduction — you connect directly.
+              Find AI expertise and post AI tasks from anywhere in the world.
+              We make the introduction — you connect directly.
             </p>
           </div>
 
@@ -40,21 +40,6 @@ export function Footer() {
                 </li>
                 <li>
                   <DocumentLink href="/dashboard">Dashboard</DocumentLink>
-                </li>
-              </ul>
-            </div>
-
-            <div className="footer-col">
-              <h3>Also on the site</h3>
-              <ul>
-                <li>
-                  <a href="/jobs">AI vacancies</a>
-                </li>
-                <li>
-                  <a href="/ai-jobs-london.html">London vacancies</a>
-                </li>
-                <li>
-                  <a href="/remote-ai-jobs-uk.html">Remote vacancies</a>
                 </li>
               </ul>
             </div>
@@ -107,6 +92,14 @@ export function Footer() {
             can discover each other and connect. What happens after that
             introduction is entirely between the parties and is independent of
             AI Task Pages.
+          </p>
+          <p className="footer-vacancy-links">
+            Separate vacancy listings:{" "}
+            <a href="/jobs">AI vacancies</a>
+            {" · "}
+            <a href="/ai-jobs-london.html">London</a>
+            {" · "}
+            <a href="/remote-ai-jobs-uk.html">Remote</a>
           </p>
           <div className="footer-copyright">
             &copy; {year} AI Task Pages. All rights reserved.

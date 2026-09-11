@@ -28,7 +28,7 @@ import { Search, Users } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Find AI Expertise",
   description:
-    "Find UK AI professionals and companies on AI Task Pages. Search by skills, services and location — we make the introduction, you take it from there.",
+    "Find AI professionals and companies on AI Task Pages. Search by skills, services and location — we make the introduction, you take it from there.",
   path: "/search",
 });
 
@@ -150,8 +150,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
           {!searched && (
             <p className="mt-2 max-w-2xl text-base text-muted">
               Search by skill, service or location to find AI professionals and
-              companies across the UK. Or post a task and let specialists come
-              to you.
+              companies. Or post a task and let specialists come to you.
             </p>
           )}
 
@@ -229,7 +228,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
             {directoryUnavailable ? (
               <EmptyPanel icon={Users} title="Directory temporarily unavailable">
                 Profiles have not been removed. We can&apos;t load the directory
-                just now — please try again after 1am UK time.
+                just now — please try again shortly.
               </EmptyPanel>
             ) : !searched ? (
               recentProfiles.length > 0 ? (

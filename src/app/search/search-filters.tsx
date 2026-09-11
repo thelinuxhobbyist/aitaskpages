@@ -149,7 +149,7 @@ function FilterFields({
           name="location"
           list="search-location-suggestions"
           defaultValue={current.location ?? ""}
-          placeholder="e.g. London"
+          placeholder="City, region or remote"
           className={inputClass}
         />
         <datalist id="search-location-suggestions">

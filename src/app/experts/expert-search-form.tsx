@@ -155,7 +155,7 @@ export function ExpertSearchForm({
             name="location"
             list="location-suggestions"
             defaultValue={current.location ?? ""}
-            placeholder="e.g. London"
+            placeholder="City, region or remote"
           />
           <datalist id="location-suggestions">
             {locations.map((loc) => (

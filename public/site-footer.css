@@ -159,7 +159,7 @@
 
 @media (min-width: 480px) {
   .site-footer .footer-links-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -221,6 +221,23 @@
 }
 
 .site-footer .footer-disclaimer strong {
+  color: var(--footer-muted);
+}
+
+.site-footer .footer-vacancy-links {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--footer-dimmed);
+  margin: 0;
+}
+
+.site-footer .footer-vacancy-links a {
+  color: var(--footer-dimmed);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.site-footer .footer-vacancy-links a:hover {
   color: var(--footer-muted);
 }
 
