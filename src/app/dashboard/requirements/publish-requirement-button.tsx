@@ -23,7 +23,7 @@ export function PublishRequirementButton({
       setPending(false);
       return;
     }
-    router.push(`/tasks/${requirementId}?posted=1`);
+    router.refresh();
   }
 
   return (
@@ -32,7 +32,7 @@ export function PublishRequirementButton({
         <p className="text-sm text-red-600">{error}</p>
       )}
       <Button type="button" disabled={pending} onClick={handlePublish}>
-        {pending ? "Publishing…" : "Publish requirement"}
+        {pending ? "Publishing…" : "Publish task"}
       </Button>
     </div>
   );

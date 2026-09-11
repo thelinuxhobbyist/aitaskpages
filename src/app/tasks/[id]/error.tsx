@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { RouteErrorPanel } from "@/components/route-error-panel";
 
 export default function TaskDetailError({
   error,
@@ -11,19 +10,12 @@ export default function TaskDetailError({
   reset: () => void;
 }) {
   return (
-    <div className="mx-auto max-w-lg px-4 py-16 text-center">
-      <h1 className="text-xl font-bold text-secondary">Couldn&apos;t load this task</h1>
-      <p className="mt-2 text-sm text-muted">
-        {error.message || "Something went wrong loading the task details."}
-      </p>
-      <div className="mt-6 flex flex-wrap justify-center gap-3">
-        <Button type="button" onClick={reset}>
-          Try again
-        </Button>
-        <Button variant="outline" asChild>
-          <Link href="/tasks">All tasks</Link>
-        </Button>
-      </div>
-    </div>
+    <RouteErrorPanel
+      title="Couldn't load this task"
+      error={error}
+      reset={reset}
+      backHref="/tasks"
+      backLabel="All tasks"
+    />
   );
 }

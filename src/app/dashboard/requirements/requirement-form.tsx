@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
 import { TaxonomyTagField } from "@/app/dashboard/taxonomy-tag-field";
 import { saveRequirementAction } from "@/app/dashboard/requirements/actions";
+import { FormErrorBanner } from "@/components/form-error-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +24,7 @@ import {
   SERVICE_KEYWORDS,
   SKILL_KEYWORDS,
 } from "@/lib/taxonomy-map";
+import { useFriendlyActionState } from "@/lib/use-friendly-action-state";
 import type { RequirementFormState } from "@/lib/validations/requirement";
 import type { Service, Skill } from "@/db/schema";
 
@@ -78,9 +79,10 @@ export function RequirementForm({
   finderDraft,
   cancelHref = "/dashboard/requirements",
 }: Props) {
-  const [state, formAction, pending] = useActionState(
+  const [state, formAction, pending] = useFriendlyActionState(
     saveRequirementAction,
-    initialState
+    initialState,
+    "We couldn't save your task. Please try again."
   );
 
   const isDraft = !requirement || requirement.status === "draft";
@@ -91,11 +93,7 @@ export function RequirementForm({
         <input type="hidden" name="requirementId" value={requirement.id} />
       )}
 
-      {state.error && (
-        <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-          {state.error}
-        </p>
-      )}
+      {state.error && <FormErrorBanner message={state.error} />}
 
       <p className="rounded-lg bg-surface px-4 py-3 text-sm text-muted">
         Published tasks appear in the public{" "}

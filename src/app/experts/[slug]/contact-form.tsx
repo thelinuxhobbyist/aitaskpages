@@ -2,12 +2,14 @@
 
 import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import Link from "next/link";
-import { useActionState, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { sendContactEnquiry } from "@/app/experts/[slug]/actions";
+import { FormErrorBanner } from "@/components/form-error-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useFriendlyActionState } from "@/lib/use-friendly-action-state";
 import type { ContactFormState } from "@/lib/validations/contact";
 
 type Props = {
@@ -23,9 +25,10 @@ export function ContactForm({
   expertName,
   turnstileSiteKey,
 }: Props) {
-  const [state, formAction, pending] = useActionState(
+  const [state, formAction, pending] = useFriendlyActionState(
     sendContactEnquiry,
-    initialState
+    initialState,
+    "We couldn't send your message. Please try again."
   );
   const [turnstileToken, setTurnstileToken] = useState("");
   const turnstileRef = useRef<TurnstileInstance>(null);
@@ -54,11 +57,7 @@ export function ContactForm({
       <input type="hidden" name="expertId" value={expertId} />
       <input type="hidden" name="turnstileToken" value={turnstileToken} />
 
-      {state.error && (
-        <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-          {state.error}
-        </p>
-      )}
+      {state.error && <FormErrorBanner message={state.error} />}
 
       <p className="rounded-lg bg-surface px-4 py-3 text-sm text-muted">
         This starts a conversation with {expertName} on AI Task Pages.

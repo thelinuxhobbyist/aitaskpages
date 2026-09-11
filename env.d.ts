@@ -1,8 +1,9 @@
-import type { D1Database, R2Bucket } from "@cloudflare/workers-types";
+import type { D1Database, Fetcher, R2Bucket } from "@cloudflare/workers-types";
 
 declare global {
   interface CloudflareEnv {
     DB: D1Database;
+    ASSETS: Fetcher;
     IMAGES: R2Bucket;
     IMAGES_BASE_URL?: string;
     CLERK_SECRET_KEY?: string;

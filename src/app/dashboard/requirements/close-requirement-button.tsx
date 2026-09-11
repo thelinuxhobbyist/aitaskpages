@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { closeRequirementAction } from "@/app/dashboard/requirements/actions";
-import { Button } from "@/components/ui/button";
+import { ConfirmAction } from "@/components/confirm-action";
 
 export function CloseRequirementButton({
   requirementId,
@@ -11,35 +10,21 @@ export function CloseRequirementButton({
   requirementId: number;
 }) {
   const router = useRouter();
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  async function handleClose() {
-    setPending(true);
-    setError(null);
-    const result = await closeRequirementAction(requirementId);
-    if (result.error) {
-      setError(result.error);
-      setPending(false);
-      return;
-    }
-    router.refresh();
-  }
 
   return (
-    <div className="space-y-2">
-      {error && (
-        <p className="text-sm text-red-600">{error}</p>
-      )}
-      <Button
-        type="button"
-        variant="ghost"
-        size="sm"
-        disabled={pending}
-        onClick={handleClose}
-      >
-        {pending ? "Closing…" : "Close requirement"}
-      </Button>
-    </div>
+    <ConfirmAction
+      triggerLabel="Close task"
+      triggerVariant="outline"
+      triggerSize="sm"
+      title="Close this task?"
+      description="It will be removed from the public task list. You can still view it here, or delete it permanently."
+      confirmLabel="Close task"
+      pendingLabel="Closing…"
+      onConfirm={async () => {
+        const result = await closeRequirementAction(requirementId);
+        if (result.error) return result;
+        router.refresh();
+      }}
+    />
   );
 }

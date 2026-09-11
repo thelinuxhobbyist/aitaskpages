@@ -6,6 +6,8 @@ import { getAuthIdentity, requireUser } from "@/lib/auth";
 import {
   closeRequirement,
   createRequirement,
+  deleteRequirement,
+  getRequirementById,
   publishRequirement,
   updateRequirement,
 } from "@/lib/requirements";
@@ -25,6 +27,13 @@ async function requireVerifiedUser() {
     throw new Error("Verify your email before posting requirements.");
   }
   return user;
+}
+
+function revalidateRequirement(id: number) {
+  revalidatePath("/dashboard/requirements");
+  revalidatePath(`/dashboard/requirements/${id}`);
+  revalidatePath(`/tasks/${id}`);
+  revalidatePath("/tasks");
 }
 
 export async function saveRequirementAction(
@@ -57,25 +66,23 @@ export async function saveRequirementAction(
 
   try {
     if (existingId) {
+      const existing = await getRequirementById(existingId);
       await updateRequirement(existingId, user.id, parsed.data);
       if (publish) {
         await publishRequirement(existingId, user.id);
+        redirectTo = `/tasks/${existingId}?live=1`;
+      } else if (existing?.status === "open") {
+        redirectTo = `/tasks/${existingId}?live=1`;
+      } else {
+        redirectTo = "/dashboard/requirements?saved=1";
       }
-      revalidatePath("/dashboard/requirements");
-      revalidatePath(`/dashboard/requirements/${existingId}`);
-      revalidatePath(`/tasks/${existingId}`);
-      revalidatePath("/tasks");
-      redirectTo = publish
-        ? `/tasks/${existingId}?posted=1`
-        : `/dashboard/requirements/${existingId}?saved=1`;
+      revalidateRequirement(existingId);
     } else {
       const id = await createRequirement(user.id, parsed.data, publish);
-      revalidatePath("/dashboard/requirements");
-      revalidatePath(`/tasks/${id}`);
-      revalidatePath("/tasks");
+      revalidateRequirement(id);
       redirectTo = publish
-        ? `/tasks/${id}?posted=1`
-        : `/dashboard/requirements/${id}?saved=1`;
+        ? `/tasks/${id}?live=1`
+        : "/dashboard/requirements?saved=1";
     }
   } catch (err) {
     return {
@@ -93,16 +100,14 @@ export async function publishRequirementAction(
   try {
     const user = await requireVerifiedUser();
     await publishRequirement(requirementId, user.id);
-    revalidatePath("/dashboard/requirements");
-    revalidatePath(`/dashboard/requirements/${requirementId}`);
-    revalidatePath(`/tasks/${requirementId}`);
-    revalidatePath("/tasks");
-    return {};
+    revalidateRequirement(requirementId);
   } catch (err) {
     return {
       error: err instanceof Error ? err.message : "Could not publish.",
     };
   }
+
+  redirect(`/tasks/${requirementId}?live=1`);
 }
 
 export async function closeRequirementAction(
@@ -112,14 +117,31 @@ export async function closeRequirementAction(
   try {
     const user = await requireUser();
     await closeRequirement(requirementId, user.id, status);
-    revalidatePath("/dashboard/requirements");
-    revalidatePath(`/dashboard/requirements/${requirementId}`);
-    revalidatePath(`/tasks/${requirementId}`);
-    revalidatePath("/tasks");
+    revalidateRequirement(requirementId);
     return {};
   } catch (err) {
     return {
       error: err instanceof Error ? err.message : "Could not close requirement.",
     };
   }
+}
+
+export async function deleteRequirementAction(
+  requirementId: number
+): Promise<{ error?: string }> {
+  try {
+    const user = await requireUser();
+    await deleteRequirement(requirementId, user.id);
+    revalidatePath("/dashboard/requirements");
+    revalidatePath(`/dashboard/requirements/${requirementId}`);
+    revalidatePath(`/tasks/${requirementId}`);
+    revalidatePath("/tasks");
+  } catch (err) {
+    return {
+      error:
+        err instanceof Error ? err.message : "Could not delete requirement.",
+    };
+  }
+
+  redirect("/dashboard/requirements?deleted=1");
 }

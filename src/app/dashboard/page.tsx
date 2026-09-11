@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft, Building2, User } from "lucide-react";
 import { ProfileForm } from "@/app/dashboard/profile-form";
+import { ProfileManagementPanel } from "@/app/dashboard/profile-management-panel";
 import {
   Card,
   CardContent,
@@ -167,6 +168,21 @@ export default async function DashboardPage({
               />
             </CardContent>
           </Card>
+
+          {profile && (
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle className="text-base">Manage profile</CardTitle>
+                <CardDescription>
+                  Edit your details above, or remove your listing from the
+                  directory.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ProfileManagementPanel profile={profile} />
+              </CardContent>
+            </Card>
+          )}
         </div>
       )}
     </>

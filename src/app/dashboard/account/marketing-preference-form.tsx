@@ -1,13 +1,15 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import {
   saveMarketingPreference,
   type MarketingPreferenceState,
 } from "@/app/dashboard/account/actions";
+import { FormErrorBanner } from "@/components/form-error-banner";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useFriendlyActionState } from "@/lib/use-friendly-action-state";
 
 type Props = {
   marketingOptIn: boolean;
@@ -22,18 +24,15 @@ export function MarketingPreferenceForm({
 }: Props) {
   const initialChecked = marketingOptIn && !unsubscribed;
   const [optIn, setOptIn] = useState(initialChecked);
-  const [state, formAction, pending] = useActionState(
+  const [state, formAction, pending] = useFriendlyActionState(
     saveMarketingPreference,
-    initialState
+    initialState,
+    "We couldn't save your preferences. Please try again."
   );
 
   return (
     <form action={formAction} className="space-y-4">
-      {state.error && (
-        <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-          {state.error}
-        </p>
-      )}
+      {state.error && <FormErrorBanner message={state.error} />}
       {state.success && (
         <p className="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
           Email preferences saved.

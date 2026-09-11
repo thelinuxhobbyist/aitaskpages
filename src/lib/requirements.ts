@@ -262,6 +262,33 @@ export async function publishRequirement(
   await notifyMatchingExperts(id);
 }
 
+export async function deleteRequirement(
+  id: number,
+  clientUserId: number
+): Promise<void> {
+  const existing = await getRequirementById(id);
+
+  if (!existing || existing.clientUserId !== clientUserId) {
+    throw new Error("Requirement not found.");
+  }
+
+  const db = await getDb();
+  // D1 does not always enforce ON DELETE CASCADE, so clear related rows first.
+  await db
+    .delete(requirementInterests)
+    .where(eq(requirementInterests.requirementId, id));
+  await db
+    .delete(requirementNotifications)
+    .where(eq(requirementNotifications.requirementId, id));
+  await db
+    .delete(requirementSkills)
+    .where(eq(requirementSkills.requirementId, id));
+  await db
+    .delete(requirementServices)
+    .where(eq(requirementServices.requirementId, id));
+  await db.delete(requirements).where(eq(requirements.id, id));
+}
+
 export async function closeRequirement(
   id: number,
   clientUserId: number,

@@ -1,9 +1,11 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { sendMessageAction } from "@/app/dashboard/conversations/actions";
+import { FormErrorBanner } from "@/components/form-error-banner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useFriendlyActionState } from "@/lib/use-friendly-action-state";
 import type { MessageFormState } from "@/lib/validations/message";
 
 const initialState: MessageFormState = {};
@@ -13,9 +15,10 @@ export function MessageComposer({
 }: {
   conversationId: number;
 }) {
-  const [state, formAction, pending] = useActionState(
+  const [state, formAction, pending] = useFriendlyActionState(
     sendMessageAction,
-    initialState
+    initialState,
+    "We couldn't send your message. Please try again."
   );
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -27,11 +30,7 @@ export function MessageComposer({
     <form ref={formRef} action={formAction} className="space-y-3">
       <input type="hidden" name="conversationId" value={conversationId} />
 
-      {state.error && (
-        <p className="rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-700">
-          {state.error}
-        </p>
-      )}
+      {state.error && <FormErrorBanner message={state.error} />}
 
       <Textarea
         name="body"

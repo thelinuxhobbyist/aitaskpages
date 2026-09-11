@@ -3,7 +3,12 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getAuthIdentity, requireUser } from "@/lib/auth";
-import { createProfile, updateProfile } from "@/lib/profiles";
+import {
+  createProfile,
+  hideProfile,
+  restoreProfile,
+  updateProfile,
+} from "@/lib/profiles";
 import {
   profileSchema,
   type ProfileFormState,
@@ -76,4 +81,38 @@ export async function saveProfile(
   }
 
   redirect(`/experts/${slug}?${created ? "created=1" : "updated=1"}`);
+}
+
+export async function hideProfileAction(): Promise<{ error?: string }> {
+  const user = await requireUser();
+  if (!user.profile) {
+    return { error: "You don't have a profile to remove." };
+  }
+
+  try {
+    const updated = await hideProfile(user.profile);
+    revalidatePath("/dashboard");
+    revalidatePath(`/experts/${updated.slug}`);
+    revalidatePath("/search");
+    return {};
+  } catch {
+    return { error: "Could not remove your profile. Please try again." };
+  }
+}
+
+export async function restoreProfileAction(): Promise<{ error?: string }> {
+  const user = await requireUser();
+  if (!user.profile) {
+    return { error: "You don't have a profile to restore." };
+  }
+
+  try {
+    const updated = await restoreProfile(user.profile);
+    revalidatePath("/dashboard");
+    revalidatePath(`/experts/${updated.slug}`);
+    revalidatePath("/search");
+    return {};
+  } catch {
+    return { error: "Could not restore your profile. Please try again." };
+  }
 }

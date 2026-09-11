@@ -8,9 +8,9 @@
   "scripts": {
     "dev": "next dev",
     "assert:worker": "node scripts/assert-production-worker.js",
-    "build": "npm run assert:worker && next build && opennextjs-cloudflare build --skipNextBuild",
-    "build:worker": "npm run assert:worker && opennextjs-cloudflare build --skipNextBuild",
-    "build:next": "next build",
+    "build": "npm run assert:worker && next build && node scripts/embed-deploy-version.js && opennextjs-cloudflare build --skipNextBuild",
+    "build:worker": "npm run assert:worker && node scripts/embed-deploy-version.js && opennextjs-cloudflare build --skipNextBuild",
+    "build:next": "next build && node scripts/embed-deploy-version.js",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",

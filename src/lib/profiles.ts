@@ -230,6 +230,32 @@ export async function updateProfile(
   return updated;
 }
 
+export async function hideProfile(profile: ExpertProfile): Promise<ExpertProfile> {
+  const db = await getDb();
+  const [updated] = await db
+    .update(expertProfiles)
+    .set({
+      status: "hidden",
+      updatedAt: new Date().toISOString(),
+    })
+    .where(eq(expertProfiles.id, profile.id))
+    .returning();
+  return updated;
+}
+
+export async function restoreProfile(profile: ExpertProfile): Promise<ExpertProfile> {
+  const db = await getDb();
+  const [updated] = await db
+    .update(expertProfiles)
+    .set({
+      status: "approved",
+      updatedAt: new Date().toISOString(),
+    })
+    .where(eq(expertProfiles.id, profile.id))
+    .returning();
+  return updated;
+}
+
 export async function getAllSkills() {
   return withD1Retry("getAllSkills", async () => {
     const db = await getDb();

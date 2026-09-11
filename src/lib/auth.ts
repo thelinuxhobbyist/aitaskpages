@@ -72,6 +72,16 @@ async function fetchUserWithProfile(clerkUserId: string) {
 
 const getUserWithProfile = cache(fetchUserWithProfile);
 
+/**
+ * React `cache()` memoizes the first lookup for this request — including a
+ * miss. After a webhook/upsert write we must read again uncached, or a brand
+ * new account looks like it was never created and the dashboard shows the
+ * "Finish setting up your account" banner.
+ */
+function reloadUserWithProfile(clerkUserId: string) {
+  return fetchUserWithProfile(clerkUserId);
+}
+
 function claimString(
   claims: Record<string, unknown>,
   ...keys: string[]
@@ -186,7 +196,9 @@ export const getOrCreateUser = cache(async () => {
   const email = payload ? primaryEmailFromClerk(payload) : null;
   if (!email || !payload) {
     console.error("No email for Clerk user (webhook/API sync failed):", userId);
-    return null;
+    // Webhook may have inserted while we waited on Clerk.
+    existing = await reloadUserWithProfile(userId);
+    return existing && !existing.deletedAt ? existing : null;
   }
 
   const cookieStore = await cookies();
@@ -198,7 +210,7 @@ export const getOrCreateUser = cache(async () => {
   } catch (err) {
     console.error("D1 upsert from Clerk failed:", userId, err);
     // Webhook may have won the race — re-read before giving up.
-    existing = await getUserWithProfile(userId);
+    existing = await reloadUserWithProfile(userId);
     return existing && !existing.deletedAt ? existing : null;
   }
 
@@ -213,12 +225,12 @@ export const getOrCreateUser = cache(async () => {
     }).catch((err) => console.error("Welcome email failed:", err));
   }
 
-  existing = await getUserWithProfile(userId);
+  existing = await reloadUserWithProfile(userId);
 
   if (existing && !existing.marketingOptIn && pendingOptIn) {
     await applyPendingMarketingOptIn(existing.id);
     cookieStore.delete(MARKETING_OPT_IN_COOKIE);
-    existing = await getUserWithProfile(userId);
+    existing = await reloadUserWithProfile(userId);
   }
 
   return existing ?? null;

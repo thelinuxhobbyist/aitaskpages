@@ -1,16 +1,18 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import { saveProfile } from "@/app/dashboard/actions";
 import { AvatarUpload } from "@/app/dashboard/avatar-upload";
 import { ProfileTypePicker } from "@/app/dashboard/profile-type-picker";
 import { ExternalLinksField } from "@/app/dashboard/external-links-field";
 import { WorkExamplesField } from "@/app/dashboard/work-examples-field";
 import { TaxonomyTagField } from "@/app/dashboard/taxonomy-tag-field";
+import { FormErrorBanner } from "@/components/form-error-banner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useFriendlyActionState } from "@/lib/use-friendly-action-state";
 import type { ProfileFormState } from "@/lib/validations/profile";
 import {
   getProfileSkillLabels,
@@ -60,9 +62,10 @@ export function ProfileForm({
   services,
   initialProfileType = null,
 }: Props) {
-  const [state, formAction, pending] = useActionState(
+  const [state, formAction, pending] = useFriendlyActionState(
     saveProfile,
-    initialState
+    initialState,
+    "We couldn't save your profile. Please try again."
   );
   const [profileType, setProfileType] = useState<ProfileType | null>(
     profile
@@ -89,11 +92,7 @@ export function ProfileForm({
     <form action={formAction} className="space-y-6">
       <input type="hidden" name="profileType" value={profileType} />
 
-      {state.error && (
-        <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
-          {state.error}
-        </p>
-      )}
+      {state.error && <FormErrorBanner message={state.error} />}
 
       <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3">
         <p className="text-sm text-on-surface">

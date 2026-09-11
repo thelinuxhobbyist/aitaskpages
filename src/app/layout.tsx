@@ -2,12 +2,14 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { DM_Sans, Space_Grotesk } from "next/font/google";
 import { Footer } from "@/components/footer";
+import { DeployFreshnessGuard } from "@/components/deploy-freshness-guard";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { Header } from "@/components/header";
 import { SiteStructuredData } from "@/components/site-structured-data";
 import { getAuthUserId } from "@/lib/auth";
 import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
 import { getClerkEnv } from "@/lib/clerk-env";
+import { getDeployVersion } from "@/lib/deploy-version";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -43,9 +45,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [{ publishableKey }, userId] = await Promise.all([
+  const [{ publishableKey }, userId, buildId] = await Promise.all([
     getClerkEnv(),
     getAuthUserId(),
+    getDeployVersion(),
   ]);
 
   return (
@@ -64,8 +67,10 @@ export default async function RootLayout({
       <html lang="en-GB" className={`${dmSans.variable} ${spaceGrotesk.variable}`}>
         <head>
           <SiteStructuredData />
+          <meta name="build-id" content={buildId} />
         </head>
         <body className="min-h-screen flex flex-col bg-surface">
+          <DeployFreshnessGuard buildId={buildId} />
           <GoogleAnalytics />
           <Header initialSignedIn={Boolean(userId)} />
           <main className="flex-1">{children}</main>
