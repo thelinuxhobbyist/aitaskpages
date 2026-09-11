@@ -1,4 +1,8 @@
 import type { Requirement } from "@/db/schema";
+import {
+  parseCustomServices,
+  parseCustomSkills,
+} from "@/lib/profile-utils";
 
 export const BUSINESS_TYPES = [
   { value: "dental_practice", label: "Dental Practice" },
@@ -63,6 +67,24 @@ export type PublicRequirementSummary = {
   serviceNames: string[];
 };
 
+export function getRequirementSkillLabels(req: {
+  customSkills?: string | null;
+  skills: { skill: { name: string } }[];
+}): string[] {
+  const custom = parseCustomSkills(req.customSkills);
+  return custom.length > 0 ? custom : req.skills.map((s) => s.skill.name);
+}
+
+export function getRequirementServiceLabels(req: {
+  customServices?: string | null;
+  services: { service: { name: string } }[];
+}): string[] {
+  const custom = parseCustomServices(req.customServices);
+  return custom.length > 0
+    ? custom
+    : req.services.map((s) => s.service.name);
+}
+
 export function toPublicSummary(
   req: Requirement & {
     skills: { skill: { name: string } }[];
@@ -79,7 +101,7 @@ export function toPublicSummary(
     remoteOk: req.remoteOk ?? false,
     locationLabel: formatRequirementLocation(req.location, req.remoteOk ?? false),
     createdAt: req.createdAt,
-    skillNames: req.skills.map((s) => s.skill.name),
-    serviceNames: req.services.map((s) => s.service.name),
+    skillNames: getRequirementSkillLabels(req),
+    serviceNames: getRequirementServiceLabels(req),
   };
 }

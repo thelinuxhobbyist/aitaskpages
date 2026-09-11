@@ -1,4 +1,11 @@
 import { z } from "zod";
+import {
+  MAX_PROFILE_SERVICES,
+  MAX_PROFILE_SKILLS,
+  MAX_SERVICE_TAG_LENGTH,
+  MAX_SKILL_TAG_LENGTH,
+  normalizeFreeTextTags,
+} from "@/lib/taxonomy-map";
 
 const optionalUrl = z.preprocess(
   (val) => {
@@ -48,23 +55,6 @@ const optionalString = (max: number) =>
     },
     z.string().max(max).optional()
   );
-
-function normalizeCustomTags(values: string[], max: number): string[] {
-  const seen = new Set<string>();
-  const normalized: string[] = [];
-
-  for (const raw of values) {
-    const name = raw.trim().replace(/\s+/g, " ");
-    if (name.length < 2 || name.length > 50) continue;
-    const key = name.toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    normalized.push(name);
-    if (normalized.length >= max) break;
-  }
-
-  return normalized;
-}
 
 export const MAX_EXTERNAL_LINKS = 8;
 
@@ -198,11 +188,19 @@ export const profileSchema = z.object({
   customSkills: z
     .array(z.string())
     .default([])
-    .transform((values) => normalizeCustomTags(values, 10)),
+    .transform((values) =>
+      normalizeFreeTextTags(values, MAX_PROFILE_SKILLS, MAX_SKILL_TAG_LENGTH)
+    ),
   customServices: z
     .array(z.string())
     .default([])
-    .transform((values) => normalizeCustomTags(values, 10)),
+    .transform((values) =>
+      normalizeFreeTextTags(
+        values,
+        MAX_PROFILE_SERVICES,
+        MAX_SERVICE_TAG_LENGTH
+      )
+    ),
   workExamples: z.preprocess(
     normalizeWorkExamples,
     z

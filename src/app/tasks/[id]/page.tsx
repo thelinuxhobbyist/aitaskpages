@@ -95,7 +95,7 @@ export default async function PublicRequirementPage({ params }: Props) {
       {summary.skillNames.length > 0 && (
         <section className="space-y-3 border-b border-border py-8">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-            Skills required
+            Expertise
           </h2>
           <div className="flex flex-wrap gap-2">
             {summary.skillNames.map((name) => (
@@ -110,7 +110,7 @@ export default async function PublicRequirementPage({ params }: Props) {
       {summary.serviceNames.length > 0 && (
         <section className="space-y-3 border-b border-border py-8">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">
-            Services needed
+            Help needed
           </h2>
           <div className="flex flex-wrap gap-2">
             {summary.serviceNames.map((name) => (

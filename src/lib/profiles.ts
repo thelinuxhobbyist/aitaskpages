@@ -9,6 +9,11 @@ import {
   type ExpertProfile,
 } from "@/db/schema";
 import { parseProfileType } from "@/lib/profile-type";
+import {
+  mapTermsToIds,
+  SERVICE_KEYWORDS,
+  SKILL_KEYWORDS,
+} from "@/lib/taxonomy-map";
 import { slugify } from "@/lib/utils";
 import type { ProfileFormData } from "@/lib/validations/profile";
 
@@ -35,7 +40,27 @@ function emptyToNull(value: string | number | undefined): string | number | null
 }
 
 function serializeCustomTags(values: string[]): string | null {
-  return values.length > 0 ? JSON.stringify(values) : null;
+  if (values.length === 0) return null;
+  return JSON.stringify({ v: 2, tags: values });
+}
+
+function uniqueIds(ids: number[]): number[] {
+  return [...new Set(ids)];
+}
+
+async function resolveProfileTaxonomy(data: ProfileFormData) {
+  const [allSkills, allServices] = await Promise.all([
+    getAllSkills(),
+    getAllServices(),
+  ]);
+  return {
+    skillIds: uniqueIds(
+      mapTermsToIds(data.customSkills, allSkills, SKILL_KEYWORDS)
+    ),
+    serviceIds: uniqueIds(
+      mapTermsToIds(data.customServices, allServices, SERVICE_KEYWORDS)
+    ),
+  };
 }
 
 function serializeExternalLinks(values: string[]): string | null {
@@ -147,7 +172,8 @@ export async function createProfile(userId: number, data: ProfileFormData) {
     })
     .returning();
 
-  await syncSkillsAndServices(profile.id, data.skillIds, data.serviceIds);
+  const { skillIds, serviceIds } = await resolveProfileTaxonomy(data);
+  await syncSkillsAndServices(profile.id, skillIds, serviceIds);
   return profile;
 }
 
@@ -199,7 +225,8 @@ export async function updateProfile(
     .where(eq(expertProfiles.id, profile.id))
     .returning();
 
-  await syncSkillsAndServices(updated.id, data.skillIds, data.serviceIds);
+  const { skillIds, serviceIds } = await resolveProfileTaxonomy(data);
+  await syncSkillsAndServices(updated.id, skillIds, serviceIds);
   return updated;
 }
 

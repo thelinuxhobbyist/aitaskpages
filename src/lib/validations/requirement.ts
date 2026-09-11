@@ -1,4 +1,11 @@
 import { z } from "zod";
+import {
+  MAX_SERVICE_TAG_LENGTH,
+  MAX_SKILL_TAG_LENGTH,
+  MAX_TASK_SERVICES,
+  MAX_TASK_SKILLS,
+  normalizeFreeTextTags,
+} from "@/lib/taxonomy-map";
 
 export const requirementSchema = z.object({
   title: z
@@ -17,8 +24,18 @@ export const requirementSchema = z.object({
   budget: z.string().max(100).optional(),
   location: z.string().max(100).optional(),
   remoteOk: z.coerce.boolean().default(false),
-  skillIds: z.array(z.coerce.number().int().positive()).default([]),
-  serviceIds: z.array(z.coerce.number().int().positive()).default([]),
+  customSkills: z
+    .array(z.string())
+    .default([])
+    .transform((values) =>
+      normalizeFreeTextTags(values, MAX_TASK_SKILLS, MAX_SKILL_TAG_LENGTH)
+    ),
+  customServices: z
+    .array(z.string())
+    .default([])
+    .transform((values) =>
+      normalizeFreeTextTags(values, MAX_TASK_SERVICES, MAX_SERVICE_TAG_LENGTH)
+    ),
 });
 
 export type RequirementFormData = z.infer<typeof requirementSchema>;
@@ -53,9 +70,6 @@ function parseRemoteOk(formData: FormData): boolean {
 }
 
 export function parseRequirementFormData(formData: FormData) {
-  const skillIds = formData.getAll("skillIds").map((v) => Number(v));
-  const serviceIds = formData.getAll("serviceIds").map((v) => Number(v));
-
   return requirementSchema.safeParse({
     title: formData.get("title"),
     description: formData.get("description"),
@@ -63,7 +77,7 @@ export function parseRequirementFormData(formData: FormData) {
     budget: formData.get("budget") || undefined,
     location: formData.get("location") || undefined,
     remoteOk: parseRemoteOk(formData),
-    skillIds,
-    serviceIds,
+    customSkills: formData.getAll("customSkills"),
+    customServices: formData.getAll("customServices"),
   });
 }

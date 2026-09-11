@@ -383,6 +383,10 @@ export const requirements = sqliteTable(
     remoteOk: integer("remote_ok", { mode: "boolean" })
       .notNull()
       .default(false),
+    /** JSON array of expertise terms the client typed (may include custom wording). */
+    customSkills: text("custom_skills"),
+    /** JSON array of help-needed terms the client typed (may include custom wording). */
+    customServices: text("custom_services"),
     status: text("status", {
       enum: ["draft", "open", "closed", "filled"],
     })

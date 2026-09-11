@@ -2,8 +2,9 @@ import Link from "next/link";
 import { Avatar } from "@/components/ui/avatar";
 import {
   AVAILABILITY_LABELS,
-  parseCustomServices,
-  parseCustomSkills,
+  getProfileServiceLabels,
+  getProfileSkillLabels,
+  mergeUniqueTags,
   type ProfileWithRelations,
 } from "@/lib/profile-utils";
 import { isCompanyProfile, profileTypeLabel } from "@/lib/profile-type";
@@ -13,25 +14,10 @@ import { ArrowRight, MapPin } from "lucide-react";
 type Variant = "row" | "grid";
 
 function uniqueSpecialisms(profile: ProfileWithRelations): string[] {
-  const customSkills = parseCustomSkills(profile.customSkills);
-  const customServices = parseCustomServices(profile.customServices);
-  const all = [
-    ...profile.services.map((s) => s.service.name),
-    ...customServices,
-    ...profile.skills.map((s) => s.skill.name),
-    ...customSkills,
-  ];
-
-  const unique: string[] = [];
-  const seen = new Set<string>();
-  for (const item of all) {
-    const key = item.toLowerCase();
-    if (!seen.has(key)) {
-      seen.add(key);
-      unique.push(item);
-    }
-  }
-  return unique;
+  return mergeUniqueTags(
+    getProfileServiceLabels(profile),
+    getProfileSkillLabels(profile)
+  );
 }
 
 function AvailabilityDot({

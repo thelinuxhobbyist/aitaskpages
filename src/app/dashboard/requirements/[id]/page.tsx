@@ -19,6 +19,8 @@ import { getAllServices, getAllSkills } from "@/lib/profiles";
 import {
   formatRequirementLocation,
   getRequirementCompanyLabel,
+  getRequirementServiceLabels,
+  getRequirementSkillLabels,
 } from "@/lib/requirement-utils";
 import { formatBudgetGBP, formatDateTime } from "@/lib/utils";
 import { Building2, ExternalLink, MapPin, Users, Wallet } from "lucide-react";
@@ -148,14 +150,14 @@ export default async function RequirementDetailPage({ params }: Props) {
             </p>
 
             <div className="flex flex-wrap gap-1.5">
-              {requirement.skills.map(({ skill }) => (
-                <Badge key={skill.id} variant="secondary">
-                  {skill.name}
+              {getRequirementSkillLabels(requirement).map((name) => (
+                <Badge key={`skill-${name}`} variant="secondary">
+                  {name}
                 </Badge>
               ))}
-              {requirement.services.map(({ service }) => (
-                <Badge key={service.id} variant="secondary">
-                  {service.name}
+              {getRequirementServiceLabels(requirement).map((name) => (
+                <Badge key={`service-${name}`} variant="secondary">
+                  {name}
                 </Badge>
               ))}
             </div>
@@ -167,7 +169,7 @@ export default async function RequirementDetailPage({ params }: Props) {
         <Card>
           <CardHeader>
             <CardTitle>
-              {requirement.status === "draft" ? "Edit draft" : "Edit requirement"}
+              {requirement.status === "draft" ? "Edit draft" : "Edit task"}
             </CardTitle>
             <CardDescription>
               {requirement.status === "draft"

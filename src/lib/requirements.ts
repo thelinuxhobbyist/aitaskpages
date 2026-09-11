@@ -19,12 +19,19 @@ import {
   sendRequirementInterestEmail,
 } from "@/lib/email";
 import { publicExpertProfileConditions } from "@/lib/directory-filters";
+import { parseCustomServices, parseCustomSkills } from "@/lib/profile-utils";
+import { getAllServices, getAllSkills } from "@/lib/profiles";
 import { interestedExpertsUrl, requirementUrl } from "@/lib/site";
 import {
   getRequirementCompanyLabel,
   toPublicSummary,
   type PublicRequirementSummary,
 } from "@/lib/requirement-utils";
+import {
+  mapTermsToIds,
+  SERVICE_KEYWORDS,
+  SKILL_KEYWORDS,
+} from "@/lib/taxonomy-map";
 import type { RequirementFormData } from "@/lib/validations/requirement";
 
 export type RequirementWithRelations = Requirement & {
@@ -60,6 +67,41 @@ const requirementWithRelations = {
   services: { with: { service: true } },
   client: true,
 } as const;
+
+function serializeCustomTags(values: string[]): string | null {
+  return values.length > 0 ? JSON.stringify(values) : null;
+}
+
+function uniqueIds(ids: number[]): number[] {
+  return [...new Set(ids)];
+}
+
+async function resolveRequirementTaxonomy(data: RequirementFormData) {
+  const [allSkills, allServices] = await Promise.all([
+    getAllSkills(),
+    getAllServices(),
+  ]);
+  const terms = [...data.customSkills, ...data.customServices];
+  return {
+    skillIds: uniqueIds(mapTermsToIds(terms, allSkills, SKILL_KEYWORDS)),
+    serviceIds: uniqueIds(mapTermsToIds(terms, allServices, SERVICE_KEYWORDS)),
+  };
+}
+
+function hasTypedExpertise(data: RequirementFormData): boolean {
+  return data.customSkills.length > 0 || data.customServices.length > 0;
+}
+
+function storedRequirementHasExpertise(
+  existing: RequirementWithRelations
+): boolean {
+  return (
+    parseCustomSkills(existing.customSkills).length > 0 ||
+    parseCustomServices(existing.customServices).length > 0 ||
+    existing.skills.length > 0 ||
+    existing.services.length > 0
+  );
+}
 
 async function syncRequirementTaxonomy(
   requirementId: number,
@@ -117,12 +159,13 @@ export async function createRequirement(
   data: RequirementFormData,
   publish: boolean
 ): Promise<number> {
-  if (publish && data.skillIds.length === 0 && data.serviceIds.length === 0) {
+  if (publish && !hasTypedExpertise(data)) {
     throw new Error(
-      "Select at least one skill or service so matching experts can be notified."
+      "Add the expertise or kind of help you need so matching experts can be notified."
     );
   }
 
+  const { skillIds, serviceIds } = await resolveRequirementTaxonomy(data);
   const db = await getDb();
   const now = new Date().toISOString();
 
@@ -137,12 +180,14 @@ export async function createRequirement(
       budget: data.budget || null,
       location: data.location || null,
       remoteOk: data.remoteOk,
+      customSkills: serializeCustomTags(data.customSkills),
+      customServices: serializeCustomTags(data.customServices),
       status: publish ? "open" : "draft",
       updatedAt: now,
     })
     .returning({ id: requirements.id });
 
-  await syncRequirementTaxonomy(row.id, data.skillIds, data.serviceIds);
+  await syncRequirementTaxonomy(row.id, skillIds, serviceIds);
 
   if (publish) {
     await notifyMatchingExperts(row.id);
@@ -167,6 +212,8 @@ export async function updateRequirement(
     throw new Error("This requirement can no longer be edited.");
   }
 
+  const { skillIds, serviceIds } = await resolveRequirementTaxonomy(data);
+
   await db
     .update(requirements)
     .set({
@@ -177,11 +224,13 @@ export async function updateRequirement(
       budget: data.budget || null,
       location: data.location || null,
       remoteOk: data.remoteOk,
+      customSkills: serializeCustomTags(data.customSkills),
+      customServices: serializeCustomTags(data.customServices),
       updatedAt: new Date().toISOString(),
     })
     .where(eq(requirements.id, id));
 
-  await syncRequirementTaxonomy(id, data.skillIds, data.serviceIds);
+  await syncRequirementTaxonomy(id, skillIds, serviceIds);
 }
 
 export async function publishRequirement(
@@ -199,12 +248,9 @@ export async function publishRequirement(
     throw new Error("Only drafts can be published.");
   }
 
-  if (
-    existing.skills.length === 0 &&
-    existing.services.length === 0
-  ) {
+  if (!storedRequirementHasExpertise(existing)) {
     throw new Error(
-      "Add at least one skill or service before publishing."
+      "Add the expertise or kind of help you need before publishing."
     );
   }
 

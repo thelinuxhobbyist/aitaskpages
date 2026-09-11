@@ -3,19 +3,18 @@
 import { useActionState, useState } from "react";
 import { saveProfile } from "@/app/dashboard/actions";
 import { AvatarUpload } from "@/app/dashboard/avatar-upload";
-import { CustomSkillsField } from "@/app/dashboard/custom-skills-field";
-import { CustomServicesField } from "@/app/dashboard/custom-services-field";
 import { ProfileTypePicker } from "@/app/dashboard/profile-type-picker";
 import { ExternalLinksField } from "@/app/dashboard/external-links-field";
 import { WorkExamplesField } from "@/app/dashboard/work-examples-field";
+import { TaxonomyTagField } from "@/app/dashboard/taxonomy-tag-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import type { ProfileFormState } from "@/lib/validations/profile";
 import {
-  parseCustomSkills,
-  parseCustomServices,
+  getProfileSkillLabels,
+  getProfileServiceLabels,
   parseExternalLinks,
   parseWorkExamples,
 } from "@/lib/profile-utils";
@@ -24,6 +23,14 @@ import {
   PROFILE_TYPE_LABELS,
   type ProfileType,
 } from "@/lib/profile-type";
+import {
+  MAX_PROFILE_SERVICES,
+  MAX_PROFILE_SKILLS,
+  MAX_SERVICE_TAG_LENGTH,
+  MAX_SKILL_TAG_LENGTH,
+  SERVICE_KEYWORDS,
+  SKILL_KEYWORDS,
+} from "@/lib/taxonomy-map";
 import type { ExpertProfile, Service, Skill } from "@/db/schema";
 
 type ProfileWithRelations = ExpertProfile & {
@@ -61,13 +68,6 @@ export function ProfileForm({
     profile
       ? parseProfileType(profile.profileType)
       : initialProfileType
-  );
-
-  const selectedSkillIds = new Set(
-    profile?.skills.map((s) => s.skill.id) ?? []
-  );
-  const selectedServiceIds = new Set(
-    profile?.services.map((s) => s.service.id) ?? []
   );
 
   if (!profileType) {
@@ -318,57 +318,43 @@ export function ProfileForm({
         </div>
       </fieldset>
 
-      <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-slate-700">
-          {isCompany ? "Areas of expertise" : "Skills"}
-        </legend>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {skills.map((skill) => (
-            <label
-              key={skill.id}
-              className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm hover:bg-surface"
-            >
-              <input
-                type="checkbox"
-                name="skillIds"
-                value={String(skill.id)}
-                defaultChecked={selectedSkillIds.has(skill.id)}
-                className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
-              />
-              {skill.name}
-            </label>
-          ))}
-        </div>
-        <CustomSkillsField
-          initialSkills={parseCustomSkills(profile?.customSkills)}
-        />
-      </fieldset>
+      <section className="space-y-4">
+        <h3 className="text-sm font-medium text-slate-700">Expertise</h3>
 
-      <fieldset className="space-y-3">
-        <legend className="text-sm font-medium text-slate-700">
-          {isCompany ? "Services / capabilities" : "Services"}
-        </legend>
-        <div className="grid gap-2 sm:grid-cols-2">
-          {services.map((service) => (
-            <label
-              key={service.id}
-              className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm hover:bg-surface"
-            >
-              <input
-                type="checkbox"
-                name="serviceIds"
-                value={String(service.id)}
-                defaultChecked={selectedServiceIds.has(service.id)}
-                className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
-              />
-              {service.name}
-            </label>
-          ))}
-        </div>
-        <CustomServicesField
-          initialServices={parseCustomServices(profile?.customServices)}
+        <TaxonomyTagField
+          name="customSkills"
+          label={
+            isCompany
+              ? "What expertise does this company offer?"
+              : "What expertise do you offer?"
+          }
+          description="Add skills, technologies or areas of expertise. You can pick from suggestions or type your own."
+          placeholder="e.g. Python, RAG, AI agents"
+          itemNoun="skill"
+          catalog={skills}
+          keywords={SKILL_KEYWORDS}
+          maxItems={MAX_PROFILE_SKILLS}
+          maxLength={MAX_SKILL_TAG_LENGTH}
+          initialItems={profile ? getProfileSkillLabels(profile) : []}
         />
-      </fieldset>
+
+        <TaxonomyTagField
+          name="customServices"
+          label={
+            isCompany
+              ? "What kind of help does this company provide?"
+              : "What kind of help do you provide?"
+          }
+          description="Describe the services, projects or outcomes you can help with. Suggestions are available, but your own wording is fine."
+          placeholder="e.g. AI integration, chatbot development"
+          itemNoun="service"
+          catalog={services}
+          keywords={SERVICE_KEYWORDS}
+          maxItems={MAX_PROFILE_SERVICES}
+          maxLength={MAX_SERVICE_TAG_LENGTH}
+          initialItems={profile ? getProfileServiceLabels(profile) : []}
+        />
+      </section>
 
       <WorkExamplesField
         initialExamples={parseWorkExamples(profile?.workExamples)}

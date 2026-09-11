@@ -4,24 +4,132 @@ import { isCompanyProfile } from "@/lib/profile-type";
 export const MAX_CUSTOM_SKILLS = 10;
 export const MAX_CUSTOM_SERVICES = 10;
 
-/** Parse a JSON string array stored on expert profiles. */
-function parseCustomTags(raw: string | null | undefined): string[] {
-  if (!raw?.trim()) return [];
+const COMPLETE_TAG_VERSION = 2;
+
+function normalizeTagList(parsed: unknown): string[] {
+  if (!Array.isArray(parsed)) return [];
+  return parsed
+    .filter((item): item is string => typeof item === "string")
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+/** Parse a JSON string array, or the v2 `{ v: 2, tags }` object used after tag-input saves. */
+function parseCustomTagPayload(raw: string | null | undefined): {
+  tags: string[];
+  complete: boolean;
+} {
+  if (!raw?.trim()) return { tags: [], complete: false };
   try {
     const parsed: unknown = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed
-      .filter((item): item is string => typeof item === "string")
-      .map((s) => s.trim())
-      .filter(Boolean);
+    if (Array.isArray(parsed)) {
+      return { tags: normalizeTagList(parsed), complete: false };
+    }
+    if (parsed && typeof parsed === "object") {
+      const record = parsed as Record<string, unknown>;
+      if (record.v === COMPLETE_TAG_VERSION && Array.isArray(record.tags)) {
+        return { tags: normalizeTagList(record.tags), complete: true };
+      }
+    }
   } catch {
-    return [];
+    return { tags: [], complete: false };
   }
+  return { tags: [], complete: false };
+}
+
+function parseCustomTags(raw: string | null | undefined): string[] {
+  return parseCustomTagPayload(raw).tags;
 }
 
 export const parseCustomSkills = parseCustomTags;
 export const parseCustomServices = parseCustomTags;
 export const parseExternalLinks = parseCustomTags;
+
+export function hasCompleteCustomSkills(
+  raw: string | null | undefined
+): boolean {
+  return parseCustomTagPayload(raw).complete;
+}
+
+export function hasCompleteCustomServices(
+  raw: string | null | undefined
+): boolean {
+  return parseCustomTagPayload(raw).complete;
+}
+
+export function mergeUniqueTags(...groups: string[][]): string[] {
+  const unique: string[] = [];
+  const seen = new Set<string>();
+  for (const group of groups) {
+    for (const item of group) {
+      const key = item.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      unique.push(item);
+    }
+  }
+  return unique;
+}
+
+export function getProfileSkillLabels(profile: {
+  customSkills?: string | null;
+  skills: { skill: { name: string } }[];
+}): string[] {
+  const custom = parseCustomSkills(profile.customSkills);
+  if (hasCompleteCustomSkills(profile.customSkills)) return custom;
+  return mergeUniqueTags(
+    profile.skills.map((s) => s.skill.name),
+    custom
+  );
+}
+
+export function getProfileServiceLabels(profile: {
+  customServices?: string | null;
+  services: { service: { name: string } }[];
+}): string[] {
+  const custom = parseCustomServices(profile.customServices);
+  if (hasCompleteCustomServices(profile.customServices)) return custom;
+  return mergeUniqueTags(
+    profile.services.map((s) => s.service.name),
+    custom
+  );
+}
+
+export function getProfileSkillDisplayTags(profile: {
+  customSkills?: string | null;
+  skills: { skill: { name: string; slug: string } }[];
+}): { name: string; href: string }[] {
+  const byName = new Map(
+    profile.skills.map((s) => [s.skill.name.toLowerCase(), s.skill])
+  );
+  return getProfileSkillLabels(profile).map((name) => {
+    const skill = byName.get(name.toLowerCase());
+    return {
+      name,
+      href: skill
+        ? `/search?skill=${skill.slug}`
+        : `/search?q=${encodeURIComponent(name)}`,
+    };
+  });
+}
+
+export function getProfileServiceDisplayTags(profile: {
+  customServices?: string | null;
+  services: { service: { name: string; slug: string } }[];
+}): { name: string; href: string }[] {
+  const byName = new Map(
+    profile.services.map((s) => [s.service.name.toLowerCase(), s.service])
+  );
+  return getProfileServiceLabels(profile).map((name) => {
+    const service = byName.get(name.toLowerCase());
+    return {
+      name,
+      href: service
+        ? `/search?service=${service.slug}`
+        : `/search?q=${encodeURIComponent(name)}`,
+    };
+  });
+}
 
 export type WorkExample = {
   title: string;

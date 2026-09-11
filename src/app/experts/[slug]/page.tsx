@@ -11,8 +11,10 @@ import { getAuthIdentity, getOrCreateUser } from "@/lib/auth";
 import { getProfileBySlug, incrementProfileViews } from "@/lib/directory";
 import {
   AVAILABILITY_LABELS,
-  parseCustomSkills,
-  parseCustomServices,
+  getProfileServiceDisplayTags,
+  getProfileServiceLabels,
+  getProfileSkillDisplayTags,
+  getProfileSkillLabels,
   parseExternalLinks,
   parseWorkExamples,
 } from "@/lib/profile-utils";
@@ -115,8 +117,10 @@ export default async function ExpertProfilePage({ params }: PageProps) {
   const isOwner = !!viewer && viewer.id === profile.userId;
   const turnstileSiteKey = getTurnstileSiteKey();
   const profilePath = `/experts/${profile.slug}`;
-  const customSkills = parseCustomSkills(profile.customSkills);
-  const customServices = parseCustomServices(profile.customServices);
+  const customSkills = getProfileSkillLabels(profile);
+  const customServices = getProfileServiceLabels(profile);
+  const skillTags = getProfileSkillDisplayTags(profile);
+  const serviceTags = getProfileServiceDisplayTags(profile);
   const externalLinks = parseExternalLinks(profile.externalLinks);
   const workExamples = parseWorkExamples(profile.workExamples);
   const company = isCompanyProfile(profile);
@@ -150,10 +154,7 @@ export default async function ExpertProfilePage({ params }: PageProps) {
             addressLocality: profile.location,
           },
         }),
-        knowsAbout: [
-          ...profile.skills.map((s) => s.skill.name),
-          ...customSkills,
-        ],
+        knowsAbout: [...customSkills, ...customServices],
       }
     : {
         "@context": "https://schema.org",
@@ -165,10 +166,7 @@ export default async function ExpertProfilePage({ params }: PageProps) {
         ...(profile.location && {
           address: { "@type": "PostalAddress", addressLocality: profile.location },
         }),
-        knowsAbout: [
-          ...profile.skills.map((s) => s.skill.name),
-          ...customSkills,
-        ],
+        knowsAbout: [...customSkills, ...customServices],
         worksFor: {
           "@type": "Organization",
           name: SITE_NAME,
@@ -294,23 +292,13 @@ export default async function ExpertProfilePage({ params }: PageProps) {
           </ProfileSection>
         )}
 
-      {(profile.skills.length > 0 || customSkills.length > 0) && (
+      {skillTags.length > 0 && (
         <ProfileSection title={skillsTitle}>
           <div className="flex flex-wrap gap-1.5">
-            {profile.skills.map(({ skill }) => (
-              <Link key={skill.id} href={`/search?skill=${skill.slug}`}>
+            {skillTags.map((tag) => (
+              <Link key={tag.name} href={tag.href}>
                 <Badge variant="secondary" className="hover:bg-stone-200">
-                  {skill.name}
-                </Badge>
-              </Link>
-            ))}
-            {customSkills.map((name) => (
-              <Link
-                key={name}
-                href={`/search?q=${encodeURIComponent(name)}`}
-              >
-                <Badge variant="secondary" className="hover:bg-stone-200">
-                  {name}
+                  {tag.name}
                 </Badge>
               </Link>
             ))}
@@ -318,23 +306,13 @@ export default async function ExpertProfilePage({ params }: PageProps) {
         </ProfileSection>
       )}
 
-      {profile.services.length > 0 || customServices.length > 0 ? (
+      {serviceTags.length > 0 ? (
         <ProfileSection title={servicesTitle}>
           <div className="flex flex-wrap gap-1.5">
-            {profile.services.map(({ service }) => (
-              <Link key={service.id} href={`/search?service=${service.slug}`}>
+            {serviceTags.map((tag) => (
+              <Link key={tag.name} href={tag.href}>
                 <Badge variant="default" className="hover:bg-stone-200">
-                  {service.name}
-                </Badge>
-              </Link>
-            ))}
-            {customServices.map((name) => (
-              <Link
-                key={name}
-                href={`/search?q=${encodeURIComponent(name)}`}
-              >
-                <Badge variant="default" className="hover:bg-stone-200">
-                  {name}
+                  {tag.name}
                 </Badge>
               </Link>
             ))}
