@@ -33,6 +33,7 @@
     "deploy": "npm run assert:worker && npm run build && opennextjs-cloudflare deploy -- --keep-vars",
     "secret:put": "wrangler versions secret put CLERK_SECRET_KEY",
     "secret:put:webhook": "wrangler versions secret put CLERK_WEBHOOK_SIGNING_SECRET",
+    "secret:put:encryption": "wrangler versions secret put CLERK_ENCRYPTION_KEY",
     "secret:list": "wrangler versions secret list"
   },
   "dependencies": {

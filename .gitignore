@@ -22,3 +22,6 @@ node_modules/
 
 # Drizzle
 drizzle/meta/
+
+# clerk configuration (can include secrets)
+/.clerk/

@@ -8,6 +8,8 @@ export type ClerkEnvKeys = {
 
 const SECRET_BINDING_KEYS = [
   "CLERK_SECRET_KEY",
+  // Required when clerkMiddleware is given dynamic secretKey/publishableKey options.
+  "CLERK_ENCRYPTION_KEY",
   "CLERK_WEBHOOK_SIGNING_SECRET",
   "RESEND_API_KEY",
   "TURNSTILE_SECRET_KEY",

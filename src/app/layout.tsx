@@ -7,6 +7,7 @@ import { Header } from "@/components/header";
 import { SiteStructuredData } from "@/components/site-structured-data";
 import { getAuthUserId } from "@/lib/auth";
 import { CLERK_PUBLISHABLE_KEY } from "@/lib/clerk-config";
+import { getClerkEnv } from "@/lib/clerk-env";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -42,11 +43,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const userId = await getAuthUserId();
+  const [{ publishableKey }, userId] = await Promise.all([
+    getClerkEnv(),
+    getAuthUserId(),
+  ]);
 
   return (
     <ClerkProvider
-      publishableKey={CLERK_PUBLISHABLE_KEY}
+      publishableKey={publishableKey || CLERK_PUBLISHABLE_KEY}
       signInUrl="/sign-in"
       signUpUrl="/sign-up"
       signInFallbackRedirectUrl="/dashboard"
@@ -54,6 +58,7 @@ export default async function RootLayout({
       allowedRedirectOrigins={[
         "https://aitaskpages.com",
         "http://localhost:3000",
+        "https://aitaskpages.yama.workers.dev",
       ]}
     >
       <html lang="en-GB" className={`${dmSans.variable} ${spaceGrotesk.variable}`}>

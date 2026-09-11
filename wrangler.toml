@@ -3,7 +3,7 @@
 name = "aitaskpages"
 main = ".open-next/worker.js"
 compatibility_date = "2025-04-01"
-compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env", "global_fetch_strictly_public"]
 
 [assets]
 directory = ".open-next/assets"
@@ -73,7 +73,7 @@ bucket_name = "aitaskpages-images"
 IMAGES_BASE_URL = ""
 # Clerk publishable key — set after creating a NEW Clerk app for AI Task Pages.
 # Do not reuse AI Jobs Market Clerk keys.
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = ""
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_live_Y2xlcmsuYWl0YXNrcGFnZXMuY29tJA"
 NEXT_PUBLIC_CLERK_SIGN_IN_URL = "/sign-in"
 NEXT_PUBLIC_CLERK_SIGN_UP_URL = "/sign-up"
 NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL = "/dashboard"
@@ -81,6 +81,7 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL = "/dashboard"
 
 # Local development secrets go in .dev.vars:
 # CLERK_SECRET_KEY=
+# CLERK_ENCRYPTION_KEY=   # openssl rand -hex 32 — needed for dynamic Clerk middleware keys
 # CLERK_WEBHOOK_SIGNING_SECRET=
 # RESEND_API_KEY=
 # ADMIN_API_KEY=
@@ -90,5 +91,6 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL = "/dashboard"
 #
 # Production secrets (Cloudflare Worker Versions API):
 #   1. npm run deploy
-#   2. npm run secret:put   (NOT wrangler secret put — that fails while a version is pending)
+#   2. npm run secret:put / secret:put:webhook / secret:put:encryption
+#      (NOT wrangler secret put — that fails while a version is pending)
 #   3. npm run deploy       (promote the version that includes the secret)
