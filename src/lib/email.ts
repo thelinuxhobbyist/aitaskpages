@@ -7,8 +7,8 @@ import RequirementInterestEmail from "@/emails/requirement-interest";
 import SenderConfirmationEmail from "@/emails/sender-confirmation";
 import WelcomeEmail from "@/emails/welcome";
 
-/** Default sender — must be on a domain verified in Resend. */
-const DEFAULT_EMAIL_FROM = "AI Jobs Market <noreply@aijobsmarket.co.uk>";
+/** Default sender — override via EMAIL_FROM; must be a domain verified in Resend for AI Task Pages. */
+const DEFAULT_EMAIL_FROM = "AI Task Pages <noreply@example.com>";
 
 /** Sender address, overridable via the EMAIL_FROM env var / binding. */
 export function getEmailFrom(): string {
@@ -36,7 +36,7 @@ export function getResendClient() {
   return getResend();
 }
 
-const DEFAULT_MARKETING_FROM = "AI Jobs Market <hello@aijobsmarket.co.uk>";
+const DEFAULT_MARKETING_FROM = "AI Task Pages <hello@example.com>";
 
 /** Marketing sender — falls back to transactional from address. */
 export function getMarketingFrom(): string {

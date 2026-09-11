@@ -85,13 +85,13 @@ async function main() {
   const isRemote = process.argv.includes("--remote");
   const flag = isRemote ? "--remote" : "--local";
   const sql = buildInsertStatements();
-  const tmpFile = join(tmpdir(), `aijobsmarket-seed-${Date.now()}.sql`);
+  const tmpFile = join(tmpdir(), `aitaskpages-seed-${Date.now()}.sql`);
   writeFileSync(tmpFile, sql);
 
   console.log(`Seeding skills (${SEED_SKILLS.length}) and services (${SEED_SERVICES.length}) ${isRemote ? "remotely" : "locally"}…`);
 
   try {
-    execSync(`npx wrangler d1 execute aijobsmarket_db ${flag} --file=${tmpFile}`, {
+    execSync(`npx wrangler d1 execute aitaskpages_db ${flag} --file=${tmpFile}`, {
       stdio: "inherit",
     });
     console.log("Seed complete.");

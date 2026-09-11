@@ -6,7 +6,7 @@ const nowIso = () => new Date().toISOString();
 
 /** Placeholder email — unique per internal user id, not deliverable. */
 export function anonymisedEmail(userId: number): string {
-  return `deleted-user-${userId}@deleted.aijobsmarket.local`;
+  return `deleted-user-${userId}@deleted.aitaskpages.local`;
 }
 
 export type UserDeletionResult = {

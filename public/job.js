@@ -21,7 +21,7 @@ async function loadJob() {
     const jobContainer = document.getElementById("job");
     jobContainer.innerHTML = '<div class="loading"><i class="material-icons" style="font-size: 3rem;">hourglass_empty</i><p>Loading job details...</p></div>';
 
-    const res = await fetch(`https://market-ai-jobs-worker.yama.workers.dev/api/jobs/${jobId}`);
+    const res = await fetch(`https://aitaskpages-jobs-worker.yama.workers.dev/api/jobs/${jobId}`);
     const job = await res.json();
 
     // Update JSON-LD structured data

@@ -1,4 +1,6 @@
-export const SITE_URL = "https://aijobsmarket.co.uk";
+/** Public site URL — update when the AI Task Pages domain is configured. */
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://aitaskpages.yama.workers.dev";
 
 /**
  * Brand assets served dynamically from R2 with live ETag revalidation.
@@ -31,10 +33,11 @@ export const SITE_FAVICON_ICO_URL = "/favicon.ico";
 /** Square share/app icon (Twitter summary, apple-style previews). */
 export const SITE_SHARE_ICON_URL = SITE_APPLE_TOUCH_ICON_URL;
 
+/** Social links — replace with AI Task Pages accounts when ready. */
 export const SOCIAL_LINKS = {
-  linkedin: "https://www.linkedin.com/company/aijobsmarket/",
-  x: "https://twitter.com/aijobsmarket",
-  youtube: "https://www.youtube.com/@aijobsmarket",
+  linkedin: "",
+  x: "",
+  youtube: "",
 } as const;
 
 export function conversationUrl(conversationId: number): string {

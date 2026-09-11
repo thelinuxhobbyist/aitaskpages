@@ -109,7 +109,7 @@ function escapeSql(value: string): string {
 function buildTaskSeedSql(): string {
   const statements: string[] = [
     `INSERT OR IGNORE INTO users (clerk_user_id, email, name, role, plan, marketing_opt_in, unsubscribed, created_at, updated_at)
-     VALUES ('${DEMO_CLERK_ID}', 'demo-tasks@aijobsmarket.test', 'Demo Tasks Client', 'freelancer', 'free', 0, 0, datetime('now'), datetime('now'));`,
+     VALUES ('${DEMO_CLERK_ID}', 'demo-tasks@aitaskpages.test', 'Demo Tasks Client', 'freelancer', 'free', 0, 0, datetime('now'), datetime('now'));`,
   ];
 
   for (const task of SEED_TASKS) {
@@ -176,7 +176,7 @@ async function main() {
   const isRemote = process.argv.includes("--remote");
   const flag = isRemote ? "--remote" : "--local";
   const sql = buildTaskSeedSql();
-  const tmpFile = join(tmpdir(), `aijobsmarket-seed-tasks-${Date.now()}.sql`);
+  const tmpFile = join(tmpdir(), `aitaskpages-seed-tasks-${Date.now()}.sql`);
   writeFileSync(tmpFile, sql);
 
   console.log(
@@ -184,7 +184,7 @@ async function main() {
   );
 
   try {
-    execSync(`npx wrangler d1 execute aijobsmarket_db ${flag} --file=${tmpFile}`, {
+    execSync(`npx wrangler d1 execute aitaskpages_db ${flag} --file=${tmpFile}`, {
       stdio: "inherit",
     });
     console.log("Task seed complete.");

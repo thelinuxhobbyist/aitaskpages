@@ -192,7 +192,7 @@ async function loadJobs() {
     const container = document.getElementById("jobs");
     container.innerHTML = '<div class="loading"><i class="material-icons" style="font-size: 3rem;">hourglass_empty</i><p>Loading jobs...</p></div>';
 
-    const res = await fetch("https://market-ai-jobs-worker.yama.workers.dev/api/jobs");
+    const res = await fetch("https://aitaskpages-jobs-worker.yama.workers.dev/api/jobs");
     const jobs = await res.json();
 
     // Store jobs globally for search functionality

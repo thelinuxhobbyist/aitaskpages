@@ -1,7 +1,7 @@
 import { execSync } from "node:child_process";
 import path from "node:path";
 
-const BUCKET = "aijobsmarket-images";
+const BUCKET = "aitaskpages-images";
 const OUT_DIR = path.join(process.cwd(), "generated_favicons");
 
 const UPLOADS = [

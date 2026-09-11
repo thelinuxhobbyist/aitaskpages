@@ -19,7 +19,7 @@ export async function GET(request: Request) {
     status: 200,
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="aijobsmarket-users-${date}.csv"`,
+      "Content-Disposition": `attachment; filename="aitaskpages-users-${date}.csv"`,
       "Cache-Control": "no-store, private",
     },
   });

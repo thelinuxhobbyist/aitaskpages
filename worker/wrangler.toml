@@ -1,3 +1,5 @@
-name = "market-ai-jobs-worker"
+# Standalone jobs API worker for AI Task Pages (separate from market-ai-jobs-worker).
+# Deploy only when this jobs API is needed; do not reuse the AI Jobs Market worker.
+name = "aitaskpages-jobs-worker"
 main = "index.js"
 compatibility_date = "2025-01-01"

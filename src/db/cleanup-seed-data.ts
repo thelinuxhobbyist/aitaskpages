@@ -66,14 +66,14 @@ DELETE FROM users WHERE clerk_user_id = '${DEMO_CLERK_ID}';
 async function main() {
   const isRemote = process.argv.includes("--remote");
   const flag = isRemote ? "--remote" : "--local";
-  const tmpFile = join(tmpdir(), `aijobsmarket-cleanup-seed-${Date.now()}.sql`);
+  const tmpFile = join(tmpdir(), `aitaskpages-cleanup-seed-${Date.now()}.sql`);
   writeFileSync(tmpFile, CLEANUP_SEED_SQL);
 
   const target = isRemote ? "production" : "local";
   console.log(`Removing seed demo data from ${target} D1…`);
 
   try {
-    execSync(`npx wrangler d1 execute aijobsmarket_db ${flag} --file=${tmpFile}`, {
+    execSync(`npx wrangler d1 execute aitaskpages_db ${flag} --file=${tmpFile}`, {
       stdio: "inherit",
     });
     console.log("Seed cleanup complete.");

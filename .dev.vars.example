@@ -1,4 +1,5 @@
-# Copy to .dev.vars for Wrangler / Cloudflare Pages preview
+# Copy to .dev.vars for Wrangler local / preview
+# Use AI Task Pages Clerk + Resend credentials only — never AI Jobs Market secrets.
 
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
 CLERK_SECRET_KEY=
@@ -6,5 +7,5 @@ RESEND_API_KEY=
 TURNSTILE_SECRET_KEY=
 
 # D1 (also set in wrangler.toml)
-# database_name = aijobsmarket_db
-# database_id   = 3f306411-f30c-4593-8cc4-37f798e752e5
+# database_name = aitaskpages_db
+# database_id   = cce6e833-e0d6-4e52-968d-c4363a5b741f

@@ -7,7 +7,7 @@ export function normalizeAuthRedirectUrl(
   if (!value) return DEFAULT_REDIRECT;
 
   try {
-    const url = new URL(value, "https://aijobsmarket.co.uk");
+    const url = new URL(value, "https://aitaskpages.yama.workers.dev");
     const path = `${url.pathname}${url.search}${url.hash}`;
     return path.startsWith("/") ? path : DEFAULT_REDIRECT;
   } catch {

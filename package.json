@@ -1,5 +1,5 @@
 {
-  "name": "aijobsmarket",
+  "name": "aitaskpages",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -14,8 +14,8 @@
     "start": "next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
-    "db:migrate:local": "wrangler d1 migrations apply aijobsmarket_db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply aijobsmarket_db --remote",
+    "db:migrate:local": "wrangler d1 migrations apply aitaskpages_db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply aitaskpages_db --remote",
     "db:seed:local": "tsx src/db/seed.ts --local",
     "db:seed:remote": "tsx src/db/seed.ts --remote",
     "db:seed:tasks:local": "tsx src/db/seed-tasks.ts --local",

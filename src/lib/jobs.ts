@@ -7,7 +7,10 @@ export type JobListing = {
   maximumSalary?: number | null;
 };
 
-const JOBS_API = "https://market-ai-jobs-worker.yama.workers.dev/api/jobs";
+/** Jobs board API — use AI Task Pages worker only; do not call AI Jobs Market. */
+const JOBS_API =
+  process.env.JOBS_API_URL?.trim() ||
+  "https://aitaskpages-jobs-worker.yama.workers.dev/api/jobs";
 
 /** Latest job listings from the jobs board API. */
 export async function getLatestJobs(limit = 6): Promise<JobListing[]> {

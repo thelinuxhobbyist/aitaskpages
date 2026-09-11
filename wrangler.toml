@@ -1,7 +1,6 @@
-# Production Worker for aijobsmarket.co.uk / aijobsmarket.uk.
-# Do not rename, and do not "Create application" from this GitHub repo again —
-# that creates a duplicate Worker. Open the existing aijobsmarket2 app instead.
-name = "aijobsmarket2"
+# AI Task Pages — isolated from AI Jobs Market (aijobsmarket2 / aijobsmarket_db).
+# Never point this project at aijobsmarket2, aijobsmarket_db, or aijobsmarket-images.
+name = "aitaskpages"
 main = ".open-next/worker.js"
 compatibility_date = "2025-04-01"
 compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
@@ -40,9 +39,6 @@ run_worker_first = [
   "/unsubscribe",
   "/sitemap.xml",
   "/robots.txt",
-  # Google Search Console HTML verification file — must 200 at the exact .html URL
-  # (Cloudflare asset html_handling otherwise 307s /file.html → /file).
-  "/google8f644ce488bcdd77.html",
   # Dynamic brand assets & favicons served live from R2 with ETag revalidation
   "/favicon.ico",
   "/favicon.svg",
@@ -60,22 +56,24 @@ run_worker_first = [
 
 [[services]]
 binding = "WORKER_SELF_REFERENCE"
-service = "aijobsmarket2"
+service = "aitaskpages"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "aijobsmarket_db"
-database_id = "3f306411-f30c-4593-8cc4-37f798e752e5"
+database_name = "aitaskpages_db"
+database_id = "cce6e833-e0d6-4e52-968d-c4363a5b741f"
 
 [[r2_buckets]]
 binding = "IMAGES"
-bucket_name = "aijobsmarket-images"
+bucket_name = "aitaskpages-images"
 
 [vars]
-# Public base URL for images served from the R2 bucket's custom domain.
-IMAGES_BASE_URL = "https://cdn.aijobsmarket.co.uk"
-# Public Clerk key (safe to commit — it is exposed in the browser anyway)
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_live_Y2xlcmsuYWlqb2JzbWFya2V0LmNvLnVrJA"
+# Public base URL for images served from R2 (set custom domain/CDN when ready).
+# Until a CDN domain exists, leave empty or set after R2 custom domain is configured.
+IMAGES_BASE_URL = ""
+# Clerk publishable key — set after creating a NEW Clerk app for AI Task Pages.
+# Do not reuse AI Jobs Market Clerk keys.
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = ""
 NEXT_PUBLIC_CLERK_SIGN_IN_URL = "/sign-in"
 NEXT_PUBLIC_CLERK_SIGN_UP_URL = "/sign-up"
 NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL = "/dashboard"
