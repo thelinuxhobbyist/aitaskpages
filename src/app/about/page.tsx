@@ -5,7 +5,7 @@ import { createPageMetadata, SITE_NAME } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "About",
   description:
-    "About AI Task Pages — an introduction platform connecting businesses and individuals with independent AI experts around the world. We make the introduction; you take it from there.",
+    "About AI Task Pages — an introduction platform for finding AI expertise and connecting around AI-related work. We make the introduction; you take it from there.",
   path: "/about",
 });
 
@@ -15,24 +15,24 @@ export default function AboutPage() {
       <h1 className="text-3xl font-bold text-secondary">About {SITE_NAME}</h1>
 
       <p className="mt-6 text-lg font-medium leading-relaxed text-secondary">
-        Connecting people who need AI expertise with independent experts who
-        have it. We make the introduction. You take it from there.
+        Connecting people who need AI expertise with the people and companies
+        who can provide it.
       </p>
 
       <section className="mt-10 space-y-4">
         <p>
-          {SITE_NAME} is an AI expert directory and introduction platform.
-          Businesses and individuals use it to find independent AI consultants,
-          post what they need, and connect directly with specialists in AI
-          consulting, automation, integrations, machine learning and custom AI.
-          Once you connect, you decide how to work together.
+          {SITE_NAME} is an introduction platform for finding AI expertise and
+          connecting around AI-related work.
         </p>
         <p>
-          We are not a recruitment agency, an employer, or a traditional job
-          board. Vacancy-style listings may appear as supporting content, but
-          the core product is helping businesses, individuals and independent
-          experts find each other — through searchable profiles and open tasks
-          that specialists can express interest in.
+          Businesses and individuals can search for AI professionals and
+          companies by their skills and services, or describe what they need by
+          posting a task. AI experts can create profiles, be discovered through
+          search, and express interest in tasks that match their expertise.
+        </p>
+        <p>
+          We make the introduction. What happens after that is between you and
+          the person or company you connect with.
         </p>
       </section>
 
@@ -42,20 +42,24 @@ export default function AboutPage() {
         <h2 className="text-xl font-semibold text-secondary">What we do</h2>
         <ul className="list-disc space-y-3 pl-6">
           <li>
-            <strong>AI expert directory</strong> — Search independent AI
-            freelancers and consultants by skills, services and location.
+            <strong>Find AI expertise</strong> — Search profiles of AI
+            professionals and companies by skills, services and areas of
+            expertise.
           </li>
           <li>
-            <strong>AI tasks and requirements</strong> — Post what you need done;
-            experts review open tasks and express interest so you can choose who
-            to contact.
+            <strong>Post an AI task</strong> — Describe what you need and let
+            relevant AI specialists discover your task and express their
+            interest.
           </li>
           <li>
-            <strong>Direct connections</strong> — We introduce you. You take
-            it from there: discuss, agree terms and work together directly. We
-            don&apos;t manage contracts, delivery or payments.
+            <strong>Connect directly</strong> — Review profiles, decide who you
+            want to speak with, and take the conversation forward directly.
           </li>
         </ul>
+        <p>
+          We don&apos;t manage the work, contracts, delivery or payments between
+          people who connect through the platform.
+        </p>
       </section>
 
       <hr className="my-10 border-border" />
@@ -68,20 +72,27 @@ export default function AboutPage() {
             For businesses and individuals
           </h3>
           <p>
-            Find AI professionals for consulting, implementation support and
-            specialist delivery — or post a task and let matching experts come
-            to you. After the introduction, you agree the details yourselves.
+            If you need help with AI, you can search for someone with the right
+            expertise or post a task describing what you need.
+          </p>
+          <p>
+            You decide who you want to contact and how you want to work
+            together.
           </p>
         </div>
 
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-secondary">
-            For AI experts
+            For AI professionals and companies
           </h3>
           <p>
-            Create a public profile, showcase skills and services, get discovered
-            in search, and express interest in open tasks from businesses and
-            individuals looking for AI expertise.
+            Create a profile describing your expertise, skills and services.
+            Your profile can be discovered by people and businesses looking for
+            AI help.
+          </p>
+          <p>
+            You can also browse open tasks and express interest when you see
+            something that matches your expertise.
           </p>
         </div>
       </section>
@@ -89,15 +100,40 @@ export default function AboutPage() {
       <hr className="my-10 border-border" />
 
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold text-secondary">Our mission</h2>
-        <p className="text-lg font-semibold text-secondary">
-          Make AI expertise easier to find — without becoming the middleman.
+        <h2 className="text-xl font-semibold text-secondary">
+          Why AI Task Pages?
+        </h2>
+        <p>
+          AI expertise is becoming increasingly specialised, but finding the
+          right person isn&apos;t always straightforward.
         </p>
         <p>
-          Businesses and individuals should be able to find the right
-          specialist, and independent AI professionals should have a
-          straightforward way to be discovered and connect with people looking
-          for their expertise.
+          {SITE_NAME} provides a simple place where people looking for AI
+          expertise and people providing it can find each other.
+        </p>
+        <p>
+          We aren&apos;t trying to become the middleman. Our role is to make the
+          introduction and provide the place where that connection can happen.
+        </p>
+        <p className="font-medium text-secondary">
+          Find the right expertise. Describe what you need. Make the
+          connection.
+        </p>
+      </section>
+
+      <hr className="my-10 border-border" />
+
+      <section className="space-y-4">
+        <h2 className="text-xl font-semibold text-secondary">Our approach</h2>
+        <p>{SITE_NAME} is designed around direct connections.</p>
+        <p>
+          There are no commissions on work arranged between people who connect
+          through the platform, and we don&apos;t take part in negotiating or
+          managing the work itself.
+        </p>
+        <p>
+          Once an introduction is made, the people involved decide whether they
+          want to work together and agree the details directly.
         </p>
       </section>
 
@@ -106,7 +142,7 @@ export default function AboutPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">Get started</h2>
         <p>
-          Search the expert directory, post an AI task, or create a profile on{" "}
+          Whether you need AI expertise or offer it, you can get started on{" "}
           {SITE_NAME}.
         </p>
         <div className="flex flex-wrap gap-3 pt-2">
@@ -129,6 +165,23 @@ export default function AboutPage() {
             Create a profile
           </Link>
         </div>
+      </section>
+
+      <hr className="my-10 border-border" />
+
+      <section className="space-y-3 text-sm text-muted">
+        <h2 className="text-base font-medium text-muted">
+          Part of the AI Jobs Market family
+        </h2>
+        <p>
+          {SITE_NAME} and AI Jobs Market share the same underlying idea: making
+          it easier for people who need AI expertise to connect directly with
+          people who have it.
+        </p>
+        <p>
+          AI Jobs Market is focused on the UK, while {SITE_NAME} is designed for
+          an international audience.
+        </p>
       </section>
     </article>
   );

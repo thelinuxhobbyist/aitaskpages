@@ -31,9 +31,9 @@ function HomeHero() {
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
         AI Task Pages is an introduction platform connecting businesses and
-        individuals with AI professionals and companies around the world. Find
-        expertise directly, or post what you need and let relevant specialists
-        come to you.
+        individuals with AI professionals and companies. Find expertise
+        directly, or post what you need and let relevant specialists come to
+        you.
       </p>
       <p className="mt-4 max-w-xl text-[1.0625rem] font-medium leading-[1.5] text-on-surface md:text-lg">
         We make the introduction. You take it from there.

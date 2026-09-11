@@ -43,7 +43,7 @@ export function EmailLayout({ preview, children }: LayoutProps) {
           <Text style={brand}>
             <strong>AI Task Pages</strong>
             <br />
-            Find AI experts and post AI tasks from anywhere in the world.
+            Find AI experts and post AI tasks.
           </Text>
         </Container>
       </Body>

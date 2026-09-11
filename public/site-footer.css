@@ -224,6 +224,13 @@
   color: var(--footer-muted);
 }
 
+.site-footer .footer-family-line {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--footer-dimmed);
+  margin: 0;
+}
+
 .site-footer .footer-vacancy-links {
   font-size: 0.8125rem;
   line-height: 1.5;
