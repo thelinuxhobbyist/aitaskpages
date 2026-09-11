@@ -124,7 +124,7 @@ export default async function ConversationsPage() {
             My Conversations
           </h2>
           <p className="text-sm text-muted">
-            Experts you have contacted on AI Jobs Market.
+            Experts you have contacted on AI Task Pages.
           </p>
         </div>
         {clientConvos.length === 0 ? (

@@ -8,7 +8,8 @@ import {
   type MouseEvent,
 } from "react";
 
-const FINDER_HOME = "https://finder.aijobsmarket.co.uk";
+/** Placeholder until AI Task Pages has its own Software Finder URL. */
+const FINDER_HOME = "";
 
 const SPLASH_HTML = `<!DOCTYPE html>
 <html lang="en-GB" style="background:#fafbfc;color-scheme:light">

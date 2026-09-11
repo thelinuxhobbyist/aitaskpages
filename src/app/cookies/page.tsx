@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "Cookie Policy",
   description:
-    "How AIJobsMarket uses cookies and similar technologies on our website.",
+    "How AI Task Pages uses cookies and similar technologies on our website.",
   path: "/cookies",
 });
 
@@ -13,7 +13,7 @@ export default function CookiesPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-16 text-on-surface">
       <h1 className="text-3xl font-bold text-secondary">
-        AIJobsMarket Cookie Policy
+        AI Task Pages Cookie Policy
       </h1>
       <p className="mt-3 text-sm text-muted">
         <strong>Effective Date:</strong> July 2026
@@ -26,12 +26,12 @@ export default function CookiesPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">1. Introduction</h2>
         <p>
-          This Cookie Policy explains how AIJobsMarket (&quot;AIJobsMarket&quot;,
+          This Cookie Policy explains how AI Task Pages (&quot;AI Task Pages&quot;,
           &quot;we&quot;, &quot;our&quot; or &quot;us&quot;) uses cookies and
           similar technologies when you visit our website.
         </p>
         <p>
-          By continuing to use AIJobsMarket, you consent to the use of cookies
+          By continuing to use AI Task Pages, you consent to the use of cookies
           in accordance with this Cookie Policy, except where you have disabled
           them through your browser or cookie preferences.
         </p>
@@ -63,7 +63,7 @@ export default function CookiesPage() {
         <h2 className="text-xl font-semibold text-secondary">
           3. Why We Use Cookies
         </h2>
-        <p>AIJobsMarket uses cookies to:</p>
+        <p>AI Task Pages uses cookies to:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>Keep users signed in.</li>
           <li>Remember your preferences.</li>
@@ -94,7 +94,7 @@ export default function CookiesPage() {
           <li>Load balancing</li>
         </ul>
         <p>
-          Without these cookies, parts of AIJobsMarket may not function
+          Without these cookies, parts of AI Task Pages may not function
           correctly.
         </p>
 
@@ -115,7 +115,7 @@ export default function CookiesPage() {
           Analytics Cookies
         </h3>
         <p>
-          Analytics cookies help us understand how visitors use AIJobsMarket.
+          Analytics cookies help us understand how visitors use AI Task Pages.
         </p>
         <p>Examples include:</p>
         <ul className="list-disc space-y-2 pl-6">
@@ -150,7 +150,7 @@ export default function CookiesPage() {
           5. Third-Party Cookies
         </h2>
         <p>
-          Some third-party services used by AIJobsMarket may place cookies on
+          Some third-party services used by AI Task Pages may place cookies on
           your device.
         </p>
         <p>Examples may include:</p>
@@ -164,7 +164,7 @@ export default function CookiesPage() {
           These third parties operate under their own privacy and cookie
           policies.
         </p>
-        <p>AIJobsMarket does not control third-party cookies.</p>
+        <p>AI Task Pages does not control third-party cookies.</p>
       </section>
 
       <hr className="my-10 border-border" />
@@ -182,7 +182,7 @@ export default function CookiesPage() {
           <li>Receive notifications before cookies are stored</li>
         </ul>
         <p>
-          Disabling cookies may affect the functionality of AIJobsMarket.
+          Disabling cookies may affect the functionality of AI Task Pages.
         </p>
       </section>
 
@@ -193,7 +193,7 @@ export default function CookiesPage() {
           7. Changes to this Policy
         </h2>
         <p>We may update this Cookie Policy from time to time.</p>
-        <p>The latest version will always be available on AIJobsMarket.</p>
+        <p>The latest version will always be available on AI Task Pages.</p>
         <p>
           The &quot;Last Updated&quot; date at the top of this document
           indicates when changes were last made.
@@ -208,23 +208,23 @@ export default function CookiesPage() {
           If you have any questions regarding this Cookie Policy, please
           contact:
         </p>
-        <p className="font-medium">AIJobsMarket</p>
+        <p className="font-medium">AI Task Pages</p>
         <p>
           Website:{" "}
           <a
-            href="https://aijobsmarket.co.uk"
+            href="https://aitaskpages.com"
             className="text-primary underline"
           >
-            https://aijobsmarket.co.uk
+            https://aitaskpages.com
           </a>
         </p>
         <p>
           Email:{" "}
           <a
-            href="mailto:privacy@aijobsmarket.co.uk"
+            href="mailto:privacy@aitaskpages.com"
             className="text-primary underline"
           >
-            privacy@aijobsmarket.co.uk
+            privacy@aitaskpages.com
           </a>
         </p>
       </section>
@@ -235,7 +235,7 @@ export default function CookiesPage() {
         <strong>Version 1.0</strong>
       </p>
       <p className="mt-2 text-sm text-muted">
-        This Cookie Policy applies to the AIJobsMarket platform and should be
+        This Cookie Policy applies to the AI Task Pages platform and should be
         read together with our{" "}
         <Link href="/privacy" className="text-primary underline">
           Privacy Policy

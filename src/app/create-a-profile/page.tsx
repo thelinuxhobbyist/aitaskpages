@@ -16,7 +16,7 @@ import { Check } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Create a Profile",
   description:
-    "Create an individual or company profile on AI Jobs Market, get discovered by UK businesses, and connect directly. We make the introduction — you take it from there.",
+    "Create an individual or company profile on AI Task Pages, get discovered by UK businesses, and connect directly. We make the introduction — you take it from there.",
   path: "/create-a-profile",
 });
 

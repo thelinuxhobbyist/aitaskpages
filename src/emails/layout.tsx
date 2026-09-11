@@ -26,7 +26,7 @@ export function EmailLayout({ preview, children }: LayoutProps) {
         <Container style={container}>
           <Img
             src={SITE_LOGO_URL}
-            alt="AI Jobs Market"
+            alt="AI Task Pages"
             height={72}
             style={logoImg}
           />
@@ -34,14 +34,14 @@ export function EmailLayout({ preview, children }: LayoutProps) {
           {children}
           <Hr style={hr} />
           <Text style={footer}>
-            AI Jobs Market is an AI expert directory and business-to-expert
+            AI Task Pages is an AI expert directory and business-to-expert
             introduction platform. Our role is simply to provide a place where
             businesses and independent AI professionals can discover each other
             and connect. What happens after that introduction is entirely
-            between the parties and is independent of AI Jobs Market.
+            between the parties and is independent of AI Task Pages.
           </Text>
           <Text style={brand}>
-            <strong>AI Jobs Market</strong>
+            <strong>AI Task Pages</strong>
             <br />
             Find AI experts and post AI tasks across the UK.
           </Text>

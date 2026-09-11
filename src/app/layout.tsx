@@ -52,27 +52,12 @@ export default async function RootLayout({
       signInFallbackRedirectUrl="/dashboard"
       signUpFallbackRedirectUrl="/dashboard"
       allowedRedirectOrigins={[
-        "https://aijobsmarket.co.uk",
+        "https://aitaskpages.com",
         "http://localhost:3000",
       ]}
     >
       <html lang="en-GB" className={`${dmSans.variable} ${spaceGrotesk.variable}`}>
         <head>
-          <link rel="preconnect" href="https://finder.aijobsmarket.co.uk" />
-          <link rel="dns-prefetch" href="https://finder.aijobsmarket.co.uk" />
-          <script
-            type="speculationrules"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                prerender: [
-                  {
-                    source: "list",
-                    urls: ["https://finder.aijobsmarket.co.uk/"],
-                  },
-                ],
-              }),
-            }}
-          />
           <SiteStructuredData />
         </head>
         <body className="min-h-screen flex flex-col bg-surface">

@@ -4,7 +4,7 @@ import { CircleCheck } from "lucide-react";
 export function WhyChoose() {
   return (
     <section id="why-choose" className="scroll-mt-20">
-      <h2>Why choose AI Jobs Market</h2>
+      <h2>Why choose AI Task Pages</h2>
       <p className="section-lead">
         A UK platform built for businesses and independent AI professionals —
         simple, direct, and transparent.

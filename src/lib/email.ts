@@ -68,7 +68,7 @@ export async function sendNewMessageEmail(params: {
   await getResend().emails.send({
     from: getEmailFrom(),
     to: params.to,
-    subject: "You have a new message on AI Jobs Market",
+    subject: "You have a new message on AI Task Pages",
     html,
   });
 }
@@ -90,7 +90,7 @@ export async function sendSenderConfirmationEmail(params: {
   await getResend().emails.send({
     from: getEmailFrom(),
     to: params.to,
-    subject: `Message sent to ${params.expertName} — AI Jobs Market`,
+    subject: `Message sent to ${params.expertName} — AI Task Pages`,
     html,
   });
 }
@@ -104,7 +104,7 @@ export async function sendWelcomeEmail(params: {
   await getResend().emails.send({
     from: getEmailFrom(),
     to: params.to,
-    subject: "Welcome to AI Jobs Market",
+    subject: "Welcome to AI Task Pages",
     html,
   });
 }

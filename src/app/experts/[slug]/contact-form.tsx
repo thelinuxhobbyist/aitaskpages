@@ -38,7 +38,7 @@ export function ContactForm({
         </p>
         <p className="mt-2 text-sm text-emerald-700">
           Your message to {expertName} has been sent. They&apos;ll be
-          notified and can reply to you here on AI Jobs Market. You can read and
+          notified and can reply to you here on AI Task Pages. You can read and
           continue the conversation from your{" "}
           <Link href="/dashboard/conversations" className="font-medium underline">
             dashboard
@@ -61,7 +61,7 @@ export function ContactForm({
       )}
 
       <p className="rounded-lg bg-surface px-4 py-3 text-sm text-muted">
-        This starts a conversation with {expertName} on AI Jobs Market.
+        This starts a conversation with {expertName} on AI Task Pages.
         You&apos;ll both be able to reply and continue the discussion from your
         dashboard.
       </p>
@@ -109,7 +109,7 @@ export function ContactForm({
       )}
 
       <p className="text-xs text-muted">
-        Messages are kept on AI Jobs Market. We provide the communication
+        Messages are kept on AI Task Pages. We provide the communication
         platform only — we don&apos;t handle contracts, project delivery or
         payments between users.
       </p>

@@ -81,7 +81,7 @@ export default async function DashboardOverviewPage() {
         <Card className="h-full transition-shadow group-hover:shadow-md group-hover:border-primary/30">
           <CardHeader>
             <CardTitle className="text-base">Conversations</CardTitle>
-            <CardDescription>Messages on AI Jobs Market</CardDescription>
+            <CardDescription>Messages on AI Task Pages</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold text-primary">

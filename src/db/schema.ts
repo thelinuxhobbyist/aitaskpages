@@ -100,7 +100,7 @@ export const expertProfiles = sqliteTable(
     customServices: text("custom_services"),
     /**
      * JSON array of { title, description?, url } pointing to external work.
-     * AI Jobs Market does not host any of this content.
+     * AI Task Pages does not host any of this content.
      */
     workExamples: text("work_examples"),
     createdAt: text("created_at")
@@ -269,7 +269,7 @@ export const contactRequestsRelations = relations(contactRequests, ({ one }) => 
 
 // ─── Conversations ───────────────────────────────────────────────────────────
 // On-platform messaging between a client (user) and an expert. One thread per
-// client/expert pair. AI Jobs Market provides the communication channel only —
+// client/expert pair. AI Task Pages provides the communication channel only —
 // it is not party to any agreement between users.
 
 export const conversations = sqliteTable(

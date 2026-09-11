@@ -36,7 +36,7 @@ export default async function UnsubscribePage({ searchParams }: PageProps) {
           </CardTitle>
           <CardDescription>
             {success
-              ? "You won’t receive marketing emails from AI Jobs Market anymore. Transactional emails about your account and messages will still be sent."
+              ? "You won’t receive marketing emails from AI Task Pages anymore. Transactional emails about your account and messages will still be sent."
               : error
                 ? "This unsubscribe link is missing or has expired. You can manage preferences in your dashboard instead."
                 : "Use the link in your email to unsubscribe from marketing messages."}

@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "Disclaimer",
   description:
-    "Disclaimer for the AIJobsMarket platform — general information, job listings, and AI Expert profiles.",
+    "Disclaimer for the AI Task Pages platform — general information, job listings, and AI Expert profiles.",
   path: "/disclaimer",
 });
 
@@ -13,7 +13,7 @@ export default function DisclaimerPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-16 text-on-surface">
       <h1 className="text-3xl font-bold text-secondary">
-        AIJobsMarket Disclaimer
+        AI Task Pages Disclaimer
       </h1>
       <p className="mt-3 text-sm text-muted">
         <strong>Effective Date:</strong> July 2026
@@ -28,7 +28,7 @@ export default function DisclaimerPage() {
           1. General Information
         </h2>
         <p>
-          The information provided on AIJobsMarket (&quot;AIJobsMarket&quot;,
+          The information provided on AI Task Pages (&quot;AI Task Pages&quot;,
           &quot;we&quot;, &quot;our&quot; or &quot;us&quot;) is for general
           informational purposes only.
         </p>
@@ -38,7 +38,7 @@ export default function DisclaimerPage() {
           accuracy, reliability or availability of any information published on
           the platform.
         </p>
-        <p>Your use of AIJobsMarket is entirely at your own risk.</p>
+        <p>Your use of AI Task Pages is entirely at your own risk.</p>
       </section>
 
       <hr className="my-10 border-border" />
@@ -48,7 +48,7 @@ export default function DisclaimerPage() {
           2. No Employment Guarantee
         </h2>
         <p>
-          AI Jobs Market helps users discover AI experts and project requirements within the Artificial
+          AI Task Pages helps users discover AI experts and project requirements within the Artificial
           Intelligence industry.
         </p>
         <p>We do not guarantee:</p>
@@ -68,10 +68,10 @@ export default function DisclaimerPage() {
           3. Third-Party Job Listings
         </h2>
         <p>
-          Some jobs displayed on AIJobsMarket originate from third-party
+          Some jobs displayed on AI Task Pages originate from third-party
           providers.
         </p>
-        <p>AIJobsMarket:</p>
+        <p>AI Task Pages:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>is not the employer;</li>
           <li>does not create those job advertisements;</li>
@@ -94,7 +94,7 @@ export default function DisclaimerPage() {
           AI Expert profiles are created and managed by the individuals or
           organisations that publish them.
         </p>
-        <p>AIJobsMarket does not independently verify:</p>
+        <p>AI Task Pages does not independently verify:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>qualifications;</li>
           <li>experience;</li>
@@ -114,7 +114,7 @@ export default function DisclaimerPage() {
         <h2 className="text-xl font-semibold text-secondary">
           5. External Websites
         </h2>
-        <p>AIJobsMarket may contain links to third-party websites.</p>
+        <p>AI Task Pages may contain links to third-party websites.</p>
         <p>These links are provided for convenience only.</p>
         <p>We do not control or endorse third-party websites and are not responsible for:</p>
         <ul className="list-disc space-y-2 pl-6">
@@ -132,7 +132,7 @@ export default function DisclaimerPage() {
         <h2 className="text-xl font-semibold text-secondary">
           6. Business Decisions
         </h2>
-        <p>Information published on AIJobsMarket should not be considered:</p>
+        <p>Information published on AI Task Pages should not be considered:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>legal advice;</li>
           <li>financial advice;</li>
@@ -153,7 +153,7 @@ export default function DisclaimerPage() {
           7. Availability
         </h2>
         <p>
-          Although we aim to provide a reliable service, AIJobsMarket does not
+          Although we aim to provide a reliable service, AI Task Pages does not
           guarantee uninterrupted availability.
         </p>
         <p>The platform may occasionally be unavailable due to:</p>
@@ -173,7 +173,7 @@ export default function DisclaimerPage() {
           8. Limitation of Liability
         </h2>
         <p>
-          To the fullest extent permitted by law, AIJobsMarket shall not be
+          To the fullest extent permitted by law, AI Task Pages shall not be
           liable for any direct, indirect, incidental or consequential loss
           arising from:
         </p>
@@ -196,7 +196,7 @@ export default function DisclaimerPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">9. Changes</h2>
         <p>We may update this Disclaimer at any time.</p>
-        <p>The latest version will always be available on AIJobsMarket.</p>
+        <p>The latest version will always be available on AI Task Pages.</p>
         <p>
           Continued use of the platform constitutes acceptance of any updated
           version.
@@ -210,23 +210,23 @@ export default function DisclaimerPage() {
         <p>
           If you have any questions regarding this Disclaimer, please contact:
         </p>
-        <p className="font-medium">AIJobsMarket</p>
+        <p className="font-medium">AI Task Pages</p>
         <p>
           Website:{" "}
           <a
-            href="https://aijobsmarket.co.uk"
+            href="https://aitaskpages.com"
             className="text-primary underline"
           >
-            https://aijobsmarket.co.uk
+            https://aitaskpages.com
           </a>
         </p>
         <p>
           Email:{" "}
           <a
-            href="mailto:legal@aijobsmarket.co.uk"
+            href="mailto:legal@aitaskpages.com"
             className="text-primary underline"
           >
-            legal@aijobsmarket.co.uk
+            legal@aitaskpages.com
           </a>
         </p>
       </section>

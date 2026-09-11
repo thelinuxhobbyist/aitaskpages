@@ -28,7 +28,7 @@ import { Search, Users } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Find AI Expertise",
   description:
-    "Find UK AI professionals and companies on AI Jobs Market. Search by skills, services and location — we make the introduction, you take it from there.",
+    "Find UK AI professionals and companies on AI Task Pages. Search by skills, services and location — we make the introduction, you take it from there.",
   path: "/search",
 });
 

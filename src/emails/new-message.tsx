@@ -20,7 +20,7 @@ export default function NewMessageEmail({
   conversationUrl,
 }: Props) {
   return (
-    <EmailLayout preview="You have a new message on AI Jobs Market">
+    <EmailLayout preview="You have a new message on AI Task Pages">
       <Heading style={heading}>You have a new message</Heading>
       <Text style={paragraph}>Hi {recipientName},</Text>
       <Text style={paragraph}>
@@ -28,7 +28,7 @@ export default function NewMessageEmail({
         <strong>{otherPartyName}</strong>.
       </Text>
       <Text style={paragraph}>
-        Log in to your AI Jobs Market dashboard to read and reply.
+        Log in to your AI Task Pages dashboard to read and reply.
       </Text>
 
       <Button style={button} href={conversationUrl}>

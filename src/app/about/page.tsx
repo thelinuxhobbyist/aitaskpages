@@ -5,7 +5,7 @@ import { createPageMetadata, SITE_NAME } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "About",
   description:
-    "About AI Jobs Market — an introduction platform connecting UK businesses with independent AI experts. We make the introduction; you take it from there.",
+    "About AI Task Pages — an introduction platform connecting UK businesses with independent AI experts. We make the introduction; you take it from there.",
   path: "/about",
 });
 

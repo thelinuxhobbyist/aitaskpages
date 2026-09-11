@@ -14,7 +14,7 @@ import { Briefcase, Plus } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Browse AI tasks & project requirements",
   description:
-    "Browse open AI tasks from UK businesses on AI Jobs Market. Experts can express interest; you connect directly.",
+    "Browse open AI tasks from UK businesses on AI Task Pages. Experts can express interest; you connect directly.",
   path: "/tasks",
 });
 

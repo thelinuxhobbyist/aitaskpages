@@ -30,7 +30,7 @@ function HomeHero() {
         <span className="text-accent-foreground">you need.</span>
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
-        AI Jobs Market is an introduction platform connecting UK businesses
+        AI Task Pages is an introduction platform connecting UK businesses
         with AI professionals and companies. Find expertise directly, or post
         what you need and let relevant specialists come to you.
       </p>

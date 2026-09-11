@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "Privacy Policy",
   description:
-    "How AIJobsMarket collects, uses, stores and protects your personal information.",
+    "How AI Task Pages collects, uses, stores and protects your personal information.",
   path: "/privacy",
 });
 
@@ -13,7 +13,7 @@ export default function PrivacyPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-16 text-on-surface">
       <h1 className="text-3xl font-bold text-secondary">
-        AIJobsMarket Privacy Policy
+        AI Task Pages Privacy Policy
       </h1>
       <p className="mt-3 text-sm text-muted">
         <strong>Effective Date:</strong> July 2026
@@ -26,7 +26,7 @@ export default function PrivacyPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">1. Introduction</h2>
         <p>
-          Welcome to AIJobsMarket (&quot;AIJobsMarket&quot;, &quot;we&quot;,
+          Welcome to AI Task Pages (&quot;AI Task Pages&quot;, &quot;we&quot;,
           &quot;our&quot; or &quot;us&quot;).
         </p>
         <p>
@@ -35,12 +35,12 @@ export default function PrivacyPage() {
           our website and services.
         </p>
         <p>
-          AIJobsMarket is committed to complying with applicable UK data
+          AI Task Pages is committed to complying with applicable UK data
           protection legislation, including the UK General Data Protection
           Regulation (UK GDPR) and the Data Protection Act 2018.
         </p>
         <p>
-          By using AIJobsMarket, you agree to the practices described in this
+          By using AI Task Pages, you agree to the practices described in this
           Privacy Policy.
         </p>
       </section>
@@ -49,10 +49,10 @@ export default function PrivacyPage() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">
-          2. About AIJobsMarket
+          2. About AI Task Pages
         </h2>
         <p>
-          AIJobsMarket is an online platform that helps users discover
+          AI Task Pages is an online platform that helps users discover
           opportunities within the Artificial Intelligence industry.
         </p>
         <p>Our services may include:</p>
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
           <li>Future premium services</li>
         </ul>
         <p>
-          Some job listings displayed on AIJobsMarket are provided through
+          Some job listings displayed on AI Task Pages are provided through
           trusted third-party partners.
         </p>
       </section>
@@ -78,7 +78,7 @@ export default function PrivacyPage() {
           3. Information We Collect
         </h2>
         <p>
-          Depending on how you use AIJobsMarket, we may collect different
+          Depending on how you use AI Task Pages, we may collect different
           categories of information.
         </p>
 
@@ -114,7 +114,7 @@ export default function PrivacyPage() {
           Information collected automatically
         </h3>
         <p>
-          When you visit AIJobsMarket, certain technical information may be
+          When you visit AI Task Pages, certain technical information may be
           collected automatically.
         </p>
         <p>Examples include:</p>
@@ -135,7 +135,7 @@ export default function PrivacyPage() {
         </p>
 
         <h3 className="pt-4 text-lg font-semibold text-secondary">Cookies</h3>
-        <p>AIJobsMarket uses cookies and similar technologies.</p>
+        <p>AI Task Pages uses cookies and similar technologies.</p>
         <p>Cookies help us:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>remember user preferences</li>
@@ -201,11 +201,11 @@ export default function PrivacyPage() {
         <h2 className="text-xl font-semibold text-secondary">
           6. Authentication
         </h2>
-        <p>AIJobsMarket uses Clerk for user authentication.</p>
+        <p>AI Task Pages uses Clerk for user authentication.</p>
         <p>
           If you choose to sign in using services such as Google, GitHub, or
           LinkedIn, those providers may share limited account information with
-          AIJobsMarket, such as:
+          AI Task Pages, such as:
         </p>
         <ul className="list-disc space-y-2 pl-6">
           <li>Name</li>
@@ -229,7 +229,7 @@ export default function PrivacyPage() {
           7. Third-Party Services
         </h2>
         <p>
-          AIJobsMarket relies on trusted third-party providers to deliver parts
+          AI Task Pages relies on trusted third-party providers to deliver parts
           of the service.
         </p>
         <p>These providers may process information on our behalf.</p>
@@ -246,7 +246,7 @@ export default function PrivacyPage() {
           Each provider processes data according to its own privacy policy.
         </p>
         <p>
-          AIJobsMarket selects providers that are appropriate for the services
+          AI Task Pages selects providers that are appropriate for the services
           they perform.
         </p>
       </section>
@@ -258,7 +258,7 @@ export default function PrivacyPage() {
           8. Job Listings
         </h2>
         <p>
-          Some job listings displayed on AIJobsMarket originate from third-party
+          Some job listings displayed on AI Task Pages originate from third-party
           job providers.
         </p>
         <p>
@@ -266,11 +266,11 @@ export default function PrivacyPage() {
           original provider&apos;s website.
         </p>
         <p>
-          Once you leave AIJobsMarket, your interaction is governed by that
+          Once you leave AI Task Pages, your interaction is governed by that
           provider&apos;s own terms and privacy policy.
         </p>
         <p>
-          AIJobsMarket is not responsible for how third-party websites process
+          AI Task Pages is not responsible for how third-party websites process
           your information.
         </p>
       </section>
@@ -311,7 +311,7 @@ export default function PrivacyPage() {
           10. Data Security
         </h2>
         <p>
-          AIJobsMarket takes reasonable technical and organisational measures to
+          AI Task Pages takes reasonable technical and organisational measures to
           protect personal information.
         </p>
         <p>These measures may include:</p>
@@ -376,7 +376,7 @@ export default function PrivacyPage() {
         <h2 className="text-xl font-semibold text-secondary">
           13. Children&apos;s Privacy
         </h2>
-        <p>AIJobsMarket is intended for users aged 18 years or older.</p>
+        <p>AI Task Pages is intended for users aged 18 years or older.</p>
         <p>We do not knowingly collect personal information from children.</p>
         <p>
           If we become aware that personal information relating to a child has
@@ -396,7 +396,7 @@ export default function PrivacyPage() {
           Updated&quot; date at the top of this document.
         </p>
         <p>
-          Continued use of AIJobsMarket after changes have been published
+          Continued use of AI Task Pages after changes have been published
           constitutes acceptance of the updated policy.
         </p>
       </section>
@@ -408,23 +408,23 @@ export default function PrivacyPage() {
         <p>
           If you have questions regarding this Privacy Policy, please contact:
         </p>
-        <p className="font-medium">AIJobsMarket</p>
+        <p className="font-medium">AI Task Pages</p>
         <p>
           Website:{" "}
           <a
-            href="https://aijobsmarket.co.uk"
+            href="https://aitaskpages.com"
             className="text-primary underline"
           >
-            https://aijobsmarket.co.uk
+            https://aitaskpages.com
           </a>
         </p>
         <p>
           Email:{" "}
           <a
-            href="mailto:privacy@aijobsmarket.co.uk"
+            href="mailto:privacy@aitaskpages.com"
             className="text-primary underline"
           >
-            privacy@aijobsmarket.co.uk
+            privacy@aitaskpages.com
           </a>
         </p>
       </section>
@@ -435,7 +435,7 @@ export default function PrivacyPage() {
         <strong>Version 1.0</strong>
       </p>
       <p className="mt-2 text-sm text-muted">
-        This Privacy Policy applies to the AIJobsMarket platform as of the
+        This Privacy Policy applies to the AI Task Pages platform as of the
         effective date shown above and may be updated as the platform evolves.
       </p>
     </article>

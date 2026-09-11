@@ -5,7 +5,7 @@ import { createPageMetadata, SITE_NAME } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "Contact",
   description:
-    "Contact AI Jobs Market for questions about expert profiles, posting a task, or using the platform. General and legal enquiry emails.",
+    "Contact AI Task Pages for questions about expert profiles, posting a task, or using the platform. General and legal enquiry emails.",
   path: "/contact",
 });
 
@@ -33,10 +33,10 @@ export default function ContactPage() {
           </h3>
           <p>
             <a
-              href="mailto:contact@aijobsmarket.co.uk"
+              href="mailto:contact@aitaskpages.com"
               className="font-medium text-primary underline"
             >
-              contact@aijobsmarket.co.uk
+              contact@aitaskpages.com
             </a>
           </p>
           <p>
@@ -52,10 +52,10 @@ export default function ContactPage() {
           </h3>
           <p>
             <a
-              href="mailto:legal@aijobsmarket.co.uk"
+              href="mailto:legal@aitaskpages.com"
               className="font-medium text-primary underline"
             >
-              legal@aijobsmarket.co.uk
+              legal@aitaskpages.com
             </a>
           </p>
           <p>

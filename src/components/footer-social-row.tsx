@@ -53,20 +53,23 @@ const SOCIAL_ITEMS = [
 ] as const;
 
 export function FooterSocialRow() {
+  const items = SOCIAL_ITEMS.filter((item) => Boolean(item.href));
+  if (items.length === 0) return null;
+
   return (
     <>
       <div className="footer-social-row">
         <span className="footer-social-label">Follow us</span>
         <div className="footer-social-icons">
-          {SOCIAL_ITEMS.map(({ href, label, Icon }) => (
+          {items.map(({ href, label, Icon }) => (
             <Link
               key={label}
               href={href}
               target="_blank"
               rel="noopener noreferrer"
               className="footer-social-icon"
-              aria-label={SITE_NAME}
-              title={SITE_NAME}
+              aria-label={`${SITE_NAME} on ${label}`}
+              title={`${SITE_NAME} on ${label}`}
             >
               <Icon className="h-[18px] w-[18px]" />
             </Link>

@@ -120,7 +120,7 @@ export default async function ConversationDetailPage({ params }: PageProps) {
       </Card>
 
       <p className="text-xs text-muted">
-        AI Jobs Market provides this conversation as a communication tool only.
+        AI Task Pages provides this conversation as a communication tool only.
         We are not a party to any agreement — contracts, project delivery and
         payments are arranged directly between the client and the expert.
       </p>

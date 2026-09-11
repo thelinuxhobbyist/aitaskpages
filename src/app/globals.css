@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* AI Jobs Market — mint accent, ink actions, warm neutral surfaces */
+  /* Temporary cloned palette — replace when AI Task Pages branding arrives */
   --color-background: oklch(98.5% 0.004 106);
   --color-foreground: oklch(19% 0.015 250);
 

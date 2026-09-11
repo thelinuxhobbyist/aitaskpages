@@ -14,8 +14,8 @@ export default function WelcomeEmail({ name }: Props) {
   const greeting = name ? `Hi ${name},` : "Hi there,";
 
   return (
-    <EmailLayout preview="Welcome to AI Jobs Market">
-      <Heading style={heading}>Welcome to AI Jobs Market</Heading>
+    <EmailLayout preview="Welcome to AI Task Pages">
+      <Heading style={heading}>Welcome to AI Task Pages</Heading>
       <Text style={paragraph}>{greeting}</Text>
       <Text style={paragraph}>
         Your account is ready. Complete your profile in the dashboard to appear

@@ -4,7 +4,7 @@ import { createPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "Terms of Service",
   description:
-    "Terms of Service governing your use of the AIJobsMarket website and platform.",
+    "Terms of Service governing your use of the AI Task Pages website and platform.",
   path: "/terms",
 });
 
@@ -12,7 +12,7 @@ export default function TermsPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-16 text-on-surface">
       <h1 className="text-3xl font-bold text-secondary">
-        AIJobsMarket Terms of Service
+        AI Task Pages Terms of Service
       </h1>
       <p className="mt-3 text-sm text-muted">
         <strong>Effective Date:</strong> July 2026
@@ -25,15 +25,15 @@ export default function TermsPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">1. Introduction</h2>
         <p>
-          Welcome to AIJobsMarket (&quot;AIJobsMarket&quot;, &quot;we&quot;,
+          Welcome to AI Task Pages (&quot;AI Task Pages&quot;, &quot;we&quot;,
           &quot;our&quot; or &quot;us&quot;).
         </p>
         <p>
           These Terms of Service govern your access to and use of the
-          AIJobsMarket website and any related services we provide.
+          AI Task Pages website and any related services we provide.
         </p>
         <p>
-          By accessing or using AIJobsMarket, you agree to be bound by these
+          By accessing or using AI Task Pages, you agree to be bound by these
           Terms.
         </p>
         <p>
@@ -45,10 +45,10 @@ export default function TermsPage() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">
-          2. About AIJobsMarket
+          2. About AI Task Pages
         </h2>
         <p>
-          AIJobsMarket is an online platform designed to help users discover
+          AI Task Pages is an online platform designed to help users discover
           opportunities within the Artificial Intelligence industry.
         </p>
         <p>The platform may include:</p>
@@ -119,13 +119,13 @@ export default function TermsPage() {
           6. Job Listings
         </h2>
         <p>
-          AIJobsMarket may display job listings provided by third parties.
+          AI Task Pages may display job listings provided by third parties.
         </p>
         <p>Unless stated otherwise:</p>
         <ul className="list-disc space-y-2 pl-6">
-          <li>AIJobsMarket is not the employer.</li>
-          <li>AIJobsMarket does not guarantee that a vacancy remains available.</li>
-          <li>AIJobsMarket is not responsible for recruitment decisions.</li>
+          <li>AI Task Pages is not the employer.</li>
+          <li>AI Task Pages does not guarantee that a vacancy remains available.</li>
+          <li>AI Task Pages is not responsible for recruitment decisions.</li>
         </ul>
         <p>
           Applications submitted through third-party websites are governed by
@@ -163,7 +163,7 @@ export default function TermsPage() {
         </h2>
         <p>
           Unless otherwise stated, all intellectual property relating to
-          AIJobsMarket, including:
+          AI Task Pages, including:
         </p>
         <ul className="list-disc space-y-2 pl-6">
           <li>branding;</li>
@@ -174,13 +174,13 @@ export default function TermsPage() {
           <li>graphics;</li>
           <li>databases;</li>
         </ul>
-        <p>belongs to AIJobsMarket or its licensors.</p>
+        <p>belongs to AI Task Pages or its licensors.</p>
         <p>
           You may not reproduce, distribute or commercially exploit our content
           without permission.
         </p>
         <p>
-          Users retain ownership of content they upload, but grant AIJobsMarket
+          Users retain ownership of content they upload, but grant AI Task Pages
           a non-exclusive licence to display and use that content for operating
           the platform.
         </p>
@@ -193,7 +193,7 @@ export default function TermsPage() {
           9. Third-Party Services
         </h2>
         <p>
-          AIJobsMarket may integrate with third-party providers including
+          AI Task Pages may integrate with third-party providers including
           authentication services, hosting providers and job listing partners.
         </p>
         <p>
@@ -210,7 +210,7 @@ export default function TermsPage() {
           10. Limitation of Liability
         </h2>
         <p>
-          AIJobsMarket is provided on an &quot;as is&quot; and &quot;as
+          AI Task Pages is provided on an &quot;as is&quot; and &quot;as
           available&quot; basis.
         </p>
         <p>While we aim to provide accurate information, we do not guarantee:</p>
@@ -221,7 +221,7 @@ export default function TermsPage() {
           <li>uninterrupted service.</li>
         </ul>
         <p>
-          To the fullest extent permitted by law, AIJobsMarket excludes liability
+          To the fullest extent permitted by law, AI Task Pages excludes liability
           for indirect or consequential losses arising from your use of the
           platform.
         </p>
@@ -242,7 +242,7 @@ export default function TermsPage() {
           <li>breach these Terms;</li>
           <li>abuse the platform;</li>
           <li>engage in fraudulent activity;</li>
-          <li>threaten the security or integrity of AIJobsMarket.</li>
+          <li>threaten the security or integrity of AI Task Pages.</li>
         </ul>
         <p>Where appropriate, we may remove content without prior notice.</p>
       </section>
@@ -253,7 +253,7 @@ export default function TermsPage() {
         <h2 className="text-xl font-semibold text-secondary">
           12. Changes to the Platform
         </h2>
-        <p>AIJobsMarket is continually evolving.</p>
+        <p>AI Task Pages is continually evolving.</p>
         <p>We may:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>introduce new features;</li>
@@ -274,7 +274,7 @@ export default function TermsPage() {
           13. Changes to these Terms
         </h2>
         <p>We may update these Terms from time to time.</p>
-        <p>The latest version will always be published on AIJobsMarket.</p>
+        <p>The latest version will always be published on AI Task Pages.</p>
         <p>
           Your continued use of the platform after changes have been published
           constitutes acceptance of the updated Terms.
@@ -302,23 +302,23 @@ export default function TermsPage() {
         <p>
           If you have any questions regarding these Terms, please contact:
         </p>
-        <p className="font-medium">AIJobsMarket</p>
+        <p className="font-medium">AI Task Pages</p>
         <p>
           Website:{" "}
           <a
-            href="https://aijobsmarket.co.uk"
+            href="https://aitaskpages.com"
             className="text-primary underline"
           >
-            https://aijobsmarket.co.uk
+            https://aitaskpages.com
           </a>
         </p>
         <p>
           Email:{" "}
           <a
-            href="mailto:legal@aijobsmarket.co.uk"
+            href="mailto:legal@aitaskpages.com"
             className="text-primary underline"
           >
-            legal@aijobsmarket.co.uk
+            legal@aitaskpages.com
           </a>
         </p>
       </section>
@@ -329,7 +329,7 @@ export default function TermsPage() {
         <strong>Version 1.0</strong>
       </p>
       <p className="mt-2 text-sm text-muted">
-        These Terms of Service apply to all users of AIJobsMarket unless replaced
+        These Terms of Service apply to all users of AI Task Pages unless replaced
         by a future version.
       </p>
     </article>

@@ -25,7 +25,7 @@ export default function SenderConfirmationEmail({
       <Text style={paragraph}>Hi {senderName},</Text>
       <Text style={paragraph}>
         Your message to <strong>{expertName}</strong> has been sent. They
-        have been notified and can reply to you here on AI Jobs Market.
+        have been notified and can reply to you here on AI Task Pages.
       </Text>
       <Text style={paragraph}>
         We&apos;ll email you when they respond. You can read and continue the

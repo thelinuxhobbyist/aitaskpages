@@ -1,4 +1,4 @@
-# AI Jobs Market — robots.txt
+# AI Task Pages — robots.txt
 # Dynamic version served by the Next.js app in production (see src/app/robots.ts).
 
 User-agent: *
@@ -8,4 +8,4 @@ Disallow: /sign-in/
 Disallow: /sign-up/
 Disallow: /api/
 
-Sitemap: https://aijobsmarket.co.uk/sitemap.xml
+Sitemap: https://aitaskpages.com/sitemap.xml

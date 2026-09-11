@@ -1,6 +1,6 @@
 # User Data Architecture
 
-Internal reference for how authentication, users, expert profiles, and conversations fit together on AI Jobs Market.
+Internal reference for how authentication, users, expert profiles, and conversations fit together on AI Task Pages.
 
 **Stack:** Clerk (auth) · Cloudflare D1 (application data) · Resend (email) · R2 (avatars)
 
@@ -106,7 +106,7 @@ Implemented in `src/lib/user-deletion.ts`, triggered by `user.deleted` webhook.
 
 ### On account deletion
 
-1. **`users`:** `deleted_at` set; email → `deleted-user-{id}@deleted.aijobsmarket.local`; name → `"Deleted User"`; marketing flags cleared.
+1. **`users`:** `deleted_at` set; email → `deleted-user-{id}@deleted.aitaskpages.local`; name → `"Deleted User"`; marketing flags cleared.
 2. **`expert_profiles`:** `status` → `hidden`; public fields (bio, links, image) cleared.
 3. **`conversations` / `messages`:** Retained so the other party keeps their thread history. The deleted user displays as **"Deleted User"** via anonymised `users.name`.
 4. **Clerk:** Account removed at source — user cannot sign in again.

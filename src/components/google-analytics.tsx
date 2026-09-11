@@ -2,6 +2,8 @@ import Script from "next/script";
 import { GA_MEASUREMENT_ID } from "@/lib/seo";
 
 export function GoogleAnalytics() {
+  if (!GA_MEASUREMENT_ID) return null;
+
   return (
     <>
       <Script

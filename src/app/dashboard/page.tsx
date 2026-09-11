@@ -52,7 +52,7 @@ export default async function DashboardPage({
           <CardHeader>
             <CardTitle>Welcome — how would you like to get started?</CardTitle>
             <CardDescription>
-              AI Jobs Market connects UK businesses with AI professionals and
+              AI Task Pages connects UK businesses with AI professionals and
               companies. Pick the path that fits you.
             </CardDescription>
           </CardHeader>

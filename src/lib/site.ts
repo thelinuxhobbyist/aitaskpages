@@ -1,6 +1,6 @@
-/** Public site URL — update when the AI Task Pages domain is configured. */
+/** Public site URL. */
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://aitaskpages.yama.workers.dev";
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://aitaskpages.com";
 
 /**
  * Brand assets served dynamically from R2 with live ETag revalidation.

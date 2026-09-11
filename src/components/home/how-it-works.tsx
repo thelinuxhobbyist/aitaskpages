@@ -22,7 +22,7 @@ const STEPS = [
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="scroll-mt-20">
-      <h2>How AI Jobs Market works</h2>
+      <h2>How AI Task Pages works</h2>
       <div className="mt-9 grid gap-4 md:grid-cols-3">
         {STEPS.map((step) => (
           <div

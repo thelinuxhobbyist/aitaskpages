@@ -384,8 +384,8 @@ export default async function ExpertProfilePage({ params }: PageProps) {
             <div className="mt-4 rounded-xl border border-border bg-surface px-5 py-6">
               <p className="text-sm text-muted">
                 {company
-                  ? "Sign in to connect with this company. Businesses can reach AI professionals and companies directly through AI Jobs Market while keeping personal contact details private."
-                  : "Sign in to contact this AI expert. Businesses can reach AI professionals and companies directly through AI Jobs Market while keeping personal contact details private."}
+                  ? "Sign in to connect with this company. Businesses can reach AI professionals and companies directly through AI Task Pages while keeping personal contact details private."
+                  : "Sign in to contact this AI expert. Businesses can reach AI professionals and companies directly through AI Task Pages while keeping personal contact details private."}
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Button asChild>

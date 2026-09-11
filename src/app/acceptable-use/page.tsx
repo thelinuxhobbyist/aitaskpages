@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "Acceptable Use Policy",
   description:
-    "Rules for using the AIJobsMarket platform responsibly and professionally.",
+    "Rules for using the AI Task Pages platform responsibly and professionally.",
   path: "/acceptable-use",
 });
 
@@ -13,7 +13,7 @@ export default function AcceptableUsePage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-16 text-on-surface">
       <h1 className="text-3xl font-bold text-secondary">
-        AIJobsMarket Acceptable Use Policy
+        AI Task Pages Acceptable Use Policy
       </h1>
       <p className="mt-3 text-sm text-muted">
         <strong>Effective Date:</strong> July 2026
@@ -27,14 +27,14 @@ export default function AcceptableUsePage() {
         <h2 className="text-xl font-semibold text-secondary">1. Introduction</h2>
         <p>
           This Acceptable Use Policy explains the rules that apply when using
-          AIJobsMarket (&quot;AIJobsMarket&quot;, &quot;we&quot;, &quot;our&quot;
+          AI Task Pages (&quot;AI Task Pages&quot;, &quot;we&quot;, &quot;our&quot;
           or &quot;us&quot;).
         </p>
         <p>
           The purpose of this policy is to help maintain a professional, safe and
           trustworthy platform for all users.
         </p>
-        <p>By using AIJobsMarket, you agree to comply with this policy.</p>
+        <p>By using AI Task Pages, you agree to comply with this policy.</p>
       </section>
 
       <hr className="my-10 border-border" />
@@ -43,7 +43,7 @@ export default function AcceptableUsePage() {
         <h2 className="text-xl font-semibold text-secondary">
           2. Respectful Use
         </h2>
-        <p>You agree to use AIJobsMarket responsibly and respectfully.</p>
+        <p>You agree to use AI Task Pages responsibly and respectfully.</p>
         <p>You must not use the platform in any way that:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>is unlawful;</li>
@@ -58,7 +58,7 @@ export default function AcceptableUsePage() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">3. User Content</h2>
-        <p>You are responsible for all content you publish on AIJobsMarket.</p>
+        <p>You are responsible for all content you publish on AI Task Pages.</p>
         <p>This includes:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>AI Expert profiles</li>
@@ -93,7 +93,7 @@ export default function AcceptableUsePage() {
           <li>impersonates another person or organisation.</li>
         </ul>
         <p>
-          AIJobsMarket reserves the right to remove content that violates this
+          AI Task Pages reserves the right to remove content that violates this
           policy.
         </p>
       </section>
@@ -127,7 +127,7 @@ export default function AcceptableUsePage() {
           <li>interfere with platform security;</li>
           <li>test security without permission;</li>
           <li>upload malicious software;</li>
-          <li>disrupt the operation of AIJobsMarket.</li>
+          <li>disrupt the operation of AI Task Pages.</li>
         </ul>
         <p>
           Any attempt to compromise platform security may result in immediate
@@ -166,7 +166,7 @@ export default function AcceptableUsePage() {
           <li>accurately represent qualifications and experience.</li>
         </ul>
         <p>
-          AIJobsMarket may remove profiles that consistently contain inaccurate
+          AI Task Pages may remove profiles that consistently contain inaccurate
           or misleading information.
         </p>
       </section>
@@ -175,7 +175,7 @@ export default function AcceptableUsePage() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">9. Enforcement</h2>
-        <p>Where this policy is breached, AIJobsMarket may:</p>
+        <p>Where this policy is breached, AI Task Pages may:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>remove content;</li>
           <li>suspend accounts;</li>
@@ -198,7 +198,7 @@ export default function AcceptableUsePage() {
           10. Changes to this Policy
         </h2>
         <p>This policy may be updated from time to time.</p>
-        <p>The latest version will always be published on AIJobsMarket.</p>
+        <p>The latest version will always be published on AI Task Pages.</p>
         <p>
           Continued use of the platform constitutes acceptance of the updated
           policy.
@@ -213,23 +213,23 @@ export default function AcceptableUsePage() {
           If you have questions regarding this Acceptable Use Policy, please
           contact:
         </p>
-        <p className="font-medium">AIJobsMarket</p>
+        <p className="font-medium">AI Task Pages</p>
         <p>
           Website:{" "}
           <a
-            href="https://aijobsmarket.co.uk"
+            href="https://aitaskpages.com"
             className="text-primary underline"
           >
-            https://aijobsmarket.co.uk
+            https://aitaskpages.com
           </a>
         </p>
         <p>
           Email:{" "}
           <a
-            href="mailto:legal@aijobsmarket.co.uk"
+            href="mailto:legal@aitaskpages.com"
             className="text-primary underline"
           >
-            legal@aijobsmarket.co.uk
+            legal@aitaskpages.com
           </a>
         </p>
       </section>
@@ -248,7 +248,7 @@ export default function AcceptableUsePage() {
         <Link href="/terms" className="text-primary underline">
           Terms of Service
         </Link>{" "}
-        and other legal documents published by AIJobsMarket.
+        and other legal documents published by AI Task Pages.
       </p>
     </article>
   );

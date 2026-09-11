@@ -5,7 +5,7 @@ import { createPageMetadata } from "@/lib/seo";
 export const metadata: Metadata = createPageMetadata({
   title: "AI Expert Terms",
   description:
-    "Terms that apply to users who create or publish an AI Expert profile on AIJobsMarket.",
+    "Terms that apply to users who create or publish an AI Expert profile on AI Task Pages.",
   path: "/expert-terms",
 });
 
@@ -13,7 +13,7 @@ export default function ExpertTermsPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-16 text-on-surface">
       <h1 className="text-3xl font-bold text-secondary">
-        AIJobsMarket AI Expert Terms
+        AI Task Pages AI Expert Terms
       </h1>
       <p className="mt-3 text-sm text-muted">
         <strong>Effective Date:</strong> July 2026
@@ -27,7 +27,7 @@ export default function ExpertTermsPage() {
         <h2 className="text-xl font-semibold text-secondary">1. Introduction</h2>
         <p>
           These AI Expert Terms apply to all users who create, manage or publish
-          an AI Expert profile on AIJobsMarket (&quot;AIJobsMarket&quot;,
+          an AI Expert profile on AI Task Pages (&quot;AI Task Pages&quot;,
           &quot;we&quot;, &quot;our&quot; or &quot;us&quot;).
         </p>
         <p>
@@ -48,10 +48,10 @@ export default function ExpertTermsPage() {
           professionals who provide Artificial Intelligence related services.
         </p>
         <p>
-          AIJobsMarket provides a platform for discovery and initial contact
+          AI Task Pages provides a platform for discovery and initial contact
           only.
         </p>
-        <p>AIJobsMarket is <strong>not</strong>:</p>
+        <p>AI Task Pages is <strong>not</strong>:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>an employment agency;</li>
           <li>a recruitment business;</li>
@@ -77,7 +77,7 @@ export default function ExpertTermsPage() {
           <li>comply with all applicable laws.</li>
         </ul>
         <p>
-          AIJobsMarket may request additional information where necessary to
+          AI Task Pages may request additional information where necessary to
           maintain platform integrity.
         </p>
       </section>
@@ -137,7 +137,7 @@ export default function ExpertTermsPage() {
         </h2>
         <p>You retain ownership of the content you upload.</p>
         <p>
-          However, by publishing your profile you grant AIJobsMarket a
+          However, by publishing your profile you grant AI Task Pages a
           worldwide, non-exclusive, royalty-free licence to:
         </p>
         <ul className="list-disc space-y-2 pl-6">
@@ -145,7 +145,7 @@ export default function ExpertTermsPage() {
           <li>
             reproduce your content as required to operate the platform;
           </li>
-          <li>promote your public profile within AIJobsMarket.</li>
+          <li>promote your public profile within AI Task Pages.</li>
         </ul>
         <p>
           This licence ends when your content is removed from the platform,
@@ -161,7 +161,7 @@ export default function ExpertTermsPage() {
           Businesses may contact you using the contact methods you choose to
           publish.
         </p>
-        <p>AIJobsMarket does not:</p>
+        <p>AI Task Pages does not:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>participate in negotiations;</li>
           <li>review contracts;</li>
@@ -180,7 +180,7 @@ export default function ExpertTermsPage() {
         <h2 className="text-xl font-semibold text-secondary">8. Fees</h2>
         <p>
           Creating an AI Expert profile may be free or paid, depending on the
-          services offered by AIJobsMarket.
+          services offered by AI Task Pages.
         </p>
         <p>
           Where paid services are introduced in the future, separate pricing
@@ -197,7 +197,7 @@ export default function ExpertTermsPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold text-secondary">9. Verification</h2>
         <p>
-          AIJobsMarket may introduce profile verification in the future.
+          AI Task Pages may introduce profile verification in the future.
         </p>
         <p>
           Verification indicates only that certain information has been checked
@@ -222,7 +222,7 @@ export default function ExpertTermsPage() {
         <h2 className="text-xl font-semibold text-secondary">
           10. Removal of Profiles
         </h2>
-        <p>AIJobsMarket reserves the right to suspend or remove profiles that:</p>
+        <p>AI Task Pages reserves the right to suspend or remove profiles that:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>breach our Terms;</li>
           <li>contain false information;</li>
@@ -242,7 +242,7 @@ export default function ExpertTermsPage() {
         <h2 className="text-xl font-semibold text-secondary">
           11. Limitation of Liability
         </h2>
-        <p>AIJobsMarket acts solely as a discovery platform.</p>
+        <p>AI Task Pages acts solely as a discovery platform.</p>
         <p>We do not guarantee:</p>
         <ul className="list-disc space-y-2 pl-6">
           <li>the accuracy of profile information;</li>
@@ -263,7 +263,7 @@ export default function ExpertTermsPage() {
           12. Changes to these Terms
         </h2>
         <p>These AI Expert Terms may be updated from time to time.</p>
-        <p>The latest version will always be published on AIJobsMarket.</p>
+        <p>The latest version will always be published on AI Task Pages.</p>
         <p>
           Continued use of the AI Expert Directory after changes have been
           published constitutes acceptance of the updated Terms.
@@ -277,23 +277,23 @@ export default function ExpertTermsPage() {
         <p>
           If you have questions regarding these AI Expert Terms, please contact:
         </p>
-        <p className="font-medium">AIJobsMarket</p>
+        <p className="font-medium">AI Task Pages</p>
         <p>
           Website:{" "}
           <a
-            href="https://aijobsmarket.co.uk"
+            href="https://aitaskpages.com"
             className="text-primary underline"
           >
-            https://aijobsmarket.co.uk
+            https://aitaskpages.com
           </a>
         </p>
         <p>
           Email:{" "}
           <a
-            href="mailto:legal@aijobsmarket.co.uk"
+            href="mailto:legal@aitaskpages.com"
             className="text-primary underline"
           >
-            legal@aijobsmarket.co.uk
+            legal@aitaskpages.com
           </a>
         </p>
       </section>

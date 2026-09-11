@@ -101,15 +101,15 @@ export function Footer() {
       <div className="footer-bottom">
         <div className="footer-bottom-container">
           <p className="footer-disclaimer">
-            <strong>AI Jobs Market</strong> is a directory of AI professionals
+            <strong>AI Task Pages</strong> is a directory of AI professionals
             and companies, and an introduction platform. Our role is simply to
             provide a place where businesses, AI professionals and companies
             can discover each other and connect. What happens after that
             introduction is entirely between the parties and is independent of
-            AI Jobs Market.
+            AI Task Pages.
           </p>
           <div className="footer-copyright">
-            &copy; {year} AI Jobs Market. All rights reserved.
+            &copy; {year} AI Task Pages. All rights reserved.
           </div>
         </div>
       </div>

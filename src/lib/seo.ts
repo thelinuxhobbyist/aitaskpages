@@ -14,7 +14,7 @@ import {
   SITE_URL,
 } from "@/lib/site";
 
-export const SITE_NAME = "AI Jobs Market";
+export const SITE_NAME = "AI Task Pages";
 
 /** Short brand line — introduction platform, not recruitment. */
 export const SITE_TAGLINE =
@@ -28,20 +28,17 @@ export const SITE_TAGLINE =
 export const DEFAULT_DESCRIPTION =
   "An introduction platform connecting UK businesses with independent AI experts. Find an expert or post a task, then connect directly.";
 
-export const ORGANIZATION_SAME_AS = [
-  "https://www.linkedin.com/company/aijobsmarket/",
-  "https://twitter.com/aijobsmarket",
-  "https://www.youtube.com/@aijobsmarket",
-] as const;
+/** Social profile URLs for JSON-LD sameAs — add when AI Task Pages accounts exist. */
+export const ORGANIZATION_SAME_AS = [] as const;
 
 export const BRAND_ALTERNATE_NAMES = [
-  "AIJobsMarket",
-  "aijobsmarket",
-  "aijobsmarket.co.uk",
-  "AI Jobs Market UK",
+  "AITaskPages",
+  "aitaskpages",
+  "aitaskpages.com",
 ] as const;
 
-export const GA_MEASUREMENT_ID = "G-JRRZ1CWQH9";
+/** Empty until a dedicated AI Task Pages GA property is configured. */
+export const GA_MEASUREMENT_ID = "";
 
 export function absoluteUrl(path = "/"): string {
   if (path.startsWith("http")) return path;
@@ -111,14 +108,14 @@ export function rootMetadata(): Metadata {
     creator: SITE_NAME,
     publisher: SITE_NAME,
     keywords: [
-      "AI Jobs Market",
-      "AIJobsMarket",
-      "AI experts UK",
+      "AI Task Pages",
+      "AITaskPages",
+      "AI experts",
       "AI consultants",
       "connect with AI experts",
       "post AI task",
       "AI automation experts",
-      "machine learning consultants UK",
+      "machine learning consultants",
     ],
     formatDetection: {
       email: false,
@@ -181,7 +178,6 @@ export function rootMetadata(): Metadata {
     },
     twitter: {
       card: "summary",
-      site: "@aijobsmarket",
       title: ROOT_TITLE,
       description: DEFAULT_DESCRIPTION,
       images: [SITE_SHARE_ICON_URL],
@@ -229,11 +225,13 @@ export function organizationJsonLd() {
       "Custom AI solutions",
       "AI project requirements",
     ],
-    sameAs: [...ORGANIZATION_SAME_AS],
+    ...(ORGANIZATION_SAME_AS.length > 0
+      ? { sameAs: [...ORGANIZATION_SAME_AS] }
+      : {}),
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
-      email: "contact@aijobsmarket.co.uk",
+      email: "contact@aitaskpages.com",
       availableLanguage: ["English"],
     },
   };

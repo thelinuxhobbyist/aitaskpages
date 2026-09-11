@@ -1,7 +1,7 @@
 export async function GET() {
   const manifest = {
-    name: "AI Jobs Market",
-    short_name: "AIJobsMarket",
+    name: "AI Task Pages",
+    short_name: "AITaskPages",
     description: "An introduction platform connecting UK businesses with independent AI experts.",
     start_url: "/",
     display: "standalone",

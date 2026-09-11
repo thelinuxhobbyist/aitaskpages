@@ -16,7 +16,7 @@ import { ArrowLeft } from "lucide-react";
 export const metadata: Metadata = {
   title: "Post a Task",
   description:
-    "Post an AI task or project requirement on AI Jobs Market. Connect directly with independent UK AI experts.",
+    "Post an AI task or project requirement on AI Task Pages. Connect directly with independent UK AI experts.",
 };
 
 export const dynamic = "force-dynamic";
