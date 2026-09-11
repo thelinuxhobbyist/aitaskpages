@@ -65,13 +65,17 @@ export async function saveRequirementAction(
       revalidatePath(`/dashboard/requirements/${existingId}`);
       revalidatePath(`/tasks/${existingId}`);
       revalidatePath("/tasks");
-      redirectTo = `/dashboard/requirements/${existingId}`;
+      redirectTo = publish
+        ? `/tasks/${existingId}?posted=1`
+        : `/dashboard/requirements/${existingId}?saved=1`;
     } else {
       const id = await createRequirement(user.id, parsed.data, publish);
       revalidatePath("/dashboard/requirements");
       revalidatePath(`/tasks/${id}`);
       revalidatePath("/tasks");
-      redirectTo = `/dashboard/requirements/${id}`;
+      redirectTo = publish
+        ? `/tasks/${id}?posted=1`
+        : `/dashboard/requirements/${id}?saved=1`;
     }
   } catch (err) {
     return {

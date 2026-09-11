@@ -94,11 +94,6 @@ export function ProfileForm({
           {state.error}
         </p>
       )}
-      {state.success && (
-        <p className="rounded-lg bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-          Profile saved successfully.
-        </p>
-      )}
 
       <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3">
         <p className="text-sm text-on-surface">

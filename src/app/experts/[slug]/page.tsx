@@ -20,6 +20,7 @@ import {
 } from "@/lib/profile-utils";
 import { isCompanyProfile, profileTypeLabel } from "@/lib/profile-type";
 import { PageHero } from "@/components/page-hero";
+import { SuccessBanner } from "@/components/ui/success-banner";
 import { absoluteUrl, createPageMetadata, SITE_NAME } from "@/lib/seo";
 import { getTurnstileSiteKey } from "@/lib/turnstile";
 import {
@@ -105,7 +106,12 @@ function ProfileSection({
   );
 }
 
-export default async function ExpertProfilePage({ params }: PageProps) {
+export default async function ExpertProfilePage({
+  params,
+  searchParams,
+}: PageProps & {
+  searchParams: Promise<{ created?: string; updated?: string }>;
+}) {
   const { slug } = await params;
   const profile = await getProfileBySlug(slug);
   if (!profile) notFound();
@@ -115,6 +121,9 @@ export default async function ExpertProfilePage({ params }: PageProps) {
   const identity = await getAuthIdentity();
   const viewer = identity ? await getOrCreateUser() : null;
   const isOwner = !!viewer && viewer.id === profile.userId;
+  const notice = await searchParams;
+  const showCreated = isOwner && notice.created === "1";
+  const showUpdated = isOwner && notice.updated === "1";
   const turnstileSiteKey = getTurnstileSiteKey();
   const profilePath = `/experts/${profile.slug}`;
   const customSkills = getProfileSkillLabels(profile);
@@ -184,6 +193,53 @@ export default async function ExpertProfilePage({ params }: PageProps) {
             <ArrowLeft className="h-4 w-4" />
             Back to search
           </Link>
+
+          {(showCreated || showUpdated) && (
+            <div className="mt-6">
+              <SuccessBanner
+                title={
+                  showCreated
+                    ? company
+                      ? "Your company profile is now live."
+                      : "Your profile is now live."
+                    : company
+                      ? "Your company profile has been updated."
+                      : "Your profile has been updated."
+                }
+              >
+                {showCreated ? (
+                  <p>
+                    Businesses can find you in{" "}
+                    <Link
+                      href="/search"
+                      className="font-medium underline underline-offset-2"
+                    >
+                      Find AI Expertise
+                    </Link>
+                    . You can edit your profile any time from the{" "}
+                    <Link
+                      href="/dashboard"
+                      className="font-medium underline underline-offset-2"
+                    >
+                      dashboard
+                    </Link>
+                    .
+                  </p>
+                ) : (
+                  <p>
+                    This is how you appear to businesses. Edit it from the{" "}
+                    <Link
+                      href="/dashboard"
+                      className="font-medium underline underline-offset-2"
+                    >
+                      dashboard
+                    </Link>
+                    .
+                  </p>
+                )}
+              </SuccessBanner>
+            </div>
+          )}
 
           <header className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start">
             <Avatar

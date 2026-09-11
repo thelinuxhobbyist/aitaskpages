@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth";
+import { SuccessBanner } from "@/components/ui/success-banner";
 import { getRequirementById, getRequirementInterestCount } from "@/lib/requirements";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
 import {
@@ -25,7 +26,10 @@ import {
 import { formatBudgetGBP, formatDateTime } from "@/lib/utils";
 import { Building2, ExternalLink, MapPin, Users, Wallet } from "lucide-react";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ saved?: string }>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
@@ -42,7 +46,10 @@ const STATUS_LABELS: Record<string, string> = {
   filled: "Filled",
 };
 
-export default async function RequirementDetailPage({ params }: Props) {
+export default async function RequirementDetailPage({
+  params,
+  searchParams,
+}: Props) {
   const user = await requireUser();
   const { id } = await params;
   const requirementId = Number(id);
@@ -50,6 +57,9 @@ export default async function RequirementDetailPage({ params }: Props) {
 
   const requirement = await getRequirementById(requirementId);
   if (!requirement || requirement.clientUserId !== user.id) notFound();
+
+  const { saved } = await searchParams;
+  const justSaved = saved === "1";
 
   const [skills, services, interestCount] = await Promise.all([
     getAllSkills(),
@@ -62,6 +72,30 @@ export default async function RequirementDetailPage({ params }: Props) {
 
   return (
     <div className="space-y-6">
+      {justSaved && (
+        <SuccessBanner
+          title={
+            requirement.status === "draft"
+              ? "Your draft has been saved."
+              : "Your task has been updated."
+          }
+        >
+          {requirement.status === "draft" ? (
+            <p>Publish it when you&apos;re ready so matching experts can be notified.</p>
+          ) : (
+            <p>
+              View the{" "}
+              <Link
+                href={`/tasks/${requirementId}`}
+                className="font-medium underline underline-offset-2"
+              >
+                public task page
+              </Link>
+              .
+            </p>
+          )}
+        </SuccessBanner>
+      )}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">

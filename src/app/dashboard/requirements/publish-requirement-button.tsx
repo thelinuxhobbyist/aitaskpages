@@ -23,7 +23,7 @@ export function PublishRequirementButton({
       setPending(false);
       return;
     }
-    router.refresh();
+    router.push(`/tasks/${requirementId}?posted=1`);
   }
 
   return (

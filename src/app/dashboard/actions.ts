@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { getAuthIdentity, requireUser } from "@/lib/auth";
 import { createProfile, updateProfile } from "@/lib/profiles";
 import {
@@ -54,20 +55,25 @@ export async function saveProfile(
     };
   }
 
+  let slug: string;
+  let created = false;
+
   try {
     if (user.profile) {
-      await updateProfile(user.profile, parsed.data);
+      const updated = await updateProfile(user.profile, parsed.data);
+      slug = updated.slug;
     } else {
-      await createProfile(user.id, parsed.data);
+      const profile = await createProfile(user.id, parsed.data);
+      slug = profile.slug;
+      created = true;
     }
 
     revalidatePath("/dashboard");
-    if (user.profile?.slug) {
-      revalidatePath(`/experts/${user.profile.slug}`);
-    }
+    revalidatePath(`/experts/${slug}`);
     revalidatePath("/search");
-    return { success: true };
   } catch {
     return { error: "Failed to save profile. Please try again." };
   }
+
+  redirect(`/experts/${slug}?${created ? "created=1" : "updated=1"}`);
 }
