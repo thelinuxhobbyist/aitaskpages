@@ -80,7 +80,7 @@ export const HOME_BENEFITS: HomeBenefit[] = [
   {
     title: "Direct introductions",
     description:
-      "We introduce you to AI professionals and companies. You agree how to work together — no recruiters in between.",
+      "We introduce you to AI professionals and companies. You agree how to work together — no middleman managing the relationship.",
     icon: MessageSquare,
     iconBg: "border-accent/30 bg-accent-muted",
     iconColor: "text-accent",

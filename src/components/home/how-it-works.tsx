@@ -3,19 +3,19 @@ const STEPS = [
     number: "01",
     title: "Find an expert, a company, or post a task",
     description:
-      "Search Find AI Expertise and contact someone directly, or post what you need and let relevant specialists express interest.",
+      "Search for AI expertise and contact someone directly, or post what you need and let relevant specialists express their interest.",
   },
   {
     number: "02",
     title: "Review who is interested",
     description:
-      "AI professionals and companies review open tasks and express interest. Review their profiles and decide who you'd like to speak with.",
+      "When you post a task, AI professionals and companies can express interest. Review their profiles and decide who you'd like to speak with.",
   },
   {
     number: "03",
     title: "Connect directly",
     description:
-      "Compare profiles, shortlist the people who look right for your needs, and connect directly. Agree the details between yourselves and take the relationship from there.",
+      "Compare profiles, shortlist the people who look right for your needs, and connect directly. Agree the details between yourselves — we make the introduction, not the arrangement.",
   },
 ];
 

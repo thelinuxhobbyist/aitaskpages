@@ -14,7 +14,7 @@ import { Briefcase, Plus } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Browse AI tasks & project requirements",
   description:
-    "Browse open AI tasks from businesses and individuals on AI Task Pages. Experts can express interest; you connect directly.",
+    "Browse open AI tasks on AI Task Pages. Specialists can express interest; you connect directly.",
   path: "/tasks",
 });
 
@@ -29,8 +29,8 @@ export default function RequirementsDirectoryPage() {
         </p>
         <h1 className="mt-2">Browse open AI tasks</h1>
         <p className="mt-3 max-w-2xl text-muted">
-          Open requests from businesses and individuals looking for independent
-          AI expertise. Experts can express interest; you connect directly.
+          Open requests from people and businesses looking for AI expertise.
+          Specialists can express interest; you connect directly.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Button asChild>

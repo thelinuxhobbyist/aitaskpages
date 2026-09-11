@@ -5,17 +5,11 @@ import { RequirementCard, taskCardGridClassName } from "@/app/tasks/requirement-
 import { ExpertSearchForm } from "@/app/experts/expert-search-form";
 import { FeaturedCategories } from "@/components/home/featured-categories";
 import { HowItWorks } from "@/components/home/how-it-works";
-import { JobPreviewCard } from "@/components/home/job-preview-card";
 import { JoinAsExpertCta } from "@/components/home/join-as-expert-cta";
 import { PlatformSection } from "@/components/home/platform-section";
 import { DocumentLink } from "@/components/document-link";
-import {
-  HomeJobsSkeleton,
-  HomeSectionsSkeleton,
-} from "@/components/skeletons";
+import { HomeSectionsSkeleton } from "@/components/skeletons";
 import { getFeaturedExperts } from "@/lib/directory";
-import { getLatestJobs } from "@/lib/jobs";
-import { getAllServices, getAllSkills } from "@/lib/profiles";
 import { getLatestOpenRequirements } from "@/lib/requirements";
 import { PageHero } from "@/components/page-hero";
 import { ArrowRight, CircleCheck } from "lucide-react";
@@ -30,10 +24,10 @@ function HomeHero() {
         <span className="text-accent-foreground">you need.</span>
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
-        AI Task Pages is an introduction platform connecting businesses and
-        individuals with AI professionals and companies. Find expertise
-        directly, or post what you need and let relevant specialists come to
-        you.
+        AI Task Pages is an introduction platform connecting people and
+        businesses with AI professionals and companies. Find the expertise you
+        need, or post a task and let relevant specialists express their
+        interest.
       </p>
       <p className="mt-4 max-w-xl text-[1.0625rem] font-medium leading-[1.5] text-on-surface md:text-lg">
         We make the introduction. You take it from there.
@@ -132,7 +126,7 @@ async function HomePlatformSections() {
             </p>
             <p className="mx-auto mt-2 max-w-lg text-sm text-muted">
               Nothing has been removed from the site. The directory should be
-              back shortly. Vacancy listings below are unaffected.
+              back shortly.
             </p>
           </div>
         </div>
@@ -160,7 +154,7 @@ async function HomePlatformSections() {
             <PlatformSection
               id="tasks"
               title="Open AI tasks"
-              description="What businesses and individuals need help with — AI professionals and companies can express interest so you can connect directly."
+              description="Open requests looking for AI help — professionals and companies can express interest so you can connect directly."
               browseHref="/tasks"
               browseLabel="Browse all tasks"
             >
@@ -174,30 +168,6 @@ async function HomePlatformSections() {
         </div>
       )}
     </>
-  );
-}
-
-async function HomeJobsSection() {
-  const jobs = await getLatestJobs(6);
-  if (jobs.length === 0) return null;
-
-  return (
-    <div className="mx-auto max-w-6xl px-5 pb-14">
-      <PlatformSection
-        id="jobs"
-        title="Looking for an AI job?"
-        description="Employment vacancies are listed separately from AI Task Pages introductions. Browse them if you are looking for a traditional AI role."
-        browseHref="/jobs"
-        browseLabel="Browse vacancies"
-        secondary
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          {jobs.map((job) => (
-            <JobPreviewCard key={job.jobId} job={job} />
-          ))}
-        </div>
-      </PlatformSection>
-    </div>
   );
 }
 
@@ -219,10 +189,6 @@ export function HomePage() {
       <div className="mx-auto max-w-6xl px-5 pb-14">
         <JoinAsExpertCta />
       </div>
-
-      <Suspense fallback={<HomeJobsSkeleton />}>
-        <HomeJobsSection />
-      </Suspense>
     </>
   );
 }

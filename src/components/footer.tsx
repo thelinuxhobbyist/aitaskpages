@@ -88,16 +88,12 @@ export function Footer() {
           <p className="footer-disclaimer">
             <strong>AI Task Pages</strong> is a directory of AI professionals
             and companies, and an introduction platform. Our role is simply to
-            provide a place where businesses, AI professionals and companies
-            can discover each other and connect. What happens after that
-            introduction is entirely between the parties and is independent of
-            AI Task Pages.
+            provide a place where people and companies can discover each other
+            and connect. What happens after that introduction is entirely
+            between the parties and is independent of AI Task Pages.
           </p>
           <p className="footer-family-line">
             AI Task Pages · Part of the AI Jobs Market family
-          </p>
-          <p className="footer-vacancy-links">
-            Supporting vacancy listings: <a href="/jobs">AI vacancies</a>
           </p>
           <div className="footer-copyright">
             &copy; {year} AI Task Pages. All rights reserved.

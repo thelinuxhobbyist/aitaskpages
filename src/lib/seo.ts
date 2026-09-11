@@ -213,10 +213,9 @@ export function organizationJsonLd() {
     image: SITE_LOGO_URL,
     description: DEFAULT_DESCRIPTION,
     slogan: SITE_TAGLINE,
-    areaServed: "Worldwide",
     knowsAbout: [
       "Artificial intelligence consulting",
-      "AI freelancers and consultants",
+      "AI professionals and companies",
       "AI automation and integrations",
       "Machine learning",
       "Custom AI solutions",

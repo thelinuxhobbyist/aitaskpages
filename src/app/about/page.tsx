@@ -25,14 +25,15 @@ export default function AboutPage() {
           connecting around AI-related work.
         </p>
         <p>
-          Businesses and individuals can search for AI professionals and
-          companies by their skills and services, or describe what they need by
-          posting a task. AI experts can create profiles, be discovered through
-          search, and express interest in tasks that match their expertise.
+          People and businesses can find AI professionals and companies by
+          skills and services, or post an AI task so relevant specialists can
+          express interest. Profiles can be reviewed, and connections happen
+          directly between the parties involved.
         </p>
         <p>
-          We make the introduction. What happens after that is between you and
-          the person or company you connect with.
+          We make the introduction. What happens after that — including any
+          working relationship, contracts, payments or delivery — is between
+          you and the person or company you connect with.
         </p>
       </section>
 
@@ -42,23 +43,25 @@ export default function AboutPage() {
         <h2 className="text-xl font-semibold text-secondary">What we do</h2>
         <ul className="list-disc space-y-3 pl-6">
           <li>
-            <strong>Find AI expertise</strong> — Search profiles of AI
-            professionals and companies by skills, services and areas of
-            expertise.
+            <strong>Find AI professionals and companies</strong> — Search by
+            skills and services to discover relevant expertise.
           </li>
           <li>
-            <strong>Post an AI task</strong> — Describe what you need and let
-            relevant AI specialists discover your task and express their
-            interest.
+            <strong>Post an AI task</strong> — Describe what you need and allow
+            relevant specialists to express interest.
           </li>
           <li>
-            <strong>Connect directly</strong> — Review profiles, decide who you
-            want to speak with, and take the conversation forward directly.
+            <strong>Review profiles and connect directly</strong> — Decide who
+            you want to speak with and take the conversation forward yourselves.
           </li>
         </ul>
         <p>
-          We don&apos;t manage the work, contracts, delivery or payments between
-          people who connect through the platform.
+          {SITE_NAME} does not manage contracts, payments, delivery or the
+          working relationship between people who connect through the platform.
+        </p>
+        <p className="font-medium text-secondary">
+          Find the right expertise. Describe what you need. Make the
+          connection.
         </p>
       </section>
 
@@ -72,12 +75,8 @@ export default function AboutPage() {
             For businesses and individuals
           </h3>
           <p>
-            If you need help with AI, you can search for someone with the right
-            expertise or post a task describing what you need.
-          </p>
-          <p>
-            You decide who you want to contact and how you want to work
-            together.
+            Find AI professionals or companies, or post a task and let relevant
+            specialists come to you.
           </p>
         </div>
 
@@ -86,13 +85,8 @@ export default function AboutPage() {
             For AI professionals and companies
           </h3>
           <p>
-            Create a profile describing your expertise, skills and services.
-            Your profile can be discovered by people and businesses looking for
-            AI help.
-          </p>
-          <p>
-            You can also browse open tasks and express interest when you see
-            something that matches your expertise.
+            Create a profile, showcase skills and services, become discoverable
+            and express interest in relevant tasks.
           </p>
         </div>
       </section>
@@ -114,10 +108,6 @@ export default function AboutPage() {
         <p>
           We aren&apos;t trying to become the middleman. Our role is to make the
           introduction and provide the place where that connection can happen.
-        </p>
-        <p className="font-medium text-secondary">
-          Find the right expertise. Describe what you need. Make the
-          connection.
         </p>
       </section>
 
@@ -179,8 +169,8 @@ export default function AboutPage() {
           people who have it.
         </p>
         <p>
-          AI Jobs Market is focused on the UK, while {SITE_NAME} is designed for
-          an international audience.
+          AI Jobs Market focuses on the UK, while {SITE_NAME} is designed for an
+          international audience.
         </p>
       </section>
     </article>

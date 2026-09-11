@@ -26,9 +26,4 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://aitaskpages.com/jobs</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.45</priority>
-  </url>
 </urlset>

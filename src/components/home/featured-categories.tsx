@@ -8,8 +8,8 @@ export function FeaturedCategories() {
       <div className="mx-auto max-w-6xl px-5 py-14">
         <h2>Explore by category</h2>
         <p className="section-lead">
-          Find specialists by discipline — chatbots, Copilot, automation,
-          training, machine learning and AI strategy.
+          Explore AI expertise across areas such as chatbots, automation,
+          machine learning, AI training and strategy.
         </p>
         <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {HOME_CATEGORIES.map((category) => (

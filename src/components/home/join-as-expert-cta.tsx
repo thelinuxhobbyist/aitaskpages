@@ -14,9 +14,10 @@ export function JoinAsExpertCta() {
         </div>
         <h2 className="mt-4">Do you offer AI expertise?</h2>
         <p className="mx-auto mt-3.5 max-w-xl text-lg leading-[1.65] text-muted">
-          Create an individual or company profile, showcase your skills, and
-          get discovered by businesses and individuals looking for AI
-          expertise. We introduce you — you take the conversation from there.
+          Create an individual or company profile, showcase your skills and
+          services, become discoverable, and express interest in relevant
+          tasks. We make the introduction — you take the conversation from
+          there.
         </p>
         <Button asChild variant="ink" size="lg" className="mt-6 rounded-xl">
           <Link href="/create-a-profile">

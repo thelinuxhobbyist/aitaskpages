@@ -150,7 +150,8 @@ export default async function SearchPage({ searchParams }: PageProps) {
           {!searched && (
             <p className="mt-2 max-w-2xl text-base text-muted">
               Search by skill, service or location to find AI professionals and
-              companies. Or post a task and let specialists come to you.
+              companies. Or post a task and let relevant specialists express
+              their interest.
             </p>
           )}
 

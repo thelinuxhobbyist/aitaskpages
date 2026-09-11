@@ -36,22 +36,22 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
     changeFrequency: "yearly",
     priority: 0.3,
   },
-  // Supporting vacancy pages — lower priority than marketplace surfaces
-  { url: absoluteUrl("/jobs"), changeFrequency: "daily", priority: 0.45 },
+  // Legacy vacancy pages remain reachable but are not core product surfaces.
+  { url: absoluteUrl("/jobs"), changeFrequency: "weekly", priority: 0.2 },
   {
     url: absoluteUrl("/ai-jobs-uk.html"),
     changeFrequency: "weekly",
-    priority: 0.35,
+    priority: 0.15,
   },
   {
     url: absoluteUrl("/ai-jobs-london.html"),
     changeFrequency: "weekly",
-    priority: 0.35,
+    priority: 0.15,
   },
   {
     url: absoluteUrl("/remote-ai-jobs-uk.html"),
     changeFrequency: "weekly",
-    priority: 0.35,
+    priority: 0.15,
   },
 ];
 
