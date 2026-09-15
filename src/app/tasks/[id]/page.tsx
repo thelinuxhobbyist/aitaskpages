@@ -188,7 +188,7 @@ export default async function PublicRequirementPage({
   return (
     <div className="relative pb-24 lg:pb-0">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[22rem] bg-gradient-task"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[22rem] bg-gradient-hero"
         aria-hidden
       />
 
@@ -298,7 +298,7 @@ export default async function PublicRequirementPage({
               )}
 
               <Section title="About the person who posted this">
-                <div className="flex gap-4 rounded-xl border border-border bg-surface-container px-4 py-4 sm:items-center md:px-5">
+                <div className="flex gap-4 rounded-xl border border-accent/30 bg-accent-muted px-4 py-4 sm:items-center md:px-5">
                   <Avatar
                     src={posterProfile?.profileImageUrl}
                     alt={companyLabel}
