@@ -2,10 +2,10 @@
 
 @theme {
   /* Temporary cloned palette — replace when AI Task Pages branding arrives */
-  --color-background: oklch(98.5% 0.004 106);
+  --color-background: oklch(100% 0 0);
   --color-foreground: oklch(19% 0.015 250);
 
-  --color-surface: oklch(98.5% 0.004 106);
+  --color-surface: oklch(100% 0 0);
   --color-on-surface: oklch(19% 0.015 250);
   --color-secondary: oklch(19% 0.015 250);
   --color-on-surface-variant: oklch(52% 0.015 250);

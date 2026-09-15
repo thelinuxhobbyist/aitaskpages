@@ -7,7 +7,7 @@
   --md-primary-container: oklch(95.5% 0.006 106);
   --md-on-primary-container: oklch(19% 0.015 250);
 
-  --md-surface: oklch(98.5% 0.004 106);
+  --md-surface: oklch(100% 0 0);
   --md-surface-container: oklch(95.5% 0.006 106);
   --md-surface-container-high: oklch(93% 0.006 106);
   --md-on-surface: oklch(19% 0.015 250);

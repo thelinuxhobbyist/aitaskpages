@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 export function FeaturedCategories() {
   return (
-    <section id="categories" className="scroll-mt-20 border-y border-border/60 bg-surface-container/60">
+    <section id="categories" className="scroll-mt-20 border-y border-border/60">
       <div className="mx-auto max-w-6xl px-5 py-14">
         <h2>Explore by category</h2>
         <p className="section-lead">

@@ -12,15 +12,15 @@ import {
 const FINDER_HOME = "";
 
 const SPLASH_HTML = `<!DOCTYPE html>
-<html lang="en-GB" style="background:#fafbfc;color-scheme:light">
+<html lang="en-GB" style="background:#ffffff;color-scheme:light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#fafbfc">
+<meta name="theme-color" content="#ffffff">
 <meta name="color-scheme" content="light">
 <title>AI Software Finder</title>
 <style>
-  html,body{margin:0;min-height:100%;background:#fafbfc;color:#64748b;font-family:system-ui,-apple-system,sans-serif}
+  html,body{margin:0;min-height:100%;background:#ffffff;color:#64748b;font-family:system-ui,-apple-system,sans-serif}
   body{display:flex;align-items:center;justify-content:center}
 </style>
 </head>
