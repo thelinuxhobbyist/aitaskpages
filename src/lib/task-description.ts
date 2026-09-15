@@ -95,15 +95,38 @@ function isListLine(line: string): boolean {
   return LIST_ITEM_RE.test(line.trim());
 }
 
-function isSubheadLine(line: string, next?: string): boolean {
-  const t = line.trim();
-  if (!t || t.length > 90 || isListLine(t)) return false;
-  if (t.endsWith("?")) return t.length <= 100;
+/** Short title-like copy (not a full sentence) — used for section heads. */
+function isTitleLikeText(text: string): boolean {
+  const t = text.trim();
+  if (!t || t.length > 90) return false;
   if (t.endsWith(".") || t.endsWith("!")) return false;
   if (t.includes(". ")) return false;
-  if (!next) return t.length <= 42;
+  return true;
+}
+
+/**
+ * Numbered lines that introduce a section ("1. Replace the Skills…") rather
+ * than a tight multi-item list. Lone numbered titles become subheads so long
+ * tasks stay scannable.
+ */
+function isNumberedSectionTitle(line: string): boolean {
+  const t = line.trim();
+  if (!ORDERED_ITEM_RE.test(t)) return false;
+  return isTitleLikeText(stripListMarker(t));
+}
+
+function isSubheadLine(line: string, next?: string): boolean {
+  const t = line.trim();
+  if (!t || t.length > 100) return false;
+  if (isNumberedSectionTitle(t)) return true;
+  if (isListLine(t)) return false;
+  if (t.endsWith("?")) return t.length <= 100;
+  // Short labels that introduce a list or block ("Examples of…:")
+  if (t.endsWith(":") && t.length <= 80) return true;
+  if (!isTitleLikeText(t)) return false;
+  if (!next) return t.length <= 56;
   const following = stripListMarker(next);
-  return t.length <= 70 && following.length > t.length + 12;
+  return t.length <= 80 && following.length > t.length + 12;
 }
 
 function looksLikeWrappedProse(lines: string[]): boolean {
@@ -125,6 +148,16 @@ function parseLineGroup(lines: string[]): TaskRichBlock[] {
 
     if (isListLine(line)) {
       const ordered = ORDERED_ITEM_RE.test(line);
+      const nextIsList = !!next?.trim() && isListLine(next.trim());
+
+      // Numbered section title followed by prose (or standing alone) → subhead.
+      // Consecutive numbered lines still form a normal ordered list.
+      if (ordered && isNumberedSectionTitle(line) && !nextIsList) {
+        blocks.push({ type: "subhead", text: line });
+        i += 1;
+        continue;
+      }
+
       const items: string[] = [];
       while (i < lines.length && isListLine(lines[i]!.trim())) {
         const current = lines[i]!.trim();

@@ -101,8 +101,8 @@ function InterestActions({
         </Button>
         {!compact && (
           <p className="text-sm leading-relaxed text-muted">
-            Add a short profile so they can see your relevant expertise before
-            you connect.
+            Create a profile so they can see your expertise before you
+            connect.
           </p>
         )}
       </>
@@ -141,12 +141,17 @@ export function TaskInterestSidebar({
   className,
 }: Props) {
   return (
-    <aside className={cn("lg:border-l lg:border-on-surface/15 lg:pl-8", className)}>
-      <h2 className="font-heading text-[1.65rem] font-semibold leading-snug tracking-tight text-secondary">
+    <aside
+      className={cn(
+        "lg:border-l lg:border-on-surface/20 lg:pl-8 xl:pl-10",
+        className
+      )}
+    >
+      <h2 className="font-heading text-[1.65rem] font-semibold leading-snug tracking-tight text-secondary xl:text-[1.75rem]">
         Think you could help?
       </h2>
       <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
-        If this task looks relevant to you, introduce yourself to{" "}
+        If this task looks relevant, introduce yourself to{" "}
         <span className="font-medium text-on-surface">{posterLabel}</span>.
       </p>
 
@@ -155,8 +160,8 @@ export function TaskInterestSidebar({
       </div>
 
       <p className="mt-5 text-sm leading-relaxed text-muted">
-        AI Task Pages makes the introduction. You take the conversation from
-        there — we don&apos;t manage payments or the work itself.
+        AI Task Pages makes the introduction. After that, you take things
+        forward directly — we don&apos;t manage payments or the work itself.
       </p>
     </aside>
   );

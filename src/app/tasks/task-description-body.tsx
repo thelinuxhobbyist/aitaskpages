@@ -12,13 +12,18 @@ export function TaskDescriptionBody({
   if (blocks.length === 0) return null;
 
   return (
-    <div className={cn("space-y-4 text-[1.05rem] leading-[1.75] text-on-surface/90", className)}>
+    <div
+      className={cn(
+        "text-[1.125rem] leading-[1.8] text-on-surface/90 md:text-[1.1875rem] md:leading-[1.85]",
+        className
+      )}
+    >
       {blocks.map((block, index) => {
         if (block.type === "subhead") {
           return (
             <h3
               key={`subhead-${index}`}
-              className="pt-2 font-heading text-base font-semibold tracking-tight text-secondary first:pt-0"
+              className="mt-9 font-heading text-lg font-semibold tracking-tight text-secondary first:mt-0 md:mt-11 md:text-xl"
             >
               {block.text}
             </h3>
@@ -31,12 +36,12 @@ export function TaskDescriptionBody({
             <List
               key={`list-${index}`}
               className={cn(
-                "space-y-2 pl-5 text-[1.05rem] leading-[1.7] text-on-surface/90",
+                "mt-4 space-y-2.5 pl-5 first:mt-0 md:mt-5 md:space-y-3",
                 block.ordered ? "list-decimal" : "list-disc"
               )}
             >
               {block.items.map((item, itemIndex) => (
-                <li key={`${itemIndex}-${item.slice(0, 24)}`} className="pl-1">
+                <li key={`${itemIndex}-${item.slice(0, 24)}`} className="pl-1.5">
                   {item}
                 </li>
               ))}
@@ -47,7 +52,7 @@ export function TaskDescriptionBody({
         return (
           <p
             key={`p-${index}`}
-            className="whitespace-pre-wrap"
+            className="mt-5 whitespace-pre-wrap first:mt-0 md:mt-6"
           >
             {block.text}
           </p>

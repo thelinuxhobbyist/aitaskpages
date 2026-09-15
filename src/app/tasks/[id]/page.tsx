@@ -62,11 +62,11 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="border-t border-border/80 pt-10">
-      <h2 className="font-heading text-xl font-semibold tracking-tight text-secondary md:text-[1.35rem]">
+    <section className="border-t border-border/80 pt-10 md:pt-12">
+      <h2 className="font-heading text-xl font-semibold tracking-tight text-secondary md:text-[1.4rem]">
         {title}
       </h2>
-      <div className="mt-5">{children}</div>
+      <div className="mt-5 md:mt-6">{children}</div>
     </section>
   );
 }
@@ -90,7 +90,7 @@ function TagList({ names }: { names: string[] }) {
 function Fact({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
-      <p className="font-heading text-[1.0625rem] font-semibold tracking-tight text-secondary sm:text-lg md:text-xl">
+      <p className="font-heading text-lg font-semibold tracking-tight text-secondary sm:text-xl md:text-[1.35rem]">
         {value}
         <span className="ml-2 font-sans text-sm font-normal text-muted sm:hidden">
           — {label}
@@ -192,7 +192,7 @@ export default async function PublicRequirementPage({
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-10">
+      <div className="relative mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-10 xl:px-8">
         <Button asChild variant="ghost" size="sm" className="-ml-2">
           <Link href="/tasks">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -209,65 +209,70 @@ export default async function PublicRequirementPage({
 
         <div
           className={cn(
-            "mt-8 grid items-start gap-12",
-            "lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] lg:gap-16 xl:gap-20"
+            "mt-8 grid items-start gap-10",
+            "lg:grid-cols-[minmax(0,1fr)_minmax(17rem,20rem)] lg:gap-12 xl:gap-16"
           )}
         >
           <div className="min-w-0">
-            <p className="text-sm text-muted">Posted {postedLabel}</p>
+            <header className="pb-2">
+              <p className="text-sm text-muted">Posted {postedLabel}</p>
 
-            <h1 className="mt-3 text-balance font-heading text-[2.15rem] font-bold tracking-[-0.03em] text-secondary md:text-5xl md:leading-[1.08] lg:text-[3.15rem] lg:leading-[1.06]">
-              {requirement.title}
-            </h1>
+              <h1 className="mt-3 text-balance font-heading text-[2.15rem] font-bold tracking-[-0.03em] text-secondary md:text-5xl md:leading-[1.08] lg:text-[3.15rem] lg:leading-[1.06]">
+                {requirement.title}
+              </h1>
 
-            {opening ? (
-              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted md:text-[1.25rem] md:leading-relaxed">
-                {opening}
-              </p>
-            ) : null}
+              {opening ? (
+                <p className="mt-5 max-w-3xl text-lg leading-relaxed text-muted md:text-[1.3rem] md:leading-[1.65]">
+                  {opening}
+                </p>
+              ) : null}
 
-            {expertiseTags.length > 0 && (
-              <div className="mt-6">
-                <TagList names={expertiseTags} />
-              </div>
-            )}
+              {expertiseTags.length > 0 && (
+                <div className="mt-7">
+                  <p className="mb-2.5 text-sm text-muted">
+                    Relevant skills &amp; expertise
+                  </p>
+                  <TagList names={expertiseTags} />
+                </div>
+              )}
 
-            <dl className="mt-8 space-y-2.5 border-y border-border/80 py-4 sm:grid sm:grid-cols-3 sm:gap-8 sm:space-y-0 sm:py-5">
-              <div>
-                <dt className="sr-only">Guide budget</dt>
-                <dd>
-                  <Fact
-                    label="Guide budget"
-                    value={budgetLabel ?? "To discuss"}
-                  />
-                </dd>
-              </div>
-              <div>
-                <dt className="sr-only">Location</dt>
-                <dd>
-                  <Fact label="Location" value={locationValue} />
-                </dd>
-              </div>
-              <div>
-                <dt className="sr-only">Working together</dt>
-                <dd>
-                  <Fact label="Working together" value={workingValue} />
-                </dd>
-              </div>
-            </dl>
+              <dl className="mt-8 space-y-3 border-t border-border/80 pt-5 sm:grid sm:grid-cols-3 sm:gap-8 sm:space-y-0 sm:pt-6">
+                <div>
+                  <dt className="sr-only">Guide budget</dt>
+                  <dd>
+                    <Fact
+                      label="Guide budget"
+                      value={budgetLabel ?? "To discuss"}
+                    />
+                  </dd>
+                </div>
+                <div>
+                  <dt className="sr-only">Location</dt>
+                  <dd>
+                    <Fact label="Location" value={locationValue} />
+                  </dd>
+                </div>
+                <div>
+                  <dt className="sr-only">Working together</dt>
+                  <dd>
+                    <Fact label="Working together" value={workingValue} />
+                  </dd>
+                </div>
+              </dl>
 
-            {isOwner && (
-              <p className="mt-6">
-                <Link
-                  href={`/dashboard/requirements/${requirementId}`}
-                  className="text-sm font-medium text-on-surface underline-offset-4 hover:underline"
-                >
-                  Edit request
-                </Link>
-              </p>
-            )}
+              {isOwner && (
+                <p className="mt-6">
+                  <Link
+                    href={`/dashboard/requirements/${requirementId}`}
+                    className="text-sm font-medium text-on-surface underline-offset-4 hover:underline"
+                  >
+                    Edit request
+                  </Link>
+                </p>
+              )}
+            </header>
 
-            <div className="mt-12 space-y-0 md:mt-14">
+            <div className="mt-8 space-y-0 md:mt-10">
               {narrative.challenge && (
                 <Section title="The challenge / context">
                   <TaskDescriptionBody text={narrative.challenge} />
@@ -293,18 +298,18 @@ export default async function PublicRequirementPage({
               )}
 
               <Section title="About the person who posted this">
-                <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                <div className="flex gap-4 sm:items-start">
                   <Avatar
                     src={posterProfile?.profileImageUrl}
                     alt={companyLabel}
-                    className="h-14 w-14"
-                    textClassName="text-lg"
+                    className="h-12 w-12 shrink-0"
+                    textClassName="text-base"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="font-heading text-xl font-semibold tracking-tight text-secondary">
+                    <p className="font-heading text-lg font-semibold tracking-tight text-secondary">
                       {companyLabel}
                     </p>
-                    <p className="mt-1 text-sm text-muted">
+                    <p className="mt-0.5 text-sm text-muted">
                       {[
                         businessTypeLabel,
                         locationLabel,
@@ -316,17 +321,12 @@ export default async function PublicRequirementPage({
                     {posterProfile && (
                       <Link
                         href={`/experts/${posterProfile.slug}`}
-                        className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-on-surface underline-offset-4 hover:underline"
+                        className="mt-2.5 inline-flex items-center gap-1.5 text-sm font-semibold text-on-surface underline-offset-4 hover:underline"
                       >
                         View profile
                         <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
                     )}
-                    <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
-                      Connect if your expertise is relevant. After that,
-                      conversations happen directly — AI Task Pages doesn&apos;t
-                      manage payments or the work itself.
-                    </p>
                   </div>
                 </div>
               </Section>
