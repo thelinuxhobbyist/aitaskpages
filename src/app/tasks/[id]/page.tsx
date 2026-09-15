@@ -62,7 +62,7 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="border-t border-border/80 pt-10 md:pt-12">
+    <section className="border-t border-border/80 py-10 md:py-12">
       <h2 className="font-heading text-xl font-semibold tracking-tight text-secondary md:text-[1.4rem]">
         {title}
       </h2>
