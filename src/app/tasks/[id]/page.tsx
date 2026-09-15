@@ -297,19 +297,22 @@ export default async function PublicRequirementPage({
                 </Section>
               )}
 
-              <Section title="About the person who posted this">
-                <div className="flex gap-4 rounded-xl bg-ink px-4 py-4 text-ink-foreground sm:items-center md:px-5">
+              <section className="border-t border-border/80 py-10 md:py-12">
+                <h2 className="text-[0.9375rem] font-semibold text-on-surface">
+                  About the person who posted this
+                </h2>
+                <div className="mt-3.5 flex items-center gap-4 rounded-[10px] border border-border bg-card p-5">
                   <Avatar
                     src={posterProfile?.profileImageUrl}
                     alt={companyLabel}
-                    className="h-12 w-12 shrink-0"
+                    className="h-12 w-12 ring-1 ring-border"
                     textClassName="text-base"
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="font-heading text-lg font-semibold tracking-tight text-ink-foreground">
+                    <p className="text-[0.9375rem] font-semibold text-on-surface">
                       {companyLabel}
                     </p>
-                    <p className="mt-0.5 text-sm text-ink-foreground/70">
+                    <p className="mt-0.5 text-[0.8125rem] text-muted">
                       {[
                         businessTypeLabel,
                         locationLabel,
@@ -321,7 +324,7 @@ export default async function PublicRequirementPage({
                     {posterProfile && (
                       <Link
                         href={`/experts/${posterProfile.slug}`}
-                        className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-foreground underline-offset-4 hover:underline"
+                        className="mt-1.5 inline-flex items-center gap-1 text-[0.8125rem] font-medium text-primary hover:underline"
                       >
                         View profile
                         <ArrowRight className="h-3.5 w-3.5" />
@@ -329,7 +332,7 @@ export default async function PublicRequirementPage({
                     )}
                   </div>
                 </div>
-              </Section>
+              </section>
             </div>
           </div>
 
