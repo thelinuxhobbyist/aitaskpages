@@ -100,9 +100,8 @@ function InterestActions({
           </Link>
         </Button>
         {!compact && (
-          <p className="text-sm leading-relaxed text-muted">
-            Create a profile so they can see your expertise before you
-            connect.
+          <p className="text-xs leading-snug text-muted">
+            Create a profile to connect.
           </p>
         )}
       </>
@@ -158,11 +157,6 @@ export function TaskInterestSidebar({
       <div className="mt-6 space-y-3">
         <InterestActions requirementId={requirementId} viewer={viewer} />
       </div>
-
-      <p className="mt-5 text-sm leading-relaxed text-muted">
-        AI Task Pages makes the introduction. After that, you take things
-        forward directly — we don&apos;t manage payments or the work itself.
-      </p>
     </aside>
   );
 }

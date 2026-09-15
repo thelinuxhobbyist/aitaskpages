@@ -298,7 +298,7 @@ export default async function PublicRequirementPage({
               )}
 
               <Section title="About the person who posted this">
-                <div className="flex gap-4 sm:items-start">
+                <div className="flex gap-4 rounded-xl border border-[oklch(72%_0.09_250_/_0.2)] bg-[oklch(72%_0.09_250_/_0.08)] px-4 py-4 sm:items-center md:px-5">
                   <Avatar
                     src={posterProfile?.profileImageUrl}
                     alt={companyLabel}
@@ -321,7 +321,7 @@ export default async function PublicRequirementPage({
                     {posterProfile && (
                       <Link
                         href={`/experts/${posterProfile.slug}`}
-                        className="mt-2.5 inline-flex items-center gap-1.5 text-sm font-semibold text-on-surface underline-offset-4 hover:underline"
+                        className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-on-surface underline-offset-4 hover:underline"
                       >
                         View profile
                         <ArrowRight className="h-3.5 w-3.5" />
