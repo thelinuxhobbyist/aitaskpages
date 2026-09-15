@@ -75,13 +75,15 @@ function serializeWorkExamples(
 
 function individualOnlyFields(data: ProfileFormData): {
   hourlyRate: number | null;
+  hourlyRateCurrency: string | null;
   availability: string | null;
 } {
   if (parseProfileType(data.profileType) === "company") {
-    return { hourlyRate: null, availability: null };
+    return { hourlyRate: null, hourlyRateCurrency: null, availability: null };
   }
   return {
     hourlyRate: emptyToNull(data.hourlyRate) as number | null,
+    hourlyRateCurrency: data.hourlyRateCurrency ?? "GBP",
     availability: emptyToNull(data.availability) as string | null,
   };
 }
@@ -135,7 +137,7 @@ export async function createProfile(userId: number, data: ProfileFormData) {
   const slug = await uniqueSlug(data.fullName);
   const now = new Date().toISOString();
   const profileType = parseProfileType(data.profileType);
-  const { hourlyRate, availability } = individualOnlyFields({
+  const { hourlyRate, hourlyRateCurrency, availability } = individualOnlyFields({
     ...data,
     profileType,
   });
@@ -156,6 +158,7 @@ export async function createProfile(userId: number, data: ProfileFormData) {
       bio: emptyToNull(data.bio) as string | null,
       location: emptyToNull(data.location) as string | null,
       hourlyRate,
+      hourlyRateCurrency,
       availability,
       companySize,
       yearEstablished,
@@ -189,7 +192,7 @@ export async function updateProfile(
 
   const now = new Date().toISOString();
   const profileType = parseProfileType(data.profileType);
-  const { hourlyRate, availability } = individualOnlyFields({
+  const { hourlyRate, hourlyRateCurrency, availability } = individualOnlyFields({
     ...data,
     profileType,
   });
@@ -209,6 +212,7 @@ export async function updateProfile(
       bio: emptyToNull(data.bio) as string | null,
       location: emptyToNull(data.location) as string | null,
       hourlyRate,
+      hourlyRateCurrency,
       availability,
       companySize,
       yearEstablished,

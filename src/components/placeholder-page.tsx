@@ -10,11 +10,18 @@ export function PlaceholderPage({ title, intro }: PlaceholderPageProps) {
       {intro && <p className="mt-3 text-muted">{intro}</p>}
       <div className="mt-10 rounded-lg border border-dashed border-border bg-surface px-6 py-12 text-center">
         <p className="text-base font-medium text-on-surface">
-          Content coming soon
+          This page is not available yet
         </p>
         <p className="mt-2 text-sm text-muted">
-          We&apos;re putting the finishing touches on this page. Check back
-          shortly.
+          Browse{" "}
+          <a href="/search" className="font-medium text-primary underline">
+            AI experts
+          </a>{" "}
+          or{" "}
+          <a href="/tasks" className="font-medium text-primary underline">
+            AI tasks
+          </a>{" "}
+          on the live platform.
         </p>
       </div>
     </div>

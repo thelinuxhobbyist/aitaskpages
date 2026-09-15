@@ -177,7 +177,7 @@ function FilterFields({
 
           <div className="space-y-4 rounded-xl border border-dashed border-border/80 bg-surface-container/40 p-4">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted">
-              More filters coming soon
+              More filters in a future update
             </p>
             <FilterField id="filter-experience" label="Experience">
               <select id="filter-experience" disabled className={selectClass}>
@@ -197,12 +197,13 @@ function FilterFields({
             </p>
             {profileType === "all" && (
               <p className="mb-4 text-xs leading-relaxed text-muted">
-                Applies to individuals. Companies without an hourly rate still
+                Applies to individuals. Experts set their own currency, so
+                treat this as a rough range. Companies without a rate still
                 appear in All results.
               </p>
             )}
             <div className="grid grid-cols-2 gap-4">
-              <FilterField id="filter-minRate" label="Min (£/hr)">
+              <FilterField id="filter-minRate" label="Min / hour">
                 <Input
                   id="filter-minRate"
                   name="minRate"
@@ -213,7 +214,7 @@ function FilterFields({
                   className={inputClass}
                 />
               </FilterField>
-              <FilterField id="filter-maxRate" label="Max (£/hr)">
+              <FilterField id="filter-maxRate" label="Max / hour">
                 <Input
                   id="filter-maxRate"
                   name="maxRate"

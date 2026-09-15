@@ -26,9 +26,9 @@ import {
 import { Search, Users } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Find AI Expertise",
+  title: "AI Experts",
   description:
-    "Find AI professionals and companies on AI Task Pages. Search by skills, services and location — we make the introduction, you take it from there.",
+    "Browse AI experts offering skills and services across areas such as AI automation, agents, LLMs, machine learning, data and more.",
   path: "/search",
 });
 
@@ -145,7 +145,7 @@ export default async function SearchPage({ searchParams }: PageProps) {
     <>
       <PageHero>
           <h1 className="text-2xl font-semibold tracking-tight text-secondary md:text-3xl">
-            Find AI Expertise
+            AI Experts
           </h1>
           {!searched && (
             <p className="mt-2 max-w-2xl text-base text-muted">

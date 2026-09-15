@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 
 const baseNavLinks = [
   { href: "/", label: "Home" },
-  { href: "/search", label: "Find Expertise" },
-  { href: "/tasks", label: "Tasks" },
+  { href: "/search", label: "Find AI Experts" },
+  { href: "/tasks", label: "AI Tasks" },
   { href: "/tasks/new", label: "Post a Task" },
 ];
 

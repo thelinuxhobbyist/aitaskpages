@@ -165,7 +165,7 @@ export function ExpertSearchForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="minRate">Min rate (£/hr)</Label>
+          <Label htmlFor="minRate">Min rate / hour</Label>
           <Input
             id="minRate"
             name="minRate"
@@ -177,7 +177,7 @@ export function ExpertSearchForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="maxRate">Max rate (£/hr)</Label>
+          <Label htmlFor="maxRate">Max rate / hour</Label>
           <Input
             id="maxRate"
             name="maxRate"

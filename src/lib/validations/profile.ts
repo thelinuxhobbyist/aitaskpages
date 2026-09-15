@@ -1,11 +1,21 @@
 import { z } from "zod";
 import {
+  DEFAULT_RATE_CURRENCY,
+  RATE_CURRENCIES,
+  normalizeRateCurrency,
+} from "@/lib/currency";
+import {
   MAX_PROFILE_SERVICES,
   MAX_PROFILE_SKILLS,
   MAX_SERVICE_TAG_LENGTH,
   MAX_SKILL_TAG_LENGTH,
   normalizeFreeTextTags,
 } from "@/lib/taxonomy-map";
+
+const rateCurrencyCodes = RATE_CURRENCIES.map((item) => item.code) as [
+  (typeof RATE_CURRENCIES)[number]["code"],
+  ...(typeof RATE_CURRENCIES)[number]["code"][],
+];
 
 const optionalUrl = z.preprocess(
   (val) => {
@@ -167,6 +177,15 @@ export const profileSchema = z.object({
   bio: z.string().max(2000).optional(),
   location: z.string().max(100).optional(),
   hourlyRate: optionalNumber,
+  hourlyRateCurrency: z.preprocess(
+    (val) => {
+      if (val === "" || val === null || val === undefined) {
+        return DEFAULT_RATE_CURRENCY;
+      }
+      return normalizeRateCurrency(val);
+    },
+    z.enum(rateCurrencyCodes).default(DEFAULT_RATE_CURRENCY)
+  ),
   companySize: optionalString(60),
   yearEstablished: optionalYear,
   availability: z

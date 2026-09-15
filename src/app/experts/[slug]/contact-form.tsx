@@ -72,13 +72,12 @@ export function ContactForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="budget">Estimated budget (£)</Label>
+          <Label htmlFor="budget">Estimated budget</Label>
           <Input
             id="budget"
             name="budget"
             type="text"
-            inputMode="numeric"
-            placeholder="e.g. 15000"
+            placeholder="e.g. £4,000, $6,000, or to discuss"
           />
         </div>
       </div>

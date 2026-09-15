@@ -17,8 +17,8 @@ export function Footer() {
               <BrandMark size="footer" />
             </div>
             <p className="footer-tagline">
-              Find AI expertise and post AI tasks. We make the introduction —
-              you connect directly.
+              Find AI experts for your tasks and projects. Post a task or
+              discover the right expertise.
             </p>
           </div>
 
@@ -27,13 +27,13 @@ export function Footer() {
               <h3>Connect</h3>
               <ul>
                 <li>
-                  <Link href="/search">Find Expertise</Link>
+                  <Link href="/search">Find AI Experts</Link>
                 </li>
                 <li>
-                  <Link href="/tasks">Browse Tasks</Link>
+                  <Link href="/tasks">Browse AI Tasks</Link>
                 </li>
                 <li>
-                  <DocumentLink href="/tasks/new">Post a Task</DocumentLink>
+                  <DocumentLink href="/tasks/new">Post an AI Task</DocumentLink>
                 </li>
                 <li>
                   <Link href="/create-a-profile">Create a Profile</Link>

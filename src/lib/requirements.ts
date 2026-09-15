@@ -55,6 +55,7 @@ export type InterestedExpert = {
   headline: string | null;
   location: string | null;
   hourlyRate: number | null;
+  hourlyRateCurrency: string | null;
   profileImageUrl: string | null;
   message: string | null;
   createdAt: string;
@@ -573,6 +574,7 @@ export async function getInterestedExperts(
     headline: row.expert.headline,
     location: row.expert.location,
     hourlyRate: row.expert.hourlyRate,
+    hourlyRateCurrency: row.expert.hourlyRateCurrency,
     profileImageUrl: row.expert.profileImageUrl,
     message: row.message,
     createdAt: row.createdAt,

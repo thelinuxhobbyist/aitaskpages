@@ -11,18 +11,18 @@ export function ComingSoonPanel() {
         <div>
           <div className="mb-2 flex items-center gap-2 text-sm font-medium text-primary">
             <Sparkles className="h-4 w-4" />
-            Coming soon
+            In development
           </div>
           <h2 className="text-xl font-semibold tracking-tight text-secondary">
             AI Software Directory
           </h2>
           <p className="mt-2 max-w-xl text-sm text-muted md:text-base">
-            Discover AI tools and software alongside experts, jobs, and
-            requirements — all in one place.
+            A future section for discovering AI tools alongside experts and
+            tasks — planned as an addition to the live platform.
           </p>
         </div>
         <span className="rounded-full bg-surface-container px-4 py-1.5 text-xs font-medium text-muted">
-          Planned for a future release
+          Not available yet
         </span>
       </div>
     </section>

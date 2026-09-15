@@ -6,6 +6,8 @@ CLERK_SECRET_KEY=
 # Required for clerkMiddleware dynamic keys on Workers. openssl rand -hex 32
 CLERK_ENCRYPTION_KEY=
 RESEND_API_KEY=
+EMAIL_FROM="AI Task Pages <notify@aitaskpages.com>"
+MARKETING_EMAIL_FROM="AI Task Pages <notify@aitaskpages.com>"
 TURNSTILE_SECRET_KEY=
 
 # D1 (also set in wrangler.toml)

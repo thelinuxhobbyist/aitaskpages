@@ -79,6 +79,8 @@ export const expertProfiles = sqliteTable(
     bio: text("bio"),
     location: text("location"),
     hourlyRate: integer("hourly_rate"),
+    /** ISO 4217 code for hourly_rate — experts are not assumed to be in the UK. */
+    hourlyRateCurrency: text("hourly_rate_currency").default("GBP"),
     availability: text("availability"),
     companySize: text("company_size"),
     yearEstablished: integer("year_established"),

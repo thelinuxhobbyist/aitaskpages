@@ -78,6 +78,9 @@ NEXT_PUBLIC_CLERK_SIGN_IN_URL = "/sign-in"
 NEXT_PUBLIC_CLERK_SIGN_UP_URL = "/sign-up"
 NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL = "/dashboard"
 NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL = "/dashboard"
+# Resend from-address — aitaskpages.com must be verified in Resend.
+EMAIL_FROM = "AI Task Pages <notify@aitaskpages.com>"
+MARKETING_EMAIL_FROM = "AI Task Pages <notify@aitaskpages.com>"
 
 # Local development secrets go in .dev.vars:
 # CLERK_SECRET_KEY=
@@ -91,6 +94,6 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL = "/dashboard"
 #
 # Production secrets (Cloudflare Worker Versions API):
 #   1. npm run deploy
-#   2. npm run secret:put / secret:put:webhook / secret:put:encryption
+#   2. npm run secret:put / secret:put:webhook / secret:put:encryption / secret:put:resend
 #      (NOT wrangler secret put — that fails while a version is pending)
 #   3. npm run deploy       (promote the version that includes the secret)

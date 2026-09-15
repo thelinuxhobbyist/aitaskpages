@@ -25,6 +25,7 @@ import {
   PROFILE_TYPE_LABELS,
   type ProfileType,
 } from "@/lib/profile-type";
+import { RATE_CURRENCIES, normalizeRateCurrency } from "@/lib/currency";
 import {
   MAX_PROFILE_SERVICES,
   MAX_PROFILE_SKILLS,
@@ -212,15 +213,35 @@ export function ProfileForm({
 
         {!isCompany && (
           <div className="space-y-2">
-            <Label htmlFor="hourlyRate">Hourly rate (£)</Label>
-            <Input
-              id="hourlyRate"
-              name="hourlyRate"
-              type="number"
-              min={0}
-              placeholder="150"
-              defaultValue={profile?.hourlyRate ?? ""}
-            />
+            <Label htmlFor="hourlyRate">Indicative hourly rate</Label>
+            <div className="flex gap-2">
+              <select
+                id="hourlyRateCurrency"
+                name="hourlyRateCurrency"
+                defaultValue={normalizeRateCurrency(
+                  profile?.hourlyRateCurrency
+                )}
+                className="flex h-10 w-[7.5rem] shrink-0 rounded-lg border border-border bg-white px-2 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              >
+                {RATE_CURRENCIES.map((item) => (
+                  <option key={item.code} value={item.code}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+              <Input
+                id="hourlyRate"
+                name="hourlyRate"
+                type="number"
+                min={0}
+                placeholder="150"
+                defaultValue={profile?.hourlyRate ?? ""}
+              />
+            </div>
+            <p className="text-xs leading-relaxed text-muted">
+              Optional. Pick the currency you work in — you don&apos;t need to
+              be in the UK. This is a signal for discovery, not a quote.
+            </p>
           </div>
         )}
 

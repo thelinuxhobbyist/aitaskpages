@@ -19,9 +19,16 @@ import {
   parseWorkExamples,
 } from "@/lib/profile-utils";
 import { isCompanyProfile, profileTypeLabel } from "@/lib/profile-type";
+import { formatHourlyRate } from "@/lib/currency";
 import { PageHero } from "@/components/page-hero";
 import { SuccessBanner } from "@/components/ui/success-banner";
-import { absoluteUrl, createPageMetadata, SITE_NAME } from "@/lib/seo";
+import {
+  absoluteUrl,
+  createPageMetadata,
+  expertProfileDescription,
+  expertProfileTitle,
+  SITE_NAME,
+} from "@/lib/seo";
 import { getTurnstileSiteKey } from "@/lib/turnstile";
 import {
   ArrowLeft,
@@ -74,17 +81,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!profile) return { title: "Expert not found" };
 
   const company = isCompanyProfile(profile);
-  const description =
-    profile.headline ??
-    (company
-      ? `${profile.fullName} is a company providing AI expertise on ${SITE_NAME}. Connect for AI consulting, automation, integrations or custom AI projects.`
-      : `${profile.fullName} is an independent AI expert on ${SITE_NAME}. Connect for AI consulting, automation, integrations or custom AI projects.`);
 
   return createPageMetadata({
-    title: company
-      ? `${profile.fullName} — AI company`
-      : `${profile.fullName} — AI expert`,
-    description,
+    title: expertProfileTitle(profile.fullName, {
+      company,
+      headline: profile.headline,
+    }),
+    description: expertProfileDescription(profile.fullName, {
+      company,
+      headline: profile.headline,
+      bio: profile.bio,
+      skillLabels: getProfileSkillLabels(profile),
+    }),
     path: `/experts/${profile.slug}`,
   });
 }
@@ -289,7 +297,10 @@ export default async function ExpertProfilePage({
                 )}
                 {profile.hourlyRate != null && (
                   <span className="font-semibold text-on-surface">
-                    £{profile.hourlyRate}/hr
+                    {formatHourlyRate(
+                      profile.hourlyRate,
+                      profile.hourlyRateCurrency
+                    )}
                   </span>
                 )}
               </div>

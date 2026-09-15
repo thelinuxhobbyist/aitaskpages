@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { requireUser } from "@/lib/auth";
 import { getInterestedExperts, getRequirementById } from "@/lib/requirements";
+import { formatHourlyRate } from "@/lib/currency";
 import { formatDateTime } from "@/lib/utils";
 import { MapPin } from "lucide-react";
 
@@ -98,7 +99,12 @@ export default async function InterestedExpertsPage({ params }: Props) {
                         </span>
                       )}
                       {expert.hourlyRate != null && (
-                        <span>£{expert.hourlyRate}/hr</span>
+                        <span>
+                          {formatHourlyRate(
+                            expert.hourlyRate,
+                            expert.hourlyRateCurrency
+                          )}
+                        </span>
                       )}
                     </div>
 

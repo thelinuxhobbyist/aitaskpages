@@ -13,22 +13,27 @@ import {
   SITE_SHARE_ICON_URL,
   SITE_URL,
 } from "@/lib/site";
+import { truncateDescription } from "@/lib/requirement-utils";
+import { taskOpeningSummary } from "@/lib/task-description";
 
 export const SITE_NAME = "AI Task Pages";
 
 /** Short brand line — introduction platform, not recruitment. */
 export const SITE_TAGLINE =
-  "Connect with AI experts and post AI tasks. We make the introduction.";
+  "Find AI experts for your tasks, projects and AI challenges.";
 
 /**
- * Default meta description. Positions the brand as an introduction platform
- * (not a recruitment agency) and distinguishes it from generic “AI jobs”
- * employment news.
+ * Default / homepage meta description. Positions the brand as a place to post
+ * AI tasks and find AI expertise — not a jobs board or employment site.
  */
 export const DEFAULT_DESCRIPTION =
-  "An introduction platform connecting businesses and individuals with independent AI experts. Find an expert or post a task, then connect directly.";
+  "AI Task Pages helps businesses and individuals find AI experts for specific tasks, projects and challenges. Post a task or find the right expertise.";
 
-/** Social profile URLs for JSON-LD sameAs — add when AI Task Pages accounts exist. */
+/** Homepage Open Graph description (slightly shorter / social-friendly). */
+export const HOME_OG_DESCRIPTION =
+  "Find AI experts for your tasks, projects and AI challenges. Post a task or discover the right expertise.";
+
+/** Empty until a dedicated AI Task Pages GA property is configured. */
 export const ORGANIZATION_SAME_AS = [] as const;
 
 export const BRAND_ALTERNATE_NAMES = [
@@ -45,16 +50,22 @@ export function absoluteUrl(path = "/"): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
+export function pageTitle(segment: string): string {
+  return `${segment} | ${SITE_NAME}`;
+}
+
 export function createPageMetadata({
   title,
   absoluteTitle,
   description = DEFAULT_DESCRIPTION,
+  openGraphDescription,
   path = "/",
   noIndex = false,
 }: {
   title?: string;
   absoluteTitle?: string;
   description?: string;
+  openGraphDescription?: string;
   path?: string;
   noIndex?: boolean;
 }): Metadata {
@@ -64,8 +75,8 @@ export function createPageMetadata({
 
   const url = absoluteUrl(path);
   const titleValue = absoluteTitle ? { absolute: absoluteTitle } : title!;
-
-  const shareTitle = absoluteTitle ?? title!;
+  const shareTitle = absoluteTitle ?? pageTitle(title!);
+  const shareDescription = openGraphDescription ?? description;
 
   return {
     title: titleValue,
@@ -73,7 +84,7 @@ export function createPageMetadata({
     alternates: { canonical: url },
     openGraph: {
       title: shareTitle,
-      description,
+      description: shareDescription,
       url,
       siteName: SITE_NAME,
       locale: "en_GB",
@@ -83,7 +94,7 @@ export function createPageMetadata({
     twitter: {
       card: "summary",
       title: shareTitle,
-      description,
+      description: shareDescription,
       images: [SITE_SHARE_ICON_URL],
     },
     ...(noIndex && {
@@ -92,10 +103,12 @@ export function createPageMetadata({
   };
 }
 
-/** Homepage / default document title — introduction platform, not hiring. */
-export const ROOT_TITLE = `${SITE_NAME} — Connect with AI Experts`;
+/** Homepage / default document title — short and descriptive. */
+export const ROOT_TITLE = `${SITE_NAME} | Find AI Experts`;
 
 export function rootMetadata(): Metadata {
+  const homeUrl = absoluteUrl("/");
+
   return {
     metadataBase: new URL(SITE_URL),
     title: {
@@ -111,11 +124,10 @@ export function rootMetadata(): Metadata {
       "AI Task Pages",
       "AITaskPages",
       "AI experts",
-      "AI consultants",
-      "connect with AI experts",
-      "post AI task",
-      "AI automation experts",
-      "machine learning consultants",
+      "AI tasks",
+      "AI expertise",
+      "find AI help",
+      "post an AI task",
     ],
     formatDetection: {
       email: false,
@@ -170,16 +182,16 @@ export function rootMetadata(): Metadata {
     openGraph: {
       type: "website",
       locale: "en_GB",
-      url: SITE_URL,
+      url: homeUrl,
       siteName: SITE_NAME,
       title: ROOT_TITLE,
-      description: DEFAULT_DESCRIPTION,
+      description: HOME_OG_DESCRIPTION,
       images: [{ url: SITE_LOGO_URL, alt: `${SITE_NAME} logo` }],
     },
     twitter: {
       card: "summary",
       title: ROOT_TITLE,
-      description: DEFAULT_DESCRIPTION,
+      description: HOME_OG_DESCRIPTION,
       images: [SITE_SHARE_ICON_URL],
     },
     robots: {
@@ -193,9 +205,100 @@ export function rootMetadata(): Metadata {
       },
     },
     alternates: {
-      canonical: SITE_URL,
+      canonical: homeUrl,
     },
   };
+}
+
+/** True when a headline already reads like a short role/specialty label. */
+export function looksLikeSpecialtyHeadline(headline: string): boolean {
+  const trimmed = headline.trim();
+  if (trimmed.length < 4 || trimmed.length > 40) return false;
+  if (/[.!?]$/.test(trimmed)) return false;
+  const words = trimmed.split(/\s+/);
+  if (words.length > 6) return false;
+  // Reject bio-like fragments that are not useful in a browser title.
+  if (
+    /\b(years?|experience|expereince|passionate|helping|looking|based|available|freelance)\b/i.test(
+      trimmed,
+    )
+  ) {
+    return false;
+  }
+  return /\b(ai|ml|llm|nlp|machine learning|automation|data science|expert|specialist|engineer|consultant|developer|scientist)\b/i.test(
+    trimmed,
+  );
+}
+
+export function expertProfileTitle(
+  fullName: string,
+  opts: { company: boolean; headline?: string | null },
+): string {
+  if (opts.company) return `${fullName} | AI Services`;
+  const headline = opts.headline?.trim();
+  if (headline && looksLikeSpecialtyHeadline(headline)) {
+    return `${fullName} | ${headline}`;
+  }
+  return `${fullName} | AI Expert`;
+}
+
+export function expertProfileDescription(
+  fullName: string,
+  opts: {
+    company: boolean;
+    headline?: string | null;
+    bio?: string | null;
+    skillLabels?: string[];
+  },
+): string {
+  const skillLabels = (opts.skillLabels ?? [])
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  const skillPhrase =
+    skillLabels.length === 0
+      ? null
+      : skillLabels.length === 1
+        ? skillLabels[0]
+        : `${skillLabels.slice(0, -1).join(", ")} and ${skillLabels.at(-1)}`;
+
+  const bio = opts.bio?.replace(/\s+/g, " ").trim();
+  if (bio) {
+    const lead = opts.company
+      ? `${fullName} offers AI services on ${SITE_NAME}.`
+      : `${fullName} is an AI specialist on ${SITE_NAME}.`;
+    return truncateDescription(`${lead} ${bio}`, 160);
+  }
+
+  const headline = opts.headline?.replace(/\s+/g, " ").trim();
+  if (headline) {
+    return truncateDescription(
+      opts.company
+        ? `${fullName} — ${headline}. View their company profile on ${SITE_NAME}.`
+        : `${fullName} is an AI specialist offering ${headline}. View their profile on ${SITE_NAME}.`,
+      160,
+    );
+  }
+
+  if (skillPhrase) {
+    return opts.company
+      ? `${fullName} is a company offering ${skillPhrase} on ${SITE_NAME}. View their profile and services.`
+      : `${fullName} is an AI specialist offering ${skillPhrase}. View their profile on ${SITE_NAME}.`;
+  }
+
+  return opts.company
+    ? `${fullName} provides AI services on ${SITE_NAME}. View their company profile.`
+    : `${fullName} is an AI expert on ${SITE_NAME}. View their profile and get in touch.`;
+}
+
+export function taskPageDescription(title: string, description: string): string {
+  const normalized = description.replace(/\s+/g, " ").trim();
+  const summary = taskOpeningSummary(normalized, 155);
+  if (summary.length >= 40) return summary;
+  return truncateDescription(
+    `Looking for an AI specialist for “${title}”. ${summary} View the task and see the expertise required.`,
+    160,
+  );
 }
 
 export function organizationJsonLd() {
@@ -214,12 +317,11 @@ export function organizationJsonLd() {
     description: DEFAULT_DESCRIPTION,
     slogan: SITE_TAGLINE,
     knowsAbout: [
-      "Artificial intelligence consulting",
-      "AI professionals and companies",
+      "AI experts and specialists",
+      "AI tasks and projects",
+      "Finding help with AI",
       "AI automation and integrations",
-      "Machine learning",
-      "Custom AI solutions",
-      "AI project requirements",
+      "Machine learning expertise",
     ],
     ...(ORGANIZATION_SAME_AS.length > 0
       ? { sameAs: [...ORGANIZATION_SAME_AS] }

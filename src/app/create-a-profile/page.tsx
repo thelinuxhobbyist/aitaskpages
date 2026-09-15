@@ -16,7 +16,7 @@ import { Check } from "lucide-react";
 export const metadata: Metadata = createPageMetadata({
   title: "Create a Profile",
   description:
-    "Create an individual or company profile on AI Task Pages. Showcase your skills and services, become discoverable, and express interest in relevant tasks. We make the introduction — you take it from there.",
+    "Create an individual or company profile on AI Task Pages. Showcase your AI skills and services, become discoverable, and connect around relevant AI tasks.",
   path: "/create-a-profile",
 });
 

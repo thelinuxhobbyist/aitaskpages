@@ -12,9 +12,9 @@ import { PageHero } from "@/components/page-hero";
 import { Briefcase, Plus } from "lucide-react";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Browse AI tasks & project requirements",
+  title: "AI Tasks",
   description:
-    "Browse open AI tasks on AI Task Pages. Specialists can express interest; you connect directly.",
+    "Browse AI tasks and projects posted by businesses and individuals looking for AI expertise and specialist help.",
   path: "/tasks",
 });
 

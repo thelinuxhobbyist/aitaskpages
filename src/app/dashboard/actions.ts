@@ -35,6 +35,7 @@ export async function saveProfile(
     bio: formData.get("bio") ?? "",
     location: formData.get("location") ?? "",
     hourlyRate: formData.get("hourlyRate") ?? "",
+    hourlyRateCurrency: formData.get("hourlyRateCurrency") ?? "",
     companySize: formData.get("companySize") ?? "",
     yearEstablished: formData.get("yearEstablished") ?? "",
     availability: formData.get("availability") ?? "",

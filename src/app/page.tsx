@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { HomePage as PlatformHomePage } from "@/app/home/page-content";
-import { createPageMetadata, ROOT_TITLE } from "@/lib/seo";
+import {
+  createPageMetadata,
+  DEFAULT_DESCRIPTION,
+  HOME_OG_DESCRIPTION,
+  ROOT_TITLE,
+} from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   absoluteTitle: ROOT_TITLE,
+  description: DEFAULT_DESCRIPTION,
+  openGraphDescription: HOME_OG_DESCRIPTION,
   path: "/",
 });
 

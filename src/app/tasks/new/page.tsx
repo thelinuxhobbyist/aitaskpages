@@ -11,13 +11,15 @@ import {
 import { getAuthIdentity, requireUser } from "@/lib/auth";
 import { decodeFinderTaskDraft } from "@/lib/finder-task-draft";
 import { getAllServices, getAllSkills } from "@/lib/profiles";
+import { createPageMetadata } from "@/lib/seo";
 import { ArrowLeft } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Post a Task",
+export const metadata: Metadata = createPageMetadata({
+  title: "Post an AI Task",
   description:
-    "Post an AI task or project requirement on AI Task Pages. Connect directly with independent AI experts.",
-};
+    "Have an AI task or project? Post the details on AI Task Pages and connect with AI experts who may be able to help.",
+  path: "/tasks/new",
+});
 
 export const dynamic = "force-dynamic";
 

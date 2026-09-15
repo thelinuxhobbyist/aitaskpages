@@ -8,11 +8,20 @@ export const dynamic = "force-dynamic";
 
 const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: absoluteUrl("/"), changeFrequency: "daily", priority: 1 },
-  { url: absoluteUrl("/search"), changeFrequency: "daily", priority: 0.95 },
+  {
+    url: absoluteUrl("/search"),
+    changeFrequency: "daily",
+    priority: 0.95,
+  },
   {
     url: absoluteUrl("/tasks"),
     changeFrequency: "daily",
     priority: 0.95,
+  },
+  {
+    url: absoluteUrl("/tasks/new"),
+    changeFrequency: "monthly",
+    priority: 0.9,
   },
   {
     url: absoluteUrl("/create-a-profile"),
@@ -22,7 +31,6 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.8 },
   { url: absoluteUrl("/contact"), changeFrequency: "monthly", priority: 0.6 },
   { url: absoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.3 },
-
   { url: absoluteUrl("/terms"), changeFrequency: "yearly", priority: 0.3 },
   { url: absoluteUrl("/cookies"), changeFrequency: "yearly", priority: 0.3 },
   { url: absoluteUrl("/disclaimer"), changeFrequency: "yearly", priority: 0.3 },
@@ -35,23 +43,6 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
     url: absoluteUrl("/expert-terms"),
     changeFrequency: "yearly",
     priority: 0.3,
-  },
-  // Legacy vacancy pages remain reachable but are not core product surfaces.
-  { url: absoluteUrl("/jobs"), changeFrequency: "weekly", priority: 0.2 },
-  {
-    url: absoluteUrl("/ai-jobs-uk.html"),
-    changeFrequency: "weekly",
-    priority: 0.15,
-  },
-  {
-    url: absoluteUrl("/ai-jobs-london.html"),
-    changeFrequency: "weekly",
-    priority: 0.15,
-  },
-  {
-    url: absoluteUrl("/remote-ai-jobs-uk.html"),
-    changeFrequency: "weekly",
-    priority: 0.15,
   },
 ];
 

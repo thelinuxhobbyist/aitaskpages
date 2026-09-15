@@ -19,15 +19,14 @@ function HomeHero() {
   return (
     <PageHero innerClassName="py-16 md:py-20">
       <h1 className="max-w-3xl text-[clamp(2.375rem,5vw,3.875rem)] font-bold leading-[1.04] tracking-[-0.02em]">
-        Find the AI expertise
+        Find the right AI expertise
         <br />
-        <span className="text-accent-foreground">you need.</span>
+        <span className="text-accent-foreground">for your task.</span>
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
-        AI Task Pages is an introduction platform connecting people and
-        businesses with AI professionals and companies. Find the expertise you
-        need, or post a task and let relevant specialists express their
-        interest.
+        AI Task Pages helps businesses and individuals connect with AI experts
+        for specific tasks, projects and challenges. Post a task, or find the
+        right expertise and get in touch directly.
       </p>
       <p className="mt-4 max-w-xl text-[1.0625rem] font-medium leading-[1.5] text-on-surface md:text-lg">
         We make the introduction. You take it from there.
@@ -47,7 +46,8 @@ function HomeHero() {
             label: "Post a task",
             primary: true,
           },
-          { href: "/tasks", label: "Browse tasks", primary: false },
+          { href: "/search", label: "Find AI experts", primary: false },
+          { href: "/tasks", label: "Browse AI tasks", primary: false },
           {
             href: "/create-a-profile",
             label: "Create a profile",
@@ -140,7 +140,7 @@ async function HomePlatformSections() {
               title="Featured AI expertise"
               description="Independent professionals and companies for AI consulting, automation, integrations and machine learning."
               browseHref="/search"
-              browseLabel="Find AI expertise"
+              browseLabel="Browse AI experts"
             >
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {experts.map((profile) => (
@@ -156,7 +156,7 @@ async function HomePlatformSections() {
               title="Open AI tasks"
               description="Open requests looking for AI help — professionals and companies can express interest so you can connect directly."
               browseHref="/tasks"
-              browseLabel="Browse all tasks"
+              browseLabel="Browse AI tasks"
             >
               <div className={taskCardGridClassName}>
                 {requirements.map((req) => (

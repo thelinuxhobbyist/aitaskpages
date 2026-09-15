@@ -33,14 +33,14 @@ export async function RequirementInterestPanel({ requirementId }: Props) {
   if (!identity) {
     return (
       <InterestCard
-        title="Interested in this opportunity?"
-        intro="Sign in as an AI expert to express interest. The business will be notified and can contact you through your profile."
+        title="Could you help with this?"
+        intro="Sign in so you can connect with the person who posted it. We make the introduction — we don't manage the work."
       >
         <Button asChild>
           <Link
             href={`/sign-in?redirect_url=${encodeURIComponent(`/tasks/${requirementId}`)}`}
           >
-            Sign in as an expert
+            Sign in
           </Link>
         </Button>
       </InterestCard>
@@ -63,8 +63,8 @@ export async function RequirementInterestPanel({ requirementId }: Props) {
   if (!user.profile) {
     return (
       <InterestCard
-        title="Interested in this opportunity?"
-        intro="Create your expert profile to express interest in tasks."
+        title="Could you help with this?"
+        intro="Create a short profile so they can see your relevant expertise before you connect."
       >
         <Button asChild>
           <Link href="/dashboard?intent=offer">Create expert profile</Link>
@@ -76,7 +76,7 @@ export async function RequirementInterestPanel({ requirementId }: Props) {
   if (user.profile.status !== PUBLIC_PROFILE_STATUS) {
     return (
       <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-6 text-sm text-amber-900">
-        Your expert profile must be approved before you can express interest.
+        Your profile needs to be live before you can connect.
       </div>
     );
   }
@@ -84,7 +84,7 @@ export async function RequirementInterestPanel({ requirementId }: Props) {
   if (!identity.emailVerified) {
     return (
       <div className="rounded-2xl border border-amber-200 bg-amber-50 px-6 py-6 text-sm text-amber-900">
-        Verify your email address before expressing interest.
+        Verify your email address before connecting.
       </div>
     );
   }
@@ -96,8 +96,8 @@ export async function RequirementInterestPanel({ requirementId }: Props) {
 
   return (
     <InterestCard
-      title="Express your interest"
-      intro="The business will be notified. If they're interested, they'll contact you via your profile."
+      title="I'd like to help"
+      intro="We'll let them know. They can see your profile and connect with you directly."
     >
       <InterestButton
         requirementId={requirementId}
