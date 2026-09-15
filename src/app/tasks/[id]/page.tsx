@@ -298,7 +298,7 @@ export default async function PublicRequirementPage({
               )}
 
               <Section title="About the person who posted this">
-                <div className="flex gap-4 rounded-xl border border-[oklch(72%_0.09_250_/_0.2)] bg-[oklch(72%_0.09_250_/_0.08)] px-4 py-4 sm:items-center md:px-5">
+                <div className="flex gap-4 rounded-xl border border-border bg-surface-container px-4 py-4 sm:items-center md:px-5">
                   <Avatar
                     src={posterProfile?.profileImageUrl}
                     alt={companyLabel}

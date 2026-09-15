@@ -55,7 +55,7 @@ function InterestActions({
 
   if (viewer.kind === "signed_out") {
     return (
-      <>
+      <div className="flex w-full flex-col gap-2">
         <Button asChild className="w-full" size="lg">
           <Link href={href}>
             I can help
@@ -63,11 +63,11 @@ function InterestActions({
           </Link>
         </Button>
         {!compact && (
-          <p className="text-sm leading-relaxed text-muted">
+          <p className="text-center text-sm leading-relaxed text-muted">
             Sign in so you can introduce yourself to the person who posted this.
           </p>
         )}
-      </>
+      </div>
     );
   }
 
@@ -92,7 +92,7 @@ function InterestActions({
 
   if (viewer.kind === "needs_profile") {
     return (
-      <>
+      <div className="flex w-full flex-col gap-2">
         <Button asChild className="w-full" size="lg">
           <Link href="/dashboard?intent=offer">
             I can help
@@ -100,11 +100,11 @@ function InterestActions({
           </Link>
         </Button>
         {!compact && (
-          <p className="text-xs leading-snug text-muted">
+          <p className="text-center text-xs leading-snug text-muted">
             Create a profile to connect.
           </p>
         )}
-      </>
+      </div>
     );
   }
 
