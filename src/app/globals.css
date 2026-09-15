@@ -132,6 +132,16 @@
     background: var(--gradient-hero);
   }
 
+  /* Subtle blue → surface wash for interior pages that should not use the mint hero. */
+  .bg-gradient-task {
+    background: linear-gradient(
+      180deg,
+      oklch(72% 0.09 250 / 0.11) 0%,
+      oklch(72% 0.05 250 / 0.045) 32%,
+      transparent 62%
+    );
+  }
+
   /* Section intro copy — larger body for premium readability */
   .section-lead {
     @apply mt-3.5 max-w-xl text-lg leading-[1.65] text-muted;

@@ -250,6 +250,37 @@ export async function getProfileBySlugForOwner(
   return (profile as ProfileWithRelations | null) ?? null;
 }
 
+export type PublicPosterProfile = {
+  slug: string;
+  fullName: string;
+  headline: string | null;
+  location: string | null;
+  profileImageUrl: string | null;
+  profileType: string;
+};
+
+/** Public directory profile for a task poster, if they have one. */
+export async function getPublicPosterProfile(
+  userId: number
+): Promise<PublicPosterProfile | null> {
+  const db = await getDb();
+  const row = await db
+    .select({
+      slug: expertProfiles.slug,
+      fullName: expertProfiles.fullName,
+      headline: expertProfiles.headline,
+      location: expertProfiles.location,
+      profileImageUrl: expertProfiles.profileImageUrl,
+      profileType: expertProfiles.profileType,
+    })
+    .from(expertProfiles)
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(publicExpertProfileConditions(eq(expertProfiles.userId, userId)))
+    .limit(1);
+
+  return row[0] ?? null;
+}
+
 /** Lightweight slug list for sitemap generation. */
 export async function getPublicExpertSlugs(): Promise<
   { slug: string; updatedAt: string }[]

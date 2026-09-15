@@ -2,31 +2,28 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { TaskDescriptionBody } from "@/app/tasks/task-description-body";
 import {
   TaskInterestSidebar,
+  TaskMobileCta,
   type TaskInterestViewer,
 } from "@/app/tasks/task-interest-sidebar";
+import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SuccessBanner } from "@/components/ui/success-banner";
 import { getAuthIdentity, getOrCreateUser } from "@/lib/auth";
-import { PUBLIC_PROFILE_STATUS } from "@/lib/directory-filters";
+import { getPublicPosterProfile, PUBLIC_PROFILE_STATUS } from "@/lib/directory";
 import {
   formatRequirementLocation,
   getBusinessTypeLabel,
   getRequirementCompanyLabel,
   toPublicSummary,
 } from "@/lib/requirement-utils";
-import {
-  getRequirementById,
-  hasExpertInterest,
-} from "@/lib/requirements";
+import { getRequirementById, hasExpertInterest } from "@/lib/requirements";
 import { createPageMetadata, taskPageDescription } from "@/lib/seo";
-import {
-  structureTaskDescription,
-  taskOpeningSummary,
-} from "@/lib/task-description";
-import { cn, formatBudgetGBP, formatDateTime } from "@/lib/utils";
-import { ArrowLeft, MapPin, Wallet } from "lucide-react";
+import { taskBodyNarrative, taskOpeningSummary } from "@/lib/task-description";
+import { cn, formatBudgetGBP } from "@/lib/utils";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -46,6 +43,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
+function formatPostedDate(value: string): string {
+  const iso = value.includes("T") ? value : `${value.replace(" ", "T")}Z`;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 function Section({
   title,
   children,
@@ -54,55 +62,42 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section>
+    <section className="border-t border-border/80 pt-10">
       <h2 className="font-heading text-xl font-semibold tracking-tight text-secondary md:text-[1.35rem]">
         {title}
       </h2>
-      <div className="mt-4">{children}</div>
+      <div className="mt-5">{children}</div>
     </section>
   );
 }
 
-function Prose({ children }: { children: ReactNode }) {
-  return (
-    <div className="whitespace-pre-wrap text-[1.05rem] leading-[1.75] text-on-surface/90">
-      {children}
-    </div>
-  );
-}
-
-function Fact({
-  label,
-  value,
-  icon,
-}: {
-  label: string;
-  value: string;
-  icon?: ReactNode;
-}) {
-  return (
-    <div className="min-w-0 rounded-2xl border border-border/80 bg-card/80 px-4 py-3 shadow-soft">
-      <dt className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted">
-        {icon}
-        {label}
-      </dt>
-      <dd className="mt-1 text-sm font-semibold text-secondary">{value}</dd>
-    </div>
-  );
-}
-
-function ExpertisePills({ names }: { names: string[] }) {
+function TagList({ names }: { names: string[] }) {
+  if (names.length === 0) return null;
   return (
     <ul className="flex flex-wrap gap-2">
       {names.map((name) => (
         <li
           key={name}
-          className="rounded-full border border-border bg-surface-container-high px-3 py-1.5 text-sm font-medium text-on-surface"
+          className="rounded-full bg-surface-container px-3 py-1 text-sm font-medium text-on-surface"
         >
           {name}
         </li>
       ))}
     </ul>
+  );
+}
+
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="min-w-0">
+      <p className="font-heading text-[1.0625rem] font-semibold tracking-tight text-secondary sm:text-lg md:text-xl">
+        {value}
+        <span className="ml-2 font-sans text-sm font-normal text-muted sm:hidden">
+          — {label}
+        </span>
+      </p>
+      <p className="mt-1 hidden text-sm text-muted sm:block">{label}</p>
+    </div>
   );
 }
 
@@ -137,18 +132,31 @@ export default async function PublicRequirementPage({
     ? formatBudgetGBP(requirement.budget)
     : null;
   const businessTypeLabel = getBusinessTypeLabel(requirement.businessType);
-  const sections = structureTaskDescription(requirement.description);
+  const narrative = taskBodyNarrative(requirement.description);
   const opening = taskOpeningSummary(requirement.description);
-  const showGoalSection = Boolean(
-    sections.goal && sections.goal.trim() !== opening.trim()
-  );
   const expertiseTags = [
     ...summary.skillNames,
     ...summary.serviceNames.filter(
       (name) => !summary.skillNames.includes(name)
     ),
   ];
-  const postedLabel = formatDateTime(requirement.createdAt);
+  const postedLabel = formatPostedDate(requirement.createdAt);
+  const locationValue =
+    requirement.location?.trim() ||
+    (requirement.remoteOk ? "Remote" : "Not specified");
+  const workingValue = requirement.remoteOk
+    ? "Remote welcome"
+    : "On-site / in person";
+
+  const [posterProfile, alreadyInterested] = await Promise.all([
+    getPublicPosterProfile(requirement.clientUserId),
+    viewer?.profile &&
+    viewer.profile.status === PUBLIC_PROFILE_STATUS &&
+    identity?.emailVerified &&
+    !isOwner
+      ? hasExpertInterest(requirementId, viewer.profile.id)
+      : Promise.resolve(false),
+  ]);
 
   let interestViewer: TaskInterestViewer = { kind: "signed_out" };
 
@@ -166,22 +174,25 @@ export default async function PublicRequirementPage({
     } else {
       interestViewer = {
         kind: "ready",
-        alreadyInterested: await hasExpertInterest(
-          requirementId,
-          viewer.profile.id
-        ),
+        alreadyInterested,
       };
     }
   }
 
+  const interestProps = {
+    requirementId,
+    posterLabel: companyLabel,
+    viewer: interestViewer,
+  };
+
   return (
-    <div className="relative">
+    <div className="relative pb-24 lg:pb-0">
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-gradient-hero"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[22rem] bg-gradient-task"
         aria-hidden
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-10">
+      <div className="relative mx-auto max-w-6xl px-4 py-8 md:px-6 md:py-10">
         <Button asChild variant="ghost" size="sm" className="-ml-2">
           <Link href="/tasks">
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -198,174 +209,137 @@ export default async function PublicRequirementPage({
 
         <div
           className={cn(
-            "mt-8 grid items-start gap-10",
-            "lg:grid-cols-[minmax(0,1fr)_minmax(22rem,28rem)] lg:gap-12 xl:gap-16"
+            "mt-8 grid items-start gap-12",
+            "lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] lg:gap-16 xl:gap-20"
           )}
         >
           <div className="min-w-0">
-            <p className="text-sm font-medium text-muted">
-              Looking for relevant expertise · Posted {postedLabel}
-            </p>
+            <p className="text-sm text-muted">Posted {postedLabel}</p>
 
-            <h1 className="mt-3 font-heading text-3xl font-semibold tracking-tight text-secondary md:text-4xl lg:text-[2.65rem] lg:leading-[1.12]">
+            <h1 className="mt-3 text-balance font-heading text-[2.15rem] font-bold tracking-[-0.03em] text-secondary md:text-5xl md:leading-[1.08] lg:text-[3.15rem] lg:leading-[1.06]">
               {requirement.title}
             </h1>
 
             {opening ? (
-              <p className="mt-5 text-lg leading-relaxed text-muted md:text-xl md:leading-relaxed">
+              <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted md:text-[1.25rem] md:leading-relaxed">
                 {opening}
               </p>
             ) : null}
 
             {expertiseTags.length > 0 && (
               <div className="mt-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
-                  Looking for expertise in
-                </p>
-                <ul className="mt-3 flex flex-wrap gap-2">
-                  {expertiseTags.map((name) => (
-                    <li
-                      key={name}
-                      className="inline-flex items-center rounded-full bg-ink px-3.5 py-1.5 text-sm font-medium text-ink-foreground"
-                    >
-                      {name}
-                    </li>
-                  ))}
-                </ul>
+                <TagList names={expertiseTags} />
               </div>
             )}
 
-            <div className="mt-8 flex flex-wrap items-start justify-between gap-4 border-t border-border/70 pt-6">
+            <dl className="mt-8 space-y-2.5 border-y border-border/80 py-4 sm:grid sm:grid-cols-3 sm:gap-8 sm:space-y-0 sm:py-5">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted">
-                  Posted by
-                </p>
-                <p className="mt-1 font-heading text-lg font-semibold text-secondary">
-                  {companyLabel}
-                </p>
-                <p className="mt-0.5 text-sm text-muted">
-                  {businessTypeLabel}
-                  {locationLabel ? ` · ${locationLabel}` : ""}
-                </p>
+                <dt className="sr-only">Guide budget</dt>
+                <dd>
+                  <Fact
+                    label="Guide budget"
+                    value={budgetLabel ?? "To discuss"}
+                  />
+                </dd>
               </div>
-              {isOwner && (
-                <Button asChild variant="outline" size="sm">
-                  <Link href={`/dashboard/requirements/${requirementId}`}>
-                    Edit request
-                  </Link>
-                </Button>
-              )}
-            </div>
-
-            <dl className="mt-6 grid gap-3 sm:grid-cols-3">
-              <Fact
-                label="Guide budget"
-                value={budgetLabel ?? "To discuss"}
-                icon={<Wallet className="h-3.5 w-3.5" aria-hidden />}
-              />
-              <Fact
-                label="Location"
-                value={
-                  requirement.location?.trim() ||
-                  (requirement.remoteOk ? "Remote" : "Not specified")
-                }
-                icon={<MapPin className="h-3.5 w-3.5" aria-hidden />}
-              />
-              <Fact
-                label="Working together"
-                value={
-                  requirement.remoteOk
-                    ? "Remote welcome"
-                    : "On-site / in person"
-                }
-              />
+              <div>
+                <dt className="sr-only">Location</dt>
+                <dd>
+                  <Fact label="Location" value={locationValue} />
+                </dd>
+              </div>
+              <div>
+                <dt className="sr-only">Working together</dt>
+                <dd>
+                  <Fact label="Working together" value={workingValue} />
+                </dd>
+              </div>
             </dl>
 
-            <div className="mt-8 lg:hidden">
-              <TaskInterestSidebar
-                requirementId={requirementId}
-                posterLabel={companyLabel}
-                budgetLabel={budgetLabel}
-                viewer={interestViewer}
-              />
-            </div>
+            {isOwner && (
+              <p className="mt-6">
+                <Link
+                  href={`/dashboard/requirements/${requirementId}`}
+                  className="text-sm font-medium text-on-surface underline-offset-4 hover:underline"
+                >
+                  Edit request
+                </Link>
+              </p>
+            )}
 
-            <div className="mt-12 space-y-12 border-t border-border/70 pt-10 md:mt-14 md:space-y-14">
-              {showGoalSection && sections.goal && (
-                <Section title="What I'm trying to do">
-                  <Prose>{sections.goal}</Prose>
-                </Section>
-              )}
-
-              {sections.context && (
+            <div className="mt-12 space-y-0 md:mt-14">
+              {narrative.challenge && (
                 <Section title="The challenge / context">
-                  <Prose>{sections.context}</Prose>
+                  <TaskDescriptionBody text={narrative.challenge} />
                 </Section>
               )}
 
-              {(summary.skillNames.length > 0 ||
-                summary.serviceNames.length > 0) && (
+              {summary.skillNames.length > 0 && (
                 <Section title="What kind of expertise I'm looking for">
-                  <div className="grid gap-8 sm:grid-cols-2">
-                    {summary.skillNames.length > 0 && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-muted">
-                          Relevant expertise
-                        </h3>
-                        <div className="mt-3">
-                          <ExpertisePills names={summary.skillNames} />
-                        </div>
-                      </div>
-                    )}
-                    {summary.serviceNames.length > 0 && (
-                      <div>
-                        <h3 className="text-sm font-semibold text-muted">
-                          Kind of help
-                        </h3>
-                        <div className="mt-3">
-                          <ExpertisePills names={summary.serviceNames} />
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  <TagList names={summary.skillNames} />
                 </Section>
               )}
 
-              {sections.additional && (
+              {summary.serviceNames.length > 0 && (
+                <Section title="What I need help with">
+                  <TagList names={summary.serviceNames} />
+                </Section>
+              )}
+
+              {narrative.additional && (
                 <Section title="Additional details">
-                  <Prose>{sections.additional}</Prose>
+                  <TaskDescriptionBody text={narrative.additional} />
                 </Section>
               )}
 
               <Section title="About the person who posted this">
-                <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-                  <p className="font-heading text-xl font-semibold text-secondary">
-                    {companyLabel}
-                  </p>
-                  <p className="mt-1 text-sm text-muted">
-                    {businessTypeLabel}
-                    {locationLabel ? ` · ${locationLabel}` : ""}
-                  </p>
-                  <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
-                    Connect if your expertise is relevant. After that,
-                    conversations happen directly — AI Task Pages doesn&apos;t
-                    manage payments or the work itself.
-                  </p>
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                  <Avatar
+                    src={posterProfile?.profileImageUrl}
+                    alt={companyLabel}
+                    className="h-14 w-14"
+                    textClassName="text-lg"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-heading text-xl font-semibold tracking-tight text-secondary">
+                      {companyLabel}
+                    </p>
+                    <p className="mt-1 text-sm text-muted">
+                      {[
+                        businessTypeLabel,
+                        locationLabel,
+                        posterProfile?.headline?.trim(),
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </p>
+                    {posterProfile && (
+                      <Link
+                        href={`/experts/${posterProfile.slug}`}
+                        className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-on-surface underline-offset-4 hover:underline"
+                      >
+                        View profile
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    )}
+                    <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
+                      Connect if your expertise is relevant. After that,
+                      conversations happen directly — AI Task Pages doesn&apos;t
+                      manage payments or the work itself.
+                    </p>
+                  </div>
                 </div>
               </Section>
             </div>
           </div>
 
-          <div className="hidden lg:sticky lg:top-24 lg:block lg:self-start">
-            <TaskInterestSidebar
-              requirementId={requirementId}
-              posterLabel={companyLabel}
-              budgetLabel={budgetLabel}
-              viewer={interestViewer}
-            />
+          <div className="hidden lg:sticky lg:top-28 lg:block lg:self-start">
+            <TaskInterestSidebar {...interestProps} />
           </div>
         </div>
       </div>
+
+      <TaskMobileCta {...interestProps} />
     </div>
   );
 }
