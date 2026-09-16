@@ -37,6 +37,7 @@ run_worker_first = [
   "/acceptable-use",
   "/expert-terms",
   "/unsubscribe",
+  "/coming-soon",
   "/sitemap.xml",
   "/robots.txt",
   # Dynamic brand assets & favicons served live from R2 with ETag revalidation
@@ -81,6 +82,11 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL = "/dashboard"
 # Resend from-address — aitaskpages.com must be verified in Resend.
 EMAIL_FROM = "AI Task Pages <notify@aitaskpages.com>"
 MARKETING_EMAIL_FROM = "AI Task Pages <notify@aitaskpages.com>"
+# Hide the unfinished public site behind a coming-soon cover.
+# Set to "0" and redeploy when branding/content are ready to go live.
+COMING_SOON = "1"
+# Unlock the real site with ?preview=… then ?preview=off to cover it again.
+COMING_SOON_BYPASS = "tp-dev-cover-7m9q"
 
 # Local development secrets go in .dev.vars:
 # CLERK_SECRET_KEY=

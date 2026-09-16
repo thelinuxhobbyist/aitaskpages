@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { isComingSoonEnabled } from "@/lib/coming-soon";
 import { getPublicExpertSlugs } from "@/lib/directory";
 import { getOpenRequirementIdsForSitemap } from "@/lib/requirements";
 import { absoluteUrl } from "@/lib/seo";
@@ -75,6 +76,10 @@ async function getDynamicRoutes(): Promise<MetadataRoute.Sitemap> {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (isComingSoonEnabled()) {
+    return [];
+  }
+
   const dynamicRoutes = await getDynamicRoutes();
   return [...STATIC_ROUTES, ...dynamicRoutes];
 }

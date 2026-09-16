@@ -16,6 +16,8 @@ declare global {
     MARKETING_UNSUBSCRIBE_SECRET?: string;
     TURNSTILE_SECRET_KEY?: string;
     GOOGLE_SITE_VERIFICATION?: string;
+    COMING_SOON?: string;
+    COMING_SOON_BYPASS?: string;
   }
 }
 

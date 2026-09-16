@@ -2,6 +2,14 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextFetchEvent, NextRequest } from "next/server";
 import { getClerkEnvSync, syncClerkEnvFromBindings } from "@/lib/clerk-env";
+import {
+  COMING_SOON_COOKIE,
+  COMING_SOON_QUERY,
+  comingSoonBypassToken,
+  hasComingSoonBypass,
+  isComingSoonEnabled,
+  isComingSoonExemptPath,
+} from "@/lib/coming-soon";
 
 const isProtectedRoute = createRouteMatcher([
   "/dashboard(.*)",
@@ -25,7 +33,72 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
   }
 });
 
+function applyComingSoonHeaders(response: NextResponse) {
+  response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  response.headers.set("Cache-Control", "private, no-store, must-revalidate");
+  return response;
+}
+
+function comingSoonBypassCookieOptions(req: NextRequest) {
+  return {
+    httpOnly: true,
+    secure: req.nextUrl.protocol === "https:",
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  };
+}
+
+/** Cover the public site while it is unfinished. APIs and a preview cookie still work. */
+function comingSoonResponse(req: NextRequest): NextResponse | null {
+  if (!isComingSoonEnabled()) return null;
+
+  const { pathname } = req.nextUrl;
+  if (isComingSoonExemptPath(pathname)) return null;
+
+  const token = comingSoonBypassToken();
+  const preview = req.nextUrl.searchParams.get(COMING_SOON_QUERY);
+
+  if (preview !== null) {
+    const nextUrl = req.nextUrl.clone();
+    nextUrl.searchParams.delete(COMING_SOON_QUERY);
+    const destination = new URL(nextUrl.pathname + nextUrl.search, req.url);
+
+    if (preview === "off" || preview === "0") {
+      const response = NextResponse.redirect(destination);
+      response.cookies.delete(COMING_SOON_COOKIE);
+      return response;
+    }
+
+    if (token && preview === token) {
+      const response = NextResponse.redirect(destination);
+      response.cookies.set(
+        COMING_SOON_COOKIE,
+        token,
+        comingSoonBypassCookieOptions(req),
+      );
+      return response;
+    }
+  }
+
+  if (hasComingSoonBypass(req.cookies.get(COMING_SOON_COOKIE)?.value)) {
+    return null;
+  }
+
+  if (pathname === "/coming-soon") {
+    return applyComingSoonHeaders(NextResponse.next());
+  }
+
+  const rewriteUrl = req.nextUrl.clone();
+  rewriteUrl.pathname = "/coming-soon";
+  rewriteUrl.search = "";
+  return applyComingSoonHeaders(NextResponse.rewrite(rewriteUrl));
+}
+
 async function middleware(req: NextRequest, event: NextFetchEvent) {
+  const cover = comingSoonResponse(req);
+  if (cover) return cover;
+
   syncClerkEnvFromBindings();
   const { secretKey } = getClerkEnvSync();
   // Clerk throws and Next serves pages/_error when secretKey is missing
@@ -45,8 +118,18 @@ async function middleware(req: NextRequest, event: NextFetchEvent) {
   }
 }
 
+function withComingSoon(
+  handler: (req: NextRequest, event: NextFetchEvent) => Promise<NextResponse> | NextResponse,
+) {
+  return async (req: NextRequest, event: NextFetchEvent) => {
+    const cover = comingSoonResponse(req);
+    if (cover) return cover;
+    return handler(req, event);
+  };
+}
+
 export default process.env.PREVIEW_SKIP_AUTH === "1"
-  ? (_req: NextRequest) => NextResponse.next()
+  ? withComingSoon((_req: NextRequest) => NextResponse.next())
   : middleware;
 
 /**
