@@ -24,8 +24,8 @@ function HomeHero() {
         <span className="text-accent-foreground">for your task.</span>
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
-        AI Task Pages helps businesses and individuals connect with AI experts
-        for specific tasks, projects and challenges. Post a task, or find the
+        AI Task Pages helps businesses and individuals find the right AI
+        expertise for specific tasks and projects. Post a task, or find the
         right expertise and get in touch directly.
       </p>
       <p className="mt-4 max-w-xl text-[1.0625rem] font-medium leading-[1.5] text-on-surface md:text-lg">
@@ -46,7 +46,7 @@ function HomeHero() {
             label: "Post a task",
             primary: true,
           },
-          { href: "/search", label: "Find AI experts", primary: false },
+          { href: "/search", label: "Find AI expertise", primary: false },
           { href: "/tasks", label: "Browse AI tasks", primary: false },
           {
             href: "/create-a-profile",
@@ -140,7 +140,7 @@ async function HomePlatformSections() {
               title="Featured AI expertise"
               description="Independent professionals and companies for AI consulting, automation, integrations and machine learning."
               browseHref="/search"
-              browseLabel="Browse AI experts"
+              browseLabel="Browse AI expertise"
             >
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {experts.map((profile) => (

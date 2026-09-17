@@ -20,18 +20,18 @@ export const SITE_NAME = "AI Task Pages";
 
 /** Short brand line — introduction platform, not recruitment. */
 export const SITE_TAGLINE =
-  "Find AI experts for your tasks, projects and AI challenges.";
+  "Find AI expertise for your tasks and projects.";
 
 /**
  * Default / homepage meta description. Positions the brand as a place to post
  * AI tasks and find AI expertise — not a jobs board or employment site.
  */
 export const DEFAULT_DESCRIPTION =
-  "AI Task Pages helps businesses and individuals find AI experts for specific tasks, projects and challenges. Post a task or find the right expertise.";
+  "AI Task Pages helps businesses and individuals find the right AI expertise for specific tasks and projects. Post a task or find the right expertise.";
 
 /** Homepage Open Graph description (slightly shorter / social-friendly). */
 export const HOME_OG_DESCRIPTION =
-  "Find AI experts for your tasks, projects and AI challenges. Post a task or discover the right expertise.";
+  "Find AI expertise for your tasks and projects. Post a task or discover the right expertise.";
 
 /** Empty until a dedicated AI Task Pages GA property is configured. */
 export const ORGANIZATION_SAME_AS = [] as const;
