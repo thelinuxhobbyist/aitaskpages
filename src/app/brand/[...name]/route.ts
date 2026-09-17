@@ -42,12 +42,47 @@ const BRAND_ALIASES: Record<string, string> = {
   "apple-touch-icon.png": "images/logos/apple-touch-icon.png",
 };
 
+const WORDMARK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 24" width="150" height="24" role="img" aria-label="AI Task Pages">
+  <title>AI Task Pages</title>
+  <text x="0" y="18"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+        font-size="19" letter-spacing="-0.4" fill="#1a1f2e">
+    <tspan font-weight="700">AI</tspan><tspan font-weight="500" dx="5">Task Pages</tspan>
+  </text>
+</svg>`;
+
+const WORDMARK_ON_DARK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 24" width="150" height="24" role="img" aria-label="AI Task Pages">
+  <title>AI Task Pages</title>
+  <text x="0" y="18"
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif"
+        font-size="19" letter-spacing="-0.4" fill="#ffffff">
+    <tspan font-weight="700">AI</tspan><tspan font-weight="500" dx="5">Task Pages</tspan>
+  </text>
+</svg>`;
+
+const LOCAL_BRAND_SVG: Record<string, string> = {
+  "logo.svg": WORDMARK_SVG,
+  "logo-on-dark.svg": WORDMARK_ON_DARK_SVG,
+  // Alias used by static HTML footers
+  "footer.svg": WORDMARK_ON_DARK_SVG,
+};
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ name: string[] }> }
 ) {
   const { name } = await params;
   const filename = decodeURIComponent(name.join("/"));
+
+  const localSvg = LOCAL_BRAND_SVG[filename];
+  if (localSvg) {
+    return new Response(localSvg, {
+      headers: {
+        "content-type": "image/svg+xml; charset=utf-8",
+        "cache-control": "public, max-age=3600",
+      },
+    });
+  }
 
   const env = await getEnv();
   if (!env?.IMAGES) {

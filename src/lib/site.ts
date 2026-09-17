@@ -3,17 +3,16 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://aitaskpages.com";
 
 /**
- * Brand assets served dynamically from R2 with live ETag revalidation.
- * Absolute URLs for OG/email; same-origin paths for in-app <img> first paint.
+ * Brand assets for OG/email (PNG via R2). Header/footer use inline SVG BrandMark.
  */
 export const SITE_LOGO_PATH = "/brand/logo.png";
 export const SITE_LOGO_URL = `${SITE_URL}${SITE_LOGO_PATH}`;
 
-/** @deprecated Use SITE_LOGO_URL — lockup is now a PNG. */
-export const SITE_LOGO_SVG_URL = SITE_LOGO_URL;
+/** @deprecated Use SITE_LOGO_URL. */
+export const SITE_LOGO_SVG_URL = `${SITE_URL}/brand/logo.svg`;
 
-/** Stacked lockup for dark surfaces (footer) — transparent PNG. */
-export const SITE_LOGO_ON_DARK_PATH = "/brand/footer.png";
+/** White wordmark for dark surfaces (static HTML). */
+export const SITE_LOGO_ON_DARK_PATH = "/brand/logo-on-dark.svg";
 export const SITE_LOGO_ON_DARK_URL = `${SITE_URL}${SITE_LOGO_ON_DARK_PATH}`;
 
 /** @deprecated Use SITE_LOGO_ON_DARK_URL. */

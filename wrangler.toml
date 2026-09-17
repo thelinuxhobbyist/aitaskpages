@@ -82,9 +82,8 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL = "/dashboard"
 # Resend from-address — aitaskpages.com must be verified in Resend.
 EMAIL_FROM = "AI Task Pages <notify@aitaskpages.com>"
 MARKETING_EMAIL_FROM = "AI Task Pages <notify@aitaskpages.com>"
-# Hide the unfinished public site behind a coming-soon cover.
-# Set to "0" and redeploy when branding/content are ready to go live.
-COMING_SOON = "1"
+# Public coming-soon cover (set to "1" to re-enable).
+COMING_SOON = "0"
 # Unlock the real site with ?preview=… then ?preview=off to cover it again.
 COMING_SOON_BYPASS = "tp-dev-cover-7m9q"
 

@@ -93,7 +93,7 @@ export function Header({ initialSignedIn }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-surface">
-      <div className="mx-auto flex min-h-[4.75rem] max-w-6xl items-stretch justify-between gap-6 px-5 py-2 md:min-h-[5.5rem]">
+      <div className="mx-auto flex min-h-16 max-w-6xl items-stretch justify-between gap-6 px-5 py-2 md:min-h-[4.25rem]">
         <BrandMark className="self-center" />
 
         <div className="hidden items-stretch gap-8 md:flex">
