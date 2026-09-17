@@ -1,6 +1,9 @@
 /**
- * Remove demo/seed task data only (seed-demo-client user and related rows).
- * Does not touch real user accounts or catalog data.
+ * Remove demo/seed marketplace data only:
+ * - seed-demo-client (sample tasks)
+ * - seed-company-* (sample company profiles)
+ *
+ * Does not touch real Clerk user accounts or catalog data (skills/services).
  *
  * Usage:
  *   npm run db:cleanup:seed:local
@@ -12,55 +15,121 @@ import { writeFileSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
-const DEMO_CLERK_ID = "seed-demo-client";
-
 const CLEANUP_SEED_SQL = `
 DELETE FROM messages
 WHERE conversation_id IN (
   SELECT c.id FROM conversations c
-  JOIN users u ON u.id = c.client_user_id
-  WHERE u.clerk_user_id = '${DEMO_CLERK_ID}'
+  WHERE c.client_user_id IN (
+    SELECT id FROM users
+    WHERE clerk_user_id = 'seed-demo-client'
+       OR clerk_user_id LIKE 'seed-company-%'
+  )
+  OR c.freelancer_id IN (
+    SELECT fp.id FROM freelancer_profiles fp
+    JOIN users u ON u.id = fp.user_id
+    WHERE u.clerk_user_id = 'seed-demo-client'
+       OR u.clerk_user_id LIKE 'seed-company-%'
+  )
 );
 
 DELETE FROM requirement_notifications
 WHERE requirement_id IN (
   SELECT r.id FROM requirements r
   JOIN users u ON u.id = r.client_user_id
-  WHERE u.clerk_user_id = '${DEMO_CLERK_ID}'
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
+)
+OR expert_id IN (
+  SELECT fp.id FROM freelancer_profiles fp
+  JOIN users u ON u.id = fp.user_id
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
 );
 
 DELETE FROM requirement_interests
 WHERE requirement_id IN (
   SELECT r.id FROM requirements r
   JOIN users u ON u.id = r.client_user_id
-  WHERE u.clerk_user_id = '${DEMO_CLERK_ID}'
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
+)
+OR expert_id IN (
+  SELECT fp.id FROM freelancer_profiles fp
+  JOIN users u ON u.id = fp.user_id
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
 );
 
 DELETE FROM requirement_skills
 WHERE requirement_id IN (
   SELECT r.id FROM requirements r
   JOIN users u ON u.id = r.client_user_id
-  WHERE u.clerk_user_id = '${DEMO_CLERK_ID}'
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
 );
 
 DELETE FROM requirement_services
 WHERE requirement_id IN (
   SELECT r.id FROM requirements r
   JOIN users u ON u.id = r.client_user_id
-  WHERE u.clerk_user_id = '${DEMO_CLERK_ID}'
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
 );
 
 DELETE FROM requirements
 WHERE client_user_id IN (
-  SELECT id FROM users WHERE clerk_user_id = '${DEMO_CLERK_ID}'
+  SELECT id FROM users
+  WHERE clerk_user_id = 'seed-demo-client'
+     OR clerk_user_id LIKE 'seed-company-%'
+);
+
+DELETE FROM contact_requests
+WHERE freelancer_id IN (
+  SELECT fp.id FROM freelancer_profiles fp
+  JOIN users u ON u.id = fp.user_id
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
 );
 
 DELETE FROM conversations
 WHERE client_user_id IN (
-  SELECT id FROM users WHERE clerk_user_id = '${DEMO_CLERK_ID}'
+  SELECT id FROM users
+  WHERE clerk_user_id = 'seed-demo-client'
+     OR clerk_user_id LIKE 'seed-company-%'
+)
+OR freelancer_id IN (
+  SELECT fp.id FROM freelancer_profiles fp
+  JOIN users u ON u.id = fp.user_id
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
 );
 
-DELETE FROM users WHERE clerk_user_id = '${DEMO_CLERK_ID}';
+DELETE FROM freelancer_skills
+WHERE freelancer_id IN (
+  SELECT fp.id FROM freelancer_profiles fp
+  JOIN users u ON u.id = fp.user_id
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
+);
+
+DELETE FROM freelancer_services
+WHERE freelancer_id IN (
+  SELECT fp.id FROM freelancer_profiles fp
+  JOIN users u ON u.id = fp.user_id
+  WHERE u.clerk_user_id = 'seed-demo-client'
+     OR u.clerk_user_id LIKE 'seed-company-%'
+);
+
+DELETE FROM freelancer_profiles
+WHERE user_id IN (
+  SELECT id FROM users
+  WHERE clerk_user_id = 'seed-demo-client'
+     OR clerk_user_id LIKE 'seed-company-%'
+);
+
+DELETE FROM users
+WHERE clerk_user_id = 'seed-demo-client'
+   OR clerk_user_id LIKE 'seed-company-%';
 `.trim();
 
 async function main() {
