@@ -18,6 +18,7 @@ import {
   parseExternalLinks,
   parseWorkExamples,
 } from "@/lib/profile-utils";
+import { ProfileTypeBadge } from "@/components/expert/profile-type-badge";
 import { isCompanyProfile, profileTypeLabel } from "@/lib/profile-type";
 import { formatHourlyRate } from "@/lib/currency";
 import { PageHero } from "@/components/page-hero";
@@ -261,11 +262,15 @@ export default async function ExpertProfilePage({
               <h1 className="text-3xl font-semibold tracking-tight text-secondary md:text-4xl">
                 {profile.fullName}
               </h1>
-              <p className="mt-2 text-lg text-muted">
-                {profile.headline?.trim()
-                  ? `${typeLabel} · ${profile.headline.trim()}`
-                  : typeLabel}
-              </p>
+              <div className="mt-3">
+                <ProfileTypeBadge
+                  label={typeLabel}
+                  className="px-2.5 py-1 text-xs"
+                />
+              </div>
+              {profile.headline?.trim() && (
+                <p className="mt-2 text-lg text-muted">{profile.headline.trim()}</p>
+              )}
 
               <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
                 {profile.location && (

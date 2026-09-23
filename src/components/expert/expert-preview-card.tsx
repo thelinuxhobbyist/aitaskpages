@@ -7,6 +7,7 @@ import {
   mergeUniqueTags,
   type ProfileWithRelations,
 } from "@/lib/profile-utils";
+import { ProfileTypeBadge } from "@/components/expert/profile-type-badge";
 import { isCompanyProfile, profileTypeLabel } from "@/lib/profile-type";
 import { cn } from "@/lib/utils";
 import { ArrowRight, MapPin } from "lucide-react";
@@ -67,7 +68,6 @@ export function ExpertPreviewCard({
 }) {
   const roleText = profile.headline?.trim();
   const typeLabel = profileTypeLabel(profile);
-  const subtitle = roleText ? `${typeLabel} · ${roleText}` : typeLabel;
   const company = isCompanyProfile(profile);
   const focusAreas = uniqueSpecialisms(profile).slice(0, 3);
   const bioCleaned = profile.bio?.replace(/\r\n/g, "\n").trim();
@@ -108,11 +108,9 @@ export function ExpertPreviewCard({
               <Heading className="font-heading text-lg font-semibold tracking-tight text-secondary transition-colors group-hover:text-primary">
                 {profile.fullName}
               </Heading>
-              {subtitle && (
-                <p className="mt-0.5 line-clamp-1 text-sm text-muted">
-                  {subtitle}
-                </p>
-              )}
+              <div className="mt-1.5">
+                <ProfileTypeBadge label={typeLabel} />
+              </div>
             </div>
             <span className="hidden shrink-0 items-center gap-1 text-sm font-semibold text-primary sm:inline-flex">
               View profile
