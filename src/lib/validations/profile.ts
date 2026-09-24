@@ -5,6 +5,11 @@ import {
   normalizeRateCurrency,
 } from "@/lib/currency";
 import {
+  MAX_HELP_WITH,
+  MAX_INDUSTRIES,
+  MAX_TOPIC_LENGTH,
+} from "@/lib/expertise-topics";
+import {
   MAX_PROFILE_SERVICES,
   MAX_PROFILE_SKILLS,
   MAX_SERVICE_TAG_LENGTH,
@@ -119,11 +124,35 @@ function normalizeUrl(value: string): string | null {
 
 export const MAX_WORK_EXAMPLES = 8;
 
+export const MAX_CAPABILITIES = 5;
+
+export type CapabilityInput = {
+  title: string;
+  description: string;
+};
+
 export type WorkExampleInput = {
   title: string;
   description?: string;
-  url: string;
+  url?: string;
+  outcome?: string;
+  industry?: string;
+  role?: string;
+  technologies?: string[];
+  imageUrl?: string;
 };
+
+function cleanLine(value: unknown, max: number): string {
+  if (typeof value !== "string") return "";
+  const text = value.trim().replace(/[ \t]+/g, " ");
+  return text.length > max ? text.slice(0, max) : text;
+}
+
+function cleanParagraph(value: unknown, max: number): string {
+  if (typeof value !== "string") return "";
+  const text = value.trim().replace(/[ \t]+/g, " ");
+  return text.length > max ? text.slice(0, max) : text;
+}
 
 function parseWorkExamplesJson(value: unknown): unknown[] {
   if (Array.isArray(value)) return value;
@@ -136,6 +165,36 @@ function parseWorkExamplesJson(value: unknown): unknown[] {
   }
 }
 
+function normalizeCapabilities(value: unknown): CapabilityInput[] {
+  const raw = parseWorkExamplesJson(value);
+  const normalized: CapabilityInput[] = [];
+
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const record = item as Record<string, unknown>;
+    const title = cleanLine(record.title, 80);
+    const description = cleanParagraph(record.description, 500);
+    if (title.length < 2 || description.length < 20) continue;
+    normalized.push({ title, description });
+    if (normalized.length >= MAX_CAPABILITIES) break;
+  }
+
+  return normalized;
+}
+
+function normalizeTechnologyList(value: unknown): string[] {
+  const source = Array.isArray(value)
+    ? value
+    : typeof value === "string"
+      ? value.split(",")
+      : [];
+  return normalizeFreeTextTags(
+    source.filter((item): item is string => typeof item === "string"),
+    8,
+    40
+  );
+}
+
 function normalizeWorkExamples(value: unknown): WorkExampleInput[] {
   const raw = parseWorkExamplesJson(value);
   const normalized: WorkExampleInput[] = [];
@@ -143,25 +202,29 @@ function normalizeWorkExamples(value: unknown): WorkExampleInput[] {
   for (const item of raw) {
     if (!item || typeof item !== "object") continue;
     const record = item as Record<string, unknown>;
-    const title =
-      typeof record.title === "string"
-        ? record.title.trim().replace(/\s+/g, " ")
-        : "";
-    const description =
-      typeof record.description === "string"
-        ? record.description.trim().replace(/\s+/g, " ")
-        : "";
+    const title = cleanLine(record.title, 120);
+    const description = cleanParagraph(record.description, 800);
+    const outcome = cleanParagraph(record.outcome, 400);
+    const industry = cleanLine(record.industry, 80);
+    const role = cleanLine(record.role, 80);
     const url =
       typeof record.url === "string" ? normalizeUrl(record.url) : null;
+    const imageUrl =
+      typeof record.imageUrl === "string" ? normalizeUrl(record.imageUrl) : null;
+    const technologies = normalizeTechnologyList(record.technologies);
 
-    if (title.length < 2 || title.length > 120 || !url) continue;
+    if (title.length < 2) continue;
+    if (!description && !url) continue;
 
     normalized.push({
       title,
-      ...(description && description.length <= 500
-        ? { description }
-        : undefined),
-      url,
+      ...(description ? { description } : undefined),
+      ...(url ? { url } : undefined),
+      ...(outcome ? { outcome } : undefined),
+      ...(industry ? { industry } : undefined),
+      ...(role ? { role } : undefined),
+      ...(technologies.length > 0 ? { technologies } : undefined),
+      ...(imageUrl ? { imageUrl } : undefined),
     });
 
     if (normalized.length >= MAX_WORK_EXAMPLES) break;
@@ -174,7 +237,7 @@ export const profileSchema = z.object({
   profileType: z.enum(["individual", "company"]).default("individual"),
   fullName: z.string().min(2, "Name must be at least 2 characters").max(100),
   headline: z.string().max(120).optional(),
-  bio: z.string().max(2000).optional(),
+  bio: z.string().max(4000).optional(),
   location: z.string().max(100).optional(),
   hourlyRate: optionalNumber,
   hourlyRateCurrency: z.preprocess(
@@ -220,14 +283,42 @@ export const profileSchema = z.object({
         MAX_SERVICE_TAG_LENGTH
       )
     ),
+  industries: z
+    .array(z.string())
+    .default([])
+    .transform((values) =>
+      normalizeFreeTextTags(values, MAX_INDUSTRIES, MAX_TOPIC_LENGTH)
+    ),
+  helpWith: z
+    .array(z.string())
+    .default([])
+    .transform((values) =>
+      normalizeFreeTextTags(values, MAX_HELP_WITH, MAX_TOPIC_LENGTH)
+    ),
+  capabilities: z.preprocess(
+    normalizeCapabilities,
+    z
+      .array(
+        z.object({
+          title: z.string().min(2).max(80),
+          description: z.string().min(20).max(500),
+        })
+      )
+      .max(MAX_CAPABILITIES)
+  ),
   workExamples: z.preprocess(
     normalizeWorkExamples,
     z
       .array(
         z.object({
           title: z.string().min(2).max(120),
-          description: z.string().max(500).optional(),
-          url: z.string().url(),
+          description: z.string().max(800).optional(),
+          url: z.string().url().optional(),
+          outcome: z.string().max(400).optional(),
+          industry: z.string().max(80).optional(),
+          role: z.string().max(80).optional(),
+          technologies: z.array(z.string()).max(8).optional(),
+          imageUrl: z.string().url().optional(),
         })
       )
       .max(MAX_WORK_EXAMPLES)

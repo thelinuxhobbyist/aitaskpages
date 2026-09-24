@@ -116,7 +116,7 @@ export function ContactForm({
         type="submit"
         disabled={pending || (!!turnstileSiteKey && !turnstileToken)}
       >
-        {pending ? "Sending…" : "Send enquiry"}
+        {pending ? "Sending…" : "Contact about a project"}
       </Button>
     </form>
   );

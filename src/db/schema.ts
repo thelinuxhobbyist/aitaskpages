@@ -105,6 +105,12 @@ export const expertProfiles = sqliteTable(
      * AI Task Pages does not host any of this content.
      */
     workExamples: text("work_examples"),
+    /** JSON array of industries the expert or company works with. */
+    industries: text("industries"),
+    /** JSON array of problem/use-case topics — "What can you help with?" */
+    helpWith: text("help_with"),
+    /** JSON array of { title, description } — written capabilities on the profile. */
+    capabilities: text("capabilities"),
     createdAt: text("created_at")
       .notNull()
       .default(sql`(datetime('now'))`),
@@ -389,6 +395,14 @@ export const requirements = sqliteTable(
     customSkills: text("custom_skills"),
     /** JSON array of help-needed terms the client typed (may include custom wording). */
     customServices: text("custom_services"),
+    /** Industry of the business posting the task, e.g. Dental / Healthcare. */
+    industry: text("industry"),
+    /** The AI problem or use case, separate from the longer description. */
+    problem: text("problem"),
+    /** Optional timeline the poster chooses to share. */
+    timeline: text("timeline"),
+    /** JSON array of technologies or integrations the task needs. */
+    technologies: text("technologies"),
     status: text("status", {
       enum: ["draft", "open", "closed", "filled"],
     })

@@ -5,6 +5,7 @@ import { saveProfile } from "@/app/dashboard/actions";
 import { AvatarUpload } from "@/app/dashboard/avatar-upload";
 import { ProfileTypePicker } from "@/app/dashboard/profile-type-picker";
 import { ExternalLinksField } from "@/app/dashboard/external-links-field";
+import { CapabilitiesField } from "@/app/dashboard/capabilities-field";
 import { WorkExamplesField } from "@/app/dashboard/work-examples-field";
 import { TaxonomyTagField } from "@/app/dashboard/taxonomy-tag-field";
 import { FormErrorBanner } from "@/components/form-error-banner";
@@ -17,9 +18,19 @@ import type { ProfileFormState } from "@/lib/validations/profile";
 import {
   getProfileSkillLabels,
   getProfileServiceLabels,
+  parseCapabilities,
+  parseCustomSkills,
   parseExternalLinks,
   parseWorkExamples,
 } from "@/lib/profile-utils";
+import {
+  EMPTY_KEYWORD_MAP,
+  HELP_WITH_TOPICS,
+  INDUSTRY_TOPICS,
+  MAX_HELP_WITH,
+  MAX_INDUSTRIES,
+  MAX_TOPIC_LENGTH,
+} from "@/lib/expertise-topics";
 import {
   parseProfileType,
   PROFILE_TYPE_LABELS,
@@ -153,15 +164,20 @@ export function ProfileForm({
         </div>
 
         <div className="space-y-2 sm:col-span-2">
-          <Label htmlFor="bio">{isCompany ? "About the company" : "Bio"}</Label>
+          <Label htmlFor="bio">{isCompany ? "About the company" : "About"}</Label>
+          <p className="text-xs text-muted">
+            Write two to four paragraphs. Say who you are, the work you do, and
+            the kinds of businesses you usually help.
+          </p>
           <Textarea
             id="bio"
             name="bio"
-            rows={5}
+            rows={10}
+            maxLength={4000}
             placeholder={
               isCompany
-                ? "Tell businesses about your team and the AI expertise you provide…"
-                : "Tell businesses about your experience and expertise…"
+                ? "Who the team is, the problems you take on, and who you typically work with."
+                : "Your background, the problems you take on, and who you typically work with."
             }
             defaultValue={profile?.bio ?? ""}
           />
@@ -333,8 +349,25 @@ export function ProfileForm({
         </div>
       </fieldset>
 
+      <CapabilitiesField
+        initialCapabilities={
+          profile ? parseCapabilities(profile.capabilities) : []
+        }
+      />
+
+      <WorkExamplesField
+        initialExamples={parseWorkExamples(profile?.workExamples)}
+        isCompany={isCompany}
+      />
+
       <section className="space-y-4">
-        <h3 className="text-sm font-medium text-slate-700">Expertise</h3>
+        <h3 className="text-sm font-medium text-slate-700">
+          Search details
+        </h3>
+        <p className="text-xs text-muted">
+          These tags help people find you. They appear after the written
+          profile, not instead of it.
+        </p>
 
         <TaxonomyTagField
           name="customSkills"
@@ -369,12 +402,33 @@ export function ProfileForm({
           maxLength={MAX_SERVICE_TAG_LENGTH}
           initialItems={profile ? getProfileServiceLabels(profile) : []}
         />
-      </section>
 
-      <WorkExamplesField
-        initialExamples={parseWorkExamples(profile?.workExamples)}
-        isCompany={isCompany}
-      />
+        <TaxonomyTagField
+          name="helpWith"
+          label="What can you help with?"
+          description="Name the problems and use cases you take on. This helps a business see whether you fit their situation."
+          placeholder="e.g. Voice AI, AI receptionists"
+          itemNoun="topic"
+          catalog={HELP_WITH_TOPICS}
+          keywords={EMPTY_KEYWORD_MAP}
+          maxItems={MAX_HELP_WITH}
+          maxLength={MAX_TOPIC_LENGTH}
+          initialItems={profile ? parseCustomSkills(profile.helpWith) : []}
+        />
+
+        <TaxonomyTagField
+          name="industries"
+          label="Industries you work with"
+          description="Add the sectors where you have relevant experience."
+          placeholder="e.g. Dental, Healthcare"
+          itemNoun="industry"
+          catalog={INDUSTRY_TOPICS}
+          keywords={EMPTY_KEYWORD_MAP}
+          maxItems={MAX_INDUSTRIES}
+          maxLength={MAX_TOPIC_LENGTH}
+          initialItems={profile ? parseCustomSkills(profile.industries) : []}
+        />
+      </section>
 
       <Button type="submit" disabled={pending}>
         {pending ? "Saving…" : profile ? "Update profile" : "Create profile"}

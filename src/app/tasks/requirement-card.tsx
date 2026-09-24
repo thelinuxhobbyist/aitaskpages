@@ -81,6 +81,12 @@ export function RequirementCard({
               title={requirement.companyName}
             >
               {requirement.companyName}
+              {requirement.industry ? (
+                <span className="font-medium text-muted">
+                  {" "}
+                  · {requirement.industry}
+                </span>
+              ) : null}
             </p>
             {showInterestStatus &&
               (hasInterest ? (

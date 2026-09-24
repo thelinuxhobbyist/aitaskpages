@@ -134,8 +134,22 @@ export function getProfileServiceDisplayTags(profile: {
 export type WorkExample = {
   title: string;
   description?: string;
-  url: string;
+  url?: string;
+  outcome?: string;
+  industry?: string;
+  role?: string;
+  technologies?: string[];
+  imageUrl?: string;
 };
+
+export type Capability = {
+  title: string;
+  description: string;
+};
+
+function readText(value: unknown): string {
+  return typeof value === "string" ? value.trim() : "";
+}
 
 /** Parse external work examples stored as JSON on profiles. */
 export function parseWorkExamples(
@@ -150,21 +164,54 @@ export function parseWorkExamples(
     for (const item of parsed) {
       if (!item || typeof item !== "object") continue;
       const record = item as Record<string, unknown>;
-      const title =
-        typeof record.title === "string" ? record.title.trim() : "";
-      const url = typeof record.url === "string" ? record.url.trim() : "";
-      const description =
-        typeof record.description === "string"
-          ? record.description.trim()
-          : "";
-      if (!title || !url) continue;
+      const title = readText(record.title);
+      const url = readText(record.url);
+      const description = readText(record.description);
+      const outcome = readText(record.outcome);
+      const industry = readText(record.industry);
+      const role = readText(record.role);
+      const imageUrl = readText(record.imageUrl);
+      const technologies = Array.isArray(record.technologies)
+        ? record.technologies
+            .filter((item): item is string => typeof item === "string")
+            .map((item) => item.trim())
+            .filter(Boolean)
+        : [];
+      if (!title || (!description && !url)) continue;
       examples.push({
         title,
-        url,
+        ...(url ? { url } : undefined),
         ...(description ? { description } : undefined),
+        ...(outcome ? { outcome } : undefined),
+        ...(industry ? { industry } : undefined),
+        ...(role ? { role } : undefined),
+        ...(imageUrl ? { imageUrl } : undefined),
+        ...(technologies.length > 0 ? { technologies } : undefined),
       });
     }
     return examples;
+  } catch {
+    return [];
+  }
+}
+
+export function parseCapabilities(
+  raw: string | null | undefined
+): Capability[] {
+  if (!raw?.trim()) return [];
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    const capabilities: Capability[] = [];
+    for (const item of parsed) {
+      if (!item || typeof item !== "object") continue;
+      const record = item as Record<string, unknown>;
+      const title = readText(record.title);
+      const description = readText(record.description);
+      if (!title || !description) continue;
+      capabilities.push({ title, description });
+    }
+    return capabilities;
   } catch {
     return [];
   }

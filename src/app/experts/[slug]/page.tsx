@@ -15,6 +15,8 @@ import {
   getProfileServiceLabels,
   getProfileSkillDisplayTags,
   getProfileSkillLabels,
+  parseCapabilities,
+  parseCustomSkills,
   parseExternalLinks,
   parseWorkExamples,
 } from "@/lib/profile-utils";
@@ -101,16 +103,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 function ProfileSection({
   title,
   children,
+  divided = true,
 }: {
   title: string;
   children: ReactNode;
+  divided?: boolean;
 }) {
   return (
-    <section className="border-t border-border py-8 first:border-t-0 first:pt-0">
-      <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
+    <section className={divided ? "border-t border-border py-10" : "pb-2 pt-0"}>
+      <h2 className="font-heading text-xl font-semibold tracking-tight text-secondary md:text-2xl">
         {title}
       </h2>
-      <div className="mt-4">{children}</div>
+      <div className="mt-5">{children}</div>
     </section>
   );
 }
@@ -141,6 +145,10 @@ export default async function ExpertProfilePage({
   const serviceTags = getProfileServiceDisplayTags(profile);
   const externalLinks = parseExternalLinks(profile.externalLinks);
   const workExamples = parseWorkExamples(profile.workExamples);
+  const helpWith = parseCustomSkills(profile.helpWith);
+  const industries = parseCustomSkills(profile.industries);
+  const capabilities = parseCapabilities(profile.capabilities);
+  const aboutTitle = "Who they are";
   const company = isCompanyProfile(profile);
   const typeLabel = profileTypeLabel(profile);
   const hasExternalLinks = Boolean(
@@ -149,9 +157,7 @@ export default async function ExpertProfilePage({
       profile.linkedinUrl ||
       externalLinks.length > 0
   );
-  const aboutTitle = company ? "About the company" : "About";
-  const skillsTitle = company ? "Areas of expertise" : "Skills";
-  const servicesTitle = company ? "Services / capabilities" : "Services";
+  const skillsTitle = "Expertise";
   const contactTitle = isOwner
     ? "Your profile"
     : company
@@ -319,8 +325,139 @@ export default async function ExpertProfilePage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
+        {profile.bio && (
+          <ProfileSection title={aboutTitle} divided={false}>
+            <ReadMoreBio text={profile.bio} />
+          </ProfileSection>
+        )}
+
+        {(capabilities.length > 0 || helpWith.length > 0 || serviceTags.length > 0) && (
+          <ProfileSection title="What they help businesses do">
+            {capabilities.length > 0 && (
+              <ul className="space-y-6">
+                {capabilities.map((item) => (
+                  <li key={item.title}>
+                    <h3 className="text-base font-semibold text-secondary">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1.5 text-base leading-relaxed text-slate-700">
+                      {item.description}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {(helpWith.length > 0 || serviceTags.length > 0) && (
+              <div className={capabilities.length > 0 ? "mt-6" : undefined}>
+                <div className="flex flex-wrap gap-1.5">
+                  {helpWith.map((name) => (
+                    <Badge key={name} variant="secondary">
+                      {name}
+                    </Badge>
+                  ))}
+                  {serviceTags.map((tag) => (
+                    <Link key={tag.name} href={tag.href}>
+                      <Badge variant="secondary" className="hover:bg-stone-200">
+                        {tag.name}
+                      </Badge>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </ProfileSection>
+        )}
+
+        {workExamples.length > 0 && (
+          <ProfileSection title="Relevant experience">
+            <ul>
+              {workExamples.map((example, index) => (
+                <li
+                  key={`${example.title}-${example.url ?? index}`}
+                  className={
+                    index > 0 ? "mt-8 border-t border-border pt-8" : undefined
+                  }
+                >
+                  <h3 className="text-base font-semibold text-secondary">
+                    {example.title}
+                  </h3>
+                  {example.description && (
+                    <p className="mt-2 text-base leading-relaxed text-slate-700">
+                      {example.description}
+                    </p>
+                  )}
+                  {example.outcome && (
+                    <p className="mt-2 text-base leading-relaxed text-slate-700">
+                      {example.outcome}
+                    </p>
+                  )}
+                  {(example.industry ||
+                    example.role ||
+                    (example.technologies && example.technologies.length > 0)) && (
+                    <p className="mt-3 text-sm text-muted">
+                      {[
+                        example.industry,
+                        example.role,
+                        example.technologies?.join(", "),
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
+                    </p>
+                  )}
+                  {example.imageUrl && (
+                    <a
+                      href={example.imageUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex text-sm font-medium text-primary hover:underline"
+                    >
+                      View screenshot
+                    </a>
+                  )}
+                  {example.url && (
+                    <a
+                      href={example.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 block text-sm font-medium text-primary hover:underline"
+                    >
+                      View project →
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </ProfileSection>
+        )}
+
+        {skillTags.length > 0 && (
+          <ProfileSection title={skillsTitle}>
+            <div className="flex flex-wrap gap-1.5">
+              {skillTags.map((tag) => (
+                <Link key={tag.name} href={tag.href}>
+                  <Badge variant="secondary" className="hover:bg-stone-200">
+                    {tag.name}
+                  </Badge>
+                </Link>
+              ))}
+            </div>
+          </ProfileSection>
+        )}
+
+        {industries.length > 0 && (
+          <ProfileSection title="Industries">
+            <div className="flex flex-wrap gap-1.5">
+              {industries.map((name) => (
+                <Badge key={name} variant="secondary">
+                  {name}
+                </Badge>
+              ))}
+            </div>
+          </ProfileSection>
+        )}
+
         {hasExternalLinks && (
-          <div className="mb-8">
+          <div className="border-t border-border py-8">
             <p className="mb-3 text-sm font-medium text-secondary">
               {company ? "Company online" : "Online"}
             </p>
@@ -358,67 +495,13 @@ export default async function ExpertProfilePage({
           </div>
         )}
 
-        {profile.bio && (
-          <ProfileSection title={aboutTitle}>
-            <ReadMoreBio text={profile.bio} />
-          </ProfileSection>
-        )}
-
-      {skillTags.length > 0 && (
-        <ProfileSection title={skillsTitle}>
-          <div className="flex flex-wrap gap-1.5">
-            {skillTags.map((tag) => (
-              <Link key={tag.name} href={tag.href}>
-                <Badge variant="secondary" className="hover:bg-stone-200">
-                  {tag.name}
-                </Badge>
-              </Link>
-            ))}
-          </div>
-        </ProfileSection>
-      )}
-
-      {serviceTags.length > 0 ? (
-        <ProfileSection title={servicesTitle}>
-          <div className="flex flex-wrap gap-1.5">
-            {serviceTags.map((tag) => (
-              <Link key={tag.name} href={tag.href}>
-                <Badge variant="default" className="hover:bg-stone-200">
-                  {tag.name}
-                </Badge>
-              </Link>
-            ))}
-          </div>
-        </ProfileSection>
-      ) : null}
-
-      {workExamples.length > 0 && (
-        <ProfileSection title="Examples of work">
-          <ul className="space-y-5">
-            {workExamples.map((example) => (
-              <li key={`${example.title}-${example.url}`}>
-                <p className="font-medium text-secondary">{example.title}</p>
-                {example.description && (
-                  <p className="mt-1 text-sm leading-relaxed text-muted">
-                    {example.description}
-                  </p>
-                )}
-                <a
-                  href={example.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
-                >
-                  View work →
-                </a>
-              </li>
-            ))}
-          </ul>
-        </ProfileSection>
-      )}
-
-        <section className="mt-8 border-t border-border pt-8">
-          <h2 className="text-lg font-semibold text-secondary">{contactTitle}</h2>
+        <section className="border-t border-border py-10">
+          <h2 className="font-heading text-xl font-semibold tracking-tight text-secondary md:text-2xl">
+            Connect
+          </h2>
+          {!isOwner && (
+            <p className="mt-2 text-sm text-muted">{contactTitle}</p>
+          )}
 
           {isOwner ? (
             <div className="mt-4 rounded-xl border border-dashed border-border bg-surface px-5 py-6">
@@ -442,7 +525,7 @@ export default async function ExpertProfilePage({
                   <Link
                     href={`/sign-in?redirect_url=${encodeURIComponent(profilePath)}`}
                   >
-                    Sign in
+                    Contact about a project
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>

@@ -65,6 +65,10 @@ export type PublicRequirementSummary = {
   createdAt: string;
   skillNames: string[];
   serviceNames: string[];
+  industry: string | null;
+  problem: string | null;
+  timeline: string | null;
+  technologyNames: string[];
 };
 
 export function getRequirementSkillLabels(req: {
@@ -103,5 +107,9 @@ export function toPublicSummary(
     createdAt: req.createdAt,
     skillNames: getRequirementSkillLabels(req),
     serviceNames: getRequirementServiceLabels(req),
+    industry: req.industry?.trim() || null,
+    problem: req.problem?.trim() || null,
+    timeline: req.timeline?.trim() || null,
+    technologyNames: parseCustomSkills(req.technologies),
   };
 }

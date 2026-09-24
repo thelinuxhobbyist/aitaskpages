@@ -17,6 +17,12 @@ import {
 } from "@/lib/finder-task-draft";
 import { parseCustomServices, parseCustomSkills } from "@/lib/profile-utils";
 import {
+  EMPTY_KEYWORD_MAP,
+  MAX_TECHNOLOGIES,
+  MAX_TOPIC_LENGTH,
+  TECHNOLOGY_TOPICS,
+} from "@/lib/expertise-topics";
+import {
   MAX_SERVICE_TAG_LENGTH,
   MAX_SKILL_TAG_LENGTH,
   MAX_TASK_SERVICES,
@@ -188,6 +194,37 @@ export function RequirementForm({
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="industry">Industry</Label>
+            <Input
+              id="industry"
+              name="industry"
+              placeholder="e.g. Dental / Healthcare"
+              defaultValue={requirement?.industry ?? ""}
+            />
+          </div>
+
+          <div className="space-y-2 sm:col-span-2">
+            <Label htmlFor="problem">AI problem / use case</Label>
+            <Textarea
+              id="problem"
+              name="problem"
+              rows={3}
+              placeholder="e.g. High volume of incoming calls, and the team is spending too long on routine booking."
+              defaultValue={requirement?.problem ?? ""}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="timeline">Timeline</Label>
+            <Input
+              id="timeline"
+              name="timeline"
+              placeholder="e.g. Pilot in the next 6–8 weeks"
+              defaultValue={requirement?.timeline ?? ""}
+            />
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="location">Location</Label>
             <Input
               id="location"
@@ -214,6 +251,19 @@ export function RequirementForm({
 
       <section className="space-y-4">
         <h3 className="text-sm font-medium text-slate-700">Expertise</h3>
+
+        <TaxonomyTagField
+          name="technologies"
+          label="Technologies / integrations"
+          description="Platforms or systems the work needs to connect with. Optional."
+          placeholder="e.g. Twilio, practice management software"
+          itemNoun="technology"
+          catalog={TECHNOLOGY_TOPICS}
+          keywords={EMPTY_KEYWORD_MAP}
+          maxItems={MAX_TECHNOLOGIES}
+          maxLength={MAX_TOPIC_LENGTH}
+          initialItems={parseCustomSkills(requirement?.technologies)}
+        />
 
         <TaxonomyTagField
           name="customSkills"

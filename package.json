@@ -22,6 +22,8 @@
     "db:seed:tasks:remote": "tsx src/db/seed-tasks.ts --remote",
     "db:seed:companies:local": "tsx src/db/seed-companies.ts --local",
     "db:seed:companies:remote": "tsx src/db/seed-companies.ts --remote",
+    "db:seed:experts:local": "tsx src/db/seed-experts.ts --local",
+    "db:seed:experts:remote": "tsx src/db/seed-experts.ts --remote",
     "db:cleanup:local": "tsx src/db/cleanup-user-content.ts --local",
     "db:cleanup:remote": "tsx src/db/cleanup-user-content.ts --remote",
     "db:cleanup:seed:local": "tsx src/db/cleanup-seed-data.ts --local",

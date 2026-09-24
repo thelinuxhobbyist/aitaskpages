@@ -170,6 +170,12 @@ export async function createProfile(userId: number, data: ProfileFormData) {
       customSkills: serializeCustomTags(data.customSkills),
       customServices: serializeCustomTags(data.customServices),
       workExamples: serializeWorkExamples(data.workExamples),
+      industries: serializeCustomTags(data.industries),
+      helpWith: serializeCustomTags(data.helpWith),
+      capabilities:
+        data.capabilities.length > 0
+          ? JSON.stringify(data.capabilities)
+          : null,
       status: "approved",
       updatedAt: now,
     })
@@ -224,6 +230,12 @@ export async function updateProfile(
       customSkills: serializeCustomTags(data.customSkills),
       customServices: serializeCustomTags(data.customServices),
       workExamples: serializeWorkExamples(data.workExamples),
+      industries: serializeCustomTags(data.industries),
+      helpWith: serializeCustomTags(data.helpWith),
+      capabilities:
+        data.capabilities.length > 0
+          ? JSON.stringify(data.capabilities)
+          : null,
       updatedAt: now,
     })
     .where(eq(expertProfiles.id, profile.id))

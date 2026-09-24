@@ -1,5 +1,9 @@
 import { z } from "zod";
 import {
+  MAX_TECHNOLOGIES,
+  MAX_TOPIC_LENGTH,
+} from "@/lib/expertise-topics";
+import {
   MAX_SERVICE_TAG_LENGTH,
   MAX_SKILL_TAG_LENGTH,
   MAX_TASK_SERVICES,
@@ -24,6 +28,15 @@ export const requirementSchema = z.object({
   budget: z.string().max(100).optional(),
   location: z.string().max(100).optional(),
   remoteOk: z.coerce.boolean().default(false),
+  industry: z.string().trim().max(80).optional(),
+  problem: z.string().trim().max(500).optional(),
+  timeline: z.string().trim().max(120).optional(),
+  technologies: z
+    .array(z.string())
+    .default([])
+    .transform((values) =>
+      normalizeFreeTextTags(values, MAX_TECHNOLOGIES, MAX_TOPIC_LENGTH)
+    ),
   customSkills: z
     .array(z.string())
     .default([])
@@ -72,6 +85,10 @@ export function parseRequirementFormData(formData: FormData) {
     budget: formData.get("budget") || undefined,
     location: formData.get("location") || undefined,
     remoteOk: parseRemoteOk(formData),
+    industry: formData.get("industry") || undefined,
+    problem: formData.get("problem") || undefined,
+    timeline: formData.get("timeline") || undefined,
+    technologies: formData.getAll("technologies"),
     customSkills: formData.getAll("customSkills"),
     customServices: formData.getAll("customServices"),
   });

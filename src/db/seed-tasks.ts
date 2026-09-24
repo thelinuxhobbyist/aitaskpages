@@ -25,9 +25,30 @@ type SeedTask = {
   hoursAgo: number;
   skillSlugs: string[];
   serviceSlugs: string[];
+  industry?: string;
+  problem?: string;
+  timeline?: string;
+  technologies?: string[];
 };
 
 const SEED_TASKS: SeedTask[] = [
+  {
+    title: "AI receptionist / call automation for dental surgery",
+    description:
+      "We're a dental surgery experiencing a high volume of calls. We need help automating call handling and reducing the workload on our team.\n\nPatients ring to book, change, and confirm appointments. Reception is missing calls at busy times, and the team is spending too long on routine questions.\n\nWe want someone who has done this kind of work before, ideally with a practice-management or CRM integration. We are not looking to hand over project management — we want to talk to the right people and decide together.",
+    companyName: "Harbour Lane Dental",
+    budget: "8000",
+    location: "Bristol",
+    remoteOk: true,
+    hoursAgo: 1,
+    skillSlugs: ["ai-agents", "nlp", "llms"],
+    serviceSlugs: ["chatbot-agent-development", "ai-integration"],
+    industry: "Dental / Healthcare",
+    problem:
+      "High volume of incoming calls. Reception is missing bookings and spending too long on routine appointment questions.",
+    timeline: "Pilot in the next 6–8 weeks",
+    technologies: ["Twilio", "Practice management software", "CRM"],
+  },
   {
     title: "ML engineer for customer support chatbot",
     description:
@@ -39,6 +60,10 @@ const SEED_TASKS: SeedTask[] = [
     hoursAgo: 3,
     skillSlugs: ["machine-learning", "nlp", "python"],
     serviceSlugs: ["chatbot-agent-development"],
+    industry: "Retail",
+    problem: "Support tickets are repetitive and slow to answer from the website help desk.",
+    timeline: "First version this quarter",
+    technologies: ["Zendesk", "Website chat"],
   },
   {
     title: "Copilot rollout for legal team",
@@ -101,6 +126,11 @@ const SEED_TASKS: SeedTask[] = [
     serviceSlugs: ["ai-audit-assessment"],
   },
 ];
+
+function sqlText(value: string | undefined): string {
+  if (!value?.trim()) return "NULL";
+  return `'${escapeSql(value.trim())}'`;
+}
 
 function escapeSql(value: string): string {
   return value.replace(/'/g, "''");
@@ -167,6 +197,18 @@ WHERE u.clerk_user_id = '${DEMO_CLERK_ID}'
     WHERE rs.requirement_id = r.id AND rs.service_id = s.id
   );`);
     }
+
+    statements.push(`
+UPDATE requirements
+SET
+  industry = ${sqlText(task.industry)},
+  problem = ${sqlText(task.problem)},
+  timeline = ${sqlText(task.timeline)},
+  technologies = ${task.technologies?.length ? `'${escapeSql(JSON.stringify(task.technologies))}'` : "NULL"}
+WHERE title = '${escapeSql(task.title)}'
+  AND client_user_id = (
+    SELECT id FROM users WHERE clerk_user_id = '${DEMO_CLERK_ID}'
+  );`);
   }
 
   return statements.join("\n");

@@ -183,6 +183,10 @@ export async function createRequirement(
       remoteOk: data.remoteOk,
       customSkills: serializeCustomTags(data.customSkills),
       customServices: serializeCustomTags(data.customServices),
+      industry: data.industry?.trim() || null,
+      problem: data.problem?.trim() || null,
+      timeline: data.timeline?.trim() || null,
+      technologies: serializeCustomTags(data.technologies),
       status: publish ? "open" : "draft",
       updatedAt: now,
     })
@@ -227,6 +231,10 @@ export async function updateRequirement(
       remoteOk: data.remoteOk,
       customSkills: serializeCustomTags(data.customSkills),
       customServices: serializeCustomTags(data.customServices),
+      industry: data.industry?.trim() || null,
+      problem: data.problem?.trim() || null,
+      timeline: data.timeline?.trim() || null,
+      technologies: serializeCustomTags(data.technologies),
       updatedAt: new Date().toISOString(),
     })
     .where(eq(requirements.id, id));

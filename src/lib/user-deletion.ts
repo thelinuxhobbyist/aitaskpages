@@ -67,6 +67,9 @@ export async function processUserDeletion(
         websiteUrl: null,
         externalLinks: null,
         workExamples: null,
+        industries: null,
+        helpWith: null,
+        capabilities: null,
         profileImageUrl: null,
         updatedAt: ts,
       })

@@ -236,6 +236,27 @@ export default async function PublicRequirementPage({
                 </div>
               )}
 
+              {(requirement.industry || summary.timeline) && (
+                <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm text-muted">
+                  {requirement.industry?.trim() && (
+                    <div>
+                      <dt className="sr-only">Industry</dt>
+                      <dd>
+                        <span className="font-medium text-on-surface">
+                          {requirement.industry.trim()}
+                        </span>
+                      </dd>
+                    </div>
+                  )}
+                  {summary.timeline && (
+                    <div>
+                      <dt className="sr-only">Timeline</dt>
+                      <dd>Timeline: {summary.timeline}</dd>
+                    </div>
+                  )}
+                </dl>
+              )}
+
               <dl className="mt-8 space-y-3 border-t border-border/80 pt-5 sm:grid sm:grid-cols-3 sm:gap-8 sm:space-y-0 sm:pt-6">
                 <div>
                   <dt className="sr-only">Guide budget</dt>
@@ -273,6 +294,12 @@ export default async function PublicRequirementPage({
             </header>
 
             <div className="mt-8 space-y-0 md:mt-10">
+              {summary.problem && (
+                <Section title="The AI problem">
+                  <TaskDescriptionBody text={summary.problem} />
+                </Section>
+              )}
+
               {narrative.challenge && (
                 <Section title="The challenge / context">
                   <TaskDescriptionBody text={narrative.challenge} />
@@ -282,6 +309,12 @@ export default async function PublicRequirementPage({
               {summary.skillNames.length > 0 && (
                 <Section title="What kind of expertise I'm looking for">
                   <TagList names={summary.skillNames} />
+                </Section>
+              )}
+
+              {summary.technologyNames.length > 0 && (
+                <Section title="Technologies / integrations">
+                  <TagList names={summary.technologyNames} />
                 </Section>
               )}
 

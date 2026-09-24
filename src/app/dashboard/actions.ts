@@ -48,6 +48,9 @@ export async function saveProfile(
     serviceIds: formData.getAll("serviceIds"),
     customSkills: formData.getAll("customSkills"),
     customServices: formData.getAll("customServices"),
+    industries: formData.getAll("industries"),
+    helpWith: formData.getAll("helpWith"),
+    capabilities: formData.get("capabilities") ?? "[]",
     workExamples: formData.get("workExamples") ?? "[]",
   };
 
