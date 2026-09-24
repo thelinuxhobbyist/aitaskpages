@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { ProfileCompletenessCard } from "@/app/dashboard/profile-completeness-card";
 import {
   Card,
   CardContent,
@@ -15,7 +16,7 @@ import {
 import { getClientRequirements } from "@/lib/requirements";
 import {
   computeCompleteness,
-  getProfileCompletenessSuggestions,
+  getProfileCompletenessChecklist,
   type ProfileWithRelations,
 } from "@/lib/profile-utils";
 
@@ -27,7 +28,7 @@ export default async function DashboardOverviewPage() {
   const user = await requireUser();
   const profile = (user.profile as ProfileWithRelations | null) ?? null;
   const completeness = profile ? computeCompleteness(profile) : 0;
-  const suggestions = profile ? getProfileCompletenessSuggestions(profile) : [];
+  const checklist = profile ? getProfileCompletenessChecklist(profile) : [];
 
   const [clientConvos, expertConvos, clientRequirements] = await Promise.all([
     getClientConversations(user.id),
@@ -98,54 +99,6 @@ export default async function DashboardOverviewPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Profile completeness</CardTitle>
-          <CardDescription>
-            {profile
-              ? completeness === 100
-                ? "Your profile is fully complete"
-                : "Complete these to improve your listing"
-              : "Create your profile to get started"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-bold text-primary">{completeness}%</p>
-          {!profile && (
-            <Link
-              href="/dashboard?intent=offer"
-              className="mt-3 inline-block text-sm font-medium text-primary hover:underline"
-            >
-              Set up your profile
-            </Link>
-          )}
-          {profile && completeness < 100 && (
-            <>
-              <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface">
-                <div
-                  className="h-full rounded-full bg-primary/70"
-                  style={{ width: `${completeness}%` }}
-                />
-              </div>
-              <ul className="mt-4 space-y-1.5 text-sm text-muted">
-                {suggestions.map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/dashboard"
-                className="mt-4 inline-block text-sm font-medium text-primary hover:underline"
-              >
-                Edit profile
-              </Link>
-            </>
-          )}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
           <CardTitle className="text-base">Public profile</CardTitle>
           <CardDescription>Your directory listing</CardDescription>
         </CardHeader>
@@ -167,6 +120,13 @@ export default async function DashboardOverviewPage() {
           )}
         </CardContent>
       </Card>
+
+      <ProfileCompletenessCard
+        hasProfile={Boolean(profile)}
+        isHidden={profile?.status === "hidden"}
+        completeness={completeness}
+        checklist={checklist}
+      />
     </div>
   );
 }

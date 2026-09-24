@@ -174,8 +174,8 @@ export default async function DashboardPage({
               <CardHeader>
                 <CardTitle className="text-base">Manage profile</CardTitle>
                 <CardDescription>
-                  Edit your details above, or remove your listing from the
-                  directory.
+                  Edit your details in the form above, or delete the profile
+                  to take it out of the directory.
                 </CardDescription>
               </CardHeader>
               <CardContent>

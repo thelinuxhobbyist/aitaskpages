@@ -223,19 +223,45 @@ export type ProfileWithRelations = ExpertProfile & {
 };
 
 type ProfileCheck = {
+  /** Short name shown on the completeness checklist. */
+  name: string;
+  /** Action the expert still needs to take when this item is missing. */
   label: string;
   check: (profile: ProfileWithRelations) => boolean;
 };
 
 /** Fields that make a profile useful to clients — used for dashboard guidance and ranking. */
 const SHARED_PROFILE_CHECKS: ProfileCheck[] = [
-  { label: "Add a profile photo", check: (p) => !!p.profileImageUrl?.trim() },
-  { label: "Add a headline", check: (p) => !!p.headline?.trim() },
-  { label: "Write your bio", check: (p) => !!p.bio?.trim() },
-  { label: "Add your location", check: (p) => !!p.location?.trim() },
-  { label: "Add at least one skill", check: (p) => p.skills.length > 0 || parseCustomSkills(p.customSkills).length > 0 },
-  { label: "Add at least one service", check: (p) => p.services.length > 0 || parseCustomServices(p.customServices).length > 0 },
   {
+    name: "Profile photo",
+    label: "Add a profile photo",
+    check: (p) => !!p.profileImageUrl?.trim(),
+  },
+  {
+    name: "Headline",
+    label: "Add a headline",
+    check: (p) => !!p.headline?.trim(),
+  },
+  { name: "Bio", label: "Write your bio", check: (p) => !!p.bio?.trim() },
+  {
+    name: "Location",
+    label: "Add your location",
+    check: (p) => !!p.location?.trim(),
+  },
+  {
+    name: "Skills",
+    label: "Add at least one skill",
+    check: (p) =>
+      p.skills.length > 0 || parseCustomSkills(p.customSkills).length > 0,
+  },
+  {
+    name: "Services",
+    label: "Add at least one service",
+    check: (p) =>
+      p.services.length > 0 || parseCustomServices(p.customServices).length > 0,
+  },
+  {
+    name: "External link",
     label: "Add a LinkedIn, website, or other external link",
     check: (p) =>
       !!(
@@ -248,15 +274,46 @@ const SHARED_PROFILE_CHECKS: ProfileCheck[] = [
 ];
 
 const INDIVIDUAL_PROFILE_CHECKS: ProfileCheck[] = [
-  { label: "Add a profile photo", check: (p) => !!p.profileImageUrl?.trim() },
-  { label: "Add a headline", check: (p) => !!p.headline?.trim() },
-  { label: "Write your bio", check: (p) => !!p.bio?.trim() },
-  { label: "Add your location", check: (p) => !!p.location?.trim() },
-  { label: "Set your hourly rate", check: (p) => p.hourlyRate != null },
-  { label: "Set your availability", check: (p) => !!p.availability },
-  { label: "Add at least one skill", check: (p) => p.skills.length > 0 || parseCustomSkills(p.customSkills).length > 0 },
-  { label: "Add at least one service", check: (p) => p.services.length > 0 || parseCustomServices(p.customServices).length > 0 },
   {
+    name: "Profile photo",
+    label: "Add a profile photo",
+    check: (p) => !!p.profileImageUrl?.trim(),
+  },
+  {
+    name: "Headline",
+    label: "Add a headline",
+    check: (p) => !!p.headline?.trim(),
+  },
+  { name: "Bio", label: "Write your bio", check: (p) => !!p.bio?.trim() },
+  {
+    name: "Location",
+    label: "Add your location",
+    check: (p) => !!p.location?.trim(),
+  },
+  {
+    name: "Hourly rate",
+    label: "Set your hourly rate",
+    check: (p) => p.hourlyRate != null,
+  },
+  {
+    name: "Availability",
+    label: "Set your availability",
+    check: (p) => !!p.availability,
+  },
+  {
+    name: "Skills",
+    label: "Add at least one skill",
+    check: (p) =>
+      p.skills.length > 0 || parseCustomSkills(p.customSkills).length > 0,
+  },
+  {
+    name: "Services",
+    label: "Add at least one service",
+    check: (p) =>
+      p.services.length > 0 || parseCustomServices(p.customServices).length > 0,
+  },
+  {
+    name: "External link",
     label: "Add a LinkedIn, GitHub, or website link",
     check: (p) =>
       !!(p.linkedinUrl?.trim() || p.githubUrl?.trim() || p.websiteUrl?.trim()),
@@ -264,8 +321,16 @@ const INDIVIDUAL_PROFILE_CHECKS: ProfileCheck[] = [
 ];
 
 const COMPANY_PROFILE_CHECKS: ProfileCheck[] = [
-  { label: "Add a company logo", check: (p) => !!p.profileImageUrl?.trim() },
-  { label: "Add a company size", check: (p) => !!p.companySize?.trim() },
+  {
+    name: "Company logo",
+    label: "Add a company logo",
+    check: (p) => !!p.profileImageUrl?.trim(),
+  },
+  {
+    name: "Company size",
+    label: "Add a company size",
+    check: (p) => !!p.companySize?.trim(),
+  },
   ...SHARED_PROFILE_CHECKS.slice(1),
 ];
 
@@ -281,13 +346,30 @@ export function computeCompleteness(profile: ProfileWithRelations): number {
   return Math.round((filled / checks.length) * 100);
 }
 
+export type ProfileCompletenessItem = {
+  name: string;
+  label: string;
+  done: boolean;
+};
+
+/** Every completeness step, done and still to do, in checklist order. */
+export function getProfileCompletenessChecklist(
+  profile: ProfileWithRelations
+): ProfileCompletenessItem[] {
+  return profileChecksFor(profile).map(({ name, label, check }) => ({
+    name,
+    label,
+    done: check(profile),
+  }));
+}
+
 /** Actionable items the expert can complete to improve their profile. */
 export function getProfileCompletenessSuggestions(
   profile: ProfileWithRelations
 ): string[] {
-  return profileChecksFor(profile)
-    .filter(({ check }) => !check(profile))
-    .map(({ label }) => label);
+  return getProfileCompletenessChecklist(profile)
+    .filter((item) => !item.done)
+    .map((item) => item.label);
 }
 
 /**
