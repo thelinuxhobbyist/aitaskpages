@@ -16,7 +16,7 @@ export function WhyChoose() {
             className="rounded-2xl border border-border bg-card p-6 shadow-soft md:p-7"
           >
             <div className="flex items-start gap-3">
-              <CircleCheck className="mt-0.5 h-5 w-5 shrink-0 text-accent-foreground" />
+              <CircleCheck className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
               <div>
                 <h3 className="text-lg">{benefit.title}</h3>
                 <p className="mt-2.5 text-base leading-[1.65] text-muted">

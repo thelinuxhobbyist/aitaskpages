@@ -12,10 +12,10 @@ const buttonVariants = cva(
           "bg-primary text-on-primary shadow-lift hover:bg-primary-dark",
         ink: "bg-ink text-ink-foreground shadow-lift hover:bg-ink/90",
         outline:
-          "border border-border bg-card text-on-surface shadow-soft hover:bg-surface-container",
-        ghost: "text-muted hover:bg-surface-container hover:text-on-surface",
+          "border border-border bg-card text-on-surface shadow-soft hover:bg-accent-muted",
+        ghost: "text-muted hover:bg-accent-muted hover:text-on-surface",
         secondary:
-          "bg-surface-container text-on-surface hover:bg-surface-container-high",
+          "bg-accent-muted text-on-surface hover:bg-surface-container-high",
       },
       size: {
         default: "h-10 px-4 py-2",

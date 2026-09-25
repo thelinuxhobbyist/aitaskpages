@@ -129,7 +129,7 @@ export function ExpertPreviewCard({
           {focusAreas.map((area) => (
             <li
               key={area}
-              className="inline-flex items-center rounded-full border border-transparent bg-surface-container-high px-2.5 py-1 text-[0.8125rem] font-medium leading-tight text-on-surface-variant"
+              className="inline-flex items-center rounded-full border border-transparent bg-accent-muted px-2.5 py-1 text-[0.8125rem] font-medium leading-tight text-on-surface"
             >
               {area}
             </li>

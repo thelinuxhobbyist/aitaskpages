@@ -75,7 +75,7 @@ function EmptyPanel({
 }) {
   return (
     <div className="rounded-2xl border border-dashed border-border bg-surface px-6 py-16 text-center">
-      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container">
+      <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent-muted">
         <Icon className="h-6 w-6 text-muted" />
       </div>
       <p className="text-lg font-semibold text-secondary">{title}</p>

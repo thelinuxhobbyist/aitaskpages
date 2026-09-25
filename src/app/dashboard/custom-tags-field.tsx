@@ -62,7 +62,7 @@ export function CustomTagsField({
   };
 
   return (
-    <div className="space-y-3 rounded-lg border border-dashed border-border bg-surface-container/40 p-4">
+    <div className="space-y-3 rounded-lg border border-dashed border-border bg-accent-muted/50 p-4">
       <div>
         <p className="text-sm font-medium text-secondary">{label}</p>
         <p className="mt-0.5 text-xs text-muted">{description}</p>

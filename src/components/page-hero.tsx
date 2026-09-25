@@ -5,11 +5,11 @@ type PageHeroProps = {
   children: ReactNode;
   className?: string;
   innerClassName?: string;
-  /** Background wash class. Defaults to mint hero; homepage uses the cooler task wash. */
+  /** Background wash class. Defaults to the brand-green hero gradient. */
   washClassName?: string;
 };
 
-/** Shared wash used by the homepage hero and interior page headers. */
+/** Shared header used by the homepage hero and interior page headers. */
 export function PageHero({
   children,
   className,

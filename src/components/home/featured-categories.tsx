@@ -18,7 +18,7 @@ export function FeaturedCategories() {
               href={category.href}
               className="group rounded-2xl border border-border bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-lift md:p-7"
             >
-              <span className="grid size-10 place-items-center rounded-xl bg-accent-muted text-accent-foreground">
+              <span className="grid size-10 place-items-center rounded-xl bg-accent-muted text-accent">
                 <category.icon className="h-5 w-5" />
               </span>
               <h3 className="mt-4">{category.name}</h3>

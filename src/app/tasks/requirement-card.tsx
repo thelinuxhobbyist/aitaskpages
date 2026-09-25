@@ -35,7 +35,7 @@ function TaskTag({
       className={cn(
         "inline-flex items-center rounded-full px-2.5 py-1 text-[0.8125rem] font-medium leading-tight transition-colors",
         variant === "default" &&
-          "border border-transparent bg-surface-container-high text-on-surface-variant group-hover:bg-[#e6dfd4]",
+          "border border-transparent bg-accent-muted text-on-surface group-hover:bg-accent/10",
         variant === "more" &&
           "border border-border bg-transparent text-muted group-hover:border-outline group-hover:text-on-surface-variant"
       )}

@@ -6,10 +6,10 @@ export function SoftwareFinderCta() {
   return (
     <section
       id="software-finder"
-      className="scroll-mt-20 rounded-2xl border border-border bg-surface-container/60 px-6 py-10 md:px-10 md:py-12"
+      className="scroll-mt-20 rounded-2xl border border-border bg-white px-6 py-10 md:px-10 md:py-12"
     >
       <div className="mx-auto max-w-2xl text-center">
-        <div className="mx-auto grid size-12 place-items-center rounded-xl bg-accent-muted text-accent-foreground">
+        <div className="mx-auto grid size-12 place-items-center rounded-xl bg-accent-muted text-accent">
           <Sparkles className="h-6 w-6" />
         </div>
         <h2 className="mt-4">Looking for the right AI software?</h2>

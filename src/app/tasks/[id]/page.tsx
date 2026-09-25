@@ -78,7 +78,7 @@ function TagList({ names }: { names: string[] }) {
       {names.map((name) => (
         <li
           key={name}
-          className="rounded-full bg-surface-container px-3 py-1 text-sm font-medium text-on-surface"
+          className="rounded-full bg-accent-muted px-3 py-1 text-sm font-medium text-on-surface"
         >
           {name}
         </li>
@@ -191,7 +191,6 @@ export default async function PublicRequirementPage({
         className="pointer-events-none absolute inset-x-0 top-0 h-[22rem] bg-gradient-hero"
         aria-hidden
       />
-
       <div className="relative mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-10 xl:px-8">
         <Button asChild variant="ghost" size="sm" className="-ml-2">
           <Link href="/tasks">

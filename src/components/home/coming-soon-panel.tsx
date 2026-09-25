@@ -21,7 +21,7 @@ export function ComingSoonPanel() {
             tasks — planned as an addition to the live platform.
           </p>
         </div>
-        <span className="rounded-full bg-surface-container px-4 py-1.5 text-xs font-medium text-muted">
+        <span className="rounded-full bg-accent-muted px-4 py-1.5 text-xs font-medium text-muted">
           Not available yet
         </span>
       </div>

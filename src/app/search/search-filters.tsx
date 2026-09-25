@@ -175,7 +175,7 @@ function FilterFields({
             </select>
           </FilterField>
 
-          <div className="space-y-4 rounded-xl border border-dashed border-border/80 bg-surface-container/40 p-4">
+          <div className="space-y-4 rounded-xl border border-dashed border-border/80 bg-accent-muted/50 p-4">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted">
               More filters in a future update
             </p>
@@ -191,7 +191,7 @@ function FilterFields({
             </FilterField>
           </div>
 
-          <div className="rounded-xl bg-surface-container/70 p-5">
+          <div className="rounded-xl bg-accent-muted/70 p-5">
             <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted">
               Hourly rate
             </p>
@@ -284,7 +284,7 @@ export function SearchFiltersPanel({
               <p className="text-sm text-muted">Type, skill, location</p>
             </div>
           </div>
-          <span className="shrink-0 rounded-full bg-surface-container px-3 py-1.5 text-xs font-medium text-muted">
+          <span className="shrink-0 rounded-full bg-accent-muted px-3 py-1.5 text-xs font-medium text-muted">
             <span className="group-open:hidden">Show</span>
             <span className="hidden group-open:inline">Hide</span>
           </span>

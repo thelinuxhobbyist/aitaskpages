@@ -30,7 +30,7 @@ export function ProfileTypeTabs({ current }: { current: DirectoryFilters }) {
               "rounded-lg px-3.5 py-2 text-sm font-medium transition-colors",
               selected
                 ? "bg-ink text-ink-foreground"
-                : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+                : "text-on-surface-variant hover:bg-accent-muted hover:text-on-surface",
             )}
           >
             {tab.label}

@@ -196,17 +196,24 @@ main {
   width: 100%;
 }
 
-/* Section hero — full-bleed, softer take on the homepage gradient */
+/* Section hero — soft brand-green wash */
 .page-hero {
-  --gradient-hero: radial-gradient(
-      120% 90% at 12% 0%,
-      color-mix(in oklab, oklch(84% 0.16 168) 22%, transparent),
-      transparent 60%
+  --gradient-hero:
+    radial-gradient(
+      115% 85% at 8% 0%,
+      color-mix(in oklab, oklch(62% 0.122 166) 12%, transparent),
+      transparent 58%
     ),
     radial-gradient(
-      90% 80% at 95% 10%,
-      oklch(72% 0.13 250 / 0.18),
-      transparent 60%
+      80% 70% at 96% 8%,
+      color-mix(in oklab, oklch(62% 0.122 166) 7%, transparent),
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      oklch(62% 0.122 166 / 0.05) 0%,
+      oklch(62% 0.06 166 / 0.02) 42%,
+      transparent 72%
     );
 
   width: 100%;

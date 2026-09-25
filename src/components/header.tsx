@@ -188,8 +188,8 @@ export function Header({ initialSignedIn }: HeaderProps) {
                 className={cn(
                   "rounded-lg px-3 py-3 text-base tracking-[-0.01em]",
                   active
-                    ? "bg-surface-container font-semibold text-on-surface"
-                    : "font-medium text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+                    ? "bg-accent-muted font-semibold text-on-surface"
+                    : "font-medium text-on-surface-variant hover:bg-accent-muted hover:text-on-surface",
                 )}
               >
                 {link.label}

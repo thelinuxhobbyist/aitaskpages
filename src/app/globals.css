@@ -1,44 +1,46 @@
 @import "tailwindcss";
 
 @theme {
-  /* Temporary cloned palette — replace when AI Task Pages branding arrives */
+  /* White canvas, brand teal accent (#1D9D75), green-washed heroes */
   --color-background: oklch(100% 0 0);
   --color-foreground: oklch(19% 0.015 250);
 
   --color-surface: oklch(100% 0 0);
   --color-on-surface: oklch(19% 0.015 250);
   --color-secondary: oklch(19% 0.015 250);
-  --color-on-surface-variant: oklch(52% 0.015 250);
+  --color-on-surface-variant: oklch(19% 0.015 250);
 
   --color-primary: oklch(17% 0.02 250);
   --color-primary-dark: oklch(12% 0.02 250);
   --color-primary-light: oklch(24% 0.02 250);
-  --color-on-primary: oklch(97% 0.005 106);
-  --color-primary-container: oklch(95.5% 0.006 106);
+  --color-on-primary: oklch(98% 0.004 250);
+  --color-primary-container: oklch(100% 0 0);
   --color-on-primary-container: oklch(19% 0.015 250);
 
-  --color-accent: oklch(84% 0.16 168);
-  --color-accent-foreground: oklch(18% 0.03 200);
-  --color-accent-muted: oklch(84% 0.16 168 / 0.25);
+  /* Brand teal from favicon mark (#1D9D75) */
+  --color-accent: oklch(62% 0.122 166);
+  --color-accent-foreground: oklch(52% 0.11 166);
+  --color-accent-muted: oklch(97.5% 0.018 166);
 
-  --color-muted: oklch(52% 0.015 250);
-  --color-muted-bg: oklch(95.5% 0.006 106);
+  --color-muted: oklch(19% 0.015 250);
+  --color-muted-bg: oklch(100% 0 0);
 
-  --color-border: oklch(90.5% 0.008 250);
-  --color-outline: oklch(90.5% 0.008 250);
+  --color-border: oklch(90% 0.01 250);
+  --color-outline: oklch(90% 0.01 250);
 
-  --color-surface-container: oklch(95.5% 0.006 106);
-  --color-surface-container-high: oklch(93% 0.006 106);
+  /* Prefer white over grey fills; light teal for soft UI chips */
+  --color-surface-container: oklch(100% 0 0);
+  --color-surface-container-high: oklch(97.5% 0.018 166);
   --color-card: oklch(100% 0 0);
   --color-card-foreground: oklch(19% 0.015 250);
 
   --color-ink: oklch(17% 0.02 250);
-  --color-ink-foreground: oklch(97% 0.005 106);
+  --color-ink-foreground: oklch(98% 0.004 250);
 
   --color-destructive: oklch(57.7% 0.245 27.325);
   --color-destructive-foreground: oklch(98.4% 0.003 247.858);
 
-  --color-ring: oklch(84% 0.16 168);
+  --color-ring: oklch(62% 0.122 166);
 
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
@@ -57,15 +59,23 @@
 }
 
 :root {
-  --gradient-hero: radial-gradient(
-      120% 90% at 12% 0%,
-      color-mix(in oklab, oklch(84% 0.16 168) 26%, transparent),
-      transparent 60%
+  /* Soft brand-green wash — light enough for black type to stay readable */
+  --gradient-hero:
+    radial-gradient(
+      115% 85% at 8% 0%,
+      color-mix(in oklab, oklch(62% 0.122 166) 12%, transparent),
+      transparent 58%
     ),
     radial-gradient(
-      90% 80% at 95% 10%,
-      oklch(72% 0.13 250 / 0.22),
-      transparent 60%
+      80% 70% at 96% 8%,
+      color-mix(in oklab, oklch(62% 0.122 166) 7%, transparent),
+      transparent 55%
+    ),
+    linear-gradient(
+      180deg,
+      oklch(62% 0.122 166 / 0.05) 0%,
+      oklch(62% 0.06 166 / 0.02) 42%,
+      transparent 72%
     );
 }
 
@@ -128,29 +138,9 @@
     box-shadow: var(--shadow-lift);
   }
 
-  .bg-gradient-hero {
-    background: var(--gradient-hero);
-  }
-
-  /* Cooler blue → surface wash for the homepage hero (distinct from the mint clone look). */
+  .bg-gradient-hero,
   .bg-gradient-task {
-    background:
-      radial-gradient(
-        110% 85% at 8% 0%,
-        oklch(72% 0.1 250 / 0.2),
-        transparent 58%
-      ),
-      radial-gradient(
-        80% 70% at 92% 8%,
-        oklch(78% 0.06 200 / 0.14),
-        transparent 55%
-      ),
-      linear-gradient(
-        180deg,
-        oklch(72% 0.09 250 / 0.1) 0%,
-        oklch(72% 0.05 250 / 0.04) 36%,
-        transparent 68%
-      );
+    background: var(--gradient-hero);
   }
 
   /* Section intro copy — larger body for premium readability */
@@ -174,7 +164,8 @@
   --footer-fg: oklch(97% 0.005 106);
   --footer-muted: oklch(97% 0.005 106 / 0.7);
   --footer-dimmed: oklch(97% 0.005 106 / 0.5);
-  --footer-accent: oklch(84% 0.16 168);
+  /* Brighter brand teal for contrast on the dark footer ink */
+  --footer-accent: oklch(78% 0.11 166);
 
   width: 100%;
   align-self: stretch;

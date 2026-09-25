@@ -17,13 +17,10 @@ import { cn } from "@/lib/utils";
 
 function HomeHero() {
   return (
-    <PageHero
-      washClassName="bg-gradient-task"
-      innerClassName="py-16 md:py-20"
-    >
+    <PageHero innerClassName="py-16 md:py-20">
       <h1 className="max-w-3xl text-[clamp(2.375rem,5vw,3.875rem)] font-bold leading-[1.04] tracking-[-0.02em]">
         Find AI expertise for your{" "}
-        <span className="text-accent-foreground">task or project.</span>
+        <span className="text-accent">task or project.</span>
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
         International introduction platform for AI tasks and projects. Search
@@ -63,8 +60,8 @@ function HomeHero() {
               className={cn(
                 "group inline-flex items-center gap-1.5 whitespace-nowrap text-[0.90625rem] font-semibold transition-colors",
                 item.primary
-                  ? "text-accent-foreground hover:text-ink"
-                  : "text-on-surface hover:text-accent-foreground",
+                  ? "text-accent hover:text-ink"
+                  : "text-on-surface hover:text-accent",
               )}
             >
               {item.label}
@@ -79,7 +76,7 @@ function HomeHero() {
           (item) => (
             <span key={item} className="inline-flex items-center gap-1.5">
               <CircleCheck
-                className="h-3.5 w-3.5 shrink-0 text-accent-foreground"
+                className="h-3.5 w-3.5 shrink-0 text-accent"
                 strokeWidth={2.4}
               />
               {item}
@@ -134,7 +131,7 @@ async function HomePlatformSections() {
       )}
 
       {hasTasks && (
-        <div className="border-y border-border/60 bg-surface-container/40">
+        <div className="border-y border-border/60 bg-white">
           <div className="mx-auto max-w-6xl px-5 py-14">
             <PlatformSection
               id="tasks"

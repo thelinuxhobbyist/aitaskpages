@@ -33,7 +33,7 @@ export default async function ComingSoonPage() {
         aria-hidden
       />
       <div className="relative flex flex-1 flex-col items-center justify-center px-6 py-20 text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent-foreground">
+        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-accent">
           Coming soon
         </p>
         <h1 className="mt-6 max-w-xl text-[clamp(2.25rem,6vw,4rem)] font-bold leading-[1.05] tracking-[-0.03em] text-secondary">
@@ -46,7 +46,7 @@ export default async function ComingSoonPage() {
           Enquiries:{" "}
           <a
             href="mailto:contact@aitaskpages.com"
-            className="font-medium text-on-surface underline decoration-border underline-offset-4 transition-colors hover:text-accent-foreground"
+            className="font-medium text-on-surface underline decoration-border underline-offset-4 transition-colors hover:text-accent"
           >
             contact@aitaskpages.com
           </a>

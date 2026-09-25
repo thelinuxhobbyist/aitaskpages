@@ -9,7 +9,7 @@ export function JoinAsExpertCta() {
       className="scroll-mt-20 rounded-2xl border border-border bg-card px-6 py-10 shadow-soft md:px-10 md:py-12"
     >
       <div className="mx-auto max-w-2xl text-center">
-        <div className="mx-auto grid size-12 place-items-center rounded-xl bg-accent-muted text-accent-foreground">
+        <div className="mx-auto grid size-12 place-items-center rounded-xl bg-accent-muted text-accent">
           <UserPlus className="h-6 w-6" />
         </div>
         <h2 className="mt-4">Do you offer AI expertise?</h2>
