@@ -25,7 +25,7 @@ export function HowItWorks() {
       <h2>How AI Task Pages works</h2>
       <p className="section-lead">
         An introduction platform. After the introduction, the arrangement is
-        between you.
+        between you and the other party.
       </p>
       <div className="mt-9 grid gap-6 md:grid-cols-3 md:gap-8">
         {STEPS.map((step) => (
