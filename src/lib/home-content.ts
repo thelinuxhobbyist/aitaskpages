@@ -7,7 +7,6 @@ import {
   MessageSquare,
   Percent,
   Scale,
-  Sparkles,
   Users,
   Workflow,
   Zap,
@@ -27,12 +26,6 @@ export const HOME_CATEGORIES: HomeCategory[] = [
     description: "Custom chatbots and conversational AI expertise.",
     href: "/search?service=chatbot-agent-development",
     icon: Bot,
-  },
-  {
-    name: "Microsoft Copilot",
-    description: "Copilot rollout, integration and workplace AI adoption expertise.",
-    href: "/search?q=Microsoft+Copilot",
-    icon: Sparkles,
   },
   {
     name: "AI Automation",

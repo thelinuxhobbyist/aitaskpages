@@ -17,16 +17,17 @@ import { cn } from "@/lib/utils";
 
 function HomeHero() {
   return (
-    <PageHero innerClassName="py-16 md:py-20">
+    <PageHero
+      washClassName="bg-gradient-task"
+      innerClassName="py-16 md:py-20"
+    >
       <h1 className="max-w-3xl text-[clamp(2.375rem,5vw,3.875rem)] font-bold leading-[1.04] tracking-[-0.02em]">
-        Find the right AI expertise
-        <br />
-        <span className="text-accent-foreground">for your task.</span>
+        Find AI expertise for your{" "}
+        <span className="text-accent-foreground">task or project.</span>
       </h1>
       <p className="mt-5 max-w-xl text-[1.0625rem] leading-[1.6] text-muted md:text-xl md:leading-[1.65]">
-        AI Task Pages helps businesses and individuals find the right AI
-        expertise for specific tasks and projects. Post a task, or find the
-        right expertise and get in touch directly.
+        International introduction platform for AI tasks and projects. Search
+        expertise, or post what you need and connect directly.
       </p>
       <p className="mt-4 max-w-xl text-[1.0625rem] font-medium leading-[1.5] text-on-surface md:text-lg">
         We make the introduction. You take it from there.
@@ -39,7 +40,7 @@ function HomeHero() {
         locations={[]}
       />
 
-      <div className="mt-5 flex max-w-[560px] flex-wrap gap-x-7 gap-y-2 pl-1">
+      <div className="mt-5 grid max-w-[560px] grid-cols-2 gap-x-5 gap-y-3 pl-1 md:flex md:max-w-[680px] md:flex-nowrap md:gap-x-6 md:gap-y-0">
         {[
           {
             href: "/tasks/new",
@@ -60,14 +61,14 @@ function HomeHero() {
               key={item.href}
               href={item.href}
               className={cn(
-                "group inline-flex items-center gap-1.5 text-[0.90625rem] font-semibold transition-colors",
+                "group inline-flex items-center gap-1.5 whitespace-nowrap text-[0.90625rem] font-semibold transition-colors",
                 item.primary
                   ? "text-accent-foreground hover:text-ink"
                   : "text-on-surface hover:text-accent-foreground",
               )}
             >
               {item.label}
-              <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              <ArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-0.5" />
             </ItemLink>
           );
         })}
@@ -132,29 +133,13 @@ async function HomePlatformSections() {
         </div>
       )}
 
-      {(hasExperts || hasTasks) && (
-        <div className="mx-auto max-w-6xl space-y-14 px-5 py-14">
-          {hasExperts && (
-            <PlatformSection
-              id="experts"
-              title="Featured AI expertise"
-              description="Independent professionals and companies for AI consulting, automation, integrations and machine learning."
-              browseHref="/search"
-              browseLabel="Browse AI expertise"
-            >
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {experts.map((profile) => (
-                  <ExpertCard key={profile.id} profile={profile} />
-                ))}
-              </div>
-            </PlatformSection>
-          )}
-
-          {hasTasks && (
+      {hasTasks && (
+        <div className="border-y border-border/60 bg-surface-container/40">
+          <div className="mx-auto max-w-6xl px-5 py-14">
             <PlatformSection
               id="tasks"
               title="Open AI tasks"
-              description="Open requests looking for AI help — professionals and companies can express interest so you can connect directly."
+              description="Live requests looking for AI help — review open tasks, express interest, and connect directly."
               browseHref="/tasks"
               browseLabel="Browse AI tasks"
             >
@@ -164,7 +149,26 @@ async function HomePlatformSections() {
                 ))}
               </div>
             </PlatformSection>
-          )}
+          </div>
+        </div>
+      )}
+
+      {hasExperts && (
+        <div className="mx-auto max-w-6xl px-5 py-14">
+          <PlatformSection
+            id="experts"
+            title="Featured AI expertise"
+            description="Independent professionals and companies for AI consulting, automation, integrations and machine learning."
+            browseHref="/search"
+            browseLabel="Browse AI expertise"
+            secondary={hasTasks}
+          >
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {experts.map((profile) => (
+                <ExpertCard key={profile.id} profile={profile} />
+              ))}
+            </div>
+          </PlatformSection>
         </div>
       )}
     </>

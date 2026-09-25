@@ -93,7 +93,7 @@ export function Footer() {
             between the parties and is independent of AI Task Pages.
           </p>
           <p className="footer-family-line">
-            AI Task Pages · Part of the AI Jobs Market family
+            AI Task Pages · From the team behind AI Jobs Market
           </p>
           <div className="footer-copyright">
             &copy; {year} AI Task Pages. All rights reserved.

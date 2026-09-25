@@ -5,10 +5,17 @@ type PageHeroProps = {
   children: ReactNode;
   className?: string;
   innerClassName?: string;
+  /** Background wash class. Defaults to mint hero; homepage uses the cooler task wash. */
+  washClassName?: string;
 };
 
-/** Shared mint/ink wash used by the homepage hero and interior page headers. */
-export function PageHero({ children, className, innerClassName }: PageHeroProps) {
+/** Shared wash used by the homepage hero and interior page headers. */
+export function PageHero({
+  children,
+  className,
+  innerClassName,
+  washClassName = "bg-gradient-hero",
+}: PageHeroProps) {
   return (
     <section
       className={cn(
@@ -17,7 +24,7 @@ export function PageHero({ children, className, innerClassName }: PageHeroProps)
       )}
     >
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-hero"
+        className={cn("pointer-events-none absolute inset-0", washClassName)}
         aria-hidden
       />
       <div

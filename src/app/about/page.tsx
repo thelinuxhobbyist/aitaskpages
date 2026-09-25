@@ -161,7 +161,7 @@ export default function AboutPage() {
 
       <section className="space-y-3 text-sm text-muted">
         <h2 className="text-base font-medium text-muted">
-          Part of the AI Jobs Market family
+          From the team behind AI Jobs Market
         </h2>
         <p>
           {SITE_NAME} and AI Jobs Market share the same underlying idea: making

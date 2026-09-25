@@ -132,14 +132,25 @@
     background: var(--gradient-hero);
   }
 
-  /* Subtle blue → surface wash for interior pages that should not use the mint hero. */
+  /* Cooler blue → surface wash for the homepage hero (distinct from the mint clone look). */
   .bg-gradient-task {
-    background: linear-gradient(
-      180deg,
-      oklch(72% 0.09 250 / 0.11) 0%,
-      oklch(72% 0.05 250 / 0.045) 32%,
-      transparent 62%
-    );
+    background:
+      radial-gradient(
+        110% 85% at 8% 0%,
+        oklch(72% 0.1 250 / 0.2),
+        transparent 58%
+      ),
+      radial-gradient(
+        80% 70% at 92% 8%,
+        oklch(78% 0.06 200 / 0.14),
+        transparent 55%
+      ),
+      linear-gradient(
+        180deg,
+        oklch(72% 0.09 250 / 0.1) 0%,
+        oklch(72% 0.05 250 / 0.04) 36%,
+        transparent 68%
+      );
   }
 
   /* Section intro copy — larger body for premium readability */
